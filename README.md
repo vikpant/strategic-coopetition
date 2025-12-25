@@ -4,8 +4,8 @@
 Faculty of Information, University of Toronto
 
 #### Research Program
-I develop computational mechanisms and techniques for strategic coopetition 
-to formalize how actors simultaneously cooperate and compete in multi-agent systems. 
+I develop computational techniques for modeling strategic coopetition 
+by formalizing how actors cooperate and compete simultaneously in multi-agent systems. 
 My research bridges conceptual modeling with computational game theory 
 and reinforcement learning.
 
