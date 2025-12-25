@@ -278,8 +278,8 @@ This validation suite is part of a coordinated research program on computational
 |-----------------|-------|-------|
 | TR-1 | Interdependence & Complementarity | [2510.18802](https://arxiv.org/abs/2510.18802) |
 | **TR-2** (this work) | Trust Dynamics and Trustworthiness | [2510.24909](https://arxiv.org/abs/2510.24909) |
-| TR-3 | Complex Actors | (forthcoming) |
-| TR-4 | Reciprocity & Sequential Cooperation | (forthcoming) |
+| TR-3 | Collective Action & Loyalty | (forthcoming) |
+| TR-4 | Reciprocity & Conditionality | (forthcoming) |
 
 ## Citation
 
