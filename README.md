@@ -10,8 +10,8 @@ My research bridges conceptual modeling with computational game theory
 and reinforcement learning.
 
 #### Current Projects
-- 📄 **strategic-coopetition**: Computational frameworks for interdependence, 
-  complementarity, trust, reciprocity, and loyalty.
+- 📄 **strategic-coopetition**: Computational frameworks for modeling interdependence, 
+  complementarity, trust, reciprocity, and collective action under concomitant cooperation and competition.
 
 #### Select Publications
 - [arXiv:2510.18802](https://arxiv.org/abs/2510.18802) — Interdependence & Complementarity
