@@ -1,0 +1,20 @@
+# Requirements for Computational Foundations for Strategic Coopetition: Formalizing Trust Dynamics and Trustworthiness - Validation Suite
+# Technical Report: arXiv:2510.24909
+#
+# Install with: pip install -r requirements.txt
+
+# Core numerical computing
+numpy>=1.21.0
+
+# Data manipulation and analysis
+pandas>=1.3.0
+
+# Visualization
+matplotlib>=3.4.0
+seaborn>=0.11.0
+
+# Statistical analysis and optimization
+scipy>=1.7.0
+
+# Note: All packages are available via pip and PyPI
+# Tested with Python 3.9, 3.10, 3.11, and 3.12
