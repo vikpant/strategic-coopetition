@@ -1,0 +1,119 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "coopetition-gym"
+version = "0.2.0"
+description = "Multi-agent RL environments for strategic coopetition with PettingZoo support"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "Vik Pant", email = "vik.pant@utoronto.ca"},
+    {name = "Eric Yu", email = "eric.yu@utoronto.ca"},
+]
+maintainers = [
+    {name = "Vik Pant", email = "vik.pant@utoronto.ca"},
+]
+keywords = [
+    "reinforcement-learning",
+    "multi-agent",
+    "game-theory",
+    "coopetition",
+    "gymnasium",
+    "pettingzoo",
+    "trust-dynamics",
+    "strategic-interaction",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Games/Entertainment :: Simulation",
+]
+requires-python = ">=3.9"
+dependencies = [
+    "gymnasium>=0.29.0",
+    "pettingzoo>=1.24.0",
+    "numpy>=1.21.0",
+    "scipy>=1.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "mypy>=1.0.0",
+    "flake8>=6.0.0",
+]
+viz = [
+    "matplotlib>=3.5.0",
+    "seaborn>=0.12.0",
+]
+rl = [
+    "stable-baselines3>=2.0.0",
+    "torch>=2.0.0",
+]
+all = [
+    "coopetition-gym[dev,viz,rl]",
+]
+
+[project.urls]
+Homepage = "https://github.com/vikpant/coopetition-gym"
+Documentation = "https://coopetition-gym.readthedocs.io"
+Repository = "https://github.com/vikpant/coopetition-gym.git"
+Issues = "https://github.com/vikpant/coopetition-gym/issues"
+
+[project.entry-points."gymnasium.envs"]
+__root__ = "coopetition_gym:_register_gymnasium_envs"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["coopetition_gym*"]
+
+[tool.setuptools.package-data]
+coopetition_gym = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
+
+[tool.black]
+line-length = 88
+target-version = ["py39", "py310", "py311", "py312"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 88
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+
+[tool.coverage.run]
+source = ["coopetition_gym"]
+omit = ["*/tests/*"]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+]
