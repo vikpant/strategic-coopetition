@@ -300,4 +300,4 @@ CooperativeNegotiation-v0 is suitable for studying:
 
 1. Crawford, V.P. & Sobel, J. (1982). Strategic Information Transmission. Econometrica.
 2. Raiffa, H. (1982). The Art and Science of Negotiation. Harvard University Press.
-3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics. arXiv:2510.24909
+3. Pant, V. & Yu, E. (2025). [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/abs/2510.24909). arXiv:2510.24909
