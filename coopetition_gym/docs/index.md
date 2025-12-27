@@ -13,8 +13,8 @@
 
 **Coopetition-Gym** is a Python research library providing multi-agent reinforcement learning environments for studying *coopetitive dynamics*—scenarios where agents must simultaneously cooperate and compete. The library implements mathematical frameworks from published research:
 
-- **TR-1**: Strategic Value Creation in Coopetitive Partnerships ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802))
-- **TR-2**: Trust Dynamics in Strategic Alliances ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909))
+- **TR-1**: Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802))
+- **TR-2**: Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909))
 
 ### Key Features
 
@@ -300,14 +300,14 @@ If you use Coopetition-Gym in your research, please cite:
 }
 
 @article{pant2025tr1,
-  title = {Strategic Value Creation in Coopetitive Partnerships},
+  title = {Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity},
   author = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2510.18802},
   year = {2025}
 }
 
 @article{pant2025tr2,
-  title = {Trust Dynamics in Strategic Alliances},
+  title = {Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics},
   author = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2510.24909},
   year = {2025}

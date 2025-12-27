@@ -310,4 +310,4 @@ DynamicPartnerSelection-v0 is suitable for studying:
 
 1. Resnick, P. & Zeckhauser, R. (2002). Trust Among Strangers in Internet Transactions. Advances in Applied Microeconomics.
 2. Dellarocas, C. (2003). The Digitization of Word of Mouth. Management Science.
-3. Pant, V. & Yu, E. (2025). Trust Dynamics in Strategic Alliances. arXiv:2510.24909
+3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics. arXiv:2510.24909
