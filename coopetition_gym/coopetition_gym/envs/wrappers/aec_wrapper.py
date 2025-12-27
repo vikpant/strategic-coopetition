@@ -92,22 +92,22 @@ class CoopetitionAECEnv(AECEnv):
         # Initialize base env to compute observation sizes
         base_env._init_state(seed=0)
         
-        # Build spaces
-        self._observation_spaces = {}
-        self._action_spaces = {}
-        
+        # Build spaces (public attributes required by PettingZoo API)
+        self.observation_spaces = {}
+        self.action_spaces = {}
+
         # Extra dimension for revealed actions in sequential mode
         base_obs_sample = base_env.get_observation_for(self.possible_agents[0])
         base_obs_len = len(base_obs_sample)
         extra_dim = len(self.possible_agents)  # Revealed actions
-        
+
         for i, agent in enumerate(self.possible_agents):
-            self._observation_spaces[agent] = spaces.Box(
+            self.observation_spaces[agent] = spaces.Box(
                 low=-np.inf, high=np.inf,
                 shape=(base_obs_len + extra_dim,),
                 dtype=np.float32
             )
-            self._action_spaces[agent] = spaces.Box(
+            self.action_spaces[agent] = spaces.Box(
                 low=0.0,
                 high=float(base_env.endowments[i]),
                 shape=(1,),
@@ -248,13 +248,23 @@ class CoopetitionAECEnv(AECEnv):
             np.array(revealed, dtype=np.float32)
         ]).astype(np.float32)
     
+    @property
+    def num_agents(self) -> int:
+        """Return the number of currently active agents."""
+        return len(self.agents)
+
+    @property
+    def max_num_agents(self) -> int:
+        """Return the maximum number of agents."""
+        return len(self.possible_agents)
+
     def observation_space(self, agent: str) -> spaces.Space:
         """Get observation space for specific agent."""
-        return self._observation_spaces[agent]
-    
+        return self.observation_spaces[agent]
+
     def action_space(self, agent: str) -> spaces.Space:
         """Get action space for specific agent."""
-        return self._action_spaces[agent]
+        return self.action_spaces[agent]
     
     def render(self) -> Optional[str]:
         """Render current state."""
