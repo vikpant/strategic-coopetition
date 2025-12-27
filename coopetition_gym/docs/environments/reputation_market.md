@@ -330,4 +330,4 @@ With more agents:
 
 1. Shapiro, C. (1983). Premiums for High Quality Products as Returns to Reputations. Quarterly Journal of Economics.
 2. Tadelis, S. (1999). What's in a Name? Reputation as a Tradeable Asset. American Economic Review.
-3. Pant, V. & Yu, E. (2025). Trust Dynamics in Strategic Alliances. arXiv:2510.24909
+3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics. arXiv:2510.24909
