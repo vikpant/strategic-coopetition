@@ -291,4 +291,4 @@ RecoveryRace-v0 is suitable for studying:
 
 1. Kim, P.H., Ferrin, D.L., Cooper, C.D., & Dirks, K.T. (2004). Removing the Shadow of Suspicion. Journal of Applied Psychology.
 2. Lewicki, R.J. & Bunker, B.B. (1996). Developing and Maintaining Trust in Work Relationships. Trust in Organizations.
-3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics. arXiv:2510.24909
+3. Pant, V. & Yu, E. (2025). [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/abs/2510.24909). arXiv:2510.24909

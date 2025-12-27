@@ -332,6 +332,6 @@ RenaultNissan-v0 is suitable for studying:
 
 ## References
 
-1. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics. arXiv:2510.24909
+1. Pant, V. & Yu, E. (2025). [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/abs/2510.24909). arXiv:2510.24909
 2. Segrestin, B. (2005). Partnering to Explore: The Renault–Nissan Alliance. Research Policy.
 3. Freyssenet, M. (2009). The Second Automobile Revolution. Palgrave Macmillan.

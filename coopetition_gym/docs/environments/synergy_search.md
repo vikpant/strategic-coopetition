@@ -330,4 +330,4 @@ SynergySearch-v0 is suitable for studying:
 
 1. Ghavamzadeh, M. & Engel, Y. (2007). Bayesian Policy Gradient Algorithms. NeurIPS.
 2. Duff, M.O. (2002). Optimal Learning: Computational Procedures for Bayes-Adaptive MDPs. UMass Dissertation.
-3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity. arXiv:2510.18802
+3. Pant, V. & Yu, E. (2025). [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802). arXiv:2510.18802

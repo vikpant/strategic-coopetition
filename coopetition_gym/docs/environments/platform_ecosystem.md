@@ -372,4 +372,4 @@ PlatformEcosystem-v0 is suitable for studying:
 
 1. Rochet, J.C. & Tirole, J. (2003). Platform Competition in Two-Sided Markets. JEEA.
 2. Parker, G.G. & Van Alstyne, M.W. (2005). Two-Sided Network Effects. Management Science.
-3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity. arXiv:2510.18802
+3. Pant, V. & Yu, E. (2025). [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802). arXiv:2510.18802

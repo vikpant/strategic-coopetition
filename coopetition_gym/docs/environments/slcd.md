@@ -328,6 +328,6 @@ SLCD-v0 is the recommended environment for:
 
 ## References
 
-1. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity. arXiv:2510.18802
+1. Pant, V. & Yu, E. (2025). [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802). arXiv:2510.18802
 2. Samsung Electronics & Sony Corporation. (2004). S-LCD Joint Venture Announcement.
 3. Ritala, P. & Hurmelinna-Laukkanen, P. (2009). What's in it for me? Creating and appropriating value in innovation-related coopetition. Technovation.

@@ -13,8 +13,8 @@
 
 **Coopetition-Gym** is a Python research library providing multi-agent reinforcement learning environments for studying *coopetitive dynamics*—scenarios where agents must simultaneously cooperate and compete. The library implements mathematical frameworks from published research:
 
-- **TR-1**: Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802))
-- **TR-2**: Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909))
+- **TR-1**: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802)
+- **TR-2**: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/abs/2510.24909)
 
 ### Key Features
 
