@@ -21,7 +21,12 @@ License: MIT
 from __future__ import annotations
 
 from pettingzoo import AECEnv
-from pettingzoo.utils.agent_selector import AgentSelector
+# PettingZoo 1.25.0+ renamed AgentSelector to agent_selector (snake_case)
+# Support both for backward and forward compatibility
+try:
+    from pettingzoo.utils.agent_selector import agent_selector
+except ImportError:
+    from pettingzoo.utils.agent_selector import AgentSelector as agent_selector
 from gymnasium import spaces
 import numpy as np
 from numpy.typing import NDArray
@@ -74,7 +79,7 @@ class CoopetitionAECEnv(AECEnv):
         self.agents = self.possible_agents.copy()
         
         # Turn management
-        self._agent_selector: Optional[AgentSelector] = None
+        self._agent_selector: Optional[agent_selector] = None
         self.agent_selection: Optional[str] = None
         
         # Accumulate actions within round
@@ -129,7 +134,7 @@ class CoopetitionAECEnv(AECEnv):
         self.base_env._init_state(seed=seed)
         
         self.agents = self.possible_agents.copy()
-        self._agent_selector = AgentSelector(self.agents)
+        self._agent_selector = agent_selector(self.agents)
         self.agent_selection = self._agent_selector.next()
         
         self._current_round_actions = {}
@@ -220,7 +225,7 @@ class CoopetitionAECEnv(AECEnv):
         
         # Update selector and advance
         if self.agents:
-            self._agent_selector = AgentSelector(self.agents)
+            self._agent_selector = agent_selector(self.agents)
             self.agent_selection = self._agent_selector.next()
     
     def observe(self, agent: str) -> NDArray:
