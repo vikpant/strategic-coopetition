@@ -140,6 +140,157 @@ The hidden γ parameter creates an **information asymmetry**:
 
 ---
 
+## Equilibrium Analysis
+
+### Conditional Equilibria
+
+SynergySearch-v0 has different equilibria depending on the hidden γ:
+
+**High-Synergy Equilibrium (γ > 0.60)**:
+
+| Agent | Equilibrium Action | Rationale |
+|-------|-------------------|-----------|
+| Both | a* ≈ 75 | High complementarity bonus justifies investment |
+
+Total welfare: ~220 (significantly higher than baseline)
+
+**Low-Synergy Equilibrium (γ ≤ 0.60)**:
+
+| Agent | Equilibrium Action | Rationale |
+|-------|-------------------|-----------|
+| Both | a* ≈ 45 | Limited synergy reduces cooperation incentive |
+
+Total welfare: ~165 (moderate improvement over NE)
+
+### Bayesian Nash Equilibrium
+
+Given uncertainty about γ, agents play a Bayesian game:
+
+**Prior**: P(γ) = Uniform(0.20, 0.90)
+**Threshold**: γ* = 0.60 (high vs. low synergy)
+**Prior probability high synergy**: P(γ > 0.60) ≈ 43%
+
+**Bayesian NE without Learning**:
+
+Expected payoff-maximizing action given prior:
+```
+a_BNE = 0.43 × 75 + 0.57 × 45 ≈ 58
+```
+
+This "compromise" strategy is suboptimal for both γ types but hedges uncertainty.
+
+### Value of Information
+
+The gap between informed and uninformed strategies:
+
+| Strategy | High γ Payoff | Low γ Payoff | Expected |
+|----------|--------------|--------------|----------|
+| Optimal (informed) | 220 | 165 | 189 |
+| BNE (uninformed) | 195 | 155 | 172 |
+| Conservative (a=45) | 175 | 165 | 169 |
+| Aggressive (a=75) | 220 | 140 | 174 |
+
+**Value of Perfect Information**: VOI = 189 - 172 = 17 (≈10% improvement)
+
+### Exploration-Exploitation Tradeoff
+
+**Exploration Value**:
+
+Probing actions (e.g., trying high cooperation) provide information:
+- Reward from action reveals γ estimate
+- Early exploration enables later exploitation
+
+**Exploration Cost**:
+- Suboptimal immediate payoff during probing
+- Trust erosion if probing involves defection-like actions
+
+**Optimal Exploration Strategy**:
+
+Given T = 100 horizon:
+```
+Exploration phase: ~3-5 steps (vary actions to estimate γ)
+Exploitation phase: ~95-97 steps (play conditional equilibrium)
+```
+
+The short exploration phase is optimal because:
+- γ can be estimated from few observations
+- Long horizon makes exploitation valuable
+
+### Information Revelation Dynamics
+
+**Reward Signal Quality**:
+
+| Action Profile | Information Content |
+|----------------|---------------------|
+| (30, 30) | Low - baseline returns similar for all γ |
+| (50, 50) | Medium - some differentiation |
+| (70, 70) | High - large γ-dependent bonus |
+| Mixed (30, 70) | Medium - asymmetric information |
+
+**Optimal Probing**:
+- Use high cooperation probes (a ≈ 70-80)
+- Observe reward magnitude
+- Compare to expected value under γ hypotheses
+
+### Posterior Update Example
+
+After observing reward r from action profile (70, 70):
+
+```
+P(γ | r) ∝ P(r | γ) × P(γ)
+```
+
+Expected rewards under different γ:
+- γ = 0.30: E[r] ≈ 85
+- γ = 0.60: E[r] ≈ 100
+- γ = 0.90: E[r] ≈ 115
+
+Observing r = 110 strongly suggests high γ.
+
+### Theoretical Connections
+
+**Thompson Sampling Analogy**:
+
+The environment structure matches Thompson Sampling problems:
+- Unknown parameter (γ) with prior
+- Actions provide information
+- Optimal policy balances exploration/exploitation
+
+**Bayes-Adaptive MDP Structure**:
+
+State space augmented with belief:
+```
+s' = (physical_state, belief_over_γ)
+```
+
+Optimal policy maps beliefs to actions, updating beliefs after each observation.
+
+### Multi-Agent Learning Challenges
+
+**Coordinated Exploration**:
+- Both agents should probe similarly for consistent signals
+- Miscoordination during probing reduces information quality
+- Implicit coordination through action matching
+
+**Belief Alignment**:
+- Agents may form different γ estimates
+- Misaligned beliefs lead to coordination failure
+- Communication (if available) would improve outcomes
+
+### MARL Algorithm Implications
+
+| Algorithm | Exploration Handling | Expected Performance |
+|-----------|---------------------|---------------------|
+| PPO | Entropy bonus | May under-explore |
+| SAC | Maximum entropy | Better exploration |
+| Meta-RL (MAML) | Fast adaptation | Good for γ variation |
+| Bayesian RL | Belief tracking | Optimal structure |
+| RND/ICM | Curiosity bonus | Helps early exploration |
+
+**Recommended**: Meta-learning or Bayesian approaches that explicitly model uncertainty.
+
+---
+
 ## Environment Specification
 
 ### Basic Usage
