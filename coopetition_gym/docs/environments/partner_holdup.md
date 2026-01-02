@@ -15,6 +15,105 @@ The key challenge is understanding how power asymmetry affects cooperation dynam
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game (2-player, general-sum, asymmetric) |
+| **Cooperation Structure** | Mixed-Motive with power asymmetry (exploitation risk) |
+| **Observability** | Full (all state variables observable to both agents) |
+| **Communication** | Implicit (through actions only) |
+| **Agent Symmetry** | Asymmetric (different endowments: 120 vs 80, different dependencies) |
+| **Reward Structure** | Mixed with asymmetric interdependence (D_strong=0.35, D_weak=0.85) |
+| **Action Space** | Continuous, agent-specific: A_0=[0,120], A_1=[0,80] |
+| **State Dynamics** | Deterministic |
+| **Horizon** | Finite, T=100 (early termination if weak partner's trust < 0.10) |
+| **Canonical Comparison** | Asymmetric Prisoner's Dilemma; cf. principal-agent models, Stackelberg games with endogenous commitment |
+
+---
+
+## Formal Specification
+
+This environment is formalized as a 2-player asymmetric Markov Game **M** = (**N**, **S**, {**A**_i}, **P**, {**R**_i}, T).
+
+### Agents
+**N** = {Strong, Weak} with heterogeneous capabilities:
+
+| Agent | Index | Endowment e_i | Baseline b_i | Bargaining α_i |
+|-------|-------|---------------|--------------|----------------|
+| Strong | 0 | 120.0 | 42.0 (35%) | 0.60 |
+| Weak | 1 | 80.0 | 28.0 (35%) | 0.40 |
+
+### State Space
+**S** ⊆ ℝ¹⁷ with identical structure to TrustDilemma-v0:
+
+| Component | Dimension | Description |
+|-----------|-----------|-------------|
+| Actions a | 2 | Previous cooperation levels |
+| Trust τ | 4 | Pairwise trust matrix (flattened) |
+| Reputation R | 4 | Reputation damage matrix |
+| Interdependence D | 4 | Dependency matrix (fixed) |
+| Metadata | 3 | Timestep, auxiliary |
+
+### Action Space
+Agent-specific continuous action spaces:
+
+- **Strong**: **A**_0 = [0, 120] ⊂ ℝ
+- **Weak**: **A**_1 = [0, 80] ⊂ ℝ
+
+### Interdependence Matrix (Critical Asymmetry)
+
+```
+D = | 0.00  0.35 |   (Strong depends moderately on Weak)
+    | 0.85  0.00 |   (Weak depends heavily on Strong)
+```
+
+This creates **vulnerability asymmetry**: Weak's utility is strongly coupled to Strong's behavior, but not vice versa.
+
+### Transition Dynamics
+
+Trust dynamics follow TR-2 with amplified asymmetry:
+
+**Trust Update**:
+```
+τ_ij(t+1) = clip(τ_ij(t) + Δτ_ij · (1 + ξ · D_ij), 0, Θ_ij)
+```
+
+where ξ = 0.70 amplifies trust sensitivity based on dependency.
+
+**Critical Threshold**: τ_weak→strong < 0.10 triggers termination (weak partner exits).
+
+### Reward Function
+
+Integrated utility with asymmetric weights:
+
+```
+r_i(s, a) = π_i(a) + Σ_j D_ij · π_j(a)
+```
+
+**Strong's reward**: Includes only 35% of Weak's payoff
+**Weak's reward**: Includes 85% of Strong's payoff (highly coupled)
+
+Private payoffs:
+```
+π_Strong = (120 - a_0) + 20·ln(1+a_0) + 0.60·G(a)
+π_Weak   = (80 - a_1) + 20·ln(1+a_1) + 0.40·G(a)
+```
+
+### Episode Structure
+
+- **Horizon**: T = 100 steps
+- **Truncation**: t ≥ T
+- **Termination**: τ[1,0] < 0.10 (weak partner exits due to exploitation)
+- **Discount**: γ = 1.0
+
+### Initial State
+- τ_ij(0) = 0.55 (moderate initial trust)
+- R_ij(0) = 0.00
+- D fixed as above
+
+---
+
 ## Game-Theoretic Background
 
 ### The Hold-Up Problem

@@ -17,6 +17,86 @@ The environment models the 2004-2012 joint venture where Samsung and Sony collab
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game (2-player, general-sum) with empirically validated parameters |
+| **Cooperation Structure** | Mixed-Motive coopetition (cooperation on panels, competition on TVs) |
+| **Observability** | Full |
+| **Communication** | Implicit (through actions only) |
+| **Agent Symmetry** | Near-symmetric (Samsung slight technology advantage: α=0.55 vs 0.45) |
+| **Reward Structure** | Mixed with validated interdependence |
+| **Action Space** | Continuous: A_i = [0, 100] |
+| **State Dynamics** | Deterministic |
+| **Horizon** | Finite, T = 100 |
+| **Canonical Comparison** | Empirically calibrated coopetition; cf. Ritala & Hurmelinna-Laukkanen (2009) |
+
+**Validation Status**: Parameters derived from TR-1 §8.3, achieving 58/60 accuracy against historical S-LCD data (2004-2012).
+
+---
+
+## Formal Specification
+
+This environment is formalized as a 2-player Markov Game with **empirically validated parameters** from the Samsung-Sony S-LCD joint venture.
+
+### Agents
+**N** = {Samsung, Sony}
+
+| Agent | Index | Endowment | Baseline | Bargaining α | Role |
+|-------|-------|-----------|----------|--------------|------|
+| Samsung | 0 | 100.0 | 30.0 | 0.55 | Technology provider |
+| Sony | 1 | 100.0 | 30.0 | 0.45 | Market/brand provider |
+
+Samsung's slight bargaining advantage (55% vs 45%) reflects technology control.
+
+### State Space
+**S** ⊆ ℝ¹⁷ (standard dyadic structure)
+
+### Action Space
+**A**_i = [0, 100] ⊂ ℝ representing investment in joint venture operations.
+
+### Validated Trust Parameters (TR-1 §8.3)
+
+| Parameter | Symbol | Value | Validation Source |
+|-----------|--------|-------|-------------------|
+| Trust Building Rate | λ⁺ | 0.08 | Historical collaboration phases |
+| Trust Erosion Rate | λ⁻ | 0.28 | Tension escalation 2007-2012 |
+| Reputation Damage | μ_R | 0.50 | Breach response analysis |
+| Reputation Decay | δ_R | 0.02 | Long-term relationship patterns |
+| Interdependence Amp. | ξ | 0.45 | JV structure analysis |
+| Signal Sensitivity | κ | 1.0 | Investment-response calibration |
+| Initial Trust | τ₀ | 0.65 | Strong initial relationship (2004) |
+
+### Validated Value Function (TR-1)
+
+| Parameter | Value | Interpretation |
+|-----------|-------|----------------|
+| θ | 20.0 | Logarithmic scale (JV value creation) |
+| γ | 0.65 | Validated complementarity (panel synergies) |
+
+### Reward Function
+
+```
+r_Samsung = π_Samsung + D_Samsung→Sony · π_Sony
+r_Sony    = π_Sony    + D_Sony→Samsung · π_Samsung
+```
+
+Interdependence calibrated to historical mutual dependence patterns.
+
+### Episode Structure
+
+- **Horizon**: T = 100 steps
+- **Truncation**: t ≥ T
+- **Termination**: mean(τ) < 0.05 (relationship breakdown)
+- **Discount**: γ = 1.0
+
+### Initial State
+- τ_ij(0) = 0.65 (strong initial trust, reflecting 2004 optimism)
+- R_ij(0) = 0.00 (clean slate)
+
+---
+
 ## Historical Background
 
 ### The S-LCD Joint Venture (2004-2012)

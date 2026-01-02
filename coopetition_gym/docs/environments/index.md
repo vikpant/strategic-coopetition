@@ -21,6 +21,71 @@ This section provides detailed documentation for all 10 environments in Coopetit
 
 ---
 
+## MARL Classification Summary
+
+Quick reference for environment selection based on game-theoretic and MARL properties.
+
+### Game Type and Structure
+
+| Environment | Game Type | Cooperation | Observability | Symmetry |
+|-------------|-----------|-------------|---------------|----------|
+| TrustDilemma-v0 | Markov Game | Mixed-Motive | Full | Symmetric |
+| PartnerHoldUp-v0 | Markov Game | Mixed-Motive (power asymmetry) | Full | Asymmetric |
+| PlatformEcosystem-v0 | Markov Game / Mean-Field | Hub-spoke topology | Full | Heterogeneous |
+| DynamicPartnerSelection-v0 | Markov Game / Mean-Field | Reputation externalities | Full | Symmetric |
+| RecoveryRace-v0 | Markov Game | Cooperative goal | Full | Symmetric |
+| SynergySearch-v0 | Bayes-Adaptive MG | Unknown synergy | **Partial** (hidden γ) | Symmetric |
+| SLCD-v0 | Markov Game | Mixed-Motive coopetition | Full | Near-symmetric |
+| RenaultNissan-v0 | Markov Game | Phase-dependent | Full | Asymmetric |
+| CooperativeNegotiation-v0 | Markov Game + Contracts | Enforceable agreements | Full | Symmetric |
+| ReputationMarket-v0 | Markov Game + Tiers | Reputation competition | Full | Symmetric |
+
+### Action and State Spaces
+
+| Environment | Action Space | State Dim | Horizon | Early Termination |
+|-------------|--------------|-----------|---------|-------------------|
+| TrustDilemma-v0 | Continuous [0,100]² | 17 | T=100 | Trust collapse |
+| PartnerHoldUp-v0 | Continuous [0,120]×[0,80] | 17 | T=100 | Weak partner exit |
+| PlatformEcosystem-v0 | Continuous [0,150]×[0,80]ᴺ | (N+1)+3(N+1)²+1 | T=100 | Ecosystem death |
+| DynamicPartnerSelection-v0 | Continuous [0,100]ᴺ | N+3N²+1+N | T=50 | None |
+| RecoveryRace-v0 | Continuous [0,100]² | 17 | T=150 | Success/Collapse |
+| SynergySearch-v0 | Continuous [0,100]² | 17 (or 18) | T=100 | Trust collapse |
+| SLCD-v0 | Continuous [0,100]² | 17 | T=100 | Relationship breakdown |
+| RenaultNissan-v0 | Continuous [0,90]×[0,100] | 17 | T=100 | Alliance dissolution |
+| CooperativeNegotiation-v0 | Continuous [0,100]² | 18 | T=100 | Trust collapse |
+| ReputationMarket-v0 | Continuous [0,100]ᴺ | N+3N²+1+N | T=100 | None |
+
+### Canonical Literature Comparisons
+
+| Environment | Related Benchmarks & Literature |
+|-------------|-------------------------------|
+| TrustDilemma-v0 | Continuous IPD; Lerer & Peysakhovich (2017) |
+| PartnerHoldUp-v0 | Principal-Agent; Stackelberg games |
+| PlatformEcosystem-v0 | Mogul (ICML 2020); Multi-Principal Multi-Agent |
+| DynamicPartnerSelection-v0 | Resnick & Zeckhauser (2002); Rating systems |
+| RecoveryRace-v0 | Kim et al. (2004) trust repair |
+| SynergySearch-v0 | Bayes-Adaptive MDP; Duff (2002) |
+| SLCD-v0 | Ritala & Hurmelinna-Laukkanen (2009) |
+| RenaultNissan-v0 | Segrestin (2005) "Partnering to Explore" |
+| CooperativeNegotiation-v0 | Crawford & Sobel (1982); Raiffa (1982) |
+| ReputationMarket-v0 | Shapiro (1983); Tadelis (1999) |
+
+### Special Features
+
+| Environment | Distinguishing Mechanism |
+|-------------|------------------------|
+| PartnerHoldUp-v0 | Asymmetric interdependence (D=0.35 vs D=0.85) |
+| PlatformEcosystem-v0 | Hub-spoke topology, ecosystem collapse |
+| DynamicPartnerSelection-v0 | Public reputation signals |
+| RecoveryRace-v0 | Trust ceiling constraint (Θ = 1 - R) |
+| SynergySearch-v0 | Hidden complementarity parameter γ |
+| SLCD-v0 | Empirically validated (58/60 accuracy) |
+| RenaultNissan-v0 | Four configurable historical phases |
+| CooperativeNegotiation-v0 | Endogenous agreement formation, breach penalties |
+| ReputationMarket-v0 | Four-tier reward multipliers (0.40× to 1.30×) |
+
+---
+
 ## Categories
 
 ### Dyadic Environments (2-Agent)

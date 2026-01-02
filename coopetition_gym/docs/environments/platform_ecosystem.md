@@ -15,6 +15,117 @@ The platform must balance **short-term revenue extraction** against **long-term 
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game (N+1 players, general-sum); Mean-Field approximation applicable for large N |
+| **Cooperation Structure** | Mixed-Motive with hub-spoke topology (platform vs developers, no inter-developer competition) |
+| **Observability** | Full (all agents observe complete state) |
+| **Communication** | Implicit (through actions only) |
+| **Agent Symmetry** | Heterogeneous (1 platform + N homogeneous developers) |
+| **Reward Structure** | Mixed with hub-spoke interdependence (developers: D=0.75 on platform; platform: D=0.25 per developer) |
+| **Action Space** | Continuous: A_platform=[0,150], A_dev=[0,80] |
+| **State Dynamics** | Deterministic |
+| **Horizon** | Finite, T=100 (early termination on ecosystem collapse) |
+| **Canonical Comparison** | Multi-agent platform games; cf. Mogul (ICML 2020), Multi-Principal Multi-Agent problems |
+
+---
+
+## Formal Specification
+
+This environment is formalized as an (N+1)-player Markov Game with hub-spoke structure.
+
+### Agents
+**N** = {Platform} ∪ {Dev_1, ..., Dev_N} where N = n_developers (default 4)
+
+| Role | Count | Endowment | Baseline | Bargaining α |
+|------|-------|-----------|----------|--------------|
+| Platform | 1 | 150.0 | 52.5 (35%) | 0.30 |
+| Developer | N | 80.0 each | 28.0 (35%) | 0.70/N each |
+
+### State Space
+**S** ⊆ ℝ^d where d = (N+1) + 3(N+1)² + 1
+
+| Component | Dimension | Description |
+|-----------|-----------|-------------|
+| Actions | N+1 | Previous cooperation levels |
+| Trust Matrix | (N+1)² | Pairwise trust τ_ij |
+| Reputation Matrix | (N+1)² | Reputation damage R_ij |
+| Interdependence | (N+1)² | Hub-spoke dependencies D_ij |
+| Timestep | 1 | Normalized t/T |
+
+**Dimension formula**: d = (N+1) + 3(N+1)² + 1
+
+| n_developers | Total Agents | State Dim |
+|--------------|--------------|-----------|
+| 4 | 5 | 81 |
+| 8 | 9 | 253 |
+| 16 | 17 | 885 |
+
+### Action Space
+- **Platform**: **A**_0 = [0, 150] ⊂ ℝ
+- **Each Developer**: **A**_i = [0, 80] ⊂ ℝ for i ∈ {1, ..., N}
+
+### Interdependence Matrix (Hub-Spoke Topology)
+
+```
+D = | 0.00   0.25   0.25   ...  0.25  |   ← Platform row (depends equally on all devs)
+    | 0.75   0.00   0.00   ...  0.00  |   ← Dev 1 (depends heavily on platform)
+    | 0.75   0.00   0.00   ...  0.00  |   ← Dev 2
+    |  ⋮      ⋮      ⋮     ⋱    ⋮    |
+    | 0.75   0.00   0.00   ...  0.00  |   ← Dev N
+```
+
+Key properties:
+- **Platform→Developers**: D[0,j] = 0.25 for all j>0 (moderate, distributed dependency)
+- **Developer→Platform**: D[i,0] = 0.75 for all i>0 (high, concentrated dependency)
+- **Developer→Developer**: D[i,j] = 0.00 for i,j>0 (no direct dependencies)
+
+### Transition Dynamics
+
+Trust dynamics follow TR-2 with ecosystem-specific parameters:
+
+**Trust Update**:
+```
+τ_ij(t+1) = clip(τ_ij(t) + Δτ_ij, 0, Θ_ij)
+```
+
+**Critical Ecosystem Metric**:
+```
+avg_dev_trust = (1/N) · Σᵢ τ[i,0]   (developers' trust in platform)
+```
+
+If avg_dev_trust < 0.15, ecosystem collapses (termination).
+
+### Reward Function
+
+**Platform reward**:
+```
+r_platform = π_platform + 0.25 · Σⱼ π_dev_j
+```
+
+**Developer i reward**:
+```
+r_dev_i = π_dev_i + 0.75 · π_platform
+```
+
+where private payoffs use θ = 25.0 and γ = 0.75 (strong network effects).
+
+### Episode Structure
+
+- **Horizon**: T = 100 steps
+- **Truncation**: t ≥ T
+- **Termination**: avg(τ[1:,0]) < 0.15 (ecosystem death)
+- **Discount**: γ = 1.0
+
+### Initial State
+- τ_ij(0) = 0.60 (baseline ecosystem trust)
+- R_ij(0) = 0.00
+- D fixed as hub-spoke matrix above
+
+---
+
 ## Game-Theoretic Background
 
 ### Platform Economics
