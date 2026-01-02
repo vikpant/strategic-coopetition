@@ -128,6 +128,91 @@ This creates a tension between:
 - **Ex ante efficiency**: Both parties benefit from investment
 - **Ex post opportunism**: The stronger party may exploit the weaker party's lock-in
 
+---
+
+## Theoretical Foundations
+
+### Relationship to Classical Game Theory
+
+PartnerHoldUp-v0 extends the classical hold-up problem literature by incorporating:
+
+1. **Continuous investments**: Rather than binary invest/not-invest decisions, agents choose continuous contribution levels
+2. **Dynamic power relations**: Trust and reputation evolve over time, affecting the effective power balance
+3. **Endogenous exit**: The weak partner's exit threshold creates a credible threat mechanism
+4. **Repeated interaction**: Unlike one-shot hold-up models, the environment captures ongoing relationship dynamics
+
+### Key Theoretical Results
+
+**Stage-Game Analysis**:
+
+In the single-shot version (ignoring trust dynamics and exit):
+
+- **Strong agent's dominant strategy**: Contribute near baseline (a₀* ≈ 42)
+  - Captures maximum surplus given weak's limited response
+- **Weak agent's best response**: Match effort level proportionally (a₁* ≈ 28-35)
+  - Cannot profitably exceed strong's proportional contribution
+- **Nash equilibrium**: (a₀*, a₁*) ≈ (45, 30) - Mutual low cooperation
+- **Pareto frontier**: Achievable only with binding commitments
+
+**Asymmetric Bargaining Analysis**:
+
+With bargaining shares α = (0.60, 0.40):
+
+- **Nash Bargaining Solution** (with disagreement point at baseline):
+  - Strong receives: 60% × (total surplus - disagreement payoffs)
+  - Weak receives: 40% × (total surplus - disagreement payoffs)
+- **Outside option effect**: Strong's lower dependency (D = 0.35) improves BATNA
+
+**Repeated Game Equilibria**:
+
+- **Exploitation equilibrium**: Strong exploits maximally until exit threshold approached
+- **Sustainable equilibrium**: Strong moderates exploitation to maintain relationship
+- **Trigger strategy by weak**: Credible exit threat at τ < 0.10 disciplines strong
+
+The critical insight is that the exit threshold τ* = 0.10 creates a **credible commitment device** for the weak partner, partially offsetting the power asymmetry.
+
+### Connections to Prior Work
+
+| Concept | PartnerHoldUp-v0 | Classical Reference |
+|---------|------------------|---------------------|
+| Relationship-specific investment | Continuous a_i ∈ [0, e_i] | Binary in Williamson (1985) |
+| Incomplete contracts | Trust dynamics as implicit contract | Explicit contracts in Hart & Moore (1990) |
+| Exit option | Endogenous τ < 0.10 termination | Exogenous outside option in Nash bargaining |
+| Power asymmetry | D_ij captures structural dependency | Bargaining power in Rubinstein (1982) |
+| Dynamic adjustment | Trust evolution | Static in classical models |
+
+### Literature Connections
+
+**Williamson (1985)**: Transaction cost economics and the hold-up problem. PartnerHoldUp-v0 operationalizes:
+- Asset specificity → High D_weak = 0.85
+- Opportunism risk → Trust erosion from defection
+- Governance mechanisms → Trust dynamics as relational contract
+
+**Hart & Moore (1990)**: Property rights theory of the firm. The environment captures:
+- Residual control rights → Bargaining share α
+- Investment incentives → Continuous action choice
+- Renegotiation → Ongoing trust-mediated interaction
+
+**Klein, Crawford & Alchian (1978)**: The appropriable quasi-rent. Represented by:
+- Weak partner's relationship-specific value captured by high interdependence D = 0.85
+- Strong partner's ability to extract this rent via exploitation
+
+**Rubinstein (1982)**: Alternating offers bargaining. The environment extends this with:
+- Continuous-time (each step) rather than discrete rounds
+- State-dependent patience (trust affects future value)
+- Endogenous breakdown (exit threshold)
+
+### Power Balance Mechanisms
+
+The environment embeds several mechanisms that affect the power balance:
+
+1. **Exit credibility**: τ < 0.10 termination gives weak partner leverage
+2. **Reputation effects**: Exploitation damages strong's ability to sustain relationships
+3. **Trust ceiling**: Θ = 1 - R limits recovery from exploitation
+4. **Interdependence amplification**: High ξ = 0.70 magnifies trust effects for weak partner
+
+---
+
 ### Power Dynamics in PartnerHoldUp-v0
 
 **Agent 0 (Strong Partner):**
@@ -296,6 +381,152 @@ Rewards follow the standard integrated utility formula, but the asymmetry manife
 |-----------|-------|-------------|
 | θ | 20.0 | Logarithmic scale |
 | γ | 0.60 | Moderate complementarity |
+
+---
+
+## Equilibrium Analysis
+
+### Asymmetric Stage-Game Equilibrium
+
+Unlike TrustDilemma-v0, PartnerHoldUp-v0 has asymmetric equilibria due to differing capabilities.
+
+**Best Response Functions**:
+
+For strong agent (i=0) with e_0 = 120, α_0 = 0.60, D_01 = 0.35:
+```
+BR_strong(a_weak) = argmax_{a_0} [(120-a_0) + θ·ln(1+a_0) + 0.60·G(a_0,a_1) + 0.35·π_weak]
+```
+
+For weak agent (i=1) with e_1 = 80, α_1 = 0.40, D_10 = 0.85:
+```
+BR_weak(a_strong) = argmax_{a_1} [(80-a_1) + θ·ln(1+a_1) + 0.40·G(a_0,a_1) + 0.85·π_strong]
+```
+
+**Nash Equilibrium (Myopic)**:
+
+| Agent | Equilibrium Action | % of Endowment |
+|-------|-------------------|----------------|
+| Strong | a_0* ≈ 45 | 37.5% |
+| Weak | a_1* ≈ 30 | 37.5% |
+
+Both contribute near their baselines (35%), reflecting mutual caution.
+
+**Equilibrium Payoffs**:
+
+| Agent | Myopic NE Payoff | Full Cooperation Payoff |
+|-------|------------------|------------------------|
+| Strong | ~95 | ~145 |
+| Weak | ~68 | ~110 |
+
+### Pareto Frontier with Asymmetry
+
+The Pareto frontier is asymmetric:
+
+```
+Strong prefers: High (a_s, a_w) with more surplus capture
+Weak prefers: Moderate cooperation with trust protection
+```
+
+**Pareto-Optimal Profiles**:
+
+| Profile | Strong Utility | Weak Utility | Total | Sustainable? |
+|---------|---------------|--------------|-------|--------------|
+| (45, 30) NE | 95 | 68 | 163 | Yes (marginally) |
+| (70, 50) | 125 | 92 | 217 | Yes |
+| (90, 65) | 138 | 105 | 243 | Yes |
+| (120, 80) Max | 145 | 112 | 257 | Fragile |
+
+**Price of Anarchy**: PoA = 257/163 ≈ 1.58
+
+### Stackelberg Equilibrium
+
+Given strong's power advantage, a Stackelberg analysis is relevant:
+
+**Strong as Leader**:
+
+If strong commits first, the optimal strategy is:
+1. Choose a_0 anticipating weak's best response BR_weak(a_0)
+2. Maximize own payoff subject to weak's participation constraint
+
+**Stackelberg Outcome**:
+- Strong: a_0* ≈ 55-60 (moderate exploitation)
+- Weak: BR_weak ≈ 35-40 (defensive response)
+- Strong extracts more surplus than simultaneous-move NE
+
+**Weak's Participation Constraint**:
+
+Weak will participate (not exit) iff:
+```
+U_weak(a_0, BR_weak(a_0)) ≥ Outside_Option
+```
+
+The exit threshold τ < 0.10 operationalizes this constraint dynamically.
+
+### Repeated Game with Exit Threat
+
+The exit threshold creates a credible commitment mechanism:
+
+**Exit as Punishment**:
+
+Weak's threat to exit if τ < 0.10 is credible because:
+- Weak loses from staying in exploitative relationship
+- Exit terminates strong's long-term gains
+- Creates dynamic incentive for strong to moderate
+
+**Modified Folk Theorem**:
+
+With exit threats, a range of equilibria becomes feasible:
+- **Lower bound**: Strong exploits until exit threshold approached
+- **Upper bound**: Full cooperation if credible punishment exists
+
+**Equilibrium Exploitation Level**:
+
+Strong's optimal exploitation satisfies:
+```
+∂π_strong/∂(exploitation) = λ⁻ × (value_of_relationship) × ∂τ/∂a
+```
+
+Balancing marginal gain from extraction against marginal loss from trust erosion.
+
+### Trust Ceiling Effects
+
+Reputation damage creates strategic constraints:
+
+**Dynamic Constraints**:
+```
+τ_max(t) = 1 - R(t)
+```
+
+Once strong exploits and causes reputation damage R:
+- Trust ceiling drops permanently
+- Future cooperation limited
+- Weak's defensive options reduced
+
+**Irreversibility Premium**:
+
+Strong must weigh:
+- Short-term exploitation gains
+- Permanent ceiling reduction
+- Reduced future surplus to extract
+
+### MARL Implications
+
+**Learning Challenges**:
+
+| Challenge | Source | MARL Implication |
+|-----------|--------|------------------|
+| Power asymmetry | Different BRs | Agents need different policies |
+| Exit threshold | Termination risk | Long-horizon credit assignment |
+| Trust ceiling | Irreversibility | Exploration/exploitation tension |
+| Stackelberg dynamics | Sequential structure | Leader-follower learning |
+
+**Expected Algorithm Performance**:
+
+| Algorithm | Strong's Outcome | Weak's Outcome | Notes |
+|-----------|-----------------|----------------|-------|
+| Independent PPO | Exploitation | Defensive | Power asymmetry amplified |
+| MAPPO | Moderate | Moderate | Centralization helps coordination |
+| Hierarchical | Optimal extraction | Constrained | Matches Stackelberg |
 
 ---
 

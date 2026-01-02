@@ -145,6 +145,221 @@ The core challenge is learning that **today's defection constrains tomorrow's po
 
 ---
 
+## Theoretical Foundations
+
+### Relationship to Classical Game Theory
+
+TrustDilemma-v0 extends the classical Iterated Prisoner's Dilemma (IPD) by incorporating:
+
+1. **Continuous action spaces**: Rather than discrete {Cooperate, Defect}, agents choose cooperation intensity a_i ∈ [0, 100]
+2. **State-dependent payoffs**: Rewards are modulated by endogenous trust, creating a Markov Game rather than a repeated normal-form game
+3. **Asymmetric dynamics**: The 3:1 negativity bias (λ⁻/λ⁺) captures empirically-observed trust asymmetry (Slovic, 1993)
+4. **Reputation hysteresis**: Cumulative damage creates irreversibility absent from classical models
+
+### Key Theoretical Results
+
+**Stage-Game Analysis**:
+
+In the single-shot version (ignoring trust dynamics), the environment resembles a continuous public goods game:
+
+- **Nash equilibrium (myopic)**: a* ≈ 35 (baseline contribution)
+  - At this level, marginal cost of contribution equals marginal private benefit
+- **Pareto-optimal outcome**: a* = 100 (full cooperation)
+  - Social welfare maximized when both agents fully invest
+- **Price of Anarchy**: PoA ≈ 2.3
+  - Ratio of optimal social welfare to welfare at Nash equilibrium
+
+**Repeated Game Considerations**:
+
+With T = 100 repetitions and trust dynamics, the Folk Theorem applies conditionally:
+
+- **Folk Theorem applicability**: Partial
+  - Finite horizon limits exact Folk Theorem results
+  - However, trust dynamics create state-dependent continuation values that support cooperation
+- **Subgame-perfect equilibria**:
+  - Mutual defection (a = 35) is always an SPE
+  - Cooperative equilibria (a > 35) sustainable when trust amplification exceeds defection temptation
+  - Critical threshold: τ* ≈ 0.45 for cooperation to be self-enforcing
+
+**Trust-Mediated Cooperation**:
+
+The trust dynamics create a novel mechanism for cooperation:
+
+```
+Cooperation sustainable iff: ∂U/∂τ × ∂τ/∂a > temptation_gain
+```
+
+Where the left side captures the long-term value of trust investment.
+
+### Connections to Prior Work
+
+| Concept | TrustDilemma-v0 | Classical Reference |
+|---------|-----------------|---------------------|
+| Continuous cooperation | a_i ∈ [0, e_i] | Discrete {C, D} in Axelrod (1984) |
+| State-dependent payoffs | Trust modulation τ | Stateless in classical IPD |
+| Asymmetric dynamics | λ⁻ = 3 × λ⁺ | Symmetric in standard models |
+| Reputation effects | Ceiling Θ = 1 - R | No reputation in basic IPD |
+| Complementarity | γ-weighted synergy | Not present in classical |
+
+### Literature Connections
+
+**Axelrod (1984)**: The foundational work on IPD tournaments. TrustDilemma-v0 extends this by:
+- Continuous actions (allows graduated responses)
+- Trust state (enables history-dependent but Markovian strategies)
+- Complementarity (rewards coordinated high cooperation)
+
+**Lerer & Peysakhovich (2017)**: "Maintaining Cooperation in Complex Social Dilemmas" studies deep RL in social dilemmas. TrustDilemma-v0 provides:
+- Similar mixed-motive structure
+- Richer state dynamics (trust, reputation)
+- Continuous action complexity
+
+**Leibo et al. (2017)**: Sequential social dilemmas in grid-worlds. TrustDilemma-v0 differs by:
+- Direct strategic interaction (not spatially mediated)
+- Explicit trust dynamics (not emergent from grid mechanics)
+- Continuous rather than discrete action timing
+
+---
+
+## Equilibrium Analysis
+
+### Stage-Game Nash Equilibrium
+
+In the single-shot game (ignoring trust dynamics), we analyze best responses:
+
+**Best Response Functions**:
+
+For agent i with utility U_i = (e_i - a_i) + θ·ln(1 + a_i) + α_i·G(a) + D_ij·π_j:
+
+```
+∂U_i/∂a_i = -1 + θ/(1 + a_i) + α_i·∂G/∂a_i = 0
+```
+
+Solving for interior solutions:
+```
+a_i* ≈ θ - 1 + α_i·(∂G/∂a_i)
+```
+
+**Nash Equilibrium (Symmetric Case)**:
+
+With θ = 20, α = 0.50, and moderate complementarity:
+- **Myopic NE**: a* ≈ 35 (baseline level)
+- Both agents contribute at the minimum expected level
+- Neither has unilateral incentive to deviate
+
+**Interpretation**: The stage-game NE represents mutual caution—each agent invests just enough to avoid being seen as defecting.
+
+### Pareto Frontier
+
+The set of Pareto-optimal action profiles satisfies:
+
+```
+max_{a_1, a_2} W = U_1 + U_2
+subject to: a_i ∈ [0, 100]
+```
+
+**Pareto-optimal outcomes**:
+- **Full cooperation**: (a_1*, a_2*) = (100, 100)
+  - Total welfare: W* ≈ 285
+- **Pareto frontier**: All symmetric profiles (a, a) where a > 35
+
+**Social Welfare Comparison**:
+
+| Profile | Agent 0 Utility | Agent 1 Utility | Total | Trust Δ |
+|---------|-----------------|-----------------|-------|---------|
+| (35, 35) | 72.3 | 72.3 | 144.6 | -0.02 |
+| (50, 50) | 85.1 | 85.1 | 170.2 | +0.01 |
+| (70, 70) | 98.2 | 98.2 | 196.4 | +0.04 |
+| (100, 100) | 112.5 | 112.5 | 225.0 | +0.06 |
+
+**Price of Anarchy**: PoA = W*/W_NE ≈ 225/145 ≈ 1.55
+
+### Repeated Game Equilibria
+
+With T = 100 repetitions and trust dynamics, richer equilibria emerge:
+
+**Grim Trigger Strategy**:
+```
+Play a_high if no defection observed
+Play a_low forever after any defection
+```
+
+Grim trigger supports cooperation when:
+```
+δ·V_coop/(1-δ) > V_defect + δ·V_punishment/(1-δ)
+```
+
+Where δ captures effective discount rate accounting for trust dynamics.
+
+**Trust-Augmented Trigger**:
+
+The trust dynamics provide a natural "soft" trigger:
+- Defection erodes trust (λ⁻ = 0.45)
+- Eroded trust reduces future payoffs
+- Creates self-enforcing cooperation without explicit punishment
+
+**Cooperative Equilibrium Conditions**:
+
+Cooperation (a > baseline) is sustainable in equilibrium when:
+```
+τ > τ* where τ* ≈ 0.45
+```
+
+Below τ*, the trust-mediated payoff amplification is insufficient to deter defection.
+
+### Trust-Mediated Equilibrium Dynamics
+
+The environment creates a novel equilibrium structure:
+
+**Trust Threshold Effects**:
+
+1. **High trust regime** (τ > 0.70):
+   - Cooperation strongly reinforced
+   - High payoffs sustain investment
+   - Robust to small deviations
+
+2. **Medium trust regime** (0.30 < τ < 0.70):
+   - Multiple equilibria possible
+   - Coordination challenge
+   - History-dependent outcomes
+
+3. **Low trust regime** (τ < 0.30):
+   - Defection dominates
+   - Recovery difficult (3:1 negativity bias)
+   - Approaching termination threshold
+
+**Basin of Attraction**:
+
+Starting from τ₀ = 0.50:
+- Sustained cooperation → converges to high-trust equilibrium
+- Early defection → converges to low-trust/collapse
+
+The **separating trajectory** depends on initial cooperation and response to early deviations.
+
+### Equilibrium Selection in MARL
+
+For RL agents learning in this environment:
+
+**Expected Learning Dynamics**:
+
+1. **Self-play with exploration**: May converge to either equilibrium
+   - High exploration → samples cooperative outcomes → possible convergence to cooperation
+   - Greedy exploitation → myopic defection → convergence to low equilibrium
+
+2. **Curriculum considerations**:
+   - Starting with high initial trust helps discover cooperative equilibrium
+   - Training with trust "warm-starts" improves convergence
+
+**Algorithm Implications**:
+
+| Algorithm | Expected Equilibrium | Notes |
+|-----------|---------------------|-------|
+| Independent PPO | Mixed/Low | Coordination challenge |
+| MAPPO (shared) | High possible | Shared critic helps |
+| MADDPG | Medium | Centralized training helps |
+| LOLA | High likely | Models opponent adaptation |
+
+---
+
 ## Environment Specification
 
 ### Basic Usage

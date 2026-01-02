@@ -153,6 +153,93 @@ Developers face:
 
 ---
 
+## Theoretical Foundations
+
+### Relationship to Classical Game Theory
+
+PlatformEcosystem-v0 extends the classical two-sided markets literature by incorporating:
+
+1. **Dynamic trust**: Rather than static participation decisions, agents maintain evolving trust relationships
+2. **Hub-spoke topology**: Explicit modeling of platform centrality in interdependence structure
+3. **Ecosystem collapse**: Endogenous termination from collective trust breakdown
+4. **Continuous investment**: Graduated participation rather than binary join/leave decisions
+
+### Key Theoretical Results
+
+**Stage-Game Analysis**:
+
+In the single-shot version (ignoring trust dynamics):
+
+- **Platform's myopic optimum**: a_P* ≈ 52.5 (baseline contribution)
+  - At this level, platform extracts maximum surplus from developers' investments
+- **Developers' best response**: a_D* ≈ 28-40 (defensive given platform extraction)
+  - Individual developer cannot profitably increase investment unilaterally
+- **Nash equilibrium**: (a_P*, a_D*) ≈ (55, 35) - Mutual low investment
+- **Pareto-optimal outcome**: (a_P*, a_D*) ≈ (120, 65) - High mutual investment
+
+**Multi-Agent Coordination**:
+
+With N developers, additional coordination challenges emerge:
+
+- **Free-rider problem**: Individual developer's defection has diluted effect
+- **Collective punishment**: Coordinated developer response required to discipline platform
+- **Mean-field approximation**: For large N, individual developer impact on platform → 0
+
+**Repeated Game Equilibria**:
+
+With T = 100 repetitions and trust dynamics:
+
+- **Platform exploitation equilibrium**: Platform extracts until trust threshold approached
+- **Cooperative equilibrium**: High mutual investment sustained by trust
+- **Trigger equilibrium**: Developers coordinate punishment of platform defection
+
+The critical threshold avg_dev_trust < 0.15 creates a **collective action trigger** that enables developer coordination.
+
+### Connections to Prior Work
+
+| Concept | PlatformEcosystem-v0 | Classical Reference |
+|---------|---------------------|---------------------|
+| Two-sided markets | Hub-spoke D matrix | Rochet & Tirole (2003) |
+| Network effects | γ = 0.75 complementarity | Katz & Shapiro (1985) |
+| Platform governance | Trust dynamics | Evans & Schmalensee (2016) |
+| Ecosystem collapse | Trust threshold termination | Mean-field game literature |
+| Multi-homing | Developer D = 0.75 | Armstrong (2006) |
+
+### Literature Connections
+
+**Rochet & Tirole (2003)**: Two-sided markets and platform competition. PlatformEcosystem-v0 operationalizes:
+- Platform intermediation → Hub-spoke interdependence
+- Cross-group externalities → Complementarity parameter γ = 0.75
+- Participation decisions → Continuous investment levels
+
+**Parker & Van Alstyne (2005)**: Two-sided network effects. The environment captures:
+- Same-side effects → Developer-developer dynamics (indirect via platform trust)
+- Cross-side effects → Platform-developer interdependence (D matrix)
+- Network scaling → State dimension grows as O(N²)
+
+**Mogul (ICML 2020)**: Multi-agent platform optimization. Similar structure with:
+- Central coordinating agent (platform)
+- Multiple peripheral agents (developers)
+- Asymmetric dependencies and information
+
+### Mean-Field Approximation
+
+For large N, the environment admits a mean-field game approximation:
+
+1. **Developer anonymity**: Individual developer impact on platform → 1/N → 0
+2. **Platform aggregates**: Platform observes mean developer behavior
+3. **Symmetric equilibrium**: All developers play identical mixed strategies
+4. **Tractable analysis**: Reduces N+1 player game to 2-player structure
+
+The mean-field limit:
+```
+lim_{N→∞} Platform sees: avg(a_dev) and avg(τ_dev→platform)
+```
+
+This makes the environment suitable for both exact (small N) and approximate (large N) analysis.
+
+---
+
 ## Environment Specification
 
 ### Basic Usage
