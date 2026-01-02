@@ -18,6 +18,99 @@ The key challenge is learning to:
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game (N-player, general-sum); Mean-Field Game approximation for large N |
+| **Cooperation Structure** | Mixed-Motive with reputation externalities (cooperation builds public reputation) |
+| **Observability** | Full state + public reputation scores (extended observation) |
+| **Communication** | Implicit (actions + public reputation signals) |
+| **Agent Symmetry** | Symmetric (homogeneous agents with equal endowments and dependencies) |
+| **Reward Structure** | Mixed with uniform interdependence (D_ij = 0.40 for all i≠j) |
+| **Action Space** | Continuous: A_i = [0, 100] for all agents |
+| **State Dynamics** | Deterministic |
+| **Horizon** | Finite, T = 50 steps |
+| **Canonical Comparison** | Reputation games; cf. Resnick & Zeckhauser (2002), rating systems in matching markets |
+
+---
+
+## Formal Specification
+
+This environment is formalized as an N-player symmetric Markov Game with public reputation signals.
+
+### Agents
+**N** = {1, ..., n} where n = n_agents (default 6), all symmetric:
+
+| Property | Value | Description |
+|----------|-------|-------------|
+| Endowment | 100.0 | Equal for all agents |
+| Baseline | 35.0 | 35% cooperation threshold |
+| Bargaining α | 1/N | Equal surplus sharing |
+
+### State Space
+**S** ⊆ ℝ^d where d = N + 3N² + 1 + N (standard state + reputation vector)
+
+| Component | Dimension | Description |
+|-----------|-----------|-------------|
+| Actions | N | Previous cooperation levels |
+| Trust Matrix | N² | Pairwise trust τ_ij |
+| Reputation Damage | N² | Reputation damage R_ij |
+| Interdependence | N² | Uniform dependencies D_ij = 0.40 |
+| Timestep | 1 | Normalized t/T |
+| **Public Reputations** | N | Global reputation scores ρ_i ∈ [0,1] |
+
+**Total dimension**: d = N + 3N² + 1 + N = 4N² + 2N + 1
+
+### Action Space
+For each agent i ∈ {1, ..., N}:
+
+**A**_i = [0, 100] ⊂ ℝ
+
+### Interdependence Matrix (Fully Connected)
+
+```
+D_ij = 0.40 for all i ≠ j
+D_ii = 0.00
+```
+
+All agents value each other's outcomes equally—no preferential partnerships.
+
+### Reputation Dynamics
+
+**Public Reputation Update** (exponential moving average):
+```
+ρ_i(t+1) = 0.9 · ρ_i(t) + 0.1 · (a_i(t) / e_i)
+```
+
+Properties:
+- ρ_i ∈ [0, 1] (normalized cooperation history)
+- Persistence parameter α = 0.9 (slow adaptation)
+- Publicly observable by all agents
+
+### Reward Function
+
+Standard integrated utility with symmetric weights:
+```
+r_i = π_i + 0.40 · Σ_{j≠i} π_j
+```
+
+Value function uses θ = 18.0, γ = 0.55 (moderate complementarity).
+
+### Episode Structure
+
+- **Horizon**: T = 50 steps
+- **Truncation**: t ≥ T
+- **Termination**: None (no early termination)
+- **Discount**: γ = 1.0
+
+### Initial State
+- τ_ij(0) = 0.50 (neutral trust)
+- R_ij(0) = 0.00
+- ρ_i(0) = 0.50 (neutral reputation)
+
+---
+
 ## Game-Theoretic Background
 
 ### Reputation-Based Matching

@@ -9,6 +9,48 @@
 
 ---
 
+## Compatibility and Requirements
+
+### Framework Compatibility
+
+| Framework | Version | Status | Notes |
+|-----------|---------|--------|-------|
+| **Python** | 3.9, 3.10, 3.11 | Tested | 3.9+ required |
+| **Gymnasium** | 0.29+ | Compatible | Farama Foundation standard |
+| **PettingZoo** | 1.24+ | Compatible | Parallel and AEC APIs |
+| **NumPy** | 1.21+ | Required | Core dependency |
+| **SciPy** | 1.7+ | Required | Mathematical functions |
+
+### MARL Framework Integration
+
+| Framework | Integration | Notes |
+|-----------|-------------|-------|
+| **Stable-Baselines3** | Direct | Use Gymnasium API with VecEnv |
+| **RLlib** | Direct | Use PettingZoo API with MultiAgentEnv |
+| **TorchRL** | Compatible | Use Gymnasium API |
+| **CleanRL** | Compatible | Single-file implementations |
+
+### Verification
+
+```python
+import coopetition_gym
+import gymnasium
+import pettingzoo
+
+# Verify installation
+print(f"Coopetition-Gym environments: {len(coopetition_gym.list_environments())}")
+print(f"Gymnasium version: {gymnasium.__version__}")
+print(f"PettingZoo version: {pettingzoo.__version__}")
+
+# Quick environment test
+env = coopetition_gym.make("TrustDilemma-v0")
+obs, info = env.reset(seed=42)
+print(f"Observation shape: {obs.shape}")
+print(f"Action space: {env.action_space}")
+```
+
+---
+
 ## Overview
 
 **Coopetition-Gym** is a Python research library providing multi-agent reinforcement learning environments for studying *coopetitive dynamics*—scenarios where agents must simultaneously cooperate and compete. The library implements mathematical frameworks from published research:

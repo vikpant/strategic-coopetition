@@ -15,6 +15,108 @@ This environment tests whether reinforcement learning agents can learn **long-ho
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game (2-player, general-sum) |
+| **Cooperation Structure** | Mixed-Motive (cooperation creates value, competition captures it) |
+| **Observability** | Full (all state variables observable to both agents) |
+| **Communication** | Implicit (through actions only) |
+| **Agent Symmetry** | Symmetric (identical endowments, baselines, capabilities) |
+| **Reward Structure** | Mixed (individual + interdependence-weighted partner rewards) |
+| **Action Space** | Continuous, bounded: A_i = [0, 100] |
+| **State Dynamics** | Deterministic (given actions, next state is deterministic) |
+| **Horizon** | Finite, T = 100 steps (or early termination on trust collapse) |
+| **Canonical Comparison** | Continuous-action Iterated Prisoner's Dilemma with state-dependent payoffs; cf. Lerer & Peysakhovich (2017) "Maintaining Cooperation in Complex Social Dilemmas" |
+
+---
+
+## Formal Specification
+
+This environment is formalized as a 2-player Markov Game **M** = (**N**, **S**, {**A**_i}, **P**, {**R**_i}, T).
+
+### Agents
+**N** = {1, 2} (symmetric dyad)
+
+### State Space
+**S** ⊆ ℝ¹⁷ with components:
+
+| Component | Symbol | Dimension | Range | Description |
+|-----------|--------|-----------|-------|-------------|
+| Actions | a | 2 | [0, 100] | Previous cooperation levels |
+| Trust Matrix | τ | 4 | [0, 1] | Pairwise trust τ_ij |
+| Reputation Damage | R | 4 | [0, 1] | Accumulated damage R_ij |
+| Interdependence | D | 4 | [0, 1] | Structural dependencies |
+| Metadata | m | 3 | varies | Timestep, auxiliary info |
+
+**Total dimension**: d = 17
+
+### Action Space
+For each agent i ∈ {1, 2}:
+
+**A**_i = [0, e_i] = [0, 100] ⊂ ℝ
+
+where e_i = 100 is the endowment. Actions represent **cooperation level** (investment in joint value creation).
+
+### Transition Dynamics
+
+**Trust Update** (TR-2 dynamics):
+
+```
+τ_ij(t+1) = clip(τ_ij(t) + Δτ_ij, 0, Θ_ij)
+```
+
+where the trust ceiling Θ_ij = 1 - R_ij and the update is:
+
+```
+Δτ_ij = λ⁺ · max(0, σ_j) · (1 - τ_ij) - λ⁻ · max(0, -σ_j) · τ_ij
+```
+
+with cooperation signal:
+```
+σ_j = κ · (a_j - b_j) / b_j
+```
+
+**Reputation Update**:
+```
+R_ij(t+1) = R_ij(t) · (1 - δ_R) + μ_R · 𝟙[σ_j < -threshold]
+```
+
+### Reward Function
+
+Agent i receives integrated utility:
+
+```
+r_i(s, a) = U_i(a) = π_i(a) + Σ_j D_ij · π_j(a)
+```
+
+where private payoff π_i is:
+
+```
+π_i(a) = (e_i - a_i) + f(a_i) + α_i · G(a)
+```
+
+with:
+- **Retained resources**: e_i - a_i
+- **Individual value**: f(a_i) = θ · ln(1 + a_i), θ = 20.0
+- **Synergy share**: α_i · G(a) where G(a) = (a_1 · a_2)^(1/2) · (1 + γ · C(a))
+- **Complementarity**: C(a) = min(a_1/e_1, a_2/e_2), γ = 0.70
+
+### Episode Structure
+
+- **Horizon**: T = 100 steps
+- **Truncation**: t ≥ T
+- **Termination**: mean(τ) < 0.05 (trust collapse)
+- **Discount**: γ = 1.0 (undiscounted finite horizon)
+
+### Initial State
+- τ_ij(0) = 0.50 for all i ≠ j
+- R_ij(0) = 0.00 for all i, j
+- a(0) = (0, 0)
+
+---
+
 ## Game-Theoretic Background
 
 ### The Trust Dilemma

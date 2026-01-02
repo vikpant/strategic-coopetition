@@ -15,6 +15,107 @@ This environment is specifically designed to test understanding of **TR-2 trust 
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game (2-player, general-sum) with constrained state recovery |
+| **Cooperation Structure** | Cooperative goal (joint recovery) with individual temptation to defect |
+| **Observability** | Full (agents observe trust, reputation damage, and ceiling) |
+| **Communication** | Implicit (through actions only) |
+| **Agent Symmetry** | Symmetric (identical capabilities, mutual damage) |
+| **Reward Structure** | Mixed (integrated utility + recovery bonus) |
+| **Action Space** | Continuous: A_i = [0, 100] |
+| **State Dynamics** | Deterministic with ceiling constraints |
+| **Horizon** | Extended, T = 150 (longer horizon for recovery) |
+| **Canonical Comparison** | Constrained optimization in trust repair; cf. Kim et al. (2004) "Removing the Shadow of Suspicion" |
+
+---
+
+## Formal Specification
+
+This environment is formalized as a 2-player Markov Game with **constrained recovery dynamics**.
+
+### Agents
+**N** = {1, 2} (symmetric dyad starting from damaged state)
+
+| Property | Value | Description |
+|----------|-------|-------------|
+| Endowment | 100.0 | Equal for both |
+| Baseline | 35.0 | 35% cooperation threshold |
+| Bargaining α | 0.50 | Equal surplus sharing |
+
+### State Space
+**S** ⊆ ℝ¹⁷ (identical structure to TrustDilemma-v0)
+
+**Critical state property**: Trust ceiling Θ_ij = 1 - R_ij constrains recovery.
+
+### Action Space
+**A**_i = [0, 100] ⊂ ℝ for each agent
+
+### Initial State (Post-Crisis)
+
+| Variable | Initial Value | Interpretation |
+|----------|---------------|----------------|
+| Trust τ_ij(0) | 0.25 | Very low (crisis aftermath) |
+| Reputation R_ij(0) | 0.50 | High damage (serious past violations) |
+| Trust Ceiling Θ_ij(0) | 0.50 | Maximum recoverable trust initially |
+
+**Key constraint**: Recovery target τ* = 0.90 is initially impossible (Θ = 0.50). Agents must wait for reputation decay.
+
+### Transition Dynamics
+
+**Trust Update** (standard TR-2):
+```
+τ_ij(t+1) = clip(τ_ij(t) + Δτ_ij, 0, Θ_ij)
+```
+
+**Reputation Decay** (slow healing):
+```
+R_ij(t+1) = R_ij(t) · (1 - δ_R)
+```
+
+where δ_R = 0.01 (1% decay per step).
+
+**Ceiling Evolution**:
+```
+Θ_ij(t) = 1 - R_ij(t)
+```
+
+Time to reach ceiling = 0.90:
+- Need R_ij ≤ 0.10
+- From R = 0.50, requires ~40 steps of pure decay
+
+### Trust Parameters (Recovery-Specific)
+
+| Parameter | Symbol | Value | Note |
+|-----------|--------|-------|------|
+| Trust Building | λ⁺ | 0.08 | Slow (deliberate recovery) |
+| Trust Erosion | λ⁻ | 0.35 | Fast (re-violation costly) |
+| New Violation Damage | μ_R | 0.70 | Severe (trust fragile) |
+| Reputation Decay | δ_R | 0.01 | Very slow (patience required) |
+
+### Reward Function
+
+Standard integrated utility with moderate interdependence:
+```
+r_i = π_i + 0.55 · π_j
+```
+
+### Episode Structure
+
+- **Horizon**: T = 150 steps (extended for recovery)
+- **Success Termination**: mean(τ) ≥ 0.90 (recovery achieved)
+- **Failure Termination**: mean(τ) < 0.05 (trust collapse)
+- **Truncation**: t ≥ T (recovery not achieved in time)
+
+### Recovery Target
+- **Goal**: mean(τ) ≥ 0.90
+- **Minimum time**: ~40 steps (ceiling constraint)
+- **Typical successful recovery**: 80-120 steps
+
+---
+
 ## Game-Theoretic Background
 
 ### Post-Crisis Dynamics

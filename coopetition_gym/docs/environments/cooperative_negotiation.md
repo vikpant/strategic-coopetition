@@ -19,6 +19,105 @@ This environment tests:
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game with endogenous commitment (contract formation) |
+| **Cooperation Structure** | Mixed-Motive with enforceable agreements |
+| **Observability** | Full (including agreement status and terms) |
+| **Communication** | Implicit proposals (actions encode offers) + explicit agreements |
+| **Agent Symmetry** | Symmetric |
+| **Reward Structure** | Mixed + breach penalties (3× multiplier on violations) |
+| **Action Space** | Continuous: A_i = [0, 100] (proposals/commitments) |
+| **State Dynamics** | Deterministic with discrete agreement transitions |
+| **Horizon** | Finite, T = 100 |
+| **Canonical Comparison** | Contract games with commitment; cf. Crawford & Sobel (1982), Raiffa (1982) negotiation theory |
+
+---
+
+## Formal Specification
+
+This environment is formalized as a 2-player Markov Game with **endogenous agreement formation**.
+
+### Agents
+**N** = {1, 2} (symmetric negotiators)
+
+| Property | Value |
+|----------|-------|
+| Endowment | 100.0 |
+| Baseline | 35.0 |
+| Bargaining α | 0.50 |
+
+### State Space
+**S** ⊆ ℝ¹⁸ (extended with agreement info)
+
+| Component | Dimension | Description |
+|-----------|-----------|-------------|
+| Standard State | 15 | Actions, trust, reputation, interdependence, time |
+| Agreement Levels | 2 | Agreed cooperation levels (or -1 if no agreement) |
+| Has Agreement | 1 | Boolean flag (0 or 1) |
+
+### Action Space
+**A**_i = [0, 100] ⊂ ℝ representing either:
+- **Pre-agreement**: Proposal for cooperation level
+- **Post-agreement**: Actual cooperation level (subject to breach detection)
+
+### Agreement Formation
+
+**Agreement condition**: Proposals converge within threshold
+```
+|a_1 - a_2| ≤ agreement_threshold (default: 10.0)
+```
+
+When agreement forms:
+```
+agreed_level = (a_1 + a_2) / 2
+```
+
+### Breach Detection
+
+Post-agreement, deviations trigger penalties:
+```
+if |a_i - agreed_level_i| > agreement_threshold:
+    breach_penalty = breach_multiplier × |a_i - agreed_level_i|
+    r_i = r_i - breach_penalty
+```
+
+where breach_multiplier = 3.0 (default).
+
+### Trust Parameters
+
+| Parameter | Symbol | Value | Note |
+|-----------|--------|-------|------|
+| Trust Building | λ⁺ | 0.12 | Faster (agreement builds trust) |
+| Trust Erosion | λ⁻ | 0.40 | High (breach penalty) |
+| Reputation Damage | μ_R | 0.65 | Strong (breach = reputation damage) |
+| Reputation Decay | δ_R | 0.02 | Standard |
+
+### Reward Function
+
+```
+r_i = π_i + 0.55 · π_j - breach_penalty_i
+```
+
+Breach penalty makes defection costly post-agreement.
+
+### Episode Structure
+
+- **Horizon**: T = 100 steps
+- **Truncation**: t ≥ T
+- **Termination**: mean(τ) < 0.05
+- **Discount**: γ = 1.0
+
+### Initial State
+- τ_ij(0) = 0.50 (neutral)
+- R_ij(0) = 0.00
+- has_agreement = False
+- agreed_levels = None
+
+---
+
 ## Game-Theoretic Background
 
 ### Negotiation Theory

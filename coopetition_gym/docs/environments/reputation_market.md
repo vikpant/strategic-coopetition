@@ -19,6 +19,117 @@ This environment tests:
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game (N-player, general-sum) with tiered reward modifiers |
+| **Cooperation Structure** | Competitive-Cooperative (reputation competition, cooperation builds reputation) |
+| **Observability** | Full (including public reputation scores and tier assignments) |
+| **Communication** | Implicit (actions + public reputation signals) |
+| **Agent Symmetry** | Symmetric (homogeneous endowments and capabilities) |
+| **Reward Structure** | Mixed + tier-based multipliers (0.40× to 1.30×) |
+| **Action Space** | Continuous: A_i = [0, 100] |
+| **State Dynamics** | Deterministic with discrete tier transitions |
+| **Horizon** | Finite, T = 100 |
+| **Canonical Comparison** | Tiered reputation markets; cf. Shapiro (1983), Tadelis (1999) reputation economics |
+
+---
+
+## Formal Specification
+
+This environment is formalized as an N-player Markov Game with **tiered reputation bonuses**.
+
+### Agents
+**N** = {1, ..., n} where n = n_agents (default 5), all symmetric:
+
+| Property | Value |
+|----------|-------|
+| Endowment | 100.0 |
+| Baseline | 35.0 |
+| Bargaining α | 1/N |
+
+### State Space
+**S** ⊆ ℝ^d where d = N + 3N² + 1 + N (standard + reputation vector)
+
+| Component | Dimension | Description |
+|-----------|-----------|-------------|
+| Actions | N | Previous cooperation levels |
+| Trust Matrix | N² | Pairwise trust |
+| Reputation Damage | N² | Pairwise damage |
+| Interdependence | N² | Uniform D = 0.35 |
+| Timestep | 1 | Normalized t/T |
+| **Public Reputations** | N | ρ_i ∈ [0, 1] |
+
+### Action Space
+**A**_i = [0, 100] ⊂ ℝ for each agent
+
+### Interdependence Matrix
+
+```
+D_ij = 0.35 for all i ≠ j
+D_ii = 0.00
+```
+
+Moderate uniform interdependence across market.
+
+### Reputation Tier System
+
+| Tier | Reputation Threshold | Reward Multiplier | Interpretation |
+|------|---------------------|-------------------|----------------|
+| Premium | ρ ≥ 0.80 | 1.30× | Elite status, +30% bonus |
+| Standard | ρ ≥ 0.50 | 1.00× | Normal market access |
+| Probation | ρ ≥ 0.25 | 0.70× | Restricted, -30% penalty |
+| Excluded | ρ < 0.25 | 0.40× | Severely limited, -60% penalty |
+
+### Reputation Dynamics
+
+```
+ρ_i(t+1) = clip(ρ_i(t) + 0.1 · (a_i/e_i - 0.5), 0, 1)
+```
+
+Cooperation above 50% builds reputation; below 50% erodes it.
+
+### Reward Function
+
+Rewards are tier-multiplied:
+```
+r_i = multiplier(ρ_i) × [π_i + 0.35 · Σ_{j≠i} π_j]
+```
+
+where multiplier is determined by tier assignment.
+
+### Trust Parameters
+
+| Parameter | Symbol | Value |
+|-----------|--------|-------|
+| Trust Building | λ⁺ | 0.10 |
+| Trust Erosion | λ⁻ | 0.30 |
+| Reputation Damage | μ_R | 0.55 |
+| Reputation Decay | δ_R | 0.015 |
+
+### Episode Structure
+
+- **Horizon**: T = 100 steps
+- **Truncation**: t ≥ T
+- **Termination**: None (markets don't collapse)
+- **Discount**: γ = 1.0
+
+### Initial State
+- τ_ij(0) = 0.50
+- R_ij(0) = 0.00
+- ρ_i(0) = 0.50 (all agents start in Standard tier)
+
+### Scaling
+
+| n_agents | State Dim | Tier Competition |
+|----------|-----------|------------------|
+| 5 | ~105 | Moderate |
+| 10 | ~310 | High |
+| 20 | ~1210 | Very High |
+
+---
+
 ## Game-Theoretic Background
 
 ### Reputation Markets

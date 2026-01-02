@@ -15,6 +15,90 @@ Unlike SLCD-v0 which models a single joint venture, RenaultNissan-v0 supports **
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Markov Game (2-player, general-sum) with phase-dependent parameters |
+| **Cooperation Structure** | Mixed-Motive with evolving power dynamics across phases |
+| **Observability** | Full |
+| **Communication** | Implicit (through actions only) |
+| **Agent Symmetry** | Asymmetric (Renault: rescuer/0.52, Nissan: rescued/0.48) |
+| **Reward Structure** | Mixed with phase-specific interdependence |
+| **Action Space** | Continuous: A_Nissan = [0, 90], A_Renault = [0, 100] |
+| **State Dynamics** | Deterministic with phase-dependent initial conditions |
+| **Horizon** | Finite, T = 100 per phase |
+| **Canonical Comparison** | Multi-phase alliance dynamics; cf. Segrestin (2005) "Partnering to Explore" |
+
+**Validation Status**: Parameters derived from TR-2, calibrated to Renault-Nissan Alliance phases (1999-2025).
+
+---
+
+## Formal Specification
+
+This environment is formalized as a 2-player Markov Game with **configurable phase-specific initial conditions**.
+
+### Agents
+**N** = {Nissan, Renault}
+
+| Agent | Index | Endowment | Baseline | Bargaining α | Historical Role |
+|-------|-------|-----------|----------|--------------|-----------------|
+| Nissan | 0 | 90.0 | 27.0 | 0.48 | Rescued partner (1999) |
+| Renault | 1 | 100.0 | 30.0 | 0.52 | Rescuer/controlling partner |
+
+Renault's slight advantage reflects initial controlling stake.
+
+### State Space
+**S** ⊆ ℝ¹⁷ (standard dyadic structure)
+
+### Action Space
+- **Nissan**: **A**_0 = [0, 90] ⊂ ℝ
+- **Renault**: **A**_1 = [0, 100] ⊂ ℝ
+
+### Phase-Specific Initial Conditions
+
+| Phase | Period | τ₀ | R₀ | Θ₀ | Interpretation |
+|-------|--------|-----|-----|-----|----------------|
+| `"formation"` | 1999-2002 | 0.45 | 0.05 | 0.95 | Uncertain but hopeful |
+| `"mature"` | 2002-2018 | 0.70 | 0.02 | 0.98 | Strong collaboration |
+| `"crisis"` | 2018-2020 | 0.30 | 0.45 | 0.55 | Post-Ghosn governance crisis |
+| `"strained"` | 2020-2025 | 0.40 | 0.35 | 0.65 | Restructured, ongoing tension |
+
+### Validated Trust Parameters (TR-2)
+
+| Parameter | Symbol | Value | Description |
+|-----------|--------|-------|-------------|
+| Trust Building Rate | λ⁺ | 0.08 | Institutional trust (slow) |
+| Trust Erosion Rate | λ⁻ | 0.25 | Moderate erosion |
+| Reputation Damage | μ_R | 0.55 | Governance-related damage |
+| Reputation Decay | δ_R | 0.02 | Standard healing |
+| Interdependence Amp. | ξ | 0.50 | Cross-cultural amplification |
+| Signal Sensitivity | κ | 1.0 | Standard |
+
+### Value Function
+
+| Parameter | Value | Interpretation |
+|-----------|-------|----------------|
+| θ | 22.0 | Higher scale (automotive industry) |
+| γ | 0.58 | Moderate platform synergies |
+
+### Episode Structure
+
+- **Horizon**: T = 100 steps per phase
+- **Truncation**: t ≥ T
+- **Termination**: mean(τ) < 0.05 (alliance dissolution)
+- **Discount**: γ = 1.0
+
+### Phase Selection
+
+```python
+env = coopetition_gym.make("RenaultNissan-v0", phase="crisis")
+```
+
+Phase determines initial τ₀ and R₀, modeling different eras of the alliance.
+
+---
+
 ## Historical Background
 
 ### The Renault-Nissan Alliance (1999-Present)

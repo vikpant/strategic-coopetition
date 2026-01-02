@@ -18,6 +18,98 @@ This environment tests agents' ability to:
 
 ---
 
+## MARL Classification
+
+| Property | Value |
+|----------|-------|
+| **Game Type** | Partially Observable Markov Game (hidden environment parameter) |
+| **Cooperation Structure** | Mixed-Motive with unknown synergy multiplier |
+| **Observability** | Partial: state visible, but γ parameter hidden (Bayes-Adaptive MDP structure) |
+| **Communication** | Implicit (through actions only) |
+| **Agent Symmetry** | Symmetric |
+| **Reward Structure** | Mixed (integrated utility with hidden γ) |
+| **Action Space** | Continuous: A_i = [0, 100] |
+| **State Dynamics** | Deterministic (given γ), but γ unknown |
+| **Horizon** | Finite, T = 100 |
+| **Canonical Comparison** | Bayes-Adaptive MDP; cf. Duff (2002), Ghavamzadeh & Engel (2007) Bayesian Policy Gradient |
+
+---
+
+## Formal Specification
+
+This environment is formalized as a **Bayes-Adaptive Markov Game** where the complementarity parameter γ is sampled at episode start and hidden from agents.
+
+### Agents
+**N** = {1, 2} (symmetric dyad)
+
+| Property | Value |
+|----------|-------|
+| Endowment | 100.0 |
+| Baseline | 35.0 |
+| Bargaining α | 0.50 |
+
+### State Space
+**S** ⊆ ℝ¹⁷ (standard) or ℝ¹⁸ (if γ revealed)
+
+Standard observation excludes γ. Extended mode (`reveal_gamma_in_obs=True`) appends γ.
+
+### Hidden Parameter
+
+**Complementarity γ** ~ Uniform(0.20, 0.90) sampled per episode
+
+| γ Range | Classification | Optimal Strategy |
+|---------|----------------|------------------|
+| γ > 0.60 | High Synergy | Heavy cooperation (~75%) |
+| γ ≤ 0.60 | Low Synergy | Conservative (~45%) |
+
+### Action Space
+**A**_i = [0, 100] ⊂ ℝ for each agent
+
+### Transition Dynamics
+
+Standard TR-2 trust dynamics (see TrustDilemma-v0).
+
+Trust parameters:
+- λ⁺ = 0.10 (standard building)
+- λ⁻ = 0.30 (standard erosion)
+- τ₀ = 0.55 (moderate initial trust)
+
+### Reward Function
+
+Rewards depend on hidden γ:
+```
+V(a₁, a₂) = θ · ln(a₁ + a₂) · (1 + γ · C(a))
+```
+
+where C(a) = min(a₁/e₁, a₂/e₂) is complementarity.
+
+**Key insight**: Reward gradient ∂V/∂a is higher when γ is high. Agents can infer γ from reward variance.
+
+### Inference Challenge
+
+From reward observations, agents should estimate:
+```
+P(γ | r₁, r₂, ..., rₜ)  →  posterior belief over γ
+```
+
+Optimal agent maintains belief distribution and selects actions that:
+1. Are optimal given current belief
+2. Provide information to refine belief (exploration)
+
+### Episode Structure
+
+- **Horizon**: T = 100 steps
+- **Truncation**: t ≥ T
+- **Termination**: mean(τ) < 0.05 (trust collapse)
+- **Discount**: γ = 1.0
+
+### Initial State
+- τ_ij(0) = 0.55
+- R_ij(0) = 0.00
+- γ ~ Uniform(0.20, 0.90) (hidden)
+
+---
+
 ## Game-Theoretic Background
 
 ### The Synergy Discovery Problem
