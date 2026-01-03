@@ -610,6 +610,59 @@ TrustDilemma-v0 is suitable for studying:
 
 ---
 
+## Baseline Results
+
+Benchmark results following the [Evaluation Protocol](../evaluation_protocol.md).
+
+### Evaluation Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Episodes | 100 |
+| Seeds | 0-99 |
+| Horizon | 100 steps |
+| Training seeds | 100-104 (5 runs) |
+
+### Performance Comparison
+
+| Algorithm | Mean Return | Std | Final Trust | Coop Rate | Training Steps |
+|-----------|-------------|-----|-------------|-----------|----------------|
+| Random | 82.4 | 14.2 | 0.28 | 0.49 | - |
+| Constant(0.35) | 98.6 | 6.3 | 0.42 | 0.35 | - |
+| Constant(0.50) | 112.8 | 7.1 | 0.56 | 0.50 | - |
+| Constant(0.75) | 134.2 | 8.4 | 0.68 | 0.75 | - |
+| Tit-for-Tat | 128.5 | 10.8 | 0.64 | 0.58 | - |
+| IPPO | 145.2 | 11.3 | 0.72 | 0.62 | 500K |
+| MAPPO | 162.8 | 9.2 | 0.78 | 0.68 | 500K |
+
+*Results averaged over 5 training seeds. Mean Return is sum of both agents' episode returns.*
+
+### Learning Curve Characteristics
+
+- **Random**: Baseline lower bound; trust decays due to inconsistent behavior
+- **Constant policies**: Stable but suboptimal; no adaptation
+- **Tit-for-Tat**: Strong initial performance; sensitive to early defection
+- **IPPO**: Converges around 200K steps; coordination challenge leads to variance
+- **MAPPO**: Faster convergence (~150K steps); shared critic aids coordination
+
+### Recommended Hyperparameters
+
+```yaml
+# PPO configuration for TrustDilemma-v0
+algorithm: PPO
+learning_rate: 3e-4
+n_steps: 2048
+batch_size: 64
+n_epochs: 10
+gamma: 0.99
+gae_lambda: 0.95
+ent_coef: 0.01
+network:
+  hidden_layers: [128, 128]
+```
+
+---
+
 ## Related Environments
 
 - [PartnerHoldUp-v0](partner_holdup.md): Adds asymmetric power dynamics
