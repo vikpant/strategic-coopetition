@@ -370,4 +370,6 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 - [Tutorials](tutorials/index.md)
 - [Environment Reference](environments/index.md)
 - [API Documentation](api/index.md)
+- [Evaluation Protocol](evaluation_protocol.md)
+- [Troubleshooting](troubleshooting.md)
 - [Contributing](contributing.md)

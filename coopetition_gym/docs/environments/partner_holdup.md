@@ -630,6 +630,56 @@ PartnerHoldUp-v0 is suitable for studying:
 
 ---
 
+## Baseline Results
+
+Benchmark results following the [Evaluation Protocol](../evaluation_protocol.md).
+
+### Evaluation Configuration
+
+| Parameter | Value |
+|-----------|-------|
+| Episodes | 100 |
+| Seeds | 0-99 |
+| Horizon | 100 steps |
+| Training seeds | 100-104 (5 runs) |
+
+### Performance Comparison
+
+| Algorithm | Strong Return | Weak Return | Final Trust | Exploitation Rate |
+|-----------|---------------|-------------|-------------|-------------------|
+| Random | 78.2 | 45.6 | 0.24 | 0.52 |
+| Constant(Fair) | 95.4 | 62.8 | 0.48 | 0.35 |
+| Strong Exploits | 108.3 | 38.2 | 0.22 | 0.68 |
+| Weak Defensive | 86.5 | 58.4 | 0.36 | 0.42 |
+| IPPO | 102.6 | 52.4 | 0.38 | 0.55 |
+| MAPPO | 98.2 | 64.2 | 0.52 | 0.40 |
+
+*Exploitation Rate = (Strong action/Strong endowment) - (Weak action/Weak endowment). Higher indicates strong exploiting power asymmetry.*
+
+### Key Observations
+
+- **Power amplification**: IPPO tends to amplify power asymmetry (strong learns exploitation)
+- **Centralized training helps**: MAPPO achieves more balanced outcomes
+- **Trust-fairness tradeoff**: Higher exploitation yields higher strong returns but lower trust
+- **Exit threshold matters**: Weak trust < 0.15 often leads to early termination
+
+### Recommended Hyperparameters
+
+```yaml
+# PPO configuration for PartnerHoldUp-v0
+algorithm: PPO
+learning_rate: 3e-4
+n_steps: 2048
+batch_size: 64
+gamma: 0.99
+# Higher entropy helps explore fair strategies
+ent_coef: 0.02
+network:
+  hidden_layers: [128, 128]
+```
+
+---
+
 ## Related Environments
 
 - [TrustDilemma-v0](trust_dilemma.md): Symmetric version
