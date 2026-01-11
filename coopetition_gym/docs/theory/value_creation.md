@@ -38,11 +38,10 @@ This is the essence of Brandenburger and Nalebuff's coopetition framework: actor
 **Definition**: Complementarity exists when joint action creates superadditive value—the whole exceeds the sum of the parts.
 
 **Mathematically**:
-```
-V({i, j}) > V({i}) + V({j})
-```
 
-The value created by actors i and j working together exceeds what each could create independently.
+$$V(\{i, j\}) > V(\{i\}) + V(\{j\})$$
+
+The value created by actors $i$ and $j$ working together exceeds what each could create independently.
 
 ### Sources of Complementarity
 
@@ -58,9 +57,7 @@ The value created by actors i and j working together exceeds what each could cre
 
 Following Brandenburger and Nalebuff, we define an actor's **Added Value** as:
 
-```
-Added Value_i = V(all actors) - V(all actors except i)
-```
+$$\text{Added Value}_i = V(\text{all actors}) - V(\text{all actors except } i)$$
 
 Actors with high added value have strong bargaining positions because the coalition loses significant value without them. Complementarity increases added value for all participants.
 
@@ -72,16 +69,14 @@ Actors with high added value have strong bargaining positions because the coalit
 
 **Equation 2 (TR-1)**: Total value created by joint action:
 
-```
-V(a|γ) = Σ f_i(a_i) + γ × g(a_1, ..., a_N)
-```
+$$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_1, \ldots, a_N)$$
 
 **Components**:
 
 | Component | Symbol | Meaning |
 |-----------|--------|---------|
-| Individual Value | f_i(a_i) | Value actor i creates independently |
-| Synergy Function | g(a_1,...,a_N) | Value existing only through collaboration |
+| Individual Value | $f_i(a_i)$ | Value actor $i$ creates independently |
+| Synergy Function | $g(a_1,\ldots,a_N)$ | Value existing only through collaboration |
 | Complementarity | γ ∈ [0, 1] | Strength of synergistic effects |
 
 ### Individual Value Functions
@@ -130,28 +125,25 @@ The synergy function captures value that exists *only* through collaboration—i
 
 **Equation 4 (TR-1)**: Geometric Mean
 
-```
-g(a_1, ..., a_N) = (a_1 × a_2 × ... × a_N)^(1/N)
-```
+$$g(a_1, \ldots, a_N) = \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
 
 **For Two Actors**:
-```
-g(a_1, a_2) = √(a_1 × a_2)
-```
+
+$$g(a_1, a_2) = \sqrt{a_1 \cdot a_2}$$
 
 **Properties**:
 
 | Property | Description | Implication |
 |----------|-------------|-------------|
 | Symmetric | Order doesn't matter | Fair contribution accounting |
-| Zero-requiring | If any a_i = 0, g = 0 | All must contribute |
-| Balance-rewarding | Maximized when a_i equal | Discourages free-riding |
+| Zero-requiring | If any $a_i = 0$, $g = 0$ | All must contribute |
+| Balance-rewarding | Maximized when $a_i$ equal | Discourages free-riding |
 | Smooth | Continuous and differentiable | Tractable optimization |
 
 **Why Geometric Mean?**
 
 The geometric mean captures the intuition that:
-1. **Everyone must contribute**: A single defector (a_i = 0) destroys all synergy
+1. **Everyone must contribute**: A single defector ($a_i = 0$) destroys all synergy
 2. **Balance matters**: 50-50 contribution creates more synergy than 90-10
 3. **Scale invariance**: Synergy scales appropriately with contribution size
 
@@ -159,13 +151,13 @@ The geometric mean captures the intuition that:
 
 | Function | Formula | Properties |
 |----------|---------|------------|
-| Arithmetic Mean | Σa_i / N | Weak complementarity, tolerates defection |
-| Minimum | min(a_i) | Leontief production, bottleneck-limited |
-| Cobb-Douglas | ∏a_i^(α_i) | Asymmetric weights possible |
+| Arithmetic Mean | $\sum a_i / N$ | Weak complementarity, tolerates defection |
+| Minimum | $\min(a_i)$ | Leontief production, bottleneck-limited |
+| Cobb-Douglas | $\prod a_i^{\alpha_i}$ | Asymmetric weights possible |
 
-### The Complementarity Parameter (γ)
+### The Complementarity Parameter ($\gamma$)
 
-**Range**: γ ∈ [0, 1]
+**Range**: $\gamma \in [0, 1]$
 
 **Interpretation**:
 
