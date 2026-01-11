@@ -18,7 +18,7 @@ This document provides a comprehensive treatment of the interdependence formaliz
 
 **For Practitioners**: Interdependence captures *why* actors must consider partner outcomes even while competing. When your success depends on your partner's success, you have rational incentive to care about their performance—not from altruism, but from structural necessity.
 
-**For Researchers**: We formalize interdependence through translation from i* dependency networks to an interdependence matrix D, where D_ij ∈ [0,1] quantifies the structural coupling of actor i's outcomes to actor j's actions. This enables game-theoretic equilibrium analysis with dependency-augmented utility functions.
+**For Researchers**: We formalize interdependence through translation from *i*\* dependency networks to an interdependence matrix D, where D_ij ∈ [0,1] quantifies the structural coupling of actor i's outcomes to actor j's actions. This enables game-theoretic equilibrium analysis with dependency-augmented utility functions.
 
 ---
 
@@ -49,11 +49,11 @@ Interdependence is **structural**: it emerges from how goals and capabilities co
 
 ---
 
-## The i* Framework Foundation
+## The *i*\* Framework Foundation
 
 ### Strategic Dependency Modeling
 
-The i* framework (Yu, 1995) provides the conceptual basis for interdependence analysis through its representation of strategic actors and dependencies.
+The *i*\* framework (Yu, 1995) provides the conceptual basis for interdependence analysis through its representation of strategic actors and dependencies.
 
 **Core Elements**:
 
@@ -70,7 +70,7 @@ The i* framework (Yu, 1995) provides the conceptual basis for interdependence an
 
 ![Platform Ecosystem Dependencies](../assets/images/platform_dependency.gif)
 
-*i* dependency network showing asymmetric relationships: developers depend heavily on the platform (D = 0.80) while the platform has moderate dependency on any single developer (D = 0.35).*
+*The *i*\* dependency network showing asymmetric relationships: developers depend heavily on the platform (D = 0.80) while the platform has moderate dependency on any single developer (D = 0.35).*
 
 **Asymmetry**: The developer critically depends on the platform (D = 0.80), while the platform moderately depends on any single developer (D = 0.35). This asymmetry has profound strategic implications.
 
@@ -84,7 +84,7 @@ The i* framework (Yu, 1995) provides the conceptual basis for interdependence an
 
 ### Equation 1: Interdependence Coefficient
 
-$$D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \cdot \text{crit}(i,j,d)}{\sum_{d \in \mathcal{D}_i} w_d}$$
+$$\Large D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \cdot \text{crit}(i,j,d)}{\sum_{d \in \mathcal{D}_i} w_d}$$
 
 **Components**:
 
@@ -131,7 +131,7 @@ Developer Goals:
 
 **Purpose**: Binary flag indicating whether a dependency relationship exists.
 
-**Determination**: Direct from i* model analysis
+**Determination**: Direct from *i*\* model analysis
 - Dep(i,j,d) = 1 if there is a dependency link from i to j for d
 - Dep(i,j,d) = 0 otherwise
 
@@ -232,7 +232,7 @@ The interdependence matrix enters the utility function as weights on partner pay
 
 **Equation 13 (TR-1)**:
 
-$$U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_j(\mathbf{a})$$
+$$\Large U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_j(\mathbf{a})$$
 
 **Components**:
 
@@ -256,7 +256,7 @@ This is **not** altruism—it's recognizing that when your outcomes depend on yo
 
 **Definition**: A Coopetitive Equilibrium is a Nash Equilibrium where each actor maximizes the integrated utility function:
 
-$$\mathbf{a}^* \text{ is Coopetitive Equilibrium if: } a_i^* \in \arg\max_{a_i} U_i(a_i, \mathbf{a}_{-i}^*) \text{ for all } i$$
+$$\Large \mathbf{a}^* \text{ is Coopetitive Equilibrium if: } a_i^* \in \arg\max_{a_i} U_i(a_i, \mathbf{a}_{-i}^*) \text{ for all } i$$
 
 **Key Insight**: Coopetitive Equilibrium generally produces more cooperative outcomes than standard Nash Equilibrium because the integrated utility includes positive spillovers through interdependence terms.
 
@@ -266,7 +266,7 @@ $$\mathbf{a}^* \text{ is Coopetitive Equilibrium if: } a_i^* \in \arg\max_{a_i} 
 
 ### Step-by-Step Process
 
-**Step 1: Elicit the i* Dependency Network**
+**Step 1: Elicit the *i*\* Dependency Network**
 - Identify actors and their boundaries
 - Map goals for each actor
 - Document dependency relationships (depender → dependee for dependum)
@@ -297,7 +297,7 @@ The translation process is inherently iterative:
 
 ![Iterative Refinement Process](../assets/images/iterative_refinement.gif)
 
-*Bidirectional flow between conceptual and computational models: quantification reveals gaps in the i* model, while equilibrium analysis suggests new dependencies to explore.*
+*Bidirectional flow between conceptual and computational models: quantification reveals gaps in the *i*\* model, while equilibrium analysis suggests new dependencies to explore.*
 
 ---
 

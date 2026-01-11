@@ -10,7 +10,7 @@ This section provides comprehensive documentation of the theoretical foundations
 
 Coopetition-Gym implements a mathematically rigorous framework bridging two traditions:
 
-1. **Conceptual Modeling** (i* Framework): Rich qualitative representations of strategic dependencies and actor relationships
+1. **Conceptual Modeling** (*i*\* Framework): Rich qualitative representations of strategic dependencies and actor relationships
 2. **Game Theory**: Precise quantitative analysis of strategic interactions and equilibrium behavior
 
 The synthesis produces environments where:
@@ -55,7 +55,7 @@ See [Implementation Roadmap](../roadmap.md) for development timeline and planned
 
 | Document | Content | Audience |
 |----------|---------|----------|
-| [Interdependence Framework](interdependence.md) | Structural dependencies, i* translation, D matrix | Researchers, Advanced Users |
+| [Interdependence Framework](interdependence.md) | Structural dependencies, *i*\* translation, D matrix | Researchers, Advanced Users |
 | [Value Creation & Complementarity](value_creation.md) | Value functions, synergy, superadditivity | Researchers, Economists |
 | [Trust Dynamics](trust_dynamics.md) | Two-layer trust, asymmetric updating, hysteresis | Researchers, Behavioral Scientists |
 | [Parameter Reference](parameters.md) | Validated values, calibration guidance | All Users |
@@ -141,57 +141,57 @@ The following notation is used consistently throughout the documentation:
 
 **Interdependence Matrix** (Equation 1, TR-1):
 
-$$D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \cdot \text{crit}(i,j,d)}{\sum_{d \in \mathcal{D}_i} w_d}$$
+$$\Large D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \cdot \text{crit}(i,j,d)}{\sum_{d \in \mathcal{D}_i} w_d}$$
 
 **Value Creation** (Equation 2, TR-1):
 
-$$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_1, \ldots, a_N)$$
+$$\Large V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_1, \ldots, a_N)$$
 
 **Logarithmic Individual Value** (Equation 6, TR-1):
 
-$$f_i(a_i) = \theta \cdot \ln(1 + a_i) \quad \text{where } \theta = 20.0$$
+$$\Large f_i(a_i) = \theta \cdot \ln(1 + a_i) \quad \text{where } \theta = 20.0$$
 
 **Power Individual Value** (Equation 3, TR-1):
 
-$$f_i(a_i) = a_i^{\beta} \quad \text{where } \beta = 0.75$$
+$$\Large f_i(a_i) = a_i^{\beta} \quad \text{where } \beta = 0.75$$
 
 **Geometric Mean Synergy** (Equation 4, TR-1):
 
-$$g(a_1, \ldots, a_N) = \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
+$$\Large g(a_1, \ldots, a_N) = \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
 
 **Private Payoff** (Equation 11, TR-1):
 
-$$\pi_i(\mathbf{a}) = e_i - a_i + f_i(a_i) + \alpha_i \left[V(\mathbf{a}) - \sum_{j=1}^{N} f_j(a_j)\right]$$
+$$\Large \pi_i(\mathbf{a}) = e_i - a_i + f_i(a_i) + \alpha_i \left[V(\mathbf{a}) - \sum_{j=1}^{N} f_j(a_j)\right]$$
 
 **Integrated Utility** (Equation 13, TR-1):
 
-$$U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_j(\mathbf{a})$$
+$$\Large U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_j(\mathbf{a})$$
 
 ### Pillar 2: Trust Dynamics
 
 **Cooperation Signal** (Equation 4, TR-2):
 
-$$s_{ij}^t = \tanh\left(\kappa \cdot (a_j^t - a_j^{\text{baseline}})\right)$$
+$$\Large s_{ij}^t = \tanh\left(\kappa \cdot (a_j^t - a_j^{\text{baseline}})\right)$$
 
 **Trust Evolution** (Equation 5, TR-2):
 
-$$T_{ij}^{t+1} = T_{ij}^t + \Delta T_{ij}^t$$
+$$\Large T_{ij}^{t+1} = T_{ij}^t + \Delta T_{ij}^t$$
 
 where:
 
-$$\Delta T_{ij}^t = \begin{cases} \lambda^+ \cdot s \cdot (\Theta - T) & \text{if } s > 0 \text{ (building)} \\ -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij}) & \text{if } s \leq 0 \text{ (erosion)} \end{cases}$$
+$$\Large \Delta T_{ij}^t = \begin{cases} \lambda^+ \cdot s \cdot (\Theta - T) & \text{if } s > 0 \text{ (building)} \\ -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij}) & \text{if } s \leq 0 \text{ (erosion)} \end{cases}$$
 
 **Trust Ceiling** (Equation 7, TR-2):
 
-$$\Theta_{ij}^t = 1 - R_{ij}^t$$
+$$\Large \Theta_{ij}^t = 1 - R_{ij}^t$$
 
 **Reputation Evolution** (Equation 8, TR-2):
 
-$$R_{ij}^{t+1} = R_{ij}^t + \Delta R_{ij}^t - \delta_R \cdot R_{ij}^t$$
+$$\Large R_{ij}^{t+1} = R_{ij}^t + \Delta R_{ij}^t - \delta_R \cdot R_{ij}^t$$
 
 where:
 
-$$\Delta R_{ij}^t = \begin{cases} \mu_R \cdot |s| \cdot (1 - R) & \text{if } s < 0 \text{ (damage)} \\ 0 & \text{if } s \geq 0 \text{ (no damage)} \end{cases}$$
+$$\Large \Delta R_{ij}^t = \begin{cases} \mu_R \cdot |s| \cdot (1 - R) & \text{if } s < 0 \text{ (damage)} \\ 0 & \text{if } s \geq 0 \text{ (no damage)} \end{cases}$$
 
 ---
 
