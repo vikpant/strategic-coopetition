@@ -370,6 +370,22 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 - [Tutorials](tutorials/index.md)
 - [Environment Reference](environments/index.md)
 - [API Documentation](api/index.md)
+- [Benchmark Results](benchmarks/index.md) **NEW**
 - [Evaluation Protocol](evaluation_protocol.md)
 - [Troubleshooting](troubleshooting.md)
 - [Contributing](contributing.md)
+
+---
+
+## Benchmark Highlights
+
+We have evaluated **20 MARL algorithms** across all 10 environments with **760 experiments** totaling **76,000 evaluation episodes**. Key findings:
+
+| Finding | Implication |
+|---------|-------------|
+| Simple heuristics (Constant_050) outperform all learning algorithms | Predictable cooperation builds trust |
+| Trust-Return correlation: r = 0.552 | Trust causally drives performance |
+| Population methods (Self-Play, FCP) fail catastrophically | Nash equilibria are Pareto-suboptimal |
+| CTDE methods cluster together | Centralized critic dominates actor architecture |
+
+See [Benchmark Results](benchmarks/index.md) for comprehensive analysis.
