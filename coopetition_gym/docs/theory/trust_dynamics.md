@@ -174,7 +174,7 @@ The baseline a_j^baseline is context-specific:
 
 Trust evolution is fundamentally asymmetric: violations hurt more than cooperation helps.
 
-![Negativity Bias Visualization](../assets/images/negativity_bias.png)
+![Negativity Bias Animation](../assets/images/negativity_bias.gif)
 
 *Three cooperative events produce smaller trust gains than one defection event erases. The 3:1 ratio means a single betrayal can undo months of trust-building.*
 

@@ -256,7 +256,7 @@ V(a|γ) = Σ f_i(a_i) + γ × g(a_1, ..., a_N)
 
 ### Trust Dynamics (TR-2)
 
-![Cooperation-Trust Phase Space](assets/images/phase_space.png)
+![Cooperation-Trust Phase Space](assets/images/phase_space.gif)
 
 *Phase space showing relationship between cooperation and trust. Sustainable partnerships exist in the upper-right quadrant; low cooperation erodes trust while trust enables higher cooperation.*
 
@@ -470,7 +470,7 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 
 ## Benchmark Highlights
 
-![Algorithm Performance Comparison](assets/images/algorithm_comparison.png)
+![Algorithm Performance Comparison](assets/images/algorithm_comparison.gif)
 
 *Normalized performance across 20 MARL algorithms by category. Simple heuristics surprisingly outperform complex learning approaches in coopetitive environments.*
 

@@ -21,7 +21,7 @@ The synthesis produces environments where:
 
 ### Research Program Architecture
 
-![Research Program Architecture](../assets/images/architecture_diagram.png)
+![Research Program Architecture](../assets/images/architecture_diagram.gif)
 
 *Four-pillar research program: Pillars 1 & 2 are implemented, Pillars 3 & 4 are planned.*
 

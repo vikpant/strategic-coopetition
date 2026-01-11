@@ -8,7 +8,7 @@ This document provides a comprehensive treatment of value creation and complemen
 
 ## Value Creation at a Glance
 
-![Value Creation Visualization](../assets/images/value_creation.png)
+![Value Creation Animation](../assets/images/value_creation.gif)
 
 *Left: Individual value function with diminishing returns. Center: Synergy heatmap showing value peaks at balanced contributions. Right: The green "Added Value" region shows superadditive gains from complementarity—17% extra value at equal contributions.*
 
@@ -102,18 +102,10 @@ f_i(a_i) = θ × ln(1 + a_i)    where θ = 20.0
 - Initial slope = θ (steep initial returns)
 
 **Graphical Intuition**:
-```
-Value
-  │
-θ │                    ___________
-  │               ____/
-  │          ____/
-  │      ___/
-  │   __/
-  │__/
-  └────────────────────────────── Action
-  0                              a_i
-```
+
+![Value Function Animation](../assets/images/value_function.gif)
+
+*Logarithmic value function showing steep initial returns that flatten as cooperation increases—demonstrating diminishing marginal value.*
 
 **When to Use**: Manufacturing partnerships, technology joint ventures, scenarios where baseline capabilities are highly valuable but incremental improvements have declining impact.
 
