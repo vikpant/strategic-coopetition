@@ -53,6 +53,10 @@ print(f"Action space: {env.action_space}")
 
 ## Overview
 
+![Coopetition Dynamics Animation](assets/images/interaction_animation.gif)
+
+*Two-agent coopetition: agents balance cooperation (green) and competition (red) over time, with trust (purple) evolving based on their choices.*
+
 **Coopetition-Gym** is a Python research library providing multi-agent reinforcement learning environments for studying *coopetitive dynamics*—scenarios where agents must simultaneously cooperate and compete. The library implements mathematical frameworks from published research:
 
 - **TR-1**: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802)
@@ -179,55 +183,128 @@ Advanced scenarios with additional mechanics.
 
 ## Core Concepts
 
+> **For Researchers**: Full mathematical derivations, proofs, and validation methodology are available in the [Theoretical Foundations](theory/index.md) documentation and the published technical reports.
+>
+> **For Practitioners**: The summaries below provide the essential intuition needed to use the environments effectively.
+
 ### Coopetitive Dynamics
 
-Coopetition occurs when entities simultaneously cooperate (to create value) and compete (to capture value). Examples include:
+Coopetition occurs when entities simultaneously cooperate (to create value) and compete (to capture value). As Brandenburger and Nalebuff articulated: actors *"cooperate to grow the pie and compete to split it up."*
 
-- **Technology Standards**: Competitors collaborate on standards while competing in products
-- **Joint Ventures**: Partners invest jointly but negotiate surplus division
-- **Platform Ecosystems**: Developers depend on platforms that also compete with them
+**Real-World Examples**:
+- **Technology Standards**: Competitors collaborate on standards while competing in products (e.g., Bluetooth SIG members)
+- **Joint Ventures**: Partners invest jointly but negotiate surplus division (e.g., Samsung-Sony S-LCD)
+- **Platform Ecosystems**: Developers depend on platforms that also compete with them (e.g., iOS App Store)
+- **Supply Chains**: Suppliers share information for efficiency while competing for contracts
 
-### Integrated Utility (TR-1)
+**The Coopetition Paradox**: The same relationship exhibits both cooperative and competitive dynamics simultaneously—not sequentially or in separate domains. This creates strategic tension that standard game theory struggles to capture.
 
-Agents maximize *integrated utility* that accounts for partner outcomes:
+### Interdependence & Structural Coupling (TR-1)
+
+Interdependence captures why actors must consider partner outcomes even while competing. When Actor A depends on Actor B for critical resources, A's success structurally requires B's success—creating *instrumental* concern for B's welfare distinct from altruism.
+
+**The Interdependence Matrix** quantifies structural dependencies:
 
 ```
-U_i = (e_i - a_i) + f(a_i) + α_i × Synergy + Σ(D_ij × payoff_j)
+D_ij = Σ(w_d × Dep(i,j,d) × crit(i,j,d)) / Σw_d
 ```
 
-Where:
-- `e_i - a_i`: Retained resources (endowment minus investment)
-- `f(a_i)`: Value created from investment
-- `α_i × Synergy`: Share of collaborative surplus
-- `D_ij × payoff_j`: Value from partners' success (interdependence)
+| Component | Meaning | Example |
+|-----------|---------|---------|
+| `w_d` | Importance weight of goal d | Revenue goal: 0.8, Brand goal: 0.2 |
+| `Dep(i,j,d)` | Does i depend on j for d? | Developer depends on platform for distribution |
+| `crit(i,j,d)` | Criticality (1 = sole provider) | API provider with no alternatives: 1.0 |
+
+**Key Insight**: D_ij ≠ D_ji in general. Asymmetric dependencies create power imbalances—a startup may critically depend on a platform (D_startup,platform ≈ 0.8) while the platform barely notices any single startup (D_platform,startup ≈ 0.01).
+
+### Integrated Utility Function (TR-1)
+
+Agents maximize *integrated utility* that accounts for partner outcomes through structural coupling:
+
+```
+U_i(a) = π_i(a) + Σ D_ij × π_j(a)
+```
+
+**Components Explained**:
+
+| Term | Formula | Intuition |
+|------|---------|-----------|
+| Private Payoff | `π_i = e_i - a_i + f(a_i) + α_i × Synergy` | What I keep + what I create + my share of joint value |
+| Interdependence Term | `Σ D_ij × π_j` | Partner success weighted by my dependency on them |
+
+**Why This Matters**: Classical Nash Equilibrium assumes purely self-interested payoffs. The *Coopetitive Equilibrium* extends Nash by incorporating dependency-weighted concern for partner outcomes—capturing why dependent actors rationally care about partner success.
+
+### Value Creation & Complementarity (TR-1)
+
+Complementarity creates the cooperative incentive: joint action produces superadditive value exceeding independent contributions.
+
+```
+V(a|γ) = Σ f_i(a_i) + γ × g(a_1, ..., a_N)
+```
+
+**Two Validated Specifications**:
+
+| Specification | Individual Value f(a) | Synergy g(a) | Best For |
+|---------------|----------------------|--------------|----------|
+| **Logarithmic** (default) | θ × ln(1 + a_i), θ=20 | Geometric mean | Manufacturing JVs (58/60 validation) |
+| **Power** | a_i^β, β=0.75 | Geometric mean | General scenarios (46/60 validation) |
+
+**Key Parameters** (validated across 22,000+ trials):
+- **θ = 20.0**: Logarithmic scale producing realistic cooperation magnitudes
+- **β = 0.75**: Diminishing returns reflecting investment economics
+- **γ = 0.65**: Complementarity strength balancing individual and joint value
 
 ### Trust Dynamics (TR-2)
 
-Trust evolves asymmetrically with a **negativity bias**:
+![Cooperation-Trust Phase Space](assets/images/phase_space.png)
+
+*Phase space showing relationship between cooperation and trust. Sustainable partnerships exist in the upper-right quadrant; low cooperation erodes trust while trust enables higher cooperation.*
+
+Trust evolves through a **two-layer architecture** capturing both immediate behavioral responses and long-term memory:
+
+| Layer | Symbol | Updates | Captures |
+|-------|--------|---------|----------|
+| Immediate Trust | T_ij ∈ [0,1] | Every interaction | Current confidence in partner |
+| Reputation Damage | R_ij ∈ [0,1] | On violations | Historical memory of betrayals |
+
+**Asymmetric Evolution with Negativity Bias**:
 
 ```
-τ(t+1) = τ(t) + λ⁺ × max(0, signal) - λ⁻ × max(0, -signal)
+Trust Building:  ΔT = λ⁺ × signal × (ceiling - T)     [λ⁺ = 0.10]
+Trust Erosion:   ΔT = -λ⁻ × |signal| × T × (1 + ξD)  [λ⁻ = 0.30]
 ```
 
-Key properties:
-- **Slow to build**: `λ⁺` ≈ 0.08-0.15
-- **Fast to erode**: `λ⁻` ≈ 0.25-0.45 (3:1 ratio)
-- **Reputation hysteresis**: Trust ceiling `Θ = 1 - R` creates permanent limits
-- **Interdependence amplification**: Higher dependency magnifies trust effects
+**The 3:1 Ratio**: Trust erodes approximately 3× faster than it builds (λ⁻/λ⁺ ≈ 3.0). This negativity bias, validated against behavioral economics research, explains why:
+- A single major violation can destroy months of trust-building
+- Consistent cooperation is essential for sustainable partnerships
+- Recovery from betrayal requires sustained effort over extended periods
 
-### Value Functions
-
-Two specifications for value creation:
-
-**Logarithmic** (default):
+**Trust Ceiling Mechanism**:
 ```
-V = θ × ln(Σ actions) × (1 + γ × complementarity)
+Θ = 1 - R  (reputation damage limits maximum achievable trust)
 ```
 
-**Power**:
+Even with perfect cooperation, damaged reputation prevents trust from fully recovering—creating permanent relationship constraints (hysteresis).
+
+**Interdependence Amplification**: High-dependency relationships experience 27% faster trust erosion for equivalent violations:
 ```
-V = (Σ actions)^β × (1 + γ × complementarity)
+Erosion factor = (1 + ξ × D_ij)  where ξ = 0.50
 ```
+
+When you depend heavily on a partner, their betrayal hurts more.
+
+### Empirical Validation
+
+The mathematical framework has been validated against real business partnerships:
+
+| Case Study | Validation Score | Key Dynamics Captured |
+|------------|------------------|----------------------|
+| **Samsung-Sony S-LCD** (2004-2011) | 58/60 (96.7%) | Interdependence, complementarity, cooperation levels |
+| **Renault-Nissan Alliance** (1999-2025) | 49/60 (81.7%) | Trust evolution, crisis, recovery across 5 phases |
+
+These validations ensure the environments produce realistic coopetitive dynamics rather than artificial constructs.
+
+> **Learn More**: See [Theoretical Foundations](theory/index.md) for complete mathematical derivations, [Parameter Reference](theory/parameters.md) for validated values, and [Benchmark Results](benchmarks/index.md) for algorithm performance analysis.
 
 ---
 
@@ -366,18 +443,36 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 
 ## Navigation
 
+### Getting Started
 - [Installation Guide](installation.md)
 - [Tutorials](tutorials/index.md)
+- [Quick Start](tutorials/quickstart.md)
+
+### Reference
 - [Environment Reference](environments/index.md)
 - [API Documentation](api/index.md)
-- [Benchmark Results](benchmarks/index.md) **NEW**
+- [Parameter Reference](theory/parameters.md)
+
+### Theory & Research
+- [Theoretical Foundations](theory/index.md) **NEW**
+  - [Interdependence Framework](theory/interdependence.md)
+  - [Value Creation & Complementarity](theory/value_creation.md)
+  - [Trust Dynamics](theory/trust_dynamics.md)
+- [Benchmark Results](benchmarks/index.md)
+- [Implementation Roadmap](roadmap.md) **NEW**
+
+### Development
 - [Evaluation Protocol](evaluation_protocol.md)
-- [Troubleshooting](troubleshooting.md)
 - [Contributing](contributing.md)
+- [Troubleshooting](troubleshooting.md)
 
 ---
 
 ## Benchmark Highlights
+
+![Algorithm Performance Comparison](assets/images/algorithm_comparison.png)
+
+*Normalized performance across 20 MARL algorithms by category. Simple heuristics surprisingly outperform complex learning approaches in coopetitive environments.*
 
 We have evaluated **20 MARL algorithms** across all 10 environments with **760 experiments** totaling **76,000 evaluation episodes**. Key findings:
 
