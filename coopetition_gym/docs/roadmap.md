@@ -10,26 +10,16 @@ This document outlines the research-driven development roadmap for Coopetition-G
 
 Coopetition-Gym implements a coordinated research program examining strategic coopetition in multi-agent systems. The program addresses five dimensions of coopetitive relationships through four technical reports:
 
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    COMPUTATIONAL FOUNDATIONS FOR                            │
-│                      STRATEGIC COOPETITION                                  │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                             │
-│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  ┌─────────┐│
-│  │   PILLAR 1      │  │   PILLAR 2      │  │   PILLAR 3      │  │PILLAR 4 ││
-│  │ Interdependence │  │ Trust Dynamics  │  │ Team Production │  │Reciproc.││
-│  │ & Complementar. │  │ & Reputation    │  │ & Loyalty       │  │& Condit.││
-│  │                 │  │                 │  │                 │  │         ││
-│  │  ✓ IMPLEMENTED  │  │  ✓ IMPLEMENTED  │  │    PLANNED      │  │ PLANNED ││
-│  │                 │  │                 │  │                 │  │         ││
-│  │   TR-2025-01    │  │   TR-2025-02    │  │   TR-2025-03    │  │TR-2025-04│
-│  │  arXiv:2510.    │  │  arXiv:2510.    │  │    (Draft)      │  │ (Draft) ││
-│  │     18802       │  │     24909       │  │                 │  │         ││
-│  └─────────────────┘  └─────────────────┘  └─────────────────┘  └─────────┘│
-│                                                                             │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
+![Research Program Architecture](assets/images/architecture_diagram.gif)
+
+*Four-pillar research architecture: Pillars 1 & 2 (Interdependence, Trust) are fully implemented; Pillars 3 & 4 (Team Production, Reciprocity) are planned for future releases.*
+
+| Pillar | Focus | Technical Report | Status |
+|--------|-------|------------------|--------|
+| **1** | Interdependence & Complementarity | [TR-2025-01](https://arxiv.org/abs/2510.18802) | ✓ Implemented |
+| **2** | Trust & Reputation Dynamics | [TR-2025-02](https://arxiv.org/abs/2510.24909) | ✓ Implemented |
+| **3** | Team Production & Loyalty | TR-2025-03 (Draft) | Planned |
+| **4** | Reciprocity & Conditionality | TR-2025-04 (Draft) | Planned |
 
 ---
 
@@ -235,37 +225,14 @@ U_i(a, T) = U_base + Σ λ_T × T_ij × (1 + ω×D_ij) × ρ_ij × R_ij
 
 ## Implementation Timeline
 
-```
-2025 Q1-Q2: Pillars 1 & 2 Implementation ────────────────── ✓ COMPLETE
-            - Core mathematical framework
-            - 10 base environments
-            - Case study validation (S-LCD, Renault-Nissan)
-
-2025 Q3:    Benchmark Suite ─────────────────────────────── ✓ COMPLETE
-            - 20 algorithm evaluation
-            - 760 experiments (76,000 episodes)
-            - Comprehensive documentation
-
-2025 Q4:    Theory Documentation ────────────────────────── IN PROGRESS
-            - theory/ documentation subdirectory
-            - Parameter reference guide
-            - Research insights publication
-
-2026 Q1:    Pillar 3 Implementation ─────────────────────── PLANNED
-            - Team production mechanics
-            - Loyalty mechanisms
-            - AgileTeam-v0, OpenSourceProject-v0
-
-2026 Q2:    Pillar 4 Implementation ─────────────────────── PLANNED
-            - Reciprocity dynamics
-            - Sequential cooperation
-            - SequentialNegotiation-v0, AllianceRecovery-v0
-
-2026 Q3:    Integration & Validation ────────────────────── PLANNED
-            - Cross-pillar environment combinations
-            - Extended benchmark suite
-            - Multi-level dynamics (teams + trust + reciprocity)
-```
+| Period | Milestone | Deliverables | Status |
+|--------|-----------|--------------|--------|
+| **2025 Q1-Q2** | Pillars 1 & 2 Implementation | Core mathematical framework, 10 base environments, S-LCD & Renault-Nissan validation | ✓ Complete |
+| **2025 Q3** | Benchmark Suite | 20 algorithm evaluation, 760 experiments (76,000 episodes), comprehensive documentation | ✓ Complete |
+| **2025 Q4** | Theory Documentation | theory/ documentation subdirectory, parameter reference guide, research insights | In Progress |
+| **2026 Q1** | Pillar 3 Implementation | Team production mechanics, loyalty mechanisms, AgileTeam-v0, OpenSourceProject-v0 | Planned |
+| **2026 Q2** | Pillar 4 Implementation | Reciprocity dynamics, sequential cooperation, SequentialNegotiation-v0, AllianceRecovery-v0 | Planned |
+| **2026 Q3** | Integration & Validation | Cross-pillar environment combinations, extended benchmark suite, multi-level dynamics | Planned |
 
 ---
 

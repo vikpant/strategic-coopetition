@@ -8,7 +8,7 @@ This document provides a comprehensive treatment of the interdependence formaliz
 
 ## Interdependence at a Glance
 
-![Interdependence Matrix Heatmap](../assets/images/interdependence_matrix.png)
+![Interdependence Matrix Animation](../assets/images/interdependence_matrix.gif)
 
 *Example interdependence matrix for a platform ecosystem. Notice the asymmetry: developers depend heavily on the platform (D ≈ 0.75-0.85) while the platform has only moderate dependency on any single developer (D ≈ 0.10-0.18).*
 
@@ -68,27 +68,9 @@ The i* framework (Yu, 1995) provides the conceptual basis for interdependence an
 
 ### Example: Platform Ecosystem
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    i* DEPENDENCY NETWORK                        │
-│                                                                 │
-│     ┌──────────┐                          ┌──────────┐          │
-│     │ Platform │                          │Developer │          │
-│     │ Provider │                          │   App    │          │
-│     └────┬─────┘                          └────┬─────┘          │
-│          │                                     │                │
-│          │ depends on                          │ depends on     │
-│          │ (user engagement)                   │ (API access)   │
-│          ▼                                     ▼                │
-│     ┌──────────┐                          ┌──────────┐          │
-│     │Developer │                          │ Platform │          │
-│     │   App    │                          │ Provider │          │
-│     └──────────┘                          └──────────┘          │
-│                                                                 │
-│     D_platform,developer = 0.35    D_developer,platform = 0.80  │
-│     (moderate)                     (high)                       │
-└─────────────────────────────────────────────────────────────────┘
-```
+![Platform Ecosystem Dependencies](../assets/images/platform_dependency.gif)
+
+*i* dependency network showing asymmetric relationships: developers depend heavily on the platform (D = 0.80) while the platform has moderate dependency on any single developer (D = 0.35).*
 
 **Asymmetry**: The developer critically depends on the platform (D = 0.80), while the platform moderately depends on any single developer (D = 0.35). This asymmetry has profound strategic implications.
 
@@ -319,26 +301,9 @@ a* is Coopetitive Equilibrium if:
 
 The translation process is inherently iterative:
 
-```
-┌─────────────────┐      ┌─────────────────┐
-│   i* Conceptual │ ◄──► │  Computational  │
-│      Model      │      │     Model       │
-└────────┬────────┘      └────────┬────────┘
-         │                        │
-         │    Quantification      │
-         │    reveals gaps        │
-         │◄───────────────────────┤
-         │                        │
-         │    Equilibrium analysis│
-         │    suggests new        │
-         ├───────────────────────►│
-         │    dependencies        │
-         │                        │
-         ▼                        ▼
-┌─────────────────────────────────────────┐
-│          Refined Understanding          │
-└─────────────────────────────────────────┘
-```
+![Iterative Refinement Process](../assets/images/iterative_refinement.gif)
+
+*Bidirectional flow between conceptual and computational models: quantification reveals gaps in the i* model, while equilibrium analysis suggests new dependencies to explore.*
 
 ---
 
