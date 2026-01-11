@@ -86,9 +86,8 @@ Individual value represents what each actor contributes independently of collabo
 #### Logarithmic Specification (Recommended)
 
 **Equation 6 (TR-1)**:
-```
-f_i(a_i) = θ × ln(1 + a_i)    where θ = 20.0
-```
+
+$$\Large f_i(a_i) = \theta \cdot \ln(1 + a_i) \quad \text{where } \theta = 20.0$$
 
 **Properties**:
 - Strictly increasing: more action → more value
@@ -107,9 +106,8 @@ f_i(a_i) = θ × ln(1 + a_i)    where θ = 20.0
 #### Power Specification (Alternative)
 
 **Equation 3 (TR-1)**:
-```
-f_i(a_i) = a_i^β    where β = 0.75
-```
+
+$$\Large f_i(a_i) = a_i^{\beta} \quad \text{where } \beta = 0.75$$
 
 **Properties**:
 - Strictly increasing
@@ -181,47 +179,37 @@ The geometric mean captures the intuition that:
 To verify that V(a|γ) exhibits superadditivity, consider two actors choosing actions (a_1, a_2).
 
 **Joint Value** (power specification):
-```
-V({a_1, a_2}) = a_1^β + a_2^β + γ√(a_1 × a_2)
-```
+
+$$\Large V(\{a_1, a_2\}) = a_1^{\beta} + a_2^{\beta} + \gamma \sqrt{a_1 \cdot a_2}$$
 
 **Independent Values**:
-```
-V({a_1}) = a_1^β
-V({a_2}) = a_2^β
-```
+
+$$V(\{a_1\}) = a_1^{\beta} \quad \text{and} \quad V(\{a_2\}) = a_2^{\beta}$$
 
 **Superadditivity Condition**:
-```
-V({a_1, a_2}) > V({a_1}) + V({a_2})
 
-⟺ a_1^β + a_2^β + γ√(a_1 × a_2) > a_1^β + a_2^β
+$$V(\{a_1, a_2\}) > V(\{a_1\}) + V(\{a_2\})$$
 
-⟺ γ√(a_1 × a_2) > 0
-```
+$$\Leftrightarrow a_1^{\beta} + a_2^{\beta} + \gamma \sqrt{a_1 \cdot a_2} > a_1^{\beta} + a_2^{\beta}$$
 
-This holds for any γ > 0 and positive actions, confirming superadditivity. The synergy term γ√(a_1 × a_2) represents **Added Value** from collaboration.
+$$\Leftrightarrow \gamma \sqrt{a_1 \cdot a_2} > 0$$
+
+This holds for any $\gamma > 0$ and positive actions, confirming superadditivity. The synergy term $\gamma \sqrt{a_1 \cdot a_2}$ represents **Added Value** from collaboration.
 
 ### Quantifying Added Value
 
 **Example**: Both actors invest 50 units, γ = 0.65, θ = 20
 
 **Logarithmic Specification**:
-```
-Individual values:
-  f_1(50) = 20 × ln(51) = 78.64
-  f_2(50) = 20 × ln(51) = 78.64
 
-Synergy:
-  g(50, 50) = √(50 × 50) = 50
-  Synergy value = 0.65 × 50 = 32.50
-
-Total value:
-  V = 78.64 + 78.64 + 32.50 = 189.78
-
-Added Value from collaboration:
-  189.78 - (78.64 + 78.64) = 32.50 (17% increase)
-```
+| Component | Formula | Result |
+|-----------|---------|--------|
+| Individual values | $f_1(50) = 20 \cdot \ln(51)$ | 78.64 |
+| | $f_2(50) = 20 \cdot \ln(51)$ | 78.64 |
+| Synergy | $g(50, 50) = \sqrt{50 \times 50}$ | 50 |
+| Synergy value | $0.65 \times 50$ | 32.50 |
+| **Total value** | $V = 78.64 + 78.64 + 32.50$ | **189.78** |
+| **Added Value** | $189.78 - (78.64 + 78.64)$ | **32.50 (17% increase)** |
 
 ---
 
@@ -232,9 +220,8 @@ Added Value from collaboration:
 Value creation determines *how much* total value exists. Value appropriation determines *who gets it*.
 
 **Equation 11 (TR-1)**:
-```
-π_i(a) = e_i - a_i + f_i(a_i) + α_i × [V(a) - Σf_j(a_j)]
-```
+
+$$\Large \pi_i(\mathbf{a}) = e_i - a_i + f_i(a_i) + \alpha_i \left[V(\mathbf{a}) - \sum_{j=1}^{N} f_j(a_j)\right]$$
 
 **Components**:
 
@@ -248,9 +235,8 @@ Value creation determines *how much* total value exists. Value appropriation det
 ### Synergy = Collaborative Surplus
 
 The synergy being divided is:
-```
-Synergy = V(a) - Σf_j(a_j) = γ × g(a_1, ..., a_N)
-```
+
+$$\Large \text{Synergy} = V(\mathbf{a}) - \sum_{j=1}^{N} f_j(a_j) = \gamma \cdot g(a_1, \ldots, a_N)$$
 
 This is the **Added Value** from collaboration—value that exists only because actors worked together.
 

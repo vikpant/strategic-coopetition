@@ -205,32 +205,28 @@ Interdependence captures why actors must consider partner outcomes even while co
 
 **The Interdependence Matrix** quantifies structural dependencies:
 
-```
-D_ij = Σ(w_d × Dep(i,j,d) × crit(i,j,d)) / Σw_d
-```
+$$\Large D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \cdot \text{crit}(i,j,d)}{\sum_{d \in \mathcal{D}_i} w_d}$$
 
 | Component | Meaning | Example |
 |-----------|---------|---------|
-| `w_d` | Importance weight of goal d | Revenue goal: 0.8, Brand goal: 0.2 |
-| `Dep(i,j,d)` | Does i depend on j for d? | Developer depends on platform for distribution |
-| `crit(i,j,d)` | Criticality (1 = sole provider) | API provider with no alternatives: 1.0 |
+| $w_d$ | Importance weight of goal d | Revenue goal: 0.8, Brand goal: 0.2 |
+| $\text{Dep}(i,j,d)$ | Does i depend on j for d? | Developer depends on platform for distribution |
+| $\text{crit}(i,j,d)$ | Criticality (1 = sole provider) | API provider with no alternatives: 1.0 |
 
-**Key Insight**: D_ij ≠ D_ji in general. Asymmetric dependencies create power imbalances—a startup may critically depend on a platform (D_startup,platform ≈ 0.8) while the platform barely notices any single startup (D_platform,startup ≈ 0.01).
+**Key Insight**: $D_{ij} \neq D_{ji}$ in general. Asymmetric dependencies create power imbalances—a startup may critically depend on a platform ($D_{\text{startup,platform}} \approx 0.8$) while the platform barely notices any single startup ($D_{\text{platform,startup}} \approx 0.01$).
 
 ### Integrated Utility Function (TR-1)
 
 Agents maximize *integrated utility* that accounts for partner outcomes through structural coupling:
 
-```
-U_i(a) = π_i(a) + Σ D_ij × π_j(a)
-```
+$$\Large U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_j(\mathbf{a})$$
 
 **Components Explained**:
 
 | Term | Formula | Intuition |
 |------|---------|-----------|
-| Private Payoff | `π_i = e_i - a_i + f(a_i) + α_i × Synergy` | What I keep + what I create + my share of joint value |
-| Interdependence Term | `Σ D_ij × π_j` | Partner success weighted by my dependency on them |
+| Private Payoff | $\pi_i = e_i - a_i + f(a_i) + \alpha_i \cdot \text{Synergy}$ | What I keep + what I create + my share of joint value |
+| Interdependence Term | $\sum_{j} D_{ij} \cdot \pi_j$ | Partner success weighted by my dependency on them |
 
 **Why This Matters**: Classical Nash Equilibrium assumes purely self-interested payoffs. The *Coopetitive Equilibrium* extends Nash by incorporating dependency-weighted concern for partner outcomes—capturing why dependent actors rationally care about partner success.
 
@@ -238,16 +234,14 @@ U_i(a) = π_i(a) + Σ D_ij × π_j(a)
 
 Complementarity creates the cooperative incentive: joint action produces superadditive value exceeding independent contributions.
 
-```
-V(a|γ) = Σ f_i(a_i) + γ × g(a_1, ..., a_N)
-```
+$$\Large V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_1, \ldots, a_N)$$
 
 **Two Validated Specifications**:
 
-| Specification | Individual Value f(a) | Synergy g(a) | Best For |
+| Specification | Individual Value $f(a)$ | Synergy $g(a)$ | Best For |
 |---------------|----------------------|--------------|----------|
-| **Logarithmic** (default) | θ × ln(1 + a_i), θ=20 | Geometric mean | Manufacturing JVs (58/60 validation) |
-| **Power** | a_i^β, β=0.75 | Geometric mean | General scenarios (46/60 validation) |
+| **Logarithmic** (default) | $\theta \cdot \ln(1 + a_i)$, $\theta=20$ | Geometric mean | Manufacturing JVs (58/60 validation) |
+| **Power** | $a_i^{\beta}$, $\beta=0.75$ | Geometric mean | General scenarios (46/60 validation) |
 
 **Key Parameters** (validated across 22,000+ trials):
 - **θ = 20.0**: Logarithmic scale producing realistic cooperation magnitudes
@@ -264,32 +258,27 @@ Trust evolves through a **two-layer architecture** capturing both immediate beha
 
 | Layer | Symbol | Updates | Captures |
 |-------|--------|---------|----------|
-| Immediate Trust | T_ij ∈ [0,1] | Every interaction | Current confidence in partner |
-| Reputation Damage | R_ij ∈ [0,1] | On violations | Historical memory of betrayals |
+| Immediate Trust | $T_{ij} \in [0,1]$ | Every interaction | Current confidence in partner |
+| Reputation Damage | $R_{ij} \in [0,1]$ | On violations | Historical memory of betrayals |
 
 **Asymmetric Evolution with Negativity Bias**:
 
-```
-Trust Building:  ΔT = λ⁺ × signal × (ceiling - T)     [λ⁺ = 0.10]
-Trust Erosion:   ΔT = -λ⁻ × |signal| × T × (1 + ξD)  [λ⁻ = 0.30]
-```
+$$\Large \Delta T = \begin{cases} \lambda^+ \cdot s \cdot (\Theta - T) & \text{if } s > 0 \quad [\lambda^+ = 0.10] \\ -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi D) & \text{if } s \leq 0 \quad [\lambda^- = 0.30] \end{cases}$$
 
-**The 3:1 Ratio**: Trust erodes approximately 3× faster than it builds (λ⁻/λ⁺ ≈ 3.0). This negativity bias, validated against behavioral economics research, explains why:
+**The 3:1 Ratio**: Trust erodes approximately 3× faster than it builds ($\lambda^-/\lambda^+ \approx 3.0$). This negativity bias, validated against behavioral economics research, explains why:
 - A single major violation can destroy months of trust-building
 - Consistent cooperation is essential for sustainable partnerships
 - Recovery from betrayal requires sustained effort over extended periods
 
 **Trust Ceiling Mechanism**:
-```
-Θ = 1 - R  (reputation damage limits maximum achievable trust)
-```
+
+$$\Large \Theta = 1 - R \quad \text{(reputation damage limits maximum achievable trust)}$$
 
 Even with perfect cooperation, damaged reputation prevents trust from fully recovering—creating permanent relationship constraints (hysteresis).
 
 **Interdependence Amplification**: High-dependency relationships experience 27% faster trust erosion for equivalent violations:
-```
-Erosion factor = (1 + ξ × D_ij)  where ξ = 0.50
-```
+
+$$\Large \text{Erosion factor} = (1 + \xi \cdot D_{ij}) \quad \text{where } \xi = 0.50$$
 
 When you depend heavily on a partner, their betrayal hurts more.
 
@@ -340,12 +329,12 @@ Higher actions = more cooperation/investment.
 
 | Parameter | Symbol | Typical Range | Description |
 |-----------|--------|---------------|-------------|
-| Trust Building Rate | λ⁺ | 0.08 - 0.15 | Speed of trust increase |
-| Trust Erosion Rate | λ⁻ | 0.25 - 0.45 | Speed of trust decrease |
-| Reputation Damage | μ_R | 0.45 - 0.70 | Damage from violations |
-| Reputation Decay | δ_R | 0.01 - 0.03 | Forgetting rate |
-| Interdependence Amp. | ξ | 0.40 - 0.70 | Dependency amplification |
-| Signal Sensitivity | κ | 1.0 - 1.5 | Action sensitivity |
+| Trust Building Rate | $\lambda^+$ | 0.08 - 0.15 | Speed of trust increase |
+| Trust Erosion Rate | $\lambda^-$ | 0.25 - 0.45 | Speed of trust decrease |
+| Reputation Damage | $\mu_R$ | 0.45 - 0.70 | Damage from violations |
+| Reputation Decay | $\delta_R$ | 0.01 - 0.03 | Forgetting rate |
+| Interdependence Amp. | $\xi$ | 0.40 - 0.70 | Dependency amplification |
+| Signal Sensitivity | $\kappa$ | 1.0 - 1.5 | Action sensitivity |
 
 ### Value Function Parameters
 

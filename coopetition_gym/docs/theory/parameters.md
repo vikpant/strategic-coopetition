@@ -45,10 +45,10 @@ R_INIT = 0.00         # Initial reputation damage
 | Complementarity | γ | **0.65** | [0.50, 0.80] | TR-1 §7.2, multi-criteria |
 
 **Usage**:
-```python
-f_i(a_i) = θ × ln(1 + a_i)
-V(a|γ) = Σ f_i(a_i) + γ × (∏a_i)^(1/N)
-```
+
+$$f_i(a_i) = \theta \cdot \ln(1 + a_i)$$
+
+$$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
 
 **Validation Performance**: 58/60 (96.7%) on Samsung-Sony S-LCD case study
 
@@ -62,10 +62,10 @@ V(a|γ) = Σ f_i(a_i) + γ × (∏a_i)^(1/N)
 | Complementarity | γ | **0.65** | [0.50, 0.80] | TR-1 §7.2 |
 
 **Usage**:
-```python
-f_i(a_i) = a_i^β
-V(a|γ) = Σ f_i(a_i) + γ × (∏a_i)^(1/N)
-```
+
+$$f_i(a_i) = a_i^{\beta}$$
+
+$$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
 
 **Validation Performance**: 46/60 (76.7%) on Samsung-Sony S-LCD case study
 
@@ -84,13 +84,13 @@ V(a|γ) = Σ f_i(a_i) + γ × (∏a_i)^(1/N)
 
 | Parameter | Symbol | Typical Values | Range | Description |
 |-----------|--------|----------------|-------|-------------|
-| Dependency Weight | w_d | Context-specific | [0, 1] | Goal importance (normalized) |
-| Criticality Factor | crit | Calculated | [0, 1] | 1/n for n alternatives |
-| Bargaining Share | α_i | 0.50 (symmetric) | [0, 1] | Must sum to 1.0 |
+| Dependency Weight | $w_d$ | Context-specific | [0, 1] | Goal importance (normalized) |
+| Criticality Factor | $\text{crit}$ | Calculated | [0, 1] | 1/n for n alternatives |
+| Bargaining Share | $\alpha_i$ | 0.50 (symmetric) | [0, 1] | Must sum to 1.0 |
 
 **Interdependence Matrix Guidance**:
 
-| Relationship Type | D_ij Range | Example |
+| Relationship Type | $D_{ij}$ Range | Example |
 |-------------------|------------|---------|
 | No dependency | 0.00 | Competitors in separate markets |
 | Weak dependency | 0.10 - 0.30 | Multiple alternative suppliers |
@@ -106,9 +106,9 @@ V(a|γ) = Σ f_i(a_i) + γ × (∏a_i)^(1/N)
 
 | Parameter | Symbol | Validated Value | Range | Source |
 |-----------|--------|-----------------|-------|--------|
-| Trust Building Rate | λ⁺ | **0.10** | [0.05, 0.15] | TR-2 §7.2 |
-| Trust Erosion Rate | λ⁻ | **0.30** | [0.20, 0.45] | TR-2 §7.2 |
-| Negativity Ratio | λ⁻/λ⁺ | **3.0** | [2.5, 4.0] | Behavioral economics |
+| Trust Building Rate | $\lambda^+$ | **0.10** | [0.05, 0.15] | TR-2 §7.2 |
+| Trust Erosion Rate | $\lambda^-$ | **0.30** | [0.20, 0.45] | TR-2 §7.2 |
+| Negativity Ratio | $\lambda^-/\lambda^+$ | **3.0** | [2.5, 4.0] | Behavioral economics |
 
 **The 3:1 Ratio**: Empirically grounded in behavioral economics research showing trust erodes approximately 3× faster than it builds. This captures:
 - Negativity bias in human judgment
@@ -117,7 +117,7 @@ V(a|γ) = Σ f_i(a_i) + γ × (∏a_i)^(1/N)
 
 **Calibration Guidance**:
 
-| Context | λ⁺ | λ⁻ | Ratio | Rationale |
+| Context | $\lambda^+$ | $\lambda^-$ | Ratio | Rationale |
 |---------|-----|-----|-------|-----------|
 | High-trust culture | 0.12 | 0.30 | 2.5 | Faster trust building |
 | Standard business | 0.10 | 0.30 | 3.0 | Default validated values |
@@ -128,52 +128,52 @@ V(a|γ) = Σ f_i(a_i) + γ × (∏a_i)^(1/N)
 
 | Parameter | Symbol | Validated Value | Range | Source |
 |-----------|--------|-----------------|-------|--------|
-| Damage Severity | μ_R | **0.60** | [0.45, 0.75] | TR-2 §7.3 |
-| Decay Rate | δ_R | **0.03** | [0.01, 0.05] | TR-2 §7.3 |
+| Damage Severity | $\mu_R$ | **0.60** | [0.45, 0.75] | TR-2 §7.3 |
+| Decay Rate | $\delta_R$ | **0.03** | [0.01, 0.05] | TR-2 §7.3 |
 
 **Interpretation**:
-- **μ_R = 0.60**: A full violation (s = -1) causes 60% of available reputation space to be damaged
-- **δ_R = 0.03**: Approximately 33 periods of no violations to decay reputation by 63%
+- $\mu_R = 0.60$: A full violation ($s = -1$) causes 60% of available reputation space to be damaged
+- $\delta_R = 0.03$: Approximately 33 periods of no violations to decay reputation by 63%
 
 **Hysteresis Effect**:
-```
-Trust Ceiling: Θ = 1 - R
 
-Example trajectory:
-- Initial: T=0.50, R=0.00, Θ=1.00 (full recovery possible)
-- After violation: T=0.35, R=0.40, Θ=0.60 (ceiling at 60%)
-- After recovery: T→0.58 max (cannot exceed ceiling)
-```
+$$\Large \Theta = 1 - R \quad \text{(Trust Ceiling)}$$
+
+| Stage | $T$ | $R$ | $\Theta$ | Status |
+|-------|-----|-----|----------|--------|
+| Initial | 0.50 | 0.00 | 1.00 | Full recovery possible |
+| After violation | 0.35 | 0.40 | 0.60 | Ceiling at 60% |
+| After recovery | 0.58 | 0.40 | 0.60 | Cannot exceed ceiling |
 
 ### Amplification Parameters
 
 | Parameter | Symbol | Validated Value | Range | Source |
 |-----------|--------|-----------------|-------|--------|
-| Interdep. Amplification | ξ | **0.50** | [0.30, 0.70] | TR-2 §7.4 |
-| Signal Sensitivity | κ | **1.0** | [0.5, 2.0] | TR-2 §6.1 |
+| Interdep. Amplification | $\xi$ | **0.50** | [0.30, 0.70] | TR-2 §7.4 |
+| Signal Sensitivity | $\kappa$ | **1.0** | [0.5, 2.0] | TR-2 §6.1 |
 
 **Interdependence Amplification Effect**:
-```
-Erosion = λ⁻ × |signal| × T × (1 + ξ × D_ij)
 
-Example:
-- Low dependency (D=0.2):  Erosion factor = 1.10
-- High dependency (D=0.8): Erosion factor = 1.40
+$$\Large \text{Erosion} = \lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij})$$
 
-Result: 27% faster trust erosion in high-dependency relationships
-```
+| Dependency Level | $D_{ij}$ | Erosion Factor |
+|------------------|----------|----------------|
+| Low dependency | 0.2 | 1.10 |
+| High dependency | 0.8 | 1.40 |
+
+**Result**: 27% faster trust erosion in high-dependency relationships
 
 ### Initial Conditions
 
 | Parameter | Symbol | Recommended | Range | Description |
 |-----------|--------|-------------|-------|-------------|
-| Initial Trust | T⁰_ij | **0.50** | [0.0, 1.0] | Starting trust level |
-| Initial Reputation | R⁰_ij | **0.00** | [0.0, 1.0] | Starting reputation damage |
-| Baseline Action | a^baseline | Context | [0, e] | Expected cooperation level |
+| Initial Trust | $T^0_{ij}$ | **0.50** | [0.0, 1.0] | Starting trust level |
+| Initial Reputation | $R^0_{ij}$ | **0.00** | [0.0, 1.0] | Starting reputation damage |
+| Baseline Action | $a^{\text{baseline}}$ | Context | $[0, e]$ | Expected cooperation level |
 
 **Initial Trust Guidance**:
 
-| Relationship History | T⁰ | R⁰ | Scenario |
+| Relationship History | $T^0$ | $R^0$ | Scenario |
 |----------------------|-----|-----|----------|
 | First interaction | 0.50 | 0.00 | Neutral starting point |
 | Positive reputation | 0.70 | 0.00 | Known reliable partner |
@@ -272,10 +272,10 @@ Parameters with largest effect on environment dynamics:
 
 | Parameter | Sensitivity | Impact |
 |-----------|-------------|--------|
-| λ⁻/λ⁺ ratio | **Very High** | Determines trust recovery feasibility |
-| γ (complementarity) | **High** | Controls cooperative incentive strength |
-| D_ij (interdependence) | **High** | Shapes utility landscape |
-| μ_R (damage severity) | **Medium-High** | Determines hysteresis strength |
+| $\lambda^-/\lambda^+$ ratio | **Very High** | Determines trust recovery feasibility |
+| $\gamma$ (complementarity) | **High** | Controls cooperative incentive strength |
+| $D_{ij}$ (interdependence) | **High** | Shapes utility landscape |
+| $\mu_R$ (damage severity) | **Medium-High** | Determines hysteresis strength |
 
 ### Low-Impact Parameters
 
@@ -283,9 +283,9 @@ Parameters that can be approximated without significant effect:
 
 | Parameter | Sensitivity | Notes |
 |-----------|-------------|-------|
-| κ (signal sensitivity) | Low | 1.0 works for most scenarios |
-| δ_R (reputation decay) | Low | Affects long-horizon only |
-| θ vs β (specification) | Low within spec | Both work, θ slightly better validated |
+| $\kappa$ (signal sensitivity) | Low | 1.0 works for most scenarios |
+| $\delta_R$ (reputation decay) | Low | Affects long-horizon only |
+| $\theta$ vs $\beta$ (specification) | Low within spec | Both work, $\theta$ slightly better validated |
 
 ### Sensitivity Recommendations
 
@@ -351,17 +351,17 @@ From 760 experiments across 20 algorithms:
 
 | Configuration | Result | Insight |
 |---------------|--------|---------|
-| λ⁻/λ⁺ = 3.0, T_init = 0.50 | Trust-Return r=0.552 | Standard validated setup |
-| High γ + High D | Cooperation emergence | Strong incentives align behavior |
+| $\lambda^-/\lambda^+ = 3.0$, $T_{\text{init}} = 0.50$ | Trust-Return r=0.552 | Standard validated setup |
+| High $\gamma$ + High $D$ | Cooperation emergence | Strong incentives align behavior |
 | Moderate all parameters | Robust performance | Avoids edge case instabilities |
 
 ### Parameter Combinations That Fail
 
 | Configuration | Result | Insight |
 |---------------|--------|---------|
-| λ⁻/λ⁺ > 5.0 | Trust collapse | Recovery becomes impossible |
-| γ < 0.3 | Defection dominance | Insufficient cooperative incentive |
-| D_ij → 0 for all pairs | Pure competition | No structural incentive for cooperation |
+| $\lambda^-/\lambda^+ > 5.0$ | Trust collapse | Recovery becomes impossible |
+| $\gamma < 0.3$ | Defection dominance | Insufficient cooperative incentive |
+| $D_{ij} \to 0$ for all pairs | Pure competition | No structural incentive for cooperation |
 
 ---
 
