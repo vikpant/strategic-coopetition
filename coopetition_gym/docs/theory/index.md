@@ -140,69 +140,58 @@ The following notation is used consistently throughout the documentation:
 ### Pillar 1: Interdependence & Complementarity
 
 **Interdependence Matrix** (Equation 1, TR-1):
-```
-D_ij = Σ(w_d × Dep(i,j,d) × crit(i,j,d)) / Σw_d
-```
+
+$$D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \cdot \text{crit}(i,j,d)}{\sum_{d \in \mathcal{D}_i} w_d}$$
 
 **Value Creation** (Equation 2, TR-1):
-```
-V(a|γ) = Σ f_i(a_i) + γ × g(a_1, ..., a_N)
-```
+
+$$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_1, \ldots, a_N)$$
 
 **Logarithmic Individual Value** (Equation 6, TR-1):
-```
-f_i(a_i) = θ × ln(1 + a_i)    where θ = 20.0
-```
+
+$$f_i(a_i) = \theta \cdot \ln(1 + a_i) \quad \text{where } \theta = 20.0$$
 
 **Power Individual Value** (Equation 3, TR-1):
-```
-f_i(a_i) = a_i^β              where β = 0.75
-```
+
+$$f_i(a_i) = a_i^{\beta} \quad \text{where } \beta = 0.75$$
 
 **Geometric Mean Synergy** (Equation 4, TR-1):
-```
-g(a_1, ..., a_N) = (a_1 × a_2 × ... × a_N)^(1/N)
-```
+
+$$g(a_1, \ldots, a_N) = \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
 
 **Private Payoff** (Equation 11, TR-1):
-```
-π_i(a) = e_i - a_i + f_i(a_i) + α_i × [V(a) - Σf_j(a_j)]
-```
+
+$$\pi_i(\mathbf{a}) = e_i - a_i + f_i(a_i) + \alpha_i \left[V(\mathbf{a}) - \sum_{j=1}^{N} f_j(a_j)\right]$$
 
 **Integrated Utility** (Equation 13, TR-1):
-```
-U_i(a) = π_i(a) + Σ D_ij × π_j(a)
-```
+
+$$U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_j(\mathbf{a})$$
 
 ### Pillar 2: Trust Dynamics
 
 **Cooperation Signal** (Equation 4, TR-2):
-```
-s_ij^t = tanh(κ × (a_j^t - a_j^baseline))
-```
+
+$$s_{ij}^t = \tanh\left(\kappa \cdot (a_j^t - a_j^{\text{baseline}})\right)$$
 
 **Trust Evolution** (Equation 5, TR-2):
-```
-T_ij^(t+1) = T_ij^t + ΔT_ij^t
+
+$$T_{ij}^{t+1} = T_{ij}^t + \Delta T_{ij}^t$$
 
 where:
-  ΔT = λ⁺ × s × (Θ - T)           if s > 0  (building)
-  ΔT = -λ⁻ × |s| × T × (1 + ξD_ij) if s ≤ 0  (erosion)
-```
+
+$$\Delta T_{ij}^t = \begin{cases} \lambda^+ \cdot s \cdot (\Theta - T) & \text{if } s > 0 \text{ (building)} \\ -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij}) & \text{if } s \leq 0 \text{ (erosion)} \end{cases}$$
 
 **Trust Ceiling** (Equation 7, TR-2):
-```
-Θ_ij^t = 1 - R_ij^t
-```
+
+$$\Theta_{ij}^t = 1 - R_{ij}^t$$
 
 **Reputation Evolution** (Equation 8, TR-2):
-```
-R_ij^(t+1) = R_ij^t + ΔR_ij^t - δ_R × R_ij^t
+
+$$R_{ij}^{t+1} = R_{ij}^t + \Delta R_{ij}^t - \delta_R \cdot R_{ij}^t$$
 
 where:
-  ΔR = μ_R × |s| × (1 - R)    if s < 0  (damage)
-  ΔR = 0                       if s ≥ 0  (no damage)
-```
+
+$$\Delta R_{ij}^t = \begin{cases} \mu_R \cdot |s| \cdot (1 - R) & \text{if } s < 0 \text{ (damage)} \\ 0 & \text{if } s \geq 0 \text{ (no damage)} \end{cases}$$
 
 ---
 

@@ -80,21 +80,19 @@ The i* framework (Yu, 1995) provides the conceptual basis for interdependence an
 
 ### The Interdependence Matrix
 
-**Definition**: The interdependence matrix **D** is an N×N matrix where element D_ij ∈ [0,1] quantifies the structural dependency of actor i on actor j.
+**Definition**: The interdependence matrix $\mathbf{D}$ is an $N \times N$ matrix where element $D_{ij} \in [0,1]$ quantifies the structural dependency of actor $i$ on actor $j$.
 
 ### Equation 1: Interdependence Coefficient
 
-```
-D_ij = Σ(w_d × Dep(i,j,d) × crit(i,j,d)) / Σw_d
-```
+$$D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \cdot \text{crit}(i,j,d)}{\sum_{d \in \mathcal{D}_i} w_d}$$
 
 **Components**:
 
 | Component | Symbol | Range | Meaning |
 |-----------|--------|-------|---------|
-| Importance Weight | w_d | ℝ⁺ | Strategic priority of goal d for actor i |
-| Dependency Indicator | Dep(i,j,d) | {0, 1} | Does i depend on j for d? |
-| Criticality Factor | crit(i,j,d) | [0, 1] | How critical is j for achieving d? |
+| Importance Weight | $w_d$ | $\mathbb{R}^+$ | Strategic priority of goal $d$ for actor $i$ |
+| Dependency Indicator | $\text{Dep}(i,j,d)$ | $\{0, 1\}$ | Does $i$ depend on $j$ for $d$? |
+| Criticality Factor | $\text{crit}(i,j,d)$ | $[0, 1]$ | How critical is $j$ for achieving $d$? |
 
 ### Computing Each Component
 
@@ -233,25 +231,24 @@ D_developer,platform = 0.825 / 1.00 = 0.825
 The interdependence matrix enters the utility function as weights on partner payoffs:
 
 **Equation 13 (TR-1)**:
-```
-U_i(a) = π_i(a) + Σ D_ij × π_j(a)
-```
+
+$$U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_j(\mathbf{a})$$
 
 **Components**:
 
 | Term | Meaning |
 |------|---------|
-| π_i(a) | Actor i's private payoff |
-| D_ij × π_j(a) | Dependency-weighted concern for j's payoff |
-| Σ D_ij × π_j(a) | Total structural concern for all partners |
+| $\pi_i(\mathbf{a})$ | Actor $i$'s private payoff |
+| $D_{ij} \cdot \pi_j(\mathbf{a})$ | Dependency-weighted concern for $j$'s payoff |
+| $\sum_{j \neq i} D_{ij} \cdot \pi_j(\mathbf{a})$ | Total structural concern for all partners |
 
 ### Why This Works
 
 The integrated utility captures rational self-interest in the presence of structural coupling:
 
-1. **When D_ij = 0**: U_i = π_i (pure self-interest)
-2. **When D_ij > 0**: U_i includes weighted partner payoffs
-3. **Higher D_ij**: More weight on partner's success
+1. **When $D_{ij} = 0$**: $U_i = \pi_i$ (pure self-interest)
+2. **When $D_{ij} > 0$**: $U_i$ includes weighted partner payoffs
+3. **Higher $D_{ij}$**: More weight on partner's success
 
 This is **not** altruism—it's recognizing that when your outcomes depend on your partner's performance, maximizing your utility requires considering their payoffs.
 
@@ -259,10 +256,7 @@ This is **not** altruism—it's recognizing that when your outcomes depend on yo
 
 **Definition**: A Coopetitive Equilibrium is a Nash Equilibrium where each actor maximizes the integrated utility function:
 
-```
-a* is Coopetitive Equilibrium if:
-  a_i* ∈ argmax U_i(a_i, a_{-i}*) for all i
-```
+$$\mathbf{a}^* \text{ is Coopetitive Equilibrium if: } a_i^* \in \arg\max_{a_i} U_i(a_i, \mathbf{a}_{-i}^*) \text{ for all } i$$
 
 **Key Insight**: Coopetitive Equilibrium generally produces more cooperative outcomes than standard Nash Equilibrium because the integrated utility includes positive spillovers through interdependence terms.
 

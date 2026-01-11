@@ -47,24 +47,24 @@ Classical game theory lacks mechanisms for this dynamic evolution. Our formaliza
 
 | Concept | Definition | Our Formalization |
 |---------|------------|-------------------|
-| **Immediate Trust** | Current confidence in partner | T_ij ∈ [0, 1] |
-| **Reputation** | Historical track record | R_ij ∈ [0, 1] (damage) |
+| **Immediate Trust** | Current confidence in partner | $T_{ij} \in [0, 1]$ |
+| **Reputation** | Historical track record | $R_{ij} \in [0, 1]$ (damage) |
 | **Trustworthiness** | Actual reliability | Not modeled (observable only through signals) |
-| **Trust Ceiling** | Maximum achievable trust | Θ = 1 - R |
+| **Trust Ceiling** | Maximum achievable trust | $\Theta = 1 - R$ |
 
 ---
 
 ## Two-Layer Trust Architecture
 
-### Layer 1: Immediate Trust (T_ij)
+### Layer 1: Immediate Trust ($T_{ij}$)
 
-**Definition**: Actor i's current confidence in actor j's reliability and cooperative intent.
+**Definition**: Actor $i$'s current confidence in actor $j$'s reliability and cooperative intent.
 
 **Properties**:
-- Range: T_ij ∈ [0, 1]
+- Range: $T_{ij} \in [0, 1]$
 - Responsive to recent behavior
 - Can increase (trust building) or decrease (trust erosion)
-- Constrained by trust ceiling Θ
+- Constrained by trust ceiling $\Theta$
 
 **Interpretation**:
 
@@ -76,12 +76,12 @@ Classical game theory lacks mechanisms for this dynamic evolution. Our formaliza
 | 0.6 - 0.8 | High trust | Confident cooperation; share information |
 | 0.8 - 1.0 | Full trust | Deep partnership; strategic alignment |
 
-### Layer 2: Reputation Damage (R_ij)
+### Layer 2: Reputation Damage ($R_{ij}$)
 
-**Definition**: Accumulated history of actor j's violations from actor i's perspective.
+**Definition**: Accumulated history of actor $j$'s violations from actor $i$'s perspective.
 
 **Properties**:
-- Range: R_ij ∈ [0, 1] where 0 = pristine, 1 = completely damaged
+- Range: $R_{ij} \in [0, 1]$ where 0 = pristine, 1 = completely damaged
 - Accumulates through violations
 - Decays slowly over time (forgetting)
 - Creates permanent limits on trust recovery
@@ -100,9 +100,8 @@ Classical game theory lacks mechanisms for this dynamic evolution. Our formaliza
 ### The Trust Ceiling Mechanism
 
 **Equation 7 (TR-2)**:
-```
-Θ_ij = 1 - R_ij
-```
+
+$$\Theta_{ij}^t = 1 - R_{ij}^t$$
 
 The trust ceiling creates **hysteresis**: even perfect cooperation cannot restore trust beyond this limit.
 
@@ -125,18 +124,17 @@ The relationship can improve but will always bear the scar of past violations.
 To update trust, actors assess whether partners are cooperating or defecting. This requires comparing observed behavior to expectations.
 
 **Equation 4 (TR-2)**: Cooperation Signal
-```
-s_ij = tanh(κ × (a_j - a_j^baseline))
-```
+
+$$s_{ij}^t = \tanh\left(\kappa \cdot (a_j^t - a_j^{\text{baseline}})\right)$$
 
 **Components**:
 
 | Component | Meaning | Typical Value |
 |-----------|---------|---------------|
-| a_j | Actor j's actual action | Observed cooperation level |
-| a_j^baseline | Expected cooperation | Context-dependent norm |
-| κ | Signal sensitivity | 1.0 (default) |
-| s_ij | Cooperation signal | ∈ (-1, 1) |
+| $a_j$ | Actor $j$'s actual action | Observed cooperation level |
+| $a_j^{\text{baseline}}$ | Expected cooperation | Context-dependent norm |
+| $\kappa$ | Signal sensitivity | 1.0 (default) |
+| $s_{ij}$ | Cooperation signal | $\in (-1, 1)$ |
 
 ### Signal Interpretation
 
@@ -157,7 +155,7 @@ The hyperbolic tangent function ensures:
 
 ### Baseline Elicitation
 
-The baseline a_j^baseline is context-specific:
+The baseline $a_j^{\text{baseline}}$ is context-specific:
 
 | Context | Baseline Determination |
 |---------|------------------------|
@@ -179,40 +177,35 @@ Trust evolution is fundamentally asymmetric: violations hurt more than cooperati
 *Three cooperative events produce smaller trust gains than one defection event erases. The 3:1 ratio means a single betrayal can undo months of trust-building.*
 
 **Equation 5 (TR-2)**: Trust Change
-```
-ΔT_ij = {
-    λ⁺ × s × (Θ - T)              if s > 0  (building)
-    -λ⁻ × |s| × T × (1 + ξ × D_ij) if s ≤ 0  (erosion)
-}
-```
 
-### Trust Building (s > 0)
+$$\Delta T_{ij}^t = \begin{cases}
+\lambda^+ \cdot s_{ij}^t \cdot (\Theta_{ij}^t - T_{ij}^t) & \text{if } s_{ij}^t > 0 \text{ (building)} \\
+-\lambda^- \cdot |s_{ij}^t| \cdot T_{ij}^t \cdot (1 + \xi \cdot D_{ij}) & \text{if } s_{ij}^t \leq 0 \text{ (erosion)}
+\end{cases}$$
 
-```
-ΔT = λ⁺ × s × (Θ - T)
-```
+### Trust Building ($s > 0$)
+
+$$\Delta T = \lambda^+ \cdot s \cdot (\Theta - T)$$
 
 **Components**:
-- λ⁺ = 0.10 (validated building rate)
-- s: Positive cooperation signal
-- (Θ - T): Available space below ceiling
+- $\lambda^+ = 0.10$ (validated building rate)
+- $s$: Positive cooperation signal
+- $(\Theta - T)$: Available space below ceiling
 
 **Properties**:
 - Building slows as trust approaches ceiling
 - Cannot exceed ceiling (Θ)
 - Positive feedback: cooperation → trust → more cooperation
 
-### Trust Erosion (s ≤ 0)
+### Trust Erosion ($s \leq 0$)
 
-```
-ΔT = -λ⁻ × |s| × T × (1 + ξ × D_ij)
-```
+$$\Delta T = -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij})$$
 
 **Components**:
-- λ⁻ = 0.30 (validated erosion rate)
-- |s|: Magnitude of violation signal
-- T: Current trust level (more to lose when trust is high)
-- (1 + ξ × D_ij): Interdependence amplification
+- $\lambda^- = 0.30$ (validated erosion rate)
+- $|s|$: Magnitude of violation signal
+- $T$: Current trust level (more to lose when trust is high)
+- $(1 + \xi \cdot D_{ij})$: Interdependence amplification
 
 **Properties**:
 - Erosion is faster than building (λ⁻ > λ⁺)
@@ -223,9 +216,7 @@ Trust evolution is fundamentally asymmetric: violations hurt more than cooperati
 
 **Validated Finding**: Trust erodes approximately 3× faster than it builds.
 
-```
-Negativity Ratio = λ⁻ / λ⁺ = 0.30 / 0.10 = 3.0
-```
+$$\text{Negativity Ratio} = \frac{\lambda^-}{\lambda^+} = \frac{0.30}{0.10} = 3.0$$
 
 **Empirical Grounding**: This ratio aligns with behavioral economics research on negativity bias (Rozin & Royzman, 2001; Slovic, 1993):
 - Negative events are weighted more heavily in judgment
@@ -234,14 +225,16 @@ Negativity Ratio = λ⁻ / λ⁺ = 0.30 / 0.10 = 3.0
 
 ### Interdependence Amplification
 
-**Equation Component**: (1 + ξ × D_ij)
+**Equation Component**: $(1 + \xi \cdot D_{ij})$
 
-When actor i depends heavily on actor j (high D_ij), violations by j cause amplified trust damage:
+When actor $i$ depends heavily on actor $j$ (high $D_{ij}$), violations by $j$ cause amplified trust damage:
 
-```
-Low dependency (D=0.2):  Amplification = 1.10
-High dependency (D=0.8): Amplification = 1.40
-```
+$$\text{Amplification factor} = 1 + \xi \cdot D_{ij}$$
+
+| Dependency Level | $D_{ij}$ | Amplification Factor |
+|------------------|----------|---------------------|
+| Low dependency | 0.2 | 1.10 |
+| High dependency | 0.8 | 1.40 |
 
 **Intuition**: Betrayal by someone you depend on hurts more because:
 1. Direct goal impact (structural coupling)
@@ -257,43 +250,40 @@ High dependency (D=0.8): Amplification = 1.40
 ### Reputation Damage Accumulation
 
 **Equation 8 (TR-2)**: Reputation Change
-```
-R_ij^(t+1) = R_ij^t + ΔR_ij - δ_R × R_ij^t
-```
+
+$$R_{ij}^{t+1} = R_{ij}^t + \Delta R_{ij}^t - \delta_R \cdot R_{ij}^t$$
 
 **Damage Term**:
-```
-ΔR = {
-    μ_R × |s| × (1 - R)  if s < 0  (violation)
-    0                     if s ≥ 0  (no damage)
-}
-```
+
+$$\Delta R_{ij}^t = \begin{cases}
+\mu_R \cdot |s_{ij}^t| \cdot (1 - R_{ij}^t) & \text{if } s_{ij}^t < 0 \text{ (violation)} \\
+0 & \text{if } s_{ij}^t \geq 0 \text{ (no damage)}
+\end{cases}$$
 
 ### Parameters
 
 | Parameter | Symbol | Validated Value | Meaning |
 |-----------|--------|-----------------|---------|
-| Damage Severity | μ_R | 0.60 | How much damage per violation |
-| Decay Rate | δ_R | 0.03 | Forgetting rate per period |
+| Damage Severity | $\mu_R$ | 0.60 | How much damage per violation |
+| Decay Rate | $\delta_R$ | 0.03 | Forgetting rate per period |
 
 ### Damage Mechanics
 
-- **μ_R × |s|**: Proportional to violation severity
-- **(1 - R)**: Available damage space (cannot exceed 1.0)
-- **δ_R × R**: Gradual forgetting over time
+- $\mu_R \cdot |s|$: Proportional to violation severity
+- $(1 - R)$: Available damage space (cannot exceed 1.0)
+- $\delta_R \cdot R$: Gradual forgetting over time
 
 ### Forgetting Dynamics
 
 Reputation decays slowly even without new violations:
 
-```
-Time to decay from R=0.50 to R=0.25 (half-life):
-  R(t) = R_0 × (1 - δ_R)^t
-  0.25 = 0.50 × 0.97^t
-  t ≈ 23 periods
-```
+$$R(t) = R_0 \cdot (1 - \delta_R)^t$$
 
-With δ_R = 0.03, forgetting is slow—violations leave lasting marks.
+**Time to decay from $R=0.50$ to $R=0.25$ (half-life)**:
+- $0.25 = 0.50 \times 0.97^t$
+- $t \approx 23$ periods
+
+With $\delta_R = 0.03$, forgetting is slow—violations leave lasting marks.
 
 ---
 
@@ -355,14 +345,15 @@ Hysteresis means the system's state depends on its history, not just current inp
 
 ### Formal Characterization
 
-```
-Trust Ceiling: Θ(t) = 1 - R(t)
+**Trust Ceiling**:
+
+$$\Theta(t) = 1 - R(t)$$
 
 For any trajectory with violations:
-  max[T(t→∞)] = Θ < 1.0
+
+$$\max[T(t \to \infty)] = \Theta < 1.0$$
 
 Even infinite cooperation cannot restore trust to pre-violation levels.
-```
 
 ### Recovery Dynamics
 
@@ -389,25 +380,24 @@ After 35 periods of sustained cooperation following a violation:
 Trust modulates cooperative behavior through utility augmentation:
 
 **Equation (TR-2)**: Trust-Gated Reciprocity
-```
-U_i(a, T) = U_base(a) + Σ ρ × T_ij × (a_j - baseline) × a_i
-```
+
+$$U_i(\mathbf{a}, \mathbf{T}^t) = U_i^{\text{base}}(\mathbf{a}) + \sum_{j \neq i} \rho \cdot T_{ij}^t \cdot (a_j - a_j^{\text{baseline}}) \cdot a_i$$
 
 **Components**:
-- U_base: Standard integrated utility from TR-1
-- ρ = 0.20: Reciprocity strength
-- T_ij: Trust level (gates reciprocity)
-- (a_j - baseline): Partner's cooperation signal
-- a_i: Own cooperation (interaction)
+- $U_i^{\text{base}}$: Standard integrated utility from TR-1
+- $\rho = 0.20$: Reciprocity strength
+- $T_{ij}$: Trust level (gates reciprocity)
+- $(a_j - a_j^{\text{baseline}})$: Partner's cooperation signal
+- $a_i$: Own cooperation (interaction)
 
 ### Mechanism
 
-When trust is high (T_ij → 1):
+When trust is high ($T_{ij} \to 1$):
 - Reciprocity term is active
 - Partner cooperation increases utility of own cooperation
 - Creates positive feedback loop
 
-When trust is low (T_ij → 0):
+When trust is low ($T_{ij} \to 0$):
 - Reciprocity term vanishes
 - Partner cooperation has no effect
 - No coordination incentive
