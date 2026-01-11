@@ -39,7 +39,7 @@ This is the essence of Brandenburger and Nalebuff's coopetition framework: actor
 
 **Mathematically**:
 
-$$V(\{i, j\}) > V(\{i\}) + V(\{j\})$$
+$$\Large V(\{i, j\}) > V(\{i\}) + V(\{j\})$$
 
 The value created by actors $i$ and $j$ working together exceeds what each could create independently.
 
@@ -57,7 +57,7 @@ The value created by actors $i$ and $j$ working together exceeds what each could
 
 Following Brandenburger and Nalebuff, we define an actor's **Added Value** as:
 
-$$\text{Added Value}_i = V(\text{all actors}) - V(\text{all actors except } i)$$
+$$\Large \text{Added Value}_i = V(\text{all actors}) - V(\text{all actors except } i)$$
 
 Actors with high added value have strong bargaining positions because the coalition loses significant value without them. Complementarity increases added value for all participants.
 
@@ -69,7 +69,7 @@ Actors with high added value have strong bargaining positions because the coalit
 
 **Equation 2 (TR-1)**: Total value created by joint action:
 
-$$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_1, \ldots, a_N)$$
+$$\Large V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_1, \ldots, a_N)$$
 
 **Components**:
 
@@ -125,11 +125,11 @@ The synergy function captures value that exists *only* through collaboration—i
 
 **Equation 4 (TR-1)**: Geometric Mean
 
-$$g(a_1, \ldots, a_N) = \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
+$$\Large g(a_1, \ldots, a_N) = \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
 
 **For Two Actors**:
 
-$$g(a_1, a_2) = \sqrt{a_1 \cdot a_2}$$
+$$\Large g(a_1, a_2) = \sqrt{a_1 \cdot a_2}$$
 
 **Properties**:
 

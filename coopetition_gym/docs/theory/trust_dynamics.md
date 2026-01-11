@@ -101,7 +101,7 @@ Classical game theory lacks mechanisms for this dynamic evolution. Our formaliza
 
 **Equation 7 (TR-2)**:
 
-$$\Theta_{ij}^t = 1 - R_{ij}^t$$
+$$\Large \Theta_{ij}^t = 1 - R_{ij}^t$$
 
 The trust ceiling creates **hysteresis**: even perfect cooperation cannot restore trust beyond this limit.
 
@@ -125,7 +125,7 @@ To update trust, actors assess whether partners are cooperating or defecting. Th
 
 **Equation 4 (TR-2)**: Cooperation Signal
 
-$$s_{ij}^t = \tanh\left(\kappa \cdot (a_j^t - a_j^{\text{baseline}})\right)$$
+$$\Large s_{ij}^t = \tanh\left(\kappa \cdot (a_j^t - a_j^{\text{baseline}})\right)$$
 
 **Components**:
 
@@ -178,14 +178,14 @@ Trust evolution is fundamentally asymmetric: violations hurt more than cooperati
 
 **Equation 5 (TR-2)**: Trust Change
 
-$$\Delta T_{ij}^t = \begin{cases}
+$$\Large \Delta T_{ij}^t = \begin{cases}
 \lambda^+ \cdot s_{ij}^t \cdot (\Theta_{ij}^t - T_{ij}^t) & \text{if } s_{ij}^t > 0 \text{ (building)} \\
 -\lambda^- \cdot |s_{ij}^t| \cdot T_{ij}^t \cdot (1 + \xi \cdot D_{ij}) & \text{if } s_{ij}^t \leq 0 \text{ (erosion)}
 \end{cases}$$
 
 ### Trust Building ($s > 0$)
 
-$$\Delta T = \lambda^+ \cdot s \cdot (\Theta - T)$$
+$$\Large \Delta T = \lambda^+ \cdot s \cdot (\Theta - T)$$
 
 **Components**:
 - $\lambda^+ = 0.10$ (validated building rate)
@@ -199,7 +199,7 @@ $$\Delta T = \lambda^+ \cdot s \cdot (\Theta - T)$$
 
 ### Trust Erosion ($s \leq 0$)
 
-$$\Delta T = -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij})$$
+$$\Large \Delta T = -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij})$$
 
 **Components**:
 - $\lambda^- = 0.30$ (validated erosion rate)
@@ -216,7 +216,7 @@ $$\Delta T = -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij})$$
 
 **Validated Finding**: Trust erodes approximately 3× faster than it builds.
 
-$$\text{Negativity Ratio} = \frac{\lambda^-}{\lambda^+} = \frac{0.30}{0.10} = 3.0$$
+$$\Large \text{Negativity Ratio} = \frac{\lambda^-}{\lambda^+} = \frac{0.30}{0.10} = 3.0$$
 
 **Empirical Grounding**: This ratio aligns with behavioral economics research on negativity bias (Rozin & Royzman, 2001; Slovic, 1993):
 - Negative events are weighted more heavily in judgment
@@ -229,7 +229,7 @@ $$\text{Negativity Ratio} = \frac{\lambda^-}{\lambda^+} = \frac{0.30}{0.10} = 3.
 
 When actor $i$ depends heavily on actor $j$ (high $D_{ij}$), violations by $j$ cause amplified trust damage:
 
-$$\text{Amplification factor} = 1 + \xi \cdot D_{ij}$$
+$$\Large \text{Amplification factor} = 1 + \xi \cdot D_{ij}$$
 
 | Dependency Level | $D_{ij}$ | Amplification Factor |
 |------------------|----------|---------------------|
@@ -251,11 +251,11 @@ $$\text{Amplification factor} = 1 + \xi \cdot D_{ij}$$
 
 **Equation 8 (TR-2)**: Reputation Change
 
-$$R_{ij}^{t+1} = R_{ij}^t + \Delta R_{ij}^t - \delta_R \cdot R_{ij}^t$$
+$$\Large R_{ij}^{t+1} = R_{ij}^t + \Delta R_{ij}^t - \delta_R \cdot R_{ij}^t$$
 
 **Damage Term**:
 
-$$\Delta R_{ij}^t = \begin{cases}
+$$\Large \Delta R_{ij}^t = \begin{cases}
 \mu_R \cdot |s_{ij}^t| \cdot (1 - R_{ij}^t) & \text{if } s_{ij}^t < 0 \text{ (violation)} \\
 0 & \text{if } s_{ij}^t \geq 0 \text{ (no damage)}
 \end{cases}$$
@@ -277,7 +277,7 @@ $$\Delta R_{ij}^t = \begin{cases}
 
 Reputation decays slowly even without new violations:
 
-$$R(t) = R_0 \cdot (1 - \delta_R)^t$$
+$$\Large R(t) = R_0 \cdot (1 - \delta_R)^t$$
 
 **Time to decay from $R=0.50$ to $R=0.25$ (half-life)**:
 - $0.25 = 0.50 \times 0.97^t$
@@ -347,11 +347,11 @@ Hysteresis means the system's state depends on its history, not just current inp
 
 **Trust Ceiling**:
 
-$$\Theta(t) = 1 - R(t)$$
+$$\Large \Theta(t) = 1 - R(t)$$
 
 For any trajectory with violations:
 
-$$\max[T(t \to \infty)] = \Theta < 1.0$$
+$$\Large \max[T(t \to \infty)] = \Theta < 1.0$$
 
 Even infinite cooperation cannot restore trust to pre-violation levels.
 
@@ -381,7 +381,7 @@ Trust modulates cooperative behavior through utility augmentation:
 
 **Equation (TR-2)**: Trust-Gated Reciprocity
 
-$$U_i(\mathbf{a}, \mathbf{T}^t) = U_i^{\text{base}}(\mathbf{a}) + \sum_{j \neq i} \rho \cdot T_{ij}^t \cdot (a_j - a_j^{\text{baseline}}) \cdot a_i$$
+$$\Large U_i(\mathbf{a}, \mathbf{T}^t) = U_i^{\text{base}}(\mathbf{a}) + \sum_{j \neq i} \rho \cdot T_{ij}^t \cdot (a_j - a_j^{\text{baseline}}) \cdot a_i$$
 
 **Components**:
 - $U_i^{\text{base}}$: Standard integrated utility from TR-1
