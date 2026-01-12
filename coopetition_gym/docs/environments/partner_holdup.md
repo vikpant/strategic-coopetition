@@ -39,7 +39,7 @@ This environment is formalized as a 2-player asymmetric Markov Game **M** = (**N
 ### Agents
 **N** = {Strong, Weak} with heterogeneous capabilities:
 
-| Agent | Index | Endowment e_i | Baseline b_i | Bargaining α_i |
+| Agent | Index | Endowment $e_i$ | Baseline $b_i$ | Bargaining $\alpha_i$ |
 |-------|-------|---------------|--------------|----------------|
 | Strong | 0 | 120.0 | 42.0 (35%) | 0.60 |
 | Weak | 1 | 80.0 | 28.0 (35%) | 0.40 |
@@ -58,8 +58,8 @@ This environment is formalized as a 2-player asymmetric Markov Game **M** = (**N
 ### Action Space
 Agent-specific continuous action spaces:
 
-- **Strong**: **A**_0 = [0, 120] ⊂ ℝ
-- **Weak**: **A**_1 = [0, 80] ⊂ ℝ
+- **Strong**: $A_0 = [0, 120] \subset \mathbb{R}$
+- **Weak**: $A_1 = [0, 80] \subset \mathbb{R}$
 
 ### Interdependence Matrix (Critical Asymmetry)
 
@@ -79,9 +79,9 @@ Trust dynamics follow TR-2 with amplified asymmetry:
 τ_ij(t+1) = clip(τ_ij(t) + Δτ_ij · (1 + ξ · D_ij), 0, Θ_ij)
 ```
 
-where ξ = 0.70 amplifies trust sensitivity based on dependency.
+where $\xi = 0.70$ amplifies trust sensitivity based on dependency.
 
-**Critical Threshold**: τ_weak→strong < 0.10 triggers termination (weak partner exits).
+**Critical Threshold**: $\tau_{\text{weak} \to \text{strong}} < 0.10$ triggers termination (weak partner exits).
 
 ### Reward Function
 
@@ -108,9 +108,9 @@ Private payoffs:
 - **Discount**: γ = 1.0
 
 ### Initial State
-- τ_ij(0) = 0.55 (moderate initial trust)
-- R_ij(0) = 0.00
-- D fixed as above
+- $\tau_{ij}(0) = 0.55$ (moderate initial trust)
+- $R_{ij}(0) = 0.00$
+- $\mathbf{D}$ fixed as above
 
 ---
 
@@ -175,10 +175,10 @@ The critical insight is that the exit threshold τ* = 0.10 creates a **credible 
 
 | Concept | PartnerHoldUp-v0 | Classical Reference |
 |---------|------------------|---------------------|
-| Relationship-specific investment | Continuous a_i ∈ [0, e_i] | Binary in Williamson (1985) |
+| Relationship-specific investment | Continuous $a_i \in [0, e_i]$ | Binary in Williamson (1985) |
 | Incomplete contracts | Trust dynamics as implicit contract | Explicit contracts in Hart & Moore (1990) |
-| Exit option | Endogenous τ < 0.10 termination | Exogenous outside option in Nash bargaining |
-| Power asymmetry | D_ij captures structural dependency | Bargaining power in Rubinstein (1982) |
+| Exit option | Endogenous $\tau < 0.10$ termination | Exogenous outside option in Nash bargaining |
+| Power asymmetry | $D_{ij}$ captures structural dependency | Bargaining power in Rubinstein (1982) |
 | Dynamic adjustment | Trust evolution | Static in classical models |
 
 ### Literature Connections

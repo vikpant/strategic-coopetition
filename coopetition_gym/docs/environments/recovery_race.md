@@ -48,20 +48,20 @@ This environment is formalized as a 2-player Markov Game with **constrained reco
 ### State Space
 **S** ⊆ ℝ¹⁷ (identical structure to TrustDilemma-v0)
 
-**Critical state property**: Trust ceiling Θ_ij = 1 - R_ij constrains recovery.
+**Critical state property**: Trust ceiling $\Theta_{ij} = 1 - R_{ij}$ constrains recovery.
 
 ### Action Space
-**A**_i = [0, 100] ⊂ ℝ for each agent
+$A_i = [0, 100] \subset \mathbb{R}$ for each agent
 
 ### Initial State (Post-Crisis)
 
 | Variable | Initial Value | Interpretation |
 |----------|---------------|----------------|
-| Trust τ_ij(0) | 0.25 | Very low (crisis aftermath) |
-| Reputation R_ij(0) | 0.50 | High damage (serious past violations) |
-| Trust Ceiling Θ_ij(0) | 0.50 | Maximum recoverable trust initially |
+| Trust $\tau_{ij}(0)$ | 0.25 | Very low (crisis aftermath) |
+| Reputation $R_{ij}(0)$ | 0.50 | High damage (serious past violations) |
+| Trust Ceiling $\Theta_{ij}(0)$ | 0.50 | Maximum recoverable trust initially |
 
-**Key constraint**: Recovery target τ* = 0.90 is initially impossible (Θ = 0.50). Agents must wait for reputation decay.
+**Key constraint**: Recovery target $\tau^* = 0.90$ is initially impossible ($\Theta = 0.50$). Agents must wait for reputation decay.
 
 ### Transition Dynamics
 
@@ -75,7 +75,7 @@ This environment is formalized as a 2-player Markov Game with **constrained reco
 R_ij(t+1) = R_ij(t) · (1 - δ_R)
 ```
 
-where δ_R = 0.01 (1% decay per step).
+where $\delta_R = 0.01$ (1% decay per step).
 
 **Ceiling Evolution**:
 ```
@@ -83,8 +83,8 @@ where δ_R = 0.01 (1% decay per step).
 ```
 
 Time to reach ceiling = 0.90:
-- Need R_ij ≤ 0.10
-- From R = 0.50, requires ~40 steps of pure decay
+- Need $R_{ij} \leq 0.10$
+- From $R = 0.50$, requires ~40 steps of pure decay
 
 ### Trust Parameters (Recovery-Specific)
 
@@ -136,11 +136,10 @@ After a crisis:
 ### Mathematical Constraints
 
 The trust ceiling is:
-```
-Θ_ij = 1 - R_ij
-```
 
-Where R_ij is reputation damage. If R = 0.50, trust cannot exceed 0.50 until reputation heals.
+$$\Theta_{ij} = 1 - R_{ij}$$
+
+Where $R_{ij}$ is reputation damage. If $R = 0.50$, trust cannot exceed 0.50 until reputation heals.
 
 ---
 

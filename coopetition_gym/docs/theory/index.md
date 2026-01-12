@@ -81,57 +81,57 @@ The following notation is used consistently throughout the documentation:
 
 | Symbol | Definition |
 |--------|------------|
-| N | Number of agents |
-| i, j ∈ {1, ..., N} | Agent indices |
-| t ∈ {0, 1, 2, ...} | Time period |
-| d ∈ D_i | Dependum (goal, task, resource) in agent i's goal set |
+| $N$ | Number of agents |
+| $i, j \in \{1, \ldots, N\}$ | Agent indices |
+| $t \in \{0, 1, 2, \ldots\}$ | Time period |
+| $d \in \mathcal{D}_i$ | Dependum (goal, task, resource) in agent $i$'s goal set |
 
 ### Actions and Payoffs
 
 | Symbol | Definition | Range |
 |--------|------------|-------|
-| a_i | Agent i's action (cooperation/investment level) | [0, e_i] |
-| **a** = (a_1, ..., a_N) | Action profile (all agents) | ∏[0, e_i] |
-| e_i | Agent i's endowment | ℝ⁺ |
-| π_i(**a**) | Agent i's private payoff | ℝ |
-| U_i(**a**) | Agent i's integrated utility | ℝ |
+| $a_i$ | Agent $i$'s action (cooperation/investment level) | $[0, e_i]$ |
+| $\mathbf{a} = (a_1, \ldots, a_N)$ | Action profile (all agents) | $\prod_i [0, e_i]$ |
+| $e_i$ | Agent $i$'s endowment | $\mathbb{R}^+$ |
+| $\pi_i(\mathbf{a})$ | Agent $i$'s private payoff | $\mathbb{R}$ |
+| $U_i(\mathbf{a})$ | Agent $i$'s integrated utility | $\mathbb{R}$ |
 
 ### Interdependence (Pillar 1)
 
 | Symbol | Definition | Range |
 |--------|------------|-------|
-| D_ij | Interdependence coefficient (i depends on j) | [0, 1] |
-| w_d | Importance weight of dependum d | ℝ⁺ |
-| Dep(i,j,d) | Dependency indicator (binary) | {0, 1} |
-| crit(i,j,d) | Criticality factor | [0, 1] |
-| **D** | Interdependence matrix | [0,1]^(N×N) |
+| $D_{ij}$ | Interdependence coefficient ($i$ depends on $j$) | $[0, 1]$ |
+| $w_d$ | Importance weight of dependum $d$ | $\mathbb{R}^+$ |
+| $\text{Dep}(i,j,d)$ | Dependency indicator (binary) | $\{0, 1\}$ |
+| $\text{crit}(i,j,d)$ | Criticality factor | $[0, 1]$ |
+| $\mathbf{D}$ | Interdependence matrix | $[0,1]^{N \times N}$ |
 
 ### Value Functions (Pillar 1)
 
 | Symbol | Definition | Range |
 |--------|------------|-------|
-| V(**a**\|γ) | Total value created | ℝ⁺ |
-| f_i(a_i) | Individual value contribution | ℝ⁺ |
-| g(a_1, ..., a_N) | Synergy function | ℝ⁺ |
-| γ | Complementarity parameter | [0, 1] |
-| θ | Logarithmic scale parameter | ℝ⁺ |
-| β | Power function exponent | (0, 1) |
-| α_i | Agent i's share of synergistic value | [0, 1] |
+| $V(\mathbf{a} \mid \gamma)$ | Total value created | $\mathbb{R}^+$ |
+| $f_i(a_i)$ | Individual value contribution | $\mathbb{R}^+$ |
+| $g(a_1, \ldots, a_N)$ | Synergy function | $\mathbb{R}^+$ |
+| $\gamma$ | Complementarity parameter | $[0, 1]$ |
+| $\theta$ | Logarithmic scale parameter | $\mathbb{R}^+$ |
+| $\beta$ | Power function exponent | $(0, 1)$ |
+| $\alpha_i$ | Agent $i$'s share of synergistic value | $[0, 1]$ |
 
 ### Trust Dynamics (Pillar 2)
 
 | Symbol | Definition | Range |
 |--------|------------|-------|
-| T_ij^t | Immediate trust (i toward j at time t) | [0, 1] |
-| R_ij^t | Reputation damage (j's violations from i's view) | [0, 1] |
-| Θ_ij^t | Trust ceiling | [0, 1] |
-| s_ij^t | Cooperation signal | (-1, 1) |
-| λ⁺ | Trust building rate | (0, 1) |
-| λ⁻ | Trust erosion rate | (0, 1) |
-| μ_R | Reputation damage severity | (0, 1) |
-| δ_R | Reputation decay rate | (0, 1) |
-| ξ | Interdependence amplification factor | [0, 1] |
-| κ | Signal sensitivity | ℝ⁺ |
+| $T_{ij}^t$ | Immediate trust ($i$ toward $j$ at time $t$) | $[0, 1]$ |
+| $R_{ij}^t$ | Reputation damage ($j$'s violations from $i$'s view) | $[0, 1]$ |
+| $\Theta_{ij}^t$ | Trust ceiling | $[0, 1]$ |
+| $s_{ij}^t$ | Cooperation signal | $(-1, 1)$ |
+| $\lambda^+$ | Trust building rate | $(0, 1)$ |
+| $\lambda^-$ | Trust erosion rate | $(0, 1)$ |
+| $\mu_R$ | Reputation damage severity | $(0, 1)$ |
+| $\delta_R$ | Reputation decay rate | $(0, 1)$ |
+| $\xi$ | Interdependence amplification factor | $[0, 1]$ |
+| $\kappa$ | Signal sensitivity | $\mathbb{R}^+$ |
 
 ---
 
@@ -240,15 +240,15 @@ The framework makes the following key assumptions:
 
 ### Structural Assumptions
 
-1. **Asymmetric Dependencies**: D_ij ≠ D_ji in general
-2. **Stable Structure**: Interdependence matrix D is fixed within episodes
+1. **Asymmetric Dependencies**: $D_{ij} \neq D_{ji}$ in general
+2. **Stable Structure**: Interdependence matrix $\mathbf{D}$ is fixed within episodes
 3. **Continuous Actions**: Cooperation levels are continuous, not discrete
 
 ### Trust Assumptions
 
-1. **Negativity Bias**: Trust erodes faster than it builds (λ⁻ > λ⁺)
+1. **Negativity Bias**: Trust erodes faster than it builds ($\lambda^- > \lambda^+$)
 2. **Path Dependence**: Historical violations constrain future trust (hysteresis)
-3. **Bilateral Trust**: T_ij ≠ T_ji (trust is not automatically symmetric)
+3. **Bilateral Trust**: $T_{ij} \neq T_{ji}$ (trust is not automatically symmetric)
 
 ### Limitations
 
