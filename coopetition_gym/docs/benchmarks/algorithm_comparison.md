@@ -10,31 +10,7 @@ This page provides detailed analysis of each algorithm category's performance, f
 
 ### Learning Paradigms
 
-```
-MARL Algorithms
-├── Independent Learning
-│   ├── IPPO (Independent PPO)
-│   ├── ISAC (Independent SAC)
-│   └── IA2C (Independent A2C)
-├── Centralized Training, Decentralized Execution (CTDE)
-│   ├── Continuous Action
-│   │   ├── MAPPO (Multi-Agent PPO)
-│   │   ├── MADDPG (Multi-Agent DDPG)
-│   │   ├── MATD3 (Multi-Agent TD3)
-│   │   └── MASAC (Multi-Agent SAC)
-│   └── Discrete Action (Value Decomposition)
-│       ├── QMIX
-│       ├── VDN
-│       └── COMA
-├── Opponent Modeling
-│   ├── LOLA (Learning with Opponent-Learning Awareness)
-│   └── M3DDPG (Minimax MADDPG)
-├── Population-Based
-│   ├── SelfPlay_PPO
-│   └── FCP (Fictitious Co-Play)
-└── Mean-Field
-    └── MeanFieldAC
-```
+![MARL Algorithm Taxonomy](../assets/images/figures/algorithm_taxonomy.png)
 
 ---
 
@@ -371,22 +347,7 @@ Algorithms cluster into behavioral profiles:
 
 ### Decision Tree
 
-```
-Is training feasible?
-├── No  → Use Constant_050
-└── Yes
-    ├── Is action space continuous?
-    │   ├── Yes
-    │   │   ├── Is training time limited?
-    │   │   │   ├── Yes → Use ISAC
-    │   │   │   └── No  → Use MADDPG
-    │   │   └── Is opponent learning modeled?
-    │   │       └── Not recommended for coopetition
-    │   └── No (Discrete)
-    │       └── Use VDN
-    └── Is population diversity needed?
-        └── Not recommended for coopetition
-```
+![Algorithm Selection Flowchart](../assets/images/figures/algorithm_flowchart.png)
 
 ### Quick Reference
 

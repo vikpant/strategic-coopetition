@@ -297,22 +297,7 @@ From 760 experiments across 20 algorithms:
 
 **Trust-Return Correlation**: r = 0.552 (p < 0.001)
 
-```
-Return vs Final Trust (760 experiments)
-
-180,000 |                                    ○
-        |                               ○  ○○○
-140,000 |                          ○○ ○○○○○○
-        |                      ○○○○○○○○○
-100,000 |                  ○○○○○○○○○
-        |              ○○○○○○○○○
- 60,000 |          ○○○○○○○○○
-        |      ○○○○○○○○
- 20,000 | ○○○○○○○
-        |_______________________________________
-         0.0   0.2   0.4   0.6   0.8   1.0
-                    Final Trust
-```
+![Trust-Return Scatter Plot](../assets/images/figures/trust_return_scatter.png)
 
 ### Algorithm Performance by Trust
 
