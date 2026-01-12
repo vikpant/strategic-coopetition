@@ -6,12 +6,6 @@ This document provides a comprehensive treatment of the interdependence formaliz
 
 ---
 
-## Interdependence at a Glance
-
-![Interdependence Matrix Animation](../assets/images/manim/interdependence_matrix.gif)
-
-*Animated interdependence matrix D for a platform ecosystem. Cells reveal row-by-row showing dependency values: red indicates high dependency (D > 0.6), amber moderate (D > 0.3), green low. The red-highlighted column shows developers' heavy dependence on the platform (D ≈ 0.75-0.85) versus the platform's moderate dependency on any single developer (D ≈ 0.10-0.18).*
-
 ---
 
 ## Executive Summary
@@ -68,9 +62,7 @@ The *i*\* framework (Yu, 1995) provides the conceptual basis for interdependence
 
 ### Example: Platform Ecosystem
 
-![Platform Ecosystem Dependencies](../assets/images/manim/platform_dependency.gif)
-
-*The *i*\* strategic dependency network visualization: Platform (blue center) and four developers (green circles) with dependency arrows showing D values. The asymmetry is stark—developers depend heavily on the platform (D = 0.75-0.85) while the platform has distributed dependency across multiple developers.*
+![Platform Dependencies](../assets/images/manim/focused/platform_dependency.gif)
 
 **Asymmetry**: The developer critically depends on the platform (D = 0.80), while the platform moderately depends on any single developer (D = 0.35). This asymmetry has profound strategic implications.
 
@@ -81,6 +73,8 @@ The *i*\* framework (Yu, 1995) provides the conceptual basis for interdependence
 ### The Interdependence Matrix
 
 **Definition**: The interdependence matrix $\mathbf{D}$ is an $N \times N$ matrix where element $D_{ij} \in [0,1]$ quantifies the structural dependency of actor $i$ on actor $j$.
+
+![Interdependence Heatmap](../assets/images/manim/focused/interdependence_heatmap.gif)
 
 ### Equation 1: Interdependence Coefficient
 
@@ -293,11 +287,7 @@ $$\Large \mathbf{a}^* \text{ is Coopetitive Equilibrium if: } a_i^* \in \arg\max
 
 ### Iterative Refinement
 
-The translation process is inherently iterative:
-
-![Iterative Refinement Process](../assets/images/manim/iterative_refinement.gif)
-
-*Bidirectional flow between i* conceptual models and computational game-theoretic analysis. Quantification translates qualitative dependencies into the D matrix, while equilibrium analysis reveals gaps in the conceptual model—a continuous refinement cycle that improves both representations.*
+The translation process is inherently iterative—quantification translates qualitative dependencies into the $\mathbf{D}$ matrix, while equilibrium analysis reveals gaps in the conceptual model.
 
 ---
 
