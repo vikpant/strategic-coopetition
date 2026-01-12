@@ -146,29 +146,29 @@ The hidden γ parameter creates an **information asymmetry**:
 
 SynergySearch-v0 has different equilibria depending on the hidden γ:
 
-**High-Synergy Equilibrium (γ > 0.60)**:
+**High-Synergy Equilibrium ($\gamma > 0.60$)**:
 
 | Agent | Equilibrium Action | Rationale |
 |-------|-------------------|-----------|
-| Both | a* ≈ 75 | High complementarity bonus justifies investment |
+| Both | $a^* \approx 75$ | High complementarity bonus justifies investment |
 
 Total welfare: ~220 (significantly higher than baseline)
 
-**Low-Synergy Equilibrium (γ ≤ 0.60)**:
+**Low-Synergy Equilibrium ($\gamma \leq 0.60$)**:
 
 | Agent | Equilibrium Action | Rationale |
 |-------|-------------------|-----------|
-| Both | a* ≈ 45 | Limited synergy reduces cooperation incentive |
+| Both | $a^* \approx 45$ | Limited synergy reduces cooperation incentive |
 
 Total welfare: ~165 (moderate improvement over NE)
 
 ### Bayesian Nash Equilibrium
 
-Given uncertainty about γ, agents play a Bayesian game:
+Given uncertainty about $\gamma$, agents play a Bayesian game:
 
-**Prior**: P(γ) = Uniform(0.20, 0.90)
-**Threshold**: γ* = 0.60 (high vs. low synergy)
-**Prior probability high synergy**: P(γ > 0.60) ≈ 43%
+**Prior**: $P(\gamma) = \text{Uniform}(0.20, 0.90)$
+**Threshold**: $\gamma^* = 0.60$ (high vs. low synergy)
+**Prior probability high synergy**: $P(\gamma > 0.60) \approx 43\%$
 
 **Bayesian NE without Learning**:
 
@@ -240,12 +240,12 @@ After observing reward r from action profile (70, 70):
 P(γ | r) ∝ P(r | γ) × P(γ)
 ```
 
-Expected rewards under different γ:
-- γ = 0.30: E[r] ≈ 85
-- γ = 0.60: E[r] ≈ 100
-- γ = 0.90: E[r] ≈ 115
+Expected rewards under different $\gamma$:
+- $\gamma = 0.30$: $E[r] \approx 85$
+- $\gamma = 0.60$: $E[r] \approx 100$
+- $\gamma = 0.90$: $E[r] \approx 115$
 
-Observing r = 110 strongly suggests high γ.
+Observing $r = 110$ strongly suggests high $\gamma$.
 
 ### Theoretical Connections
 

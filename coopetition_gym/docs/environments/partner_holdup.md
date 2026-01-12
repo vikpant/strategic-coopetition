@@ -156,7 +156,7 @@ In the single-shot version (ignoring trust dynamics and exit):
 
 **Asymmetric Bargaining Analysis**:
 
-With bargaining shares α = (0.60, 0.40):
+With bargaining shares $\alpha = (0.60, 0.40)$:
 
 - **Nash Bargaining Solution** (with disagreement point at baseline):
   - Strong receives: 60% × (total surplus - disagreement payoffs)
@@ -167,9 +167,9 @@ With bargaining shares α = (0.60, 0.40):
 
 - **Exploitation equilibrium**: Strong exploits maximally until exit threshold approached
 - **Sustainable equilibrium**: Strong moderates exploitation to maintain relationship
-- **Trigger strategy by weak**: Credible exit threat at τ < 0.10 disciplines strong
+- **Trigger strategy by weak**: Credible exit threat at $\tau < 0.10$ disciplines strong
 
-The critical insight is that the exit threshold τ* = 0.10 creates a **credible commitment device** for the weak partner, partially offsetting the power asymmetry.
+The critical insight is that the exit threshold $\tau^* = 0.10$ creates a **credible commitment device** for the weak partner, partially offsetting the power asymmetry.
 
 ### Connections to Prior Work
 
@@ -392,12 +392,12 @@ Unlike TrustDilemma-v0, PartnerHoldUp-v0 has asymmetric equilibria due to differ
 
 **Best Response Functions**:
 
-For strong agent (i=0) with e_0 = 120, α_0 = 0.60, D_01 = 0.35:
+For strong agent ($i=0$) with $e_0 = 120$, $\alpha_0 = 0.60$, $D_{01} = 0.35$:
 ```
 BR_strong(a_weak) = argmax_{a_0} [(120-a_0) + θ·ln(1+a_0) + 0.60·G(a_0,a_1) + 0.35·π_weak]
 ```
 
-For weak agent (i=1) with e_1 = 80, α_1 = 0.40, D_10 = 0.85:
+For weak agent ($i=1$) with $e_1 = 80$, $\alpha_1 = 0.40$, $D_{10} = 0.85$:
 ```
 BR_weak(a_strong) = argmax_{a_1} [(80-a_1) + θ·ln(1+a_1) + 0.40·G(a_0,a_1) + 0.85·π_strong]
 ```
@@ -406,8 +406,8 @@ BR_weak(a_strong) = argmax_{a_1} [(80-a_1) + θ·ln(1+a_1) + 0.40·G(a_0,a_1) + 
 
 | Agent | Equilibrium Action | % of Endowment |
 |-------|-------------------|----------------|
-| Strong | a_0* ≈ 45 | 37.5% |
-| Weak | a_1* ≈ 30 | 37.5% |
+| Strong | $a_0^* \approx 45$ | 37.5% |
+| Weak | $a_1^* \approx 30$ | 37.5% |
 
 Both contribute near their baselines (35%), reflecting mutual caution.
 
@@ -445,12 +445,12 @@ Given strong's power advantage, a Stackelberg analysis is relevant:
 **Strong as Leader**:
 
 If strong commits first, the optimal strategy is:
-1. Choose a_0 anticipating weak's best response BR_weak(a_0)
+1. Choose $a_0$ anticipating weak's best response $\text{BR}_{\text{weak}}(a_0)$
 2. Maximize own payoff subject to weak's participation constraint
 
 **Stackelberg Outcome**:
-- Strong: a_0* ≈ 55-60 (moderate exploitation)
-- Weak: BR_weak ≈ 35-40 (defensive response)
+- Strong: $a_0^* \approx 55\text{-}60$ (moderate exploitation)
+- Weak: $\text{BR}_{\text{weak}} \approx 35\text{-}40$ (defensive response)
 - Strong extracts more surplus than simultaneous-move NE
 
 **Weak's Participation Constraint**:
@@ -460,7 +460,7 @@ Weak will participate (not exit) iff:
 U_weak(a_0, BR_weak(a_0)) ≥ Outside_Option
 ```
 
-The exit threshold τ < 0.10 operationalizes this constraint dynamically.
+The exit threshold $\tau < 0.10$ operationalizes this constraint dynamically.
 
 ### Repeated Game with Exit Threat
 
@@ -468,7 +468,7 @@ The exit threshold creates a credible commitment mechanism:
 
 **Exit as Punishment**:
 
-Weak's threat to exit if τ < 0.10 is credible because:
+Weak's threat to exit if $\tau < 0.10$ is credible because:
 - Weak loses from staying in exploitative relationship
 - Exit terminates strong's long-term gains
 - Creates dynamic incentive for strong to moderate

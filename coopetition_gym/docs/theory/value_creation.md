@@ -168,7 +168,7 @@ The geometric mean captures the intuition that:
 | 0.8 | Strong complementarity | Substantial cooperation incentive |
 | 1.0 | Maximum complementarity | Synergy dominates individual value |
 
-**Validated Value**: γ = 0.65 achieves optimal multi-criteria performance across experimental validation (TR-1 §7.2).
+**Validated Value**: $\gamma = 0.65$ achieves optimal multi-criteria performance across experimental validation (TR-1 §7.2).
 
 ---
 
@@ -176,7 +176,7 @@ The geometric mean captures the intuition that:
 
 ### Proving Complementarity Creates Value
 
-To verify that V(a|γ) exhibits superadditivity, consider two actors choosing actions (a_1, a_2).
+To verify that $V(\mathbf{a}|\gamma)$ exhibits superadditivity, consider two actors choosing actions $(a_1, a_2)$.
 
 **Joint Value** (power specification):
 
@@ -198,7 +198,7 @@ This holds for any $\gamma > 0$ and positive actions, confirming superadditivity
 
 ### Quantifying Added Value
 
-**Example**: Both actors invest 50 units, γ = 0.65, θ = 20
+**Example**: Both actors invest 50 units, $\gamma = 0.65$, $\theta = 20$
 
 **Logarithmic Specification**:
 

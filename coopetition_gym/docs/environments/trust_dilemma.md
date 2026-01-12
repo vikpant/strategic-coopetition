@@ -162,9 +162,9 @@ TrustDilemma-v0 extends the classical Iterated Prisoner's Dilemma (IPD) by incor
 
 In the single-shot version (ignoring trust dynamics), the environment resembles a continuous public goods game:
 
-- **Nash equilibrium (myopic)**: a* ≈ 35 (baseline contribution)
+- **Nash equilibrium (myopic)**: $a^* \approx 35$ (baseline contribution)
   - At this level, marginal cost of contribution equals marginal private benefit
-- **Pareto-optimal outcome**: a* = 100 (full cooperation)
+- **Pareto-optimal outcome**: $a^* = 100$ (full cooperation)
   - Social welfare maximized when both agents fully invest
 - **Price of Anarchy**: PoA ≈ 2.3
   - Ratio of optimal social welfare to welfare at Nash equilibrium
@@ -228,7 +228,7 @@ In the single-shot game (ignoring trust dynamics), we analyze best responses:
 
 **Best Response Functions**:
 
-For agent i with utility U_i = (e_i - a_i) + θ·ln(1 + a_i) + α_i·G(a) + D_ij·π_j:
+For agent $i$ with utility $U_i = (e_i - a_i) + \theta \cdot \ln(1 + a_i) + \alpha_i \cdot G(\mathbf{a}) + D_{ij} \cdot \pi_j$:
 
 ```
 ∂U_i/∂a_i = -1 + θ/(1 + a_i) + α_i·∂G/∂a_i = 0
@@ -241,8 +241,8 @@ a_i* ≈ θ - 1 + α_i·(∂G/∂a_i)
 
 **Nash Equilibrium (Symmetric Case)**:
 
-With θ = 20, α = 0.50, and moderate complementarity:
-- **Myopic NE**: a* ≈ 35 (baseline level)
+With $\theta = 20$, $\alpha = 0.50$, and moderate complementarity:
+- **Myopic NE**: $a^* \approx 35$ (baseline level)
 - Both agents contribute at the minimum expected level
 - Neither has unilateral incentive to deviate
 

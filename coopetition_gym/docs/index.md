@@ -244,9 +244,9 @@ $$\Large V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_
 | **Power** | $a_i^{\beta}$, $\beta=0.75$ | Geometric mean | General scenarios (46/60 validation) |
 
 **Key Parameters** (validated across 22,000+ trials):
-- **θ = 20.0**: Logarithmic scale producing realistic cooperation magnitudes
-- **β = 0.75**: Diminishing returns reflecting investment economics
-- **γ = 0.65**: Complementarity strength balancing individual and joint value
+- **$\theta = 20.0$**: Logarithmic scale producing realistic cooperation magnitudes
+- **$\beta = 0.75$**: Diminishing returns reflecting investment economics
+- **$\gamma = 0.65$**: Complementarity strength balancing individual and joint value
 
 ### Trust Dynamics (TR-2)
 
