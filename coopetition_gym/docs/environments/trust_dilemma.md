@@ -25,7 +25,7 @@ This environment tests whether reinforcement learning agents can learn **long-ho
 | **Communication** | Implicit (through actions only) |
 | **Agent Symmetry** | Symmetric (identical endowments, baselines, capabilities) |
 | **Reward Structure** | Mixed (individual + interdependence-weighted partner rewards) |
-| **Action Space** | Continuous, bounded: A_i = [0, 100] |
+| **Action Space** | Continuous, bounded: $A_i = [0, 100]$ |
 | **State Dynamics** | Deterministic (given actions, next state is deterministic) |
 | **Horizon** | Finite, T = 100 steps (or early termination on trust collapse) |
 | **Canonical Comparison** | Continuous-action Iterated Prisoner's Dilemma with state-dependent payoffs; cf. Lerer & Peysakhovich (2017) "Maintaining Cooperation in Complex Social Dilemmas" |
@@ -45,19 +45,19 @@ This environment is formalized as a 2-player Markov Game **M** = (**N**, **S**, 
 | Component | Symbol | Dimension | Range | Description |
 |-----------|--------|-----------|-------|-------------|
 | Actions | a | 2 | [0, 100] | Previous cooperation levels |
-| Trust Matrix | τ | 4 | [0, 1] | Pairwise trust τ_ij |
-| Reputation Damage | R | 4 | [0, 1] | Accumulated damage R_ij |
+| Trust Matrix | $\tau$ | 4 | [0, 1] | Pairwise trust $\tau_{ij}$ |
+| Reputation Damage | $R$ | 4 | [0, 1] | Accumulated damage $R_{ij}$ |
 | Interdependence | D | 4 | [0, 1] | Structural dependencies |
 | Metadata | m | 3 | varies | Timestep, auxiliary info |
 
 **Total dimension**: d = 17
 
 ### Action Space
-For each agent i ∈ {1, 2}:
+For each agent $i \in \{1, 2\}$:
 
-**A**_i = [0, e_i] = [0, 100] ⊂ ℝ
+$$A_i = [0, e_i] = [0, 100] \subset \mathbb{R}$$
 
-where e_i = 100 is the endowment. Actions represent **cooperation level** (investment in joint value creation).
+where $e_i = 100$ is the endowment. Actions represent **cooperation level** (investment in joint value creation).
 
 ### Transition Dynamics
 
@@ -67,7 +67,7 @@ where e_i = 100 is the endowment. Actions represent **cooperation level** (inves
 τ_ij(t+1) = clip(τ_ij(t) + Δτ_ij, 0, Θ_ij)
 ```
 
-where the trust ceiling Θ_ij = 1 - R_ij and the update is:
+where the trust ceiling $\Theta_{ij} = 1 - R_{ij}$ and the update is:
 
 ```
 Δτ_ij = λ⁺ · max(0, σ_j) · (1 - τ_ij) - λ⁻ · max(0, -σ_j) · τ_ij
@@ -111,9 +111,9 @@ with:
 - **Discount**: γ = 1.0 (undiscounted finite horizon)
 
 ### Initial State
-- τ_ij(0) = 0.50 for all i ≠ j
-- R_ij(0) = 0.00 for all i, j
-- a(0) = (0, 0)
+- $\tau_{ij}(0) = 0.50$ for all $i \neq j$
+- $R_{ij}(0) = 0.00$ for all $i, j$
+- $a(0) = (0, 0)$
 
 ---
 
@@ -151,7 +151,7 @@ The core challenge is learning that **today's defection constrains tomorrow's po
 
 TrustDilemma-v0 extends the classical Iterated Prisoner's Dilemma (IPD) by incorporating:
 
-1. **Continuous action spaces**: Rather than discrete {Cooperate, Defect}, agents choose cooperation intensity a_i ∈ [0, 100]
+1. **Continuous action spaces**: Rather than discrete {Cooperate, Defect}, agents choose cooperation intensity $a_i \in [0, 100]$
 2. **State-dependent payoffs**: Rewards are modulated by endogenous trust, creating a Markov Game rather than a repeated normal-form game
 3. **Asymmetric dynamics**: The 3:1 negativity bias (λ⁻/λ⁺) captures empirically-observed trust asymmetry (Slovic, 1993)
 4. **Reputation hysteresis**: Cumulative damage creates irreversibility absent from classical models
@@ -195,11 +195,11 @@ Where the left side captures the long-term value of trust investment.
 
 | Concept | TrustDilemma-v0 | Classical Reference |
 |---------|-----------------|---------------------|
-| Continuous cooperation | a_i ∈ [0, e_i] | Discrete {C, D} in Axelrod (1984) |
-| State-dependent payoffs | Trust modulation τ | Stateless in classical IPD |
-| Asymmetric dynamics | λ⁻ = 3 × λ⁺ | Symmetric in standard models |
-| Reputation effects | Ceiling Θ = 1 - R | No reputation in basic IPD |
-| Complementarity | γ-weighted synergy | Not present in classical |
+| Continuous cooperation | $a_i \in [0, e_i]$ | Discrete {C, D} in Axelrod (1984) |
+| State-dependent payoffs | Trust modulation $\tau$ | Stateless in classical IPD |
+| Asymmetric dynamics | $\lambda^- = 3 \times \lambda^+$ | Symmetric in standard models |
+| Reputation effects | Ceiling $\Theta = 1 - R$ | No reputation in basic IPD |
+| Complementarity | $\gamma$-weighted synergy | Not present in classical |
 
 ### Literature Connections
 

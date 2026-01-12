@@ -55,9 +55,9 @@ print(f"Metadata: {obs[14:17]}")
 
 **Key components:**
 - **Actions**: What each agent did last step
-- **Trust matrix**: Pairwise trust levels τ_ij ∈ [0, 1]
-- **Reputation damage**: Accumulated damage R_ij ∈ [0, 1]
-- **Interdependence**: How much each agent depends on others D_ij
+- **Trust matrix**: Pairwise trust levels $\tau_{ij} \in [0, 1]$
+- **Reputation damage**: Accumulated damage $R_{ij} \in [0, 1]$
+- **Interdependence**: How much each agent depends on others $D_{ij}$
 
 ---
 

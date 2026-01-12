@@ -18,7 +18,7 @@ This document provides a comprehensive treatment of the interdependence formaliz
 
 **For Practitioners**: Interdependence captures *why* actors must consider partner outcomes even while competing. When your success depends on your partner's success, you have rational incentive to care about their performance—not from altruism, but from structural necessity.
 
-**For Researchers**: We formalize interdependence through translation from *i*\* dependency networks to an interdependence matrix D, where D_ij ∈ [0,1] quantifies the structural coupling of actor i's outcomes to actor j's actions. This enables game-theoretic equilibrium analysis with dependency-augmented utility functions.
+**For Researchers**: We formalize interdependence through translation from *i*\* dependency networks to an interdependence matrix $\mathbf{D}$, where $D_{ij} \in [0,1]$ quantifies the structural coupling of actor $i$'s outcomes to actor $j$'s actions. This enables game-theoretic equilibrium analysis with dependency-augmented utility functions.
 
 ---
 
@@ -189,14 +189,14 @@ D_developer,platform = 0.825 / 1.00 = 0.825
 
 | Property | Description | Implication |
 |----------|-------------|-------------|
-| Bounded | D_ij ∈ [0, 1] | Normalized interpretation |
-| Asymmetric | D_ij ≠ D_ji generally | Power imbalances |
-| Zero diagonal | D_ii = 0 | No self-dependency |
-| Non-negative | D_ij ≥ 0 | Dependencies cannot be negative |
+| Bounded | $D_{ij} \in [0, 1]$ | Normalized interpretation |
+| Asymmetric | $D_{ij} \neq D_{ji}$ generally | Power imbalances |
+| Zero diagonal | $D_{ii} = 0$ | No self-dependency |
+| Non-negative | $D_{ij} \geq 0$ | Dependencies cannot be negative |
 
 ### Interpretive Guidelines
 
-| D_ij Value | Interpretation | Strategic Implications |
+| $D_{ij}$ Value | Interpretation | Strategic Implications |
 |------------|----------------|------------------------|
 | 0.00 | No dependency | Independent operation |
 | 0.01 - 0.20 | Minimal dependency | Low strategic coupling |
@@ -207,17 +207,17 @@ D_developer,platform = 0.825 / 1.00 = 0.825
 
 ### Dependency Patterns
 
-**Mutual High Dependency** (D_ij ≈ D_ji, both high):
+**Mutual High Dependency** ($D_{ij} \approx D_{ji}$, both high):
 - Strong structural incentive for cooperation
 - "Married" partners with aligned interests
 - Example: Joint venture with balanced contributions
 
-**Asymmetric Dependency** (D_ij >> D_ji):
-- Power imbalance favoring actor j
-- Actor i vulnerable to exploitation
+**Asymmetric Dependency** ($D_{ij} \gg D_{ji}$):
+- Power imbalance favoring actor $j$
+- Actor $i$ vulnerable to exploitation
 - Example: Small supplier to dominant buyer
 
-**Low Mutual Dependency** (D_ij ≈ D_ji ≈ 0):
+**Low Mutual Dependency** ($D_{ij} \approx D_{ji} \approx 0$):
 - Arms-length relationship
 - Pure competition possible
 - Example: Competitors in separate markets
@@ -282,8 +282,8 @@ $$\Large \mathbf{a}^* \text{ is Coopetitive Equilibrium if: } a_i^* \in \arg\max
 - Consider switching costs and lock-in effects
 
 **Step 4: Compute Interdependence Matrix**
-- Apply Equation 1 for each (i, j) pair
-- Verify D_ii = 0 and D_ij ∈ [0, 1]
+- Apply Equation 1 for each $(i, j)$ pair
+- Verify $D_{ii} = 0$ and $D_{ij} \in [0, 1]$
 - Check for expected asymmetries
 
 **Step 5: Validate and Refine**
@@ -345,7 +345,7 @@ Sony     [  0.40   0.00 ]
 ### For Requirements Engineering
 
 - **Stakeholder Analysis**: Quantify dependencies to identify critical stakeholders
-- **Risk Assessment**: High D_ij indicates vulnerability to partner failure
+- **Risk Assessment**: High $D_{ij}$ indicates vulnerability to partner failure
 - **Negotiation Preparation**: Understand power balance before negotiations
 
 ### For Alliance Management
@@ -372,7 +372,7 @@ Sony     [  0.40   0.00 ]
 ### Pitfall 2: Assuming Symmetry
 
 **Wrong**: "If I depend on them, they depend on me equally"
-**Right**: D_ij and D_ji are independent; asymmetry is common
+**Right**: $D_{ij}$ and $D_{ji}$ are independent; asymmetry is common
 
 ### Pitfall 3: Static Analysis
 
@@ -381,8 +381,8 @@ Sony     [  0.40   0.00 ]
 
 ### Pitfall 4: Over-Precision
 
-**Wrong**: "D_ij = 0.4237 exactly"
-**Right**: D estimates have uncertainty; use sensitivity analysis
+**Wrong**: "$D_{ij} = 0.4237$ exactly"
+**Right**: $D$ estimates have uncertainty; use sensitivity analysis
 
 ---
 
