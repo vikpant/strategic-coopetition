@@ -263,7 +263,12 @@ Trust evolves through a **two-layer architecture** capturing both immediate beha
 
 **Asymmetric Evolution with Negativity Bias**:
 
-$$\Large \Delta T = \begin{cases} \lambda^+ \cdot s \cdot (\Theta - T) & \text{if } s > 0 \quad [\lambda^+ = 0.10] \\ -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi D) & \text{if } s \leq 0 \quad [\lambda^- = 0.30] \end{cases}$$
+$$
+\Delta T = \begin{cases}
+\lambda^+ \cdot s \cdot (\Theta - T) & \text{if } s > 0 \quad [\lambda^+ = 0.10] \\[8pt]
+-\lambda^- \cdot |s| \cdot T \cdot (1 + \xi D) & \text{if } s \leq 0 \quad [\lambda^- = 0.30]
+\end{cases}
+$$
 
 **The 3:1 Ratio**: Trust erodes approximately 3× faster than it builds ($\lambda^-/\lambda^+ \approx 3.0$). This negativity bias, validated against behavioral economics research, explains why:
 - A single major violation can destroy months of trust-building
