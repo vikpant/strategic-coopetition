@@ -10,9 +10,9 @@ This document outlines the research-driven development roadmap for Coopetition-G
 
 Coopetition-Gym implements a coordinated research program examining strategic coopetition in multi-agent systems. The program addresses five dimensions of coopetitive relationships through four technical reports:
 
-![Research Program Architecture](assets/images/architecture_diagram.gif)
+![Research Program Architecture](assets/images/manim/architecture_diagram.gif)
 
-*Four-pillar research architecture: Pillars 1 & 2 (Interdependence, Trust) are fully implemented; Pillars 3 & 4 (Team Production, Reciprocity) are planned for future releases.*
+*Animated four-pillar research architecture: Pillars 1 (Interdependence & Complementarity) and 2 (Trust & Reputation) are fully implemented (green); Pillars 3 (Team Production) and 4 (Sequential Reciprocity) are planned (gray). The Coopetitive Equilibrium Framework integrates all pillars.*
 
 | Pillar | Focus | Technical Report | Status |
 |--------|-------|------------------|--------|
