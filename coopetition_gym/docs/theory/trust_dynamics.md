@@ -8,9 +8,9 @@ This document provides a comprehensive treatment of trust dynamics from Technica
 
 ## Trust Evolution at a Glance
 
-![Trust Evolution Animation](../assets/images/trust_evolution.gif)
+![Trust Evolution Animation](../assets/images/manim/trust_evolution.gif)
 
-*Animated visualization showing trust building (green), violations causing rapid erosion, trust ceiling (red dashed) limiting recovery, and reputation damage (orange) creating permanent constraints.*
+*Two-layer trust model animation showing cooperation periods (green background), defection periods (red background), trust trajectory (blue), and trust ceiling Θ = 1 - R (dashed red). Notice how trust builds slowly during cooperation but erodes rapidly during defection—the 3:1 negativity bias.*
 
 ---
 
@@ -172,9 +172,9 @@ The baseline $a_j^{\text{baseline}}$ is context-specific:
 
 Trust evolution is fundamentally asymmetric: violations hurt more than cooperation helps.
 
-![Negativity Bias Animation](../assets/images/negativity_bias.gif)
+![Negativity Bias Animation](../assets/images/manim/negativity_bias.gif)
 
-*Three cooperative events produce smaller trust gains than one defection event erases. The 3:1 ratio means a single betrayal can undo months of trust-building.*
+*Demonstration of the 3:1 negativity bias: three cooperative events (①②③) build trust gradually, but a single defection event (④) erases comparable gains. The bar chart comparison shows the ratio is approximately 3:1—matching behavioral economics research.*
 
 **Equation 5 (TR-2)**: Trust Change
 

@@ -21,9 +21,9 @@ The synthesis produces environments where:
 
 ### Research Program Architecture
 
-![Research Program Architecture](../assets/images/architecture_diagram.gif)
+![Research Program Architecture](../assets/images/manim/architecture_diagram.gif)
 
-*Four-pillar research program: Pillars 1 & 2 are implemented, Pillars 3 & 4 are planned.*
+*Animated four-pillar research program architecture. Pillars 1 (Interdependence & Complementarity) and 2 (Trust & Reputation) are implemented (green); Pillars 3 (Team Production) and 4 (Sequential Reciprocity) are planned (gray). The Coopetitive Equilibrium Framework (blue bar) integrates all pillars.*
 
 ---
 

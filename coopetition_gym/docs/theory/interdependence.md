@@ -8,9 +8,9 @@ This document provides a comprehensive treatment of the interdependence formaliz
 
 ## Interdependence at a Glance
 
-![Interdependence Matrix Animation](../assets/images/interdependence_matrix.gif)
+![Interdependence Matrix Animation](../assets/images/manim/interdependence_matrix.gif)
 
-*Example interdependence matrix for a platform ecosystem. Notice the asymmetry: developers depend heavily on the platform (D ≈ 0.75-0.85) while the platform has only moderate dependency on any single developer (D ≈ 0.10-0.18).*
+*Animated interdependence matrix D for a platform ecosystem. Cells reveal row-by-row showing dependency values: red indicates high dependency (D > 0.6), amber moderate (D > 0.3), green low. The red-highlighted column shows developers' heavy dependence on the platform (D ≈ 0.75-0.85) versus the platform's moderate dependency on any single developer (D ≈ 0.10-0.18).*
 
 ---
 
@@ -68,9 +68,9 @@ The *i*\* framework (Yu, 1995) provides the conceptual basis for interdependence
 
 ### Example: Platform Ecosystem
 
-![Platform Ecosystem Dependencies](../assets/images/platform_dependency.gif)
+![Platform Ecosystem Dependencies](../assets/images/manim/platform_dependency.gif)
 
-*The *i*\* dependency network showing asymmetric relationships: developers depend heavily on the platform (D = 0.80) while the platform has moderate dependency on any single developer (D = 0.35).*
+*The *i*\* strategic dependency network visualization: Platform (blue center) and four developers (green circles) with dependency arrows showing D values. The asymmetry is stark—developers depend heavily on the platform (D = 0.75-0.85) while the platform has distributed dependency across multiple developers.*
 
 **Asymmetry**: The developer critically depends on the platform (D = 0.80), while the platform moderately depends on any single developer (D = 0.35). This asymmetry has profound strategic implications.
 

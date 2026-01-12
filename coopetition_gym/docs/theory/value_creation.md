@@ -8,9 +8,9 @@ This document provides a comprehensive treatment of value creation and complemen
 
 ## Value Creation at a Glance
 
-![Value Creation Animation](../assets/images/value_creation.gif)
+![Value Creation Animation](../assets/images/manim/value_creation.gif)
 
-*Left: Individual value function with diminishing returns. Center: Synergy heatmap showing value peaks at balanced contributions. Right: The green "Added Value" region shows superadditive gains from complementarity—17% extra value at equal contributions.*
+*Three-panel animation: Left shows the individual value function f(a) = θ·ln(1+a) with diminishing returns. Center shows the synergy heatmap g(a₁,a₂) = √(a₁·a₂) with balanced contributions along the diagonal maximizing synergy. Right demonstrates superadditivity—the purple "Added Value" shows the 17% extra value from complementarity (γ = 0.65).*
 
 ---
 
@@ -97,9 +97,9 @@ $$\Large f_i(a_i) = \theta \cdot \ln(1 + a_i) \quad \text{where } \theta = 20.0$
 
 **Graphical Intuition**:
 
-![Value Function Animation](../assets/images/value_function.gif)
+![Value Function Animation](../assets/images/manim/value_function.gif)
 
-*Logarithmic value function showing steep initial returns that flatten as cooperation increases—demonstrating diminishing marginal value.*
+*Detailed animation of the logarithmic value function f(a) = θ·ln(1+a) with θ = 20.0 (validated parameter). Green region highlights steep initial returns; amber tangent lines demonstrate diminishing marginal returns as cooperation level increases.*
 
 **When to Use**: Manufacturing partnerships, technology joint ventures, scenarios where baseline capabilities are highly valuable but incremental improvements have declining impact.
 
