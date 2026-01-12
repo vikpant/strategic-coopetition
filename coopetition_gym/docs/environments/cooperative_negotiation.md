@@ -17,6 +17,9 @@ This environment tests:
 3. **Commitment and enforcement**: Understanding contract dynamics
 4. **Breach penalties**: Learning consequences of defection
 
+![Negotiation Flow Dynamics](../assets/images/environments/negotiation_flow.gif)
+*Left: Proposal convergence as agents adjust positions toward agreement. Right: Agreement status timeline showing negotiation (blue), agreement (green), and breach (red) phases with 3× penalty multiplier.*
+
 ---
 
 ## MARL Classification

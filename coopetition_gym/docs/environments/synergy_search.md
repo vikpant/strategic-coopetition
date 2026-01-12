@@ -16,6 +16,9 @@ This environment tests agents' ability to:
 2. **Estimate hidden parameters** through interaction
 3. **Adapt strategy** based on discovered synergy level
 
+![Synergy Search Exploration](../assets/images/environments/synergy_search.gif)
+*Left: Reward curves showing different returns for high (γ=0.8) vs low (γ=0.3) synergy environments. Right: Exploration trajectory as agents probe cooperation levels to infer hidden γ.*
+
 ---
 
 ## MARL Classification

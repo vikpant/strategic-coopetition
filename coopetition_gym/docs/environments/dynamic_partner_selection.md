@@ -16,6 +16,9 @@ The key challenge is learning to:
 2. **Maintain own reputation** to attract high-quality partners
 3. **Navigate social learning dynamics** in a multi-agent setting
 
+![Dynamic Partner Network](../assets/images/environments/partner_network.gif)
+*Six-agent marketplace with evolving public reputations. Node size indicates reputation score, edge color shows pairwise trust levels (green=high, red=low). Cooperation builds reputation and attracts quality partners.*
+
 ---
 
 ## MARL Classification

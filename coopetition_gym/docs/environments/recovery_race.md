@@ -13,6 +13,9 @@ RecoveryRace-v0 models **post-crisis trust recovery** between two agents after a
 
 This environment is specifically designed to test understanding of **TR-2 trust dynamics** and the mathematical constraints on recovery. The key insight is that reputation damage creates a **trust ceiling** that limits how much trust can be recovered.
 
+![Recovery Race Trust Dynamics](../assets/images/environments/recovery_race.gif)
+*Trust recovery constrained by reputation damage. The red dashed line shows the trust ceiling (Θ = 1 - R), which rises as reputation heals. Trust cannot exceed this ceiling regardless of cooperation level.*
+
 ---
 
 ## MARL Classification

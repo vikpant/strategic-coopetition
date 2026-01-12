@@ -13,6 +13,9 @@ RenaultNissan-v0 models the **Renault-Nissan Alliance** across four distinct pha
 
 Unlike SLCD-v0 which models a single joint venture, RenaultNissan-v0 supports **multi-phase simulation** with different initial conditions for each era of the alliance.
 
+![Renault-Nissan Alliance Phases](../assets/images/environments/renault_nissan_phases.gif)
+*Trust evolution across four alliance phases: Formation (1999-2002), Mature Cooperation (2002-2018), Governance Crisis (2018-2020), and Strained Restructuring (2020-2025). Phase-specific initial conditions capture historical dynamics.*
+
 ---
 
 ## MARL Classification
