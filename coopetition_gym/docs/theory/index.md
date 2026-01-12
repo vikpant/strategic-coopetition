@@ -179,7 +179,12 @@ $$\Large T_{ij}^{t+1} = T_{ij}^t + \Delta T_{ij}^t$$
 
 where:
 
-$$\Large \Delta T_{ij}^t = \begin{cases} \lambda^+ \cdot s \cdot (\Theta - T) & \text{if } s > 0 \text{ (building)} \\ -\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij}) & \text{if } s \leq 0 \text{ (erosion)} \end{cases}$$
+$$
+\Delta T_{ij}^t = \begin{cases}
+\lambda^+ \cdot s \cdot (\Theta - T) & \text{if } s > 0 \text{ (building)} \\[8pt]
+-\lambda^- \cdot |s| \cdot T \cdot (1 + \xi \cdot D_{ij}) & \text{if } s \leq 0 \text{ (erosion)}
+\end{cases}
+$$
 
 **Trust Ceiling** (Equation 7, TR-2):
 
@@ -191,7 +196,12 @@ $$\Large R_{ij}^{t+1} = R_{ij}^t + \Delta R_{ij}^t - \delta_R \cdot R_{ij}^t$$
 
 where:
 
-$$\Large \Delta R_{ij}^t = \begin{cases} \mu_R \cdot |s| \cdot (1 - R) & \text{if } s < 0 \text{ (damage)} \\ 0 & \text{if } s \geq 0 \text{ (no damage)} \end{cases}$$
+$$
+\Delta R_{ij}^t = \begin{cases}
+\mu_R \cdot |s| \cdot (1 - R) & \text{if } s < 0 \text{ (damage)} \\[8pt]
+0 & \text{if } s \geq 0 \text{ (no damage)}
+\end{cases}
+$$
 
 ---
 
