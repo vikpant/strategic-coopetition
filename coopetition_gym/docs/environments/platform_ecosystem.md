@@ -110,7 +110,7 @@ r_platform = π_platform + 0.25 · Σⱼ π_dev_j
 r_dev_i = π_dev_i + 0.75 · π_platform
 ```
 
-where private payoffs use θ = 25.0 and γ = 0.75 (strong network effects).
+where private payoffs use $\theta = 25.0$ and $\gamma = 0.75$ (strong network effects).
 
 ### Episode Structure
 
@@ -200,7 +200,7 @@ The critical threshold avg_dev_trust < 0.15 creates a **collective action trigge
 | Concept | PlatformEcosystem-v0 | Classical Reference |
 |---------|---------------------|---------------------|
 | Two-sided markets | Hub-spoke D matrix | Rochet & Tirole (2003) |
-| Network effects | γ = 0.75 complementarity | Katz & Shapiro (1985) |
+| Network effects | $\gamma = 0.75$ complementarity | Katz & Shapiro (1985) |
 | Platform governance | Trust dynamics | Evans & Schmalensee (2016) |
 | Ecosystem collapse | Trust threshold termination | Mean-field game literature |
 | Multi-homing | Developer D = 0.75 | Armstrong (2006) |
@@ -209,7 +209,7 @@ The critical threshold avg_dev_trust < 0.15 creates a **collective action trigge
 
 **Rochet & Tirole (2003)**: Two-sided markets and platform competition. PlatformEcosystem-v0 operationalizes:
 - Platform intermediation → Hub-spoke interdependence
-- Cross-group externalities → Complementarity parameter γ = 0.75
+- Cross-group externalities → Complementarity parameter $\gamma = 0.75$
 - Participation decisions → Continuous investment levels
 
 **Parker & Van Alstyne (2005)**: Two-sided network effects. The environment captures:
@@ -401,7 +401,7 @@ This represents:
 
 ### Network Effects
 
-The high complementarity (γ = 0.75) means:
+The high complementarity ($\gamma = 0.75$) means:
 - Value grows superlinearly with total investment
 - Platform and developers benefit from mutual cooperation
 - Defection by any party reduces ecosystem value

@@ -88,12 +88,12 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 
 | Environment | Stage-Game NE | Pareto Optimal | Price of Anarchy | Notes |
 |-------------|---------------|----------------|------------------|-------|
-| TrustDilemma-v0 | a* ≈ 35 | a* = 100 | ~1.55 | Trust-mediated cooperation |
+| TrustDilemma-v0 | $a^* \approx 35$ | $a^* = 100$ | ~1.55 | Trust-mediated cooperation |
 | PartnerHoldUp-v0 | (45, 30) | (120, 80) | ~1.58 | Asymmetric Stackelberg |
 | PlatformEcosystem-v0 | (55, 35) | (120, 65) | ~1.50 | Collective action threshold |
-| SynergySearch-v0 | Conditional on γ | Conditional | ~1.10 | Bayesian exploration needed |
+| SynergySearch-v0 | Conditional on $\gamma$ | Conditional | ~1.10 | Bayesian exploration needed |
 | SLCD-v0 | Validated | Validated | N/A | 58/60 historical accuracy |
-| RecoveryRace-v0 | Trust-constrained | Recovery-dependent | N/A | Ceiling Θ = 1 - R |
+| RecoveryRace-v0 | Trust-constrained | Recovery-dependent | N/A | Ceiling $\Theta = 1 - R$ |
 | CooperativeNegotiation-v0 | Pre-agreement | Post-agreement | ~1.40 | Breach penalty enforces |
 | ReputationMarket-v0 | Tier-dependent | Premium tier | ~1.35 | Reputation competition |
 

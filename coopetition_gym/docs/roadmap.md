@@ -119,13 +119,13 @@ s_ij = tanh(κ × (a_j - baseline))
 
 | Component | Description | Mathematical Basis |
 |-----------|-------------|-------------------|
-| Team Structure | Composite actors with N_C members | V_C(Σe_i) = ω(Σe_i)^β |
+| Team Structure | Composite actors with $N_C$ members | $V_C(\sum e_i) = \omega(\sum e_i)^\beta$ |
 | Free-Riding Problem | Nash equilibrium under self-interest | Universal shirking emerges |
-| Loyalty Parameter | θ ∈ [0,1] moderating utility | Four synergistic mechanisms |
-| Cost Tolerance | Perceived cost reduction | c_perceived = c / (1 + φ_cost × θ) |
-| Welfare Internalization | Teammates' payoffs in utility | λ_intern = φ_intern × θ |
-| Warm Glow | Intrinsic satisfaction from contributing | φ_warm × θ × ln(1 + e_i) |
-| Guilt Aversion | Disutility from shirking | -φ_guilt × θ × (ē - e_i)^1.5 |
+| Loyalty Parameter | $\theta \in [0,1]$ moderating utility | Four synergistic mechanisms |
+| Cost Tolerance | Perceived cost reduction | $c_{\text{perceived}} = c / (1 + \varphi_{\text{cost}} \times \theta)$ |
+| Welfare Internalization | Teammates' payoffs in utility | $\lambda_{\text{intern}} = \varphi_{\text{intern}} \times \theta$ |
+| Warm Glow | Intrinsic satisfaction from contributing | $\varphi_{\text{warm}} \times \theta \times \ln(1 + e_i)$ |
+| Guilt Aversion | Disutility from shirking | $-\varphi_{\text{guilt}} \times \theta \times (\bar{e} - e_i)^{1.5}$ |
 
 **Planned Equations**:
 
@@ -162,11 +162,11 @@ e_i* ∈ argmax U_i(e_i, e_{-i}*, θ)
 
 | Component | Description | Mathematical Basis |
 |-----------|-------------|-------------------|
-| Bounded Response Function | Finite reactions to deviations | φ_recip(x) = tanh(κ_recip × x) |
-| Memory-Windowed History | Bounded rationality (k periods) | ā_j = (1/k) × Σ a_j^τ |
-| Reciprocity Sensitivity | Structural dependency grounding | ρ_ij = ρ_0 × D_ij^η |
-| Trust-Gated Reciprocity | Trust modulates response | T_ij × ρ_ij × R_ij |
-| Sequential Cooperation | History-dependent strategies | σ_i: H → A_i |
+| Bounded Response Function | Finite reactions to deviations | $\varphi_{\text{recip}}(x) = \tanh(\kappa_{\text{recip}} \times x)$ |
+| Memory-Windowed History | Bounded rationality ($k$ periods) | $\bar{a}_j = (1/k) \times \sum a_j^\tau$ |
+| Reciprocity Sensitivity | Structural dependency grounding | $\rho_{ij} = \rho_0 \times D_{ij}^\eta$ |
+| Trust-Gated Reciprocity | Trust modulates response | $T_{ij} \times \rho_{ij} \times R_{ij}$ |
+| Sequential Cooperation | History-dependent strategies | $\sigma_i: H \rightarrow A_i$ |
 
 **Planned Equations**:
 

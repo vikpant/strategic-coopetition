@@ -95,7 +95,7 @@ Standard integrated utility with symmetric weights:
 r_i = π_i + 0.40 · Σ_{j≠i} π_j
 ```
 
-Value function uses θ = 18.0, γ = 0.55 (moderate complementarity).
+Value function uses $\theta = 18.0$, $\gamma = 0.55$ (moderate complementarity).
 
 ### Episode Structure
 
