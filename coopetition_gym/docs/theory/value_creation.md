@@ -6,12 +6,6 @@ This document provides a comprehensive treatment of value creation and complemen
 
 ---
 
-## Value Creation at a Glance
-
-![Value Creation Animation](../assets/images/manim/value_creation.gif)
-
-*Three-panel animation: Left shows the individual value function f(a) = θ·ln(1+a) with diminishing returns. Center shows the synergy heatmap g(a₁,a₂) = √(a₁·a₂) with balanced contributions along the diagonal maximizing synergy. Right demonstrates superadditivity—the purple "Added Value" shows the 17% extra value from complementarity (γ = 0.65).*
-
 ---
 
 ## Executive Summary
@@ -95,11 +89,7 @@ $$\Large f_i(a_i) = \theta \cdot \ln(1 + a_i) \quad \text{where } \theta = 20.0$
 - Bounded growth: prevents runaway predictions
 - Initial slope = θ (steep initial returns)
 
-**Graphical Intuition**:
-
-![Value Function Animation](../assets/images/manim/value_function.gif)
-
-*Detailed animation of the logarithmic value function f(a) = θ·ln(1+a) with θ = 20.0 (validated parameter). Green region highlights steep initial returns; amber tangent lines demonstrate diminishing marginal returns as cooperation level increases.*
+![Value Function](../assets/images/manim/focused/value_function.gif)
 
 **When to Use**: Manufacturing partnerships, technology joint ventures, scenarios where baseline capabilities are highly valuable but incremental improvements have declining impact.
 
@@ -124,6 +114,8 @@ The synergy function captures value that exists *only* through collaboration—i
 **Equation 4 (TR-1)**: Geometric Mean
 
 $$\Large g(a_1, \ldots, a_N) = \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
+
+![Synergy Heatmap](../assets/images/manim/focused/synergy_heatmap.gif)
 
 **For Two Actors**:
 
@@ -173,6 +165,8 @@ The geometric mean captures the intuition that:
 ---
 
 ## Superadditivity Verification
+
+![Superadditivity](../assets/images/manim/focused/superadditivity_bars.gif)
 
 ### Proving Complementarity Creates Value
 

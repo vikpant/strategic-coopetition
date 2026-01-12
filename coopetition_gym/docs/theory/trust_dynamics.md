@@ -6,12 +6,6 @@ This document provides a comprehensive treatment of trust dynamics from Technica
 
 ---
 
-## Trust Evolution at a Glance
-
-![Trust Evolution Animation](../assets/images/manim/trust_evolution.gif)
-
-*Two-layer trust model animation showing cooperation periods (green background), defection periods (red background), trust trajectory (blue), and trust ceiling Θ = 1 - R (dashed red). Notice how trust builds slowly during cooperation but erodes rapidly during defection—the 3:1 negativity bias.*
-
 ---
 
 ## Executive Summary
@@ -60,6 +54,8 @@ Classical game theory lacks mechanisms for this dynamic evolution. Our formaliza
 
 **Definition**: Actor $i$'s current confidence in actor $j$'s reliability and cooperative intent.
 
+![Trust Evolution Curve](../assets/images/manim/focused/trust_curve_only.gif)
+
 **Properties**:
 - Range: $T_{ij} \in [0, 1]$
 - Responsive to recent behavior
@@ -102,6 +98,8 @@ Classical game theory lacks mechanisms for this dynamic evolution. Our formaliza
 **Equation 7 (TR-2)**:
 
 $$\Large \Theta_{ij}^t = 1 - R_{ij}^t$$
+
+![Trust Ceiling](../assets/images/manim/focused/trust_ceiling.gif)
 
 The trust ceiling creates **hysteresis**: even perfect cooperation cannot restore trust beyond this limit.
 
@@ -172,9 +170,7 @@ The baseline $a_j^{\text{baseline}}$ is context-specific:
 
 Trust evolution is fundamentally asymmetric: violations hurt more than cooperation helps.
 
-![Negativity Bias Animation](../assets/images/manim/negativity_bias.gif)
-
-*Demonstration of the 3:1 negativity bias: three cooperative events (①②③) build trust gradually, but a single defection event (④) erases comparable gains. The bar chart comparison shows the ratio is approximately 3:1—matching behavioral economics research.*
+![Negativity Bias](../assets/images/manim/focused/negativity_bias.gif)
 
 **Equation 5 (TR-2)**: Trust Change
 
