@@ -178,7 +178,13 @@ Trust evolution is fundamentally asymmetric: violations hurt more than cooperati
 
 **Equation 5 (TR-2)**: Trust Change
 
-$$\Delta T_{ij}^t = \begin{cases} \lambda^+ \cdot s_{ij}^t \cdot (\Theta_{ij}^t - T_{ij}^t) & \text{if } s_{ij}^t > 0 \text{ (building)} \\ -\lambda^- \cdot |s_{ij}^t| \cdot T_{ij}^t \cdot (1 + \xi \cdot D_{ij}) & \text{if } s_{ij}^t \leq 0 \text{ (erosion)} \end{cases}$$
+$$
+\Delta T_{ij}^t =
+\begin{cases}
+\lambda^+ \cdot s_{ij}^t \cdot (\Theta_{ij}^t - T_{ij}^t) & \text{if } s_{ij}^t > 0 \text{ (building)} \\
+-\lambda^- \cdot |s_{ij}^t| \cdot T_{ij}^t \cdot (1 + \xi \cdot D_{ij}) & \text{if } s_{ij}^t \leq 0 \text{ (erosion)}
+\end{cases}
+$$
 
 ### Trust Building ($s > 0$)
 
@@ -252,7 +258,13 @@ $$\Large R_{ij}^{t+1} = R_{ij}^t + \Delta R_{ij}^t - \delta_R \cdot R_{ij}^t$$
 
 **Damage Term**:
 
-$$\Delta R_{ij}^t = \begin{cases} \mu_R \cdot |s_{ij}^t| \cdot (1 - R_{ij}^t) & \text{if } s_{ij}^t < 0 \text{ (violation)} \\ 0 & \text{if } s_{ij}^t \geq 0 \text{ (no damage)} \end{cases}$$
+$$
+\Delta R_{ij}^t =
+\begin{cases}
+\mu_R \cdot |s_{ij}^t| \cdot (1 - R_{ij}^t) & \text{if } s_{ij}^t < 0 \text{ (violation)} \\
+0 & \text{if } s_{ij}^t \geq 0 \text{ (no damage)}
+\end{cases}
+$$
 
 ### Parameters
 
