@@ -55,22 +55,7 @@ R(t+1) = R(t) + μ_R × violation - δ_R × R(t)
 
 **Visualization:**
 
-```
-Return vs Final Trust (760 experiments)
-
-180,000 |                                    ○
-        |                               ○  ○○○
-140,000 |                          ○○ ○○○○○○
-        |                      ○○○○○○○○○
-100,000 |                  ○○○○○○○○○
-        |              ○○○○○○○○○
- 60,000 |          ○○○○○○○○○
-        |      ○○○○○○○○
- 20,000 | ○○○○○○○
-        |_______________________________________
-         0.0   0.2   0.4   0.6   0.8   1.0
-                    Final Trust
-```
+![Trust-Return Scatter Plot](../assets/images/figures/trust_return_scatter.png)
 
 **Conclusion:** Trust is a statistically significant predictor of returns (r = 0.552, p < 0.001), supporting P4.
 
@@ -151,25 +136,7 @@ Trust Eroders (↓)
 
 **Empirical Quadrants:**
 
-```
-                    High Trust (>0.6)
-                          │
-    Paradoxical           │         Sustainable
-    (rare)                │         Coopetition
-                          │
-                          │  ○ ISAC, Constant_050/075
-                          │  ○ MADDPG, MATD3, MASAC
-Low Cooperation ──────────┼────────── High Cooperation
-    (<0.4)                │              (>0.6)
-                          │
-    Defection             │         Exploitative
-    Spiral                │         (unstable)
-                          │
-  ○ IPPO, FCP             │
-  ○ SelfPlay, Random      │
-                          │
-                    Low Trust (<0.4)
-```
+![Trust-Cooperation Quadrant Chart](../assets/images/figures/trust_cooperation_quadrant.png)
 
 **Observations:**
 
