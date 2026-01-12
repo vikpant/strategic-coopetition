@@ -42,7 +42,7 @@ The theoretical foundations are organized into four pillars, of which **Pillars 
 
 | Pillar | Technical Report | Focus | Status |
 |--------|-----------------|-------|--------|
-| **3** | TR-2025-03 (Draft) | Team Production & Loyalty | Planned |
+| **3** | TR-2025-03 (Draft) | Collective Action & Loyalty | Planned |
 | **4** | TR-2025-04 (Draft) | Sequential Interaction & Reciprocity | Planned |
 
 See [Implementation Roadmap](../roadmap.md) for development timeline and planned features.

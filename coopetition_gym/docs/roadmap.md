@@ -12,14 +12,14 @@ Coopetition-Gym implements a coordinated research program examining strategic co
 
 ![Research Program Architecture](assets/images/manim/architecture_diagram.gif)
 
-*Animated four-pillar research architecture: Pillars 1 (Interdependence & Complementarity) and 2 (Trust & Reputation) are fully implemented (green); Pillars 3 (Team Production) and 4 (Sequential Reciprocity) are planned (gray). The Coopetitive Equilibrium Framework integrates all pillars.*
+*Animated four-pillar research architecture: Pillars 1 (Interdependence & Complementarity) and 2 (Trust & Reputation) are fully implemented (green); Pillars 3 (Collective Action & Loyalty) and 4 (Sequential Interaction & Reciprocity) are planned (gray). The Coopetitive Equilibrium Framework integrates all pillars.*
 
 | Pillar | Focus | Technical Report | Status |
 |--------|-------|------------------|--------|
 | **1** | Interdependence & Complementarity | [TR-2025-01](https://arxiv.org/abs/2510.18802) | ✓ Implemented |
 | **2** | Trust & Reputation Dynamics | [TR-2025-02](https://arxiv.org/abs/2510.24909) | ✓ Implemented |
-| **3** | Team Production & Loyalty | TR-2025-03 (Draft) | Planned |
-| **4** | Reciprocity & Conditionality | TR-2025-04 (Draft) | Planned |
+| **3** | Collective Action & Loyalty | TR-2025-03 (Draft) | Planned |
+| **4** | Sequential Interaction & Reciprocity | TR-2025-04 (Draft) | Planned |
 
 ---
 
@@ -111,7 +111,7 @@ s_ij = tanh(κ × (a_j - baseline))
 
 ## Planned Implementation
 
-### Pillar 3: Team Production & Loyalty (TR-2025-03)
+### Pillar 3: Collective Action & Loyalty (TR-2025-03)
 
 **Status**: Draft Technical Report | **Target**: Future Release
 
@@ -154,7 +154,7 @@ e_i* ∈ argmax U_i(e_i, e_{-i}*, θ)
 
 ---
 
-### Pillar 4: Reciprocity & Conditionality (TR-2025-04)
+### Pillar 4: Sequential Interaction & Reciprocity (TR-2025-04)
 
 **Status**: Draft Technical Report | **Target**: Future Release
 
