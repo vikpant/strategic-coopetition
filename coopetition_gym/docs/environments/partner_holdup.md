@@ -13,6 +13,9 @@ PartnerHoldUp-v0 models an **asymmetric vertical relationship** where one agent 
 
 The key challenge is understanding how power asymmetry affects cooperation dynamics, and whether the weak partner can develop effective defensive strategies against potential exploitation.
 
+![Partner Hold-Up Asymmetry Dynamics](../assets/images/environments/partner_holdup.gif)
+*Left: Structural power asymmetry showing differential dependencies (D_strong=0.35, D_weak=0.85). Right: Resulting asymmetric trust trajectories where the weak partner's trust erodes faster under exploitation.*
+
 ---
 
 ## MARL Classification

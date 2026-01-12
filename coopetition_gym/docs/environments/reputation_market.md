@@ -17,6 +17,9 @@ This environment tests:
 3. **Reputation competition**: Positional goods
 4. **Equilibrium in reputation games**: Stable market states
 
+![Reputation Tier System](../assets/images/environments/reputation_tiers.gif)
+*Left: Four-tier reward structure showing Premium (1.30×), Standard (1.00×), Probation (0.70×), and Excluded (0.40×) multipliers. Right: Agent trajectories as reputations evolve toward different tiers.*
+
 ---
 
 ## MARL Classification
