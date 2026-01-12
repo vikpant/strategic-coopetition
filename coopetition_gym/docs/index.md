@@ -53,9 +53,9 @@ print(f"Action space: {env.action_space}")
 
 ## Overview
 
-![Coopetition Dynamics Animation](assets/images/interaction_animation.gif)
+![Coopetition Dynamics Animation](assets/images/manim/coopetition_dynamics.gif)
 
-*Two-agent coopetition: agents balance cooperation (green) and competition (red) over time, with trust (purple) evolving based on their choices.*
+*Two-agent coopetition: agents balance cooperation (blue) and competition over time, with trust (purple) evolving based on their strategic choices. The animation shows action trajectories and real-time trust evolution.*
 
 **Coopetition-Gym** is a Python research library providing multi-agent reinforcement learning environments for studying *coopetitive dynamics*—scenarios where agents must simultaneously cooperate and compete. The library implements mathematical frameworks from published research:
 
@@ -250,9 +250,9 @@ $$\Large V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_
 
 ### Trust Dynamics (TR-2)
 
-![Cooperation-Trust Phase Space](assets/images/phase_space.gif)
+![Cooperation-Trust Phase Space](assets/images/manim/phase_space.gif)
 
-*Phase space showing relationship between cooperation and trust. Sustainable partnerships exist in the upper-right quadrant; low cooperation erodes trust while trust enables higher cooperation.*
+*Phase space visualization: The green region represents sustainable partnerships with high cooperation and trust. The red region shows defection spirals. Trajectories demonstrate how initial conditions determine the equilibrium reached—cooperation begets cooperation, while early defection leads to relationship collapse.*
 
 Trust evolves through a **two-layer architecture** capturing both immediate behavioral responses and long-term memory:
 
@@ -459,9 +459,9 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 
 ## Benchmark Highlights
 
-![Algorithm Performance Comparison](assets/images/algorithm_comparison.gif)
+![Algorithm Performance Comparison](assets/images/manim/algorithm_comparison.gif)
 
-*Normalized performance across 20 MARL algorithms by category. Simple heuristics surprisingly outperform complex learning approaches in coopetitive environments.*
+*Benchmark results from 760 experiments: Simple heuristic strategies (Constant_050, Constant_075) surprisingly outperform all 20 learning algorithms. The key finding: predictable cooperation builds trust more effectively than optimized but erratic learned policies.*
 
 We have evaluated **20 MARL algorithms** across all 10 environments with **760 experiments** totaling **76,000 evaluation episodes**. Key findings:
 

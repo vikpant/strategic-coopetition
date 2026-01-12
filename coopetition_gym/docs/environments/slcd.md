@@ -9,6 +9,10 @@
 
 ## Overview
 
+![S-LCD Joint Venture Timeline](../assets/images/manim/slcd_timeline.gif)
+
+*Historical trust and investment dynamics of the Samsung-Sony S-LCD joint venture across three phases: high cooperation (2004-2006), growing tension (2007-2009), and declining trust leading to Sony's exit (2010-2012). The animation demonstrates how the computational model achieves 58/60 validation accuracy against historical data.*
+
 SLCD-v0 implements the **Samsung-Sony S-LCD Joint Venture** as described in TR-1 (arXiv:2510.18802). This is the **gold standard benchmark** for Coopetition-Gym, with parameters validated against real business data.
 
 The environment models the 2004-2012 joint venture where Samsung and Sony collaborated on LCD panel manufacturing while competing in the consumer electronics market—a quintessential coopetitive relationship.

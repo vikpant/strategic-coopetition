@@ -295,9 +295,9 @@ $$\Large \mathbf{a}^* \text{ is Coopetitive Equilibrium if: } a_i^* \in \arg\max
 
 The translation process is inherently iterative:
 
-![Iterative Refinement Process](../assets/images/iterative_refinement.gif)
+![Iterative Refinement Process](../assets/images/manim/iterative_refinement.gif)
 
-*Bidirectional flow between conceptual and computational models: quantification reveals gaps in the *i*\* model, while equilibrium analysis suggests new dependencies to explore.*
+*Bidirectional flow between i* conceptual models and computational game-theoretic analysis. Quantification translates qualitative dependencies into the D matrix, while equilibrium analysis reveals gaps in the conceptual model—a continuous refinement cycle that improves both representations.*
 
 ---
 
