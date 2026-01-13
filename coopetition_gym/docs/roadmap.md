@@ -95,8 +95,8 @@ s_ij = tanh(κ × (a_j - baseline))
 | Trust Building Rate | λ⁺ | 0.10 | TR-2 §7.2 |
 | Trust Erosion Rate | λ⁻ | 0.30 | TR-2 §7.2 |
 | Negativity Ratio | λ⁻/λ⁺ | 3.0 | Behavioral economics |
-| Reputation Damage | μ_R | 0.60 | TR-2 §7.3 |
-| Reputation Decay | δ_R | 0.03 | TR-2 §7.3 |
+| Reputation Damage | $\mu_R$ | 0.60 | TR-2 §7.3 |
+| Reputation Decay | $\delta_R$ | 0.03 | TR-2 §7.3 |
 | Interdep. Amplification | ξ | 0.50 | TR-2 §7.4 |
 
 **Empirical Validation**:

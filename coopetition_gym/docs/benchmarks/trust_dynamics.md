@@ -19,7 +19,7 @@ TR-2 proposes a two-layer trust model:
 
 **Layer 2: Reputation (R)**
 ```
-R(t+1) = R(t) + μ_R × violation - δ_R × R(t)
+R(t+1) = R(t) + $\mu_R$ × violation - $\delta_R$ × R(t)
 ```
 
 **Trust Ceiling:**

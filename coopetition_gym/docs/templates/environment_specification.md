@@ -62,7 +62,7 @@ where:
 - Θ_ij = 1 - R_ij (trust ceiling from reputation)
 
 **Reputation Update**:
-R_ij(t+1) = clip(R_ij(t) · (1 - δ_R) + μ_R · 𝟙[σ_ij < 0], 0, 1)
+R_ij(t+1) = clip(R_ij(t) · (1 - $\delta_R$) + $\mu_R$ · 𝟙[σ_ij < 0], 0, 1)
 
 ### Reward Function
 r_i(s, a) = U_i(a) where integrated utility is:

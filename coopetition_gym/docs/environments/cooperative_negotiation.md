@@ -95,8 +95,8 @@ where breach_multiplier = 3.0 (default).
 |-----------|--------|-------|------|
 | Trust Building | λ⁺ | 0.12 | Faster (agreement builds trust) |
 | Trust Erosion | λ⁻ | 0.40 | High (breach penalty) |
-| Reputation Damage | μ_R | 0.65 | Strong (breach = reputation damage) |
-| Reputation Decay | δ_R | 0.02 | Standard |
+| Reputation Damage | $\mu_R$ | 0.65 | Strong (breach = reputation damage) |
+| Reputation Decay | $\delta_R$ | 0.02 | Standard |
 
 ### Reward Function
 
@@ -269,8 +269,8 @@ This makes breach very costly.
 |-----------|--------|-------|-------------|
 | Trust Building Rate | λ⁺ | 0.12 | Moderate building |
 | Trust Erosion Rate | λ⁻ | 0.40 | High erosion (breach penalty) |
-| Reputation Damage | μ_R | 0.65 | Strong reputation effects |
-| Reputation Decay | δ_R | 0.02 | Standard decay |
+| Reputation Damage | $\mu_R$ | 0.65 | Strong reputation effects |
+| Reputation Decay | $\delta_R$ | 0.02 | Standard decay |
 | Interdependence Amp. | ξ | 0.55 | Moderate amplification |
 | Signal Sensitivity | κ | 1.2 | Enhanced sensitivity |
 | Initial Trust | τ₀ | 0.50 | Neutral start |
@@ -279,7 +279,7 @@ This makes breach very costly.
 
 Breaching an agreement:
 1. Triggers trust erosion (high λ⁻)
-2. Adds reputation damage (high μ_R)
+2. Adds reputation damage (high $\mu_R$)
 3. Affects future interactions
 
 ---

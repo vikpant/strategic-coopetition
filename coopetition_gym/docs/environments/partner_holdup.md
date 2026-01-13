@@ -327,8 +327,8 @@ D = [[ 0.00,  0.35 ],    # Strong's row
 |-----------|--------|-------|-------------|
 | Trust Building Rate | λ⁺ | 0.10 | Slow trust building |
 | Trust Erosion Rate | λ⁻ | 0.35 | Faster erosion than TrustDilemma |
-| Reputation Damage | μ_R | 0.55 | Moderate-high damage |
-| Reputation Decay | δ_R | 0.025 | Slow forgetting |
+| Reputation Damage | $\mu_R$ | 0.55 | Moderate-high damage |
+| Reputation Decay | $\delta_R$ | 0.025 | Slow forgetting |
 | Interdependence Amp. | ξ | 0.70 | High amplification (magnifies asymmetry) |
 | Signal Sensitivity | κ | 1.2 | Moderate sensitivity |
 | Initial Trust | τ₀ | 0.55 | Moderate starting trust |

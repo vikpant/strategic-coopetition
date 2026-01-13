@@ -75,7 +75,7 @@ $A_i = [0, 100] \subset \mathbb{R}$ for each agent
 
 **Reputation Decay** (slow healing):
 ```
-R_ij(t+1) = R_ij(t) · (1 - δ_R)
+R_ij(t+1) = R_ij(t) · (1 - $\delta_R$)
 ```
 
 where $\delta_R = 0.01$ (1% decay per step).
@@ -95,8 +95,8 @@ Time to reach ceiling = 0.90:
 |-----------|--------|-------|------|
 | Trust Building | λ⁺ | 0.08 | Slow (deliberate recovery) |
 | Trust Erosion | λ⁻ | 0.35 | Fast (re-violation costly) |
-| New Violation Damage | μ_R | 0.70 | Severe (trust fragile) |
-| Reputation Decay | δ_R | 0.01 | Very slow (patience required) |
+| New Violation Damage | $\mu_R$ | 0.70 | Severe (trust fragile) |
+| Reputation Decay | $\delta_R$ | 0.01 | Very slow (patience required) |
 
 ### Reward Function
 
@@ -218,14 +218,14 @@ With initial reputation damage of 0.50:
 |-----------|--------|-------|-------------|
 | Trust Building Rate | λ⁺ | 0.08 | Slow recovery |
 | Trust Erosion Rate | λ⁻ | 0.35 | Re-violation is costly |
-| Reputation Damage | μ_R | 0.70 | New violations add significant damage |
-| Reputation Decay | δ_R | 0.01 | Very slow healing |
+| Reputation Damage | $\mu_R$ | 0.70 | New violations add significant damage |
+| Reputation Decay | $\delta_R$ | 0.01 | Very slow healing |
 | Interdependence Amp. | ξ | 0.40 | Moderate amplification |
 | Signal Sensitivity | κ | 1.0 | Standard sensitivity |
 
 ### Key Insight: Patience
 
-With δ_R = 0.01, reputation heals by ~1% per step.
+With $\delta_R = 0.01$, reputation heals by ~1% per step.
 
 To reduce reputation from 0.50 to 0.10 (ceiling = 0.90):
 - Need: 0.50 → 0.10 = reduction of 0.40

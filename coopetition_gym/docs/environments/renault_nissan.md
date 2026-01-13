@@ -73,8 +73,8 @@ Renault's slight advantage reflects initial controlling stake.
 |-----------|--------|-------|-------------|
 | Trust Building Rate | λ⁺ | 0.08 | Institutional trust (slow) |
 | Trust Erosion Rate | λ⁻ | 0.25 | Moderate erosion |
-| Reputation Damage | μ_R | 0.55 | Governance-related damage |
-| Reputation Decay | δ_R | 0.02 | Standard healing |
+| Reputation Damage | $\mu_R$ | 0.55 | Governance-related damage |
+| Reputation Decay | $\delta_R$ | 0.02 | Standard healing |
 | Interdependence Amp. | ξ | 0.50 | Cross-cultural amplification |
 | Signal Sensitivity | κ | 1.0 | Standard |
 
@@ -230,8 +230,8 @@ The interdependence matrix varies by phase:
 |-----------|--------|-------|--------|
 | Trust Building Rate | λ⁺ | 0.08 | TR-2 validated |
 | Trust Erosion Rate | λ⁻ | 0.25 | TR-2 validated |
-| Reputation Damage | μ_R | 0.55 | TR-2 validated |
-| Reputation Decay | δ_R | 0.02 | TR-2 validated |
+| Reputation Damage | $\mu_R$ | 0.55 | TR-2 validated |
+| Reputation Decay | $\delta_R$ | 0.02 | TR-2 validated |
 | Interdependence Amp. | ξ | 0.50 | TR-2 validated |
 | Signal Sensitivity | κ | 1.0 | Standard |
 
