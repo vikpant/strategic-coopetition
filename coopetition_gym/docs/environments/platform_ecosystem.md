@@ -349,8 +349,8 @@ D = [[ 0.00,  0.25,  0.25,  0.25,  0.25 ],   # Platform's row
 |-----------|--------|-------|-------------|
 | Trust Building Rate | λ⁺ | 0.08 | Slower institutional trust building |
 | Trust Erosion Rate | λ⁻ | 0.25 | Moderate erosion |
-| Reputation Damage | μ_R | 0.45 | Moderate damage |
-| Reputation Decay | δ_R | 0.02 | Standard decay |
+| Reputation Damage | $\mu_R$ | 0.45 | Moderate damage |
+| Reputation Decay | $\delta_R$ | 0.02 | Standard decay |
 | Interdependence Amp. | ξ | 0.40 | Lower than dyadic (more actors) |
 | Signal Sensitivity | κ | 1.0 | Standard sensitivity |
 | Initial Trust | τ₀ | 0.60 | Baseline platform trust |

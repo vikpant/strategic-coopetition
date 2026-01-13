@@ -224,7 +224,7 @@ $$\Large \pi_i(\mathbf{a}) = e_i - a_i + f_i(a_i) + \alpha_i \left[V(\mathbf{a})
 | Endowment | e_i | Initial resources before interaction |
 | Investment Cost | -a_i | Resources committed to partnership |
 | Individual Return | f_i(a_i) | Return from own contribution |
-| Synergy Share | α_i × Synergy | Share of collaborative surplus |
+| Synergy Share | $\alpha_i$ × Synergy | Share of collaborative surplus |
 
 ### Synergy = Collaborative Surplus
 
@@ -234,18 +234,18 @@ $$\Large \text{Synergy} = V(\mathbf{a}) - \sum_{j=1}^{N} f_j(a_j) = \gamma \cdot
 
 This is the **Added Value** from collaboration—value that exists only because actors worked together.
 
-### Bargaining and Shares (α_i)
+### Bargaining and Shares ($\alpha_i$)
 
-**Constraint**: Σα_i = 1 (all synergy must be allocated)
+**Constraint**: $\Sigma\alpha_i = 1$ (all synergy must be allocated)
 
 **Determination Methods**:
 
-1. **Equal Shares**: α_i = 1/N (symmetric bargaining)
-2. **Shapley Value**: α_i based on marginal contribution
-3. **Nash Bargaining**: α_i reflects relative bargaining power
+1. **Equal Shares**: $\alpha_i = 1/N$ (symmetric bargaining)
+2. **Shapley Value**: $\alpha_i$ based on marginal contribution
+3. **Nash Bargaining**: $\alpha_i$ reflects relative bargaining power
 4. **Contractual**: Pre-negotiated based on relationship structure
 
-**Connection to Interdependence**: Actors with strong bargaining positions (low dependency, high alternatives) typically secure larger α_i. See [Interdependence Framework](interdependence.md).
+**Connection to Interdependence**: Actors with strong bargaining positions (low dependency, high alternatives) typically secure larger $\alpha_i$. See [Interdependence Framework](interdependence.md).
 
 ---
 
@@ -367,7 +367,7 @@ From 760 experiments (76,000 episodes):
 
 - **Identify Complementary Assets**: What unique capabilities does each partner bring?
 - **Quantify Synergy Potential**: Estimate γ based on asset complementarity
-- **Structure Value Sharing**: Set α_i to sustain cooperation incentives
+- **Structure Value Sharing**: Set $\alpha_i$ to sustain cooperation incentives
 
 ### For Environment Customization
 

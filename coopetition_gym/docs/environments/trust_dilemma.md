@@ -80,7 +80,7 @@ with cooperation signal:
 
 **Reputation Update**:
 ```
-R_ij(t+1) = R_ij(t) · (1 - δ_R) + μ_R · 𝟙[σ_j < -threshold]
+R_ij(t+1) = R_ij(t) · (1 - $\delta_R$) + $\mu_R$ · 𝟙[σ_j < -threshold]
 ```
 
 ### Reward Function
@@ -100,7 +100,7 @@ where private payoff π_i is:
 with:
 - **Retained resources**: e_i - a_i
 - **Individual value**: f(a_i) = θ · ln(1 + a_i), θ = 20.0
-- **Synergy share**: α_i · G(a) where G(a) = (a_1 · a_2)^(1/2) · (1 + γ · C(a))
+- **Synergy share**: $\alpha_i \cdot G(a)$ where $G(a) = (a_1 \cdot a_2)^{1/2} \cdot (1 + \gamma \cdot C(a))$
 - **Complementarity**: C(a) = min(a_1/e_1, a_2/e_2), γ = 0.70
 
 ### Episode Structure
@@ -463,8 +463,8 @@ This means:
 |-----------|--------|-------|-------------|
 | Trust Building Rate | λ⁺ | 0.15 | Rate of trust increase from cooperation |
 | Trust Erosion Rate | λ⁻ | 0.45 | Rate of trust decrease from defection |
-| Reputation Damage | μ_R | 0.50 | Damage coefficient from violations |
-| Reputation Decay | δ_R | 0.02 | Rate of reputation forgiveness |
+| Reputation Damage | $\mu_R$ | 0.50 | Damage coefficient from violations |
+| Reputation Decay | $\delta_R$ | 0.02 | Rate of reputation forgiveness |
 | Interdependence Amp. | ξ | 0.60 | Amplification from dependencies |
 | Signal Sensitivity | κ | 1.5 | Action-to-signal conversion |
 | Initial Trust | τ₀ | 0.50 | Starting trust level |

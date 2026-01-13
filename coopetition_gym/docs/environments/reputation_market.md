@@ -108,8 +108,8 @@ where multiplier is determined by tier assignment.
 |-----------|--------|-------|
 | Trust Building | λ⁺ | 0.10 |
 | Trust Erosion | λ⁻ | 0.30 |
-| Reputation Damage | μ_R | 0.55 |
-| Reputation Decay | δ_R | 0.015 |
+| Reputation Damage | $\mu_R$ | 0.55 |
+| Reputation Decay | $\delta_R$ | 0.015 |
 
 ### Episode Structure
 
@@ -278,8 +278,8 @@ D[i,i] = 0.00
 |-----------|--------|-------|-------------|
 | Trust Building Rate | λ⁺ | 0.10 | Standard building |
 | Trust Erosion Rate | λ⁻ | 0.30 | Standard erosion |
-| Reputation Damage | μ_R | 0.55 | Moderate damage |
-| Reputation Decay | δ_R | 0.015 | Slow forgetting |
+| Reputation Damage | $\mu_R$ | 0.55 | Moderate damage |
+| Reputation Decay | $\delta_R$ | 0.015 | Slow forgetting |
 | Interdependence Amp. | ξ | 0.45 | Moderate amplification |
 | Signal Sensitivity | κ | 1.0 | Standard sensitivity |
 | Initial Trust | τ₀ | 0.50 | Neutral start |

@@ -268,8 +268,8 @@ obs[-n_agents:]  # Reputation scores for all agents
 |-----------|--------|-------|-------------|
 | Trust Building Rate | λ⁺ | 0.12 | Moderate building |
 | Trust Erosion Rate | λ⁻ | 0.35 | Standard erosion |
-| Reputation Damage | μ_R | 0.60 | Strong reputation effects |
-| Reputation Decay | δ_R | 0.015 | Very slow forgetting |
+| Reputation Damage | $\mu_R$ | 0.60 | Strong reputation effects |
+| Reputation Decay | $\delta_R$ | 0.015 | Very slow forgetting |
 | Interdependence Amp. | ξ | 0.45 | Moderate amplification |
 | Signal Sensitivity | κ | 1.2 | Moderate sensitivity |
 | Initial Trust | τ₀ | 0.50 | Neutral start |

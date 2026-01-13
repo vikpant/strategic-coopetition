@@ -101,8 +101,8 @@ env.close()
 |--------|---------|-------|---------|
 | λ⁺ | 0.10 | (0, 1) | Trust building rate |
 | λ⁻ | 0.30 | (0, 1) | Trust erosion rate |
-| μ_R | 0.60 | (0, 1) | Reputation damage |
-| δ_R | 0.03 | (0, 0.1) | Reputation decay |
+| $\mu_R$ | 0.60 | (0, 1) | Reputation damage |
+| $\delta_R$ | 0.03 | (0, 0.1) | Reputation decay |
 | ξ | 0.50 | (0, 1) | Dependency amplification |
 
 ### Value Function

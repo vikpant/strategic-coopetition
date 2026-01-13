@@ -306,7 +306,7 @@ class RecoveryModel(TrustDynamicsModel):
     Parameters optimized for post-crisis recovery:
     - λ⁺ = 0.08 (slower building)
     - λ⁻ = 0.35 (faster re-erosion)
-    - δ_R = 0.01 (very slow reputation decay)
+    - $\delta_R$ = 0.01 (very slow reputation decay)
     """
 ```
 

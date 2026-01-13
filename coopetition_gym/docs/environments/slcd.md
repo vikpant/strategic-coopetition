@@ -64,8 +64,8 @@ Samsung's slight bargaining advantage (55% vs 45%) reflects technology control.
 |-----------|--------|-------|-------------------|
 | Trust Building Rate | λ⁺ | 0.08 | Historical collaboration phases |
 | Trust Erosion Rate | λ⁻ | 0.28 | Tension escalation 2007-2012 |
-| Reputation Damage | μ_R | 0.50 | Breach response analysis |
-| Reputation Decay | δ_R | 0.02 | Long-term relationship patterns |
+| Reputation Damage | $\mu_R$ | 0.50 | Breach response analysis |
+| Reputation Decay | $\delta_R$ | 0.02 | Long-term relationship patterns |
 | Interdependence Amp. | ξ | 0.45 | JV structure analysis |
 | Signal Sensitivity | κ | 1.0 | Investment-response calibration |
 | Initial Trust | τ₀ | 0.65 | Strong initial relationship (2004) |
@@ -223,8 +223,8 @@ D = [[ 0.00,  D_Samsung_Sony ],
 |-----------|--------|-------|--------|
 | Trust Building Rate | λ⁺ | 0.08 | TR-1 §8.3 |
 | Trust Erosion Rate | λ⁻ | 0.28 | TR-1 §8.3 |
-| Reputation Damage | μ_R | 0.50 | TR-1 §8.3 |
-| Reputation Decay | δ_R | 0.02 | TR-1 §8.3 |
+| Reputation Damage | $\mu_R$ | 0.50 | TR-1 §8.3 |
+| Reputation Decay | $\delta_R$ | 0.02 | TR-1 §8.3 |
 | Interdependence Amp. | ξ | 0.45 | TR-1 §8.3 |
 | Signal Sensitivity | κ | 1.0 | TR-1 §8.3 |
 | Initial Trust | τ₀ | 0.65 | Historical: Strong initial relationship |
