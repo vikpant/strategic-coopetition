@@ -3,8 +3,12 @@
 COOPETITION-GYM: Collective Action & Loyalty Module (TR-3)
 ================================================================================
 
-This module will implement TR-3 when available. Currently provides skeleton
-interfaces for forward compatibility.
+Technical Report: TR-3 (arXiv:2601.16237)
+Title: Computational Foundations for Strategic Coopetition:
+       Formalizing Collective Action and Loyalty
+
+This module implements TR-3 concepts. Currently provides skeleton
+interfaces for forward compatibility with full implementation planned for v0.2.x.
 
 TR-3 Focus Areas:
 -----------------

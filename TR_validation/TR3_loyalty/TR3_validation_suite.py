@@ -6,7 +6,7 @@ FORMALIZING COLLECTIVE ACTION AND LOYALTY
 Comprehensive Validation Suite
 ================================================================================
 
-Technical Report: TR-3 (arXiv: forthcoming)
+Technical Report: TR-3 (arXiv:2601.16237)
 Title: Computational Foundations for Strategic Coopetition:
        Formalizing Collective Action and Loyalty
 
@@ -116,7 +116,7 @@ sns.set_palette("husl")
 # ============================================================================
 
 __version__ = "1.0.0"
-__arxiv_id__ = "forthcoming"
+__arxiv_id__ = "2601.16237"
 __authors__ = "Vik Pant, Eric Yu"
 __affiliation__ = "Faculty of Information, University of Toronto"
 

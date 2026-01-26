@@ -1,6 +1,6 @@
 # Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty - Validation Suite
 
-[![arXiv](https://img.shields.io/badge/arXiv-forthcoming-b31b1b.svg)](https://arxiv.org/)
+[![arXiv](https://img.shields.io/badge/arXiv-2601.16237-b31b1b.svg)](https://arxiv.org/abs/2601.16237)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -11,7 +11,7 @@ This repository contains the validation suite for the technical report:
 > **Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty**
 > Vik Pant, Eric Yu
 > Faculty of Information, University of Toronto
-> arXiv: forthcoming
+> arXiv: [2601.16237](https://arxiv.org/abs/2601.16237)
 
 The validation suite provides complete reproducibility for all experimental and empirical validation results presented in Sections 6-7 of the technical report.
 
@@ -249,7 +249,7 @@ This validation suite is part of a coordinated research program on computational
 |-----------------|-------|-------|
 | TR-1 | Interdependence & Complementarity | [2510.18802](https://arxiv.org/abs/2510.18802) |
 | TR-2 | Trust Dynamics & Trustworthiness | [2510.24909](https://arxiv.org/abs/2510.24909) |
-| **TR-3** (this work) | Collective Action & Loyalty | forthcoming |
+| **TR-3** (this work) | Collective Action & Loyalty | [2601.16237](https://arxiv.org/abs/2601.16237) |
 | TR-4 | Reciprocity & Conditionality | forthcoming |
 
 ## Citation
@@ -264,7 +264,7 @@ If you use this validation suite in your research, please cite:
   year={2025},
   institution={University of Toronto},
   number = {TR-2025-03},
-  note={arXiv: forthcoming}
+  note={arXiv:2601.16237}
 }
 ```
 
