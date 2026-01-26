@@ -8,7 +8,7 @@ implementing the computational frameworks from:
 
 - TR-1 (arXiv:2510.18802): Interdependence & Complementarity
 - TR-2 (arXiv:2510.24909): Trust Dynamics
-- TR-3: Collective Action & Loyalty (skeleton for v0.2.x)
+- TR-3 (arXiv:2601.16237): Collective Action & Loyalty (skeleton for v0.2.x)
 - TR-4: Reciprocity & Conditionality (skeleton for v0.3.x)
 
 Submodules:

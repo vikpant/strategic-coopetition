@@ -1,5 +1,5 @@
 # Requirements for Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty - Validation Suite
-# Technical Report: arXiv: forthcoming
+# Technical Report: arXiv:2601.16237
 #
 # Install with: pip install -r requirements.txt
 
