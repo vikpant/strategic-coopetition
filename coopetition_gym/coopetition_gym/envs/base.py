@@ -420,7 +420,7 @@ class AbstractCoopetitionEnv(ABC):
         return [i for i, rate in enumerate(current_rates) if rate < threshold]
     
     # =========================================================================
-    # TR-4 Extension Hooks: Reciprocity & Conditionality
+    # TR-4 Extension Hooks: Sequential Interaction & Reciprocity
     # =========================================================================
     
     def _compute_reciprocity_modifier(self, agent_idx: int) -> float:

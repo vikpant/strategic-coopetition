@@ -17,7 +17,7 @@ The research program comprises four technical reports, each addressing a fundame
 | Technical Report | Topic | arXiv | Validation Suite |
 |-----------------|-------|-------|------------------|
 | TR-1 | Interdependence & Complementarity | [2510.18802](https://arxiv.org/abs/2510.18802) | [TR1_foundations/](TR1_foundations/) |
-| TR-2 | Trust Dynamics & Trustworthiness | [2510.24909](https://arxiv.org/abs/2510.24909) | [TR2_trust/](TR2_trust/) |
+| TR-2 | Trust and Reputation Dynamics | [2510.24909](https://arxiv.org/abs/2510.24909) | [TR2_trust/](TR2_trust/) |
 | TR-3 | Collective Action & Loyalty | [2601.16237](https://arxiv.org/abs/2601.16237) | [TR3_loyalty/](TR3_loyalty/) |
 | TR-4 | Sequential Interaction & Reciprocity | (forthcoming) | [TR4_reciprocity/](TR4_reciprocity/) |
 

@@ -1,4 +1,4 @@
-# Computational Foundations for Strategic Coopetition: Formalizing Trust Dynamics and Trustworthiness - Validation Suite
+# Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics - Validation Suite
 
 [![arXiv](https://img.shields.io/badge/arXiv-2510.24909-b31b1b.svg)](https://arxiv.org/abs/2510.24909)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
@@ -6,7 +6,7 @@
 
 ## Overview
 
-> **Computational Foundations for Strategic Coopetition: Formalizing Trust Dynamics and Trustworthiness**  
+> **Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics**  
 > Vik Pant, Eric Yu  
 > Faculty of Information, University of Toronto  
 > arXiv:2510.24909
@@ -277,9 +277,9 @@ This validation suite is part of a coordinated research program on computational
 | Technical Report | Topic | arXiv |
 |-----------------|-------|-------|
 | TR-1 | Interdependence & Complementarity | [2510.18802](https://arxiv.org/abs/2510.18802) |
-| **TR-2** (this work) | Trust Dynamics and Trustworthiness | [2510.24909](https://arxiv.org/abs/2510.24909) |
+| **TR-2** (this work) | Trust and Reputation Dynamics | [2510.24909](https://arxiv.org/abs/2510.24909) |
 | TR-3 | Collective Action & Loyalty | [2601.16237](https://arxiv.org/abs/2601.16237) |
-| TR-4 | Reciprocity & Conditionality | (forthcoming) |
+| TR-4 | Sequential Interaction & Reciprocity | (forthcoming) |
 
 ## Citation
 
@@ -288,7 +288,7 @@ If you use this code in your research, please cite:
 ```bibtex
 @techreport{pant2025trust,
   title = {Computational Foundations for Strategic Coopetition: 
-           Formalizing Trust Dynamics and Trustworthiness},
+           Formalizing Trust and Reputation Dynamics},
   author={Pant, Vik and Yu, Eric},
   year={2025},
   institution={University of Toronto},

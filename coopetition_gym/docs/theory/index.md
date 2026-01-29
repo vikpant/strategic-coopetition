@@ -35,12 +35,12 @@ The theoretical foundations are organized into four pillars, of which **Pillars 
 |--------|-----------------|-------|--------|
 | **1** | [TR-2025-01](https://arxiv.org/abs/2510.18802) | Interdependence & Complementarity | ✓ Implemented |
 | **2** | [TR-2025-02](https://arxiv.org/abs/2510.24909) | Trust & Reputation Dynamics | ✓ Implemented |
+| **3** | [TR-2025-03](https://arxiv.org/abs/2601.16237) | Collective Action & Loyalty | ✓ Implemented |
 
 ### Planned Pillars
 
 | Pillar | Technical Report | Focus | Status |
 |--------|-----------------|-------|--------|
-| **3** | TR-2025-03 (Draft) | Collective Action & Loyalty | Planned |
 | **4** | TR-2025-04 (Draft) | Sequential Interaction & Reciprocity | Planned |
 
 See [Implementation Roadmap](../roadmap.md) for development timeline and planned features.

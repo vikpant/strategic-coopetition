@@ -1,6 +1,6 @@
 """
 ================================================================================
-COOPETITION-GYM: Reciprocity & Conditionality Module (TR-4)
+COOPETITION-GYM: Sequential Interaction & Reciprocity Module (TR-4)
 ================================================================================
 
 This module will implement TR-4 when available. Currently provides skeleton
