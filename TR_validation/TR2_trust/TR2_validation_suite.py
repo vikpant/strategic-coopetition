@@ -2,13 +2,13 @@
 """
 ================================================================================
 COMPUTATIONAL FOUNDATIONS FOR STRATEGIC COOPETITION: 
-FORMALIZING TRUST DYNAMICS AND TRUSTWORTHINESS
+FORMALIZING TRUST AND REPUTATION DYNAMICS
 Comprehensive Validation Suite
 ================================================================================
 
 Technical Report: arXiv:2510.24909
 Title: Computational Foundations for Strategic Coopetition: 
-       Formalizing Trust Dynamics and Trustworthiness
+       Formalizing Trust and Reputation Dynamics
 
 Authors: Vik Pant, Eric Yu
          Faculty of Information, University of Toronto

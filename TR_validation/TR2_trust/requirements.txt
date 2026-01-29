@@ -1,4 +1,4 @@
-# Requirements for Computational Foundations for Strategic Coopetition: Formalizing Trust Dynamics and Trustworthiness - Validation Suite
+# Requirements for Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics - Validation Suite
 # Technical Report: arXiv:2510.24909
 #
 # Install with: pip install -r requirements.txt

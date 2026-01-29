@@ -16,7 +16,7 @@ Coopetition-Gym implements a coordinated research program examining strategic co
 |--------|-------|------------------|--------|
 | **1** | Interdependence & Complementarity | [TR-2025-01](https://arxiv.org/abs/2510.18802) | ✓ Implemented |
 | **2** | Trust & Reputation Dynamics | [TR-2025-02](https://arxiv.org/abs/2510.24909) | ✓ Implemented |
-| **3** | Collective Action & Loyalty | TR-2025-03 (Draft) | Planned |
+| **3** | Collective Action & Loyalty | [TR-2025-03](https://arxiv.org/abs/2601.16237) | ✓ Implemented |
 | **4** | Sequential Interaction & Reciprocity | TR-2025-04 (Draft) | Planned |
 
 ---
@@ -109,9 +109,9 @@ s_ij = tanh(κ × (a_j - baseline))
 
 ## Planned Implementation
 
-### Pillar 3: Collective Action & Loyalty (TR-2025-03)
+### Pillar 3: Collective Action & Loyalty ([TR-2025-03](https://arxiv.org/abs/2601.16237)) ✓
 
-**Status**: Draft Technical Report | **Target**: Future Release
+**Status**: Published on arXiv | **Validation**: 52/60 (86.7%) against Apache HTTP Server case study
 
 **Planned Components**:
 
@@ -270,9 +270,9 @@ See [Contributing Guide](contributing.md) for:
 
 2. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics. *arXiv:2510.24909*
 
-### Draft Technical Reports (Forthcoming)
+3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty. *arXiv:2601.16237*
 
-3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty. *Technical Report TR-2025-03*
+### Draft Technical Reports (Forthcoming)
 
 4. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Technical Report TR-2025-04*
 
