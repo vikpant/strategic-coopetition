@@ -6,13 +6,21 @@ COOPETITION-GYM: Environments Module (v0.2.0)
 This module provides Gymnasium and PettingZoo-compatible environments for
 multi-agent strategic coopetition research.
 
-Environment Categories:
------------------------
+Environment Categories (15 Total):
+----------------------------------
+TR-1 & TR-2 Environments (10):
 1. Dyadic (Micro): TrustDilemma-v0, PartnerHoldUp-v0
 2. Ecosystem (Macro): PlatformEcosystem-v0, DynamicPartnerSelection-v0
 3. Research Benchmarks: RecoveryRace-v0, SynergySearch-v0
 4. Validated Case Studies: SLCD-v0, RenaultNissan-v0
 5. Extended: CooperativeNegotiation-v0, ReputationMarket-v0
+
+TR-3 Collective Action Environments (5):
+6. TeamProduction-v0: Core team production with free-rider dynamics
+7. LoyaltyTeam-v0: Team production with TR-3 loyalty mechanisms
+8. CoalitionFormation-v0: Dynamic coalition with entry/exit
+9. ApacheProject-v0: Validated Apache HTTP Server case study (52/60)
+10. PublicGoods-v0: Classic public goods with collective action modifiers
 
 API Modes (v0.2.0):
 -------------------
@@ -39,6 +47,14 @@ from .ecosystem_envs import PlatformEcosystemEnv, DynamicPartnerSelectionEnv
 from .benchmark_envs import RecoveryRaceEnv, SynergySearchEnv
 from .case_study_envs import SLCDEnv, RenaultNissanEnv, AlliancePhase
 from .extended_envs import CooperativeNegotiationEnv, ReputationMarketEnv
+from .collective_action_envs import (
+    TeamProductionEnv,
+    LoyaltyTeamEnv,
+    CoalitionFormationEnv,
+    ApacheProjectEnv,
+    PublicGoodsEnv,
+    TR3Parameters,
+)
 
 from .wrappers import (
     ObservationConfig,
@@ -47,16 +63,27 @@ from .wrappers import (
 )
 
 _ENVIRONMENT_REGISTRY = {
+    # Dyadic (TR-1, TR-2)
     "TrustDilemma-v0": TrustDilemmaEnv,
     "PartnerHoldUp-v0": PartnerHoldUpEnv,
+    # Ecosystem (TR-1, TR-2)
     "PlatformEcosystem-v0": PlatformEcosystemEnv,
     "DynamicPartnerSelection-v0": DynamicPartnerSelectionEnv,
+    # Benchmarks (TR-1, TR-2)
     "RecoveryRace-v0": RecoveryRaceEnv,
     "SynergySearch-v0": SynergySearchEnv,
+    # Case Studies (TR-1, TR-2)
     "SLCD-v0": SLCDEnv,
     "RenaultNissan-v0": RenaultNissanEnv,
+    # Extended (TR-1, TR-2)
     "CooperativeNegotiation-v0": CooperativeNegotiationEnv,
     "ReputationMarket-v0": ReputationMarketEnv,
+    # Collective Action (TR-3)
+    "TeamProduction-v0": TeamProductionEnv,
+    "LoyaltyTeam-v0": LoyaltyTeamEnv,
+    "CoalitionFormation-v0": CoalitionFormationEnv,
+    "ApacheProject-v0": ApacheProjectEnv,
+    "PublicGoods-v0": PublicGoodsEnv,
 }
 
 
@@ -173,32 +200,39 @@ def make_aec(
 
 __all__ = [
     # Base classes
-    "CoopetitionEnv", 
-    "MultiAgentCoopetitionEnv", 
+    "CoopetitionEnv",
+    "MultiAgentCoopetitionEnv",
     "EnvironmentConfig",
     "AbstractCoopetitionEnv",
-    # Dyadic environments
-    "TrustDilemmaEnv", 
+    # Dyadic environments (TR-1, TR-2)
+    "TrustDilemmaEnv",
     "PartnerHoldUpEnv",
-    # Ecosystem environments
-    "PlatformEcosystemEnv", 
+    # Ecosystem environments (TR-1, TR-2)
+    "PlatformEcosystemEnv",
     "DynamicPartnerSelectionEnv",
-    # Benchmark environments
-    "RecoveryRaceEnv", 
+    # Benchmark environments (TR-1, TR-2)
+    "RecoveryRaceEnv",
     "SynergySearchEnv",
-    # Case study environments
-    "SLCDEnv", 
-    "RenaultNissanEnv", 
+    # Case study environments (TR-1, TR-2)
+    "SLCDEnv",
+    "RenaultNissanEnv",
     "AlliancePhase",
-    # Extended environments
-    "CooperativeNegotiationEnv", 
+    # Extended environments (TR-1, TR-2)
+    "CooperativeNegotiationEnv",
     "ReputationMarketEnv",
+    # Collective action environments (TR-3)
+    "TeamProductionEnv",
+    "LoyaltyTeamEnv",
+    "CoalitionFormationEnv",
+    "ApacheProjectEnv",
+    "PublicGoodsEnv",
+    "TR3Parameters",
     # Wrappers
     "ObservationConfig",
     "CoopetitionParallelEnv",
     "CoopetitionAECEnv",
     # Factory functions
-    "make", 
+    "make",
     "make_parallel",
     "make_aec",
     "list_environments",
