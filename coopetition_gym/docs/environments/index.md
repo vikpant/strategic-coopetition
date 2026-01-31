@@ -1,10 +1,12 @@
 # Environment Reference
 
-This section provides detailed documentation for all 10 environments in Coopetition-Gym.
+This section provides detailed documentation for all 15 environments in Coopetition-Gym.
 
 ---
 
 ## Environment Overview
+
+### TR-1 & TR-2: Interdependence and Trust Dynamics (10 Environments)
 
 | Environment | Agents | Category | Key Challenge |
 |-------------|--------|----------|---------------|
@@ -18,6 +20,16 @@ This section provides detailed documentation for all 10 environments in Coopetit
 | [RenaultNissan-v0](renault_nissan.md) | 2 | Case Study | Multi-phase alliance dynamics |
 | [CooperativeNegotiation-v0](cooperative_negotiation.md) | 2 | Extended | Commitment and breach penalties |
 | [ReputationMarket-v0](reputation_market.md) | N | Extended | Reputation as strategic asset |
+
+### TR-3: Collective Action and Loyalty (5 Environments)
+
+| Environment | Agents | Category | Key Challenge |
+|-------------|--------|----------|---------------|
+| [TeamProduction-v0](team_production.md) | 4 | Collective Action | Free-rider dynamics |
+| [LoyaltyTeam-v0](loyalty_team.md) | 4 | Collective Action | Loyalty-sustained cooperation |
+| [CoalitionFormation-v0](coalition_formation.md) | 6 | Collective Action | Coalition stability with exclusion |
+| [ApacheProject-v0](apache_project.md) | 8-40 | Validated (TR-3) | Phase-dependent contributor dynamics |
+| [PublicGoods-v0](public_goods.md) | 5 | Collective Action | Classic public goods contribution |
 
 ---
 
@@ -39,6 +51,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | RenaultNissan-v0 | Markov Game | Phase-dependent | Full | Asymmetric |
 | CooperativeNegotiation-v0 | Markov Game + Contracts | Enforceable agreements | Full | Symmetric |
 | ReputationMarket-v0 | Markov Game + Tiers | Reputation competition | Full | Symmetric |
+| TeamProduction-v0 | N-player Markov Game | Mixed-Motive (team vs. individual) | Full | Symmetric |
+| LoyaltyTeam-v0 | N-player Markov Game | Mixed-Motive + loyalty amplification | Full | Symmetric |
+| CoalitionFormation-v0 | N-player Markov Game | Coalition-based with exclusion | Full | Dynamic membership |
+| ApacheProject-v0 | N-player Markov Game | Open source contribution | Full | Phase-symmetric |
+| PublicGoods-v0 | N-player Markov Game | Classic public goods | Full | Symmetric |
 
 ### Action and State Spaces
 
@@ -54,6 +71,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | RenaultNissan-v0 | Continuous [0,90]×[0,100] | 17 | T=100 | Alliance dissolution |
 | CooperativeNegotiation-v0 | Continuous [0,100]² | 18 | T=100 | Trust collapse |
 | ReputationMarket-v0 | Continuous [0,100]ᴺ | N+3N²+1+N | T=100 | None |
+| TeamProduction-v0 | Continuous [0,50]ᴺ | Phase-dependent | T=100 | None |
+| LoyaltyTeam-v0 | Continuous [0,50]ᴺ | Phase-dependent | T=100 | None |
+| CoalitionFormation-v0 | Continuous [0,50]ᴺ | Phase-dependent | T=150 | Coalition collapse |
+| ApacheProject-v0 | Continuous [0,50]ᴺ | Phase-dependent | T=60 | None |
+| PublicGoods-v0 | Continuous [0,endowment]ᴺ | Phase-dependent | T=100 | None |
 
 ### Canonical Literature Comparisons
 
@@ -69,6 +91,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | RenaultNissan-v0 | Segrestin (2005) "Partnering to Explore" |
 | CooperativeNegotiation-v0 | Crawford & Sobel (1982); Raiffa (1982) |
 | ReputationMarket-v0 | Shapiro (1983); Tadelis (1999) |
+| TeamProduction-v0 | Holmström (1982); Alchian & Demsetz (1972) |
+| LoyaltyTeam-v0 | Akerlof & Kranton (2010); Kandel & Lazear (1992) |
+| CoalitionFormation-v0 | Ray (2007); Greenberg (1994) |
+| ApacheProject-v0 | Mockus et al. (2002); Lerner & Tirole (2002) |
+| PublicGoods-v0 | Fehr & Gächter (2000); Ledyard (1995) |
 
 ### Special Features
 
@@ -83,6 +110,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | RenaultNissan-v0 | Four configurable historical phases |
 | CooperativeNegotiation-v0 | Endogenous agreement formation, breach penalties |
 | ReputationMarket-v0 | Four-tier reward multipliers (0.40× to 1.30×) |
+| TeamProduction-v0 | Nash equilibrium baseline, free-rider dynamics |
+| LoyaltyTeam-v0 | TR-3 loyalty modifiers (φ_B=0.8, φ_C=0.3) |
+| CoalitionFormation-v0 | Dynamic exclusion/reentry, minimum coalition |
+| ApacheProject-v0 | Empirically validated (52/60), four project phases |
+| PublicGoods-v0 | Configurable multiplier, punishment mechanism |
 
 ### Equilibrium Summary
 
@@ -96,12 +128,19 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | RecoveryRace-v0 | Trust-constrained | Recovery-dependent | N/A | Ceiling $\Theta = 1 - R$ |
 | CooperativeNegotiation-v0 | Pre-agreement | Post-agreement | ~1.40 | Breach penalty enforces |
 | ReputationMarket-v0 | Tier-dependent | Premium tier | ~1.35 | Reputation competition |
+| TeamProduction-v0 | $a^* \approx 6.8$ | $a^{opt} \approx 18.4$ | ~2.5 | Free-rider equilibrium |
+| LoyaltyTeam-v0 | Above Nash | Social optimum | ~1.2 | Loyalty sustains cooperation |
+| CoalitionFormation-v0 | Coalition-stable | Full coalition | ~1.4 | Exclusion threat maintains |
+| ApacheProject-v0 | Phase-specific | Validated | N/A | 52/60 historical accuracy |
+| PublicGoods-v0 | Zero contribution | Full contribution | ~2.0 | Classic public goods |
 
 **Key Insights:**
 - All environments exhibit **cooperation deficit** in myopic equilibrium
 - Trust dynamics create **multiple equilibria** (high-trust cooperative, low-trust defection)
 - Power asymmetry in PartnerHoldUp-v0 and PlatformEcosystem-v0 creates **exploitation risk**
 - SynergySearch-v0 requires **exploration** to discover optimal equilibrium
+- TR-3 environments demonstrate **loyalty mechanisms** can sustain above-Nash cooperation
+- ApacheProject-v0 achieves **52/60 empirical validation** against real open source data
 
 ---
 
@@ -162,6 +201,21 @@ Advanced scenarios with additional game mechanics. Ideal for:
 - [CooperativeNegotiation-v0](cooperative_negotiation.md) - Negotiation with contracts
 - [ReputationMarket-v0](reputation_market.md) - Tiered reputation market
 
+### Collective Action Environments (TR-3)
+
+Team production and collective action scenarios with loyalty dynamics. Ideal for:
+- Studying free-rider problems and their solutions
+- Understanding loyalty mechanisms in teams
+- Testing coalition stability and dynamics
+- Validating against real open source project data
+
+**Environments:**
+- [TeamProduction-v0](team_production.md) - Baseline team production with free-rider dynamics
+- [LoyaltyTeam-v0](loyalty_team.md) - Team production with TR-3 loyalty mechanisms
+- [CoalitionFormation-v0](coalition_formation.md) - Dynamic coalition with entry/exit
+- [ApacheProject-v0](apache_project.md) - Validated Apache HTTP Server case study (52/60)
+- [PublicGoods-v0](public_goods.md) - Classic public goods with collective action modifiers
+
 ---
 
 ## Common Interface
@@ -205,16 +259,25 @@ endowments = env.endowments
 | Power asymmetry | PartnerHoldUp-v0 |
 | Communication | CooperativeNegotiation-v0 |
 | Market dynamics | ReputationMarket-v0 |
+| Free-rider problems | TeamProduction-v0 |
+| Loyalty dynamics | LoyaltyTeam-v0 |
+| Coalition stability | CoalitionFormation-v0 |
+| Empirical validation | ApacheProject-v0, SLCD-v0 |
+| Public goods | PublicGoods-v0 |
 
 ### By Research Area
 
 | Research Area | Recommended Environments |
 |---------------|-------------------------|
-| Game Theory | TrustDilemma-v0, SynergySearch-v0 |
+| Game Theory | TrustDilemma-v0, SynergySearch-v0, TeamProduction-v0 |
 | Platform Economics | PlatformEcosystem-v0, ReputationMarket-v0 |
 | Alliance Management | SLCD-v0, RenaultNissan-v0 |
 | Trust & Reputation | RecoveryRace-v0, DynamicPartnerSelection-v0 |
 | Negotiation | CooperativeNegotiation-v0, PartnerHoldUp-v0 |
+| Collective Action | TeamProduction-v0, LoyaltyTeam-v0, PublicGoods-v0 |
+| Coalition Theory | CoalitionFormation-v0 |
+| Open Source Dynamics | ApacheProject-v0 |
+| Mechanism Design | LoyaltyTeam-v0, PublicGoods-v0 |
 
 ---
 
@@ -230,6 +293,16 @@ endowments = env.endowments
 | PlatformEcosystem-v0 | Moderate | Moderate |
 | CooperativeNegotiation-v0 | High | High |
 
+### Loyalty Dynamics Intensity (TR-3)
+
+| Environment | Loyalty Sensitivity | Free-Rider Pressure |
+|-------------|---------------------|---------------------|
+| TeamProduction-v0 | None (baseline) | Very High |
+| LoyaltyTeam-v0 | High | Moderate (mitigated) |
+| CoalitionFormation-v0 | High | High (exclusion threat) |
+| ApacheProject-v0 | Phase-dependent | Phase-dependent |
+| PublicGoods-v0 | Moderate | High |
+
 ### Scalability
 
 | Environment | Fixed Agents | Configurable | Max Tested |
@@ -238,6 +311,11 @@ endowments = env.endowments
 | PlatformEcosystem-v0 | 1+N | Yes | 20 |
 | DynamicPartnerSelection-v0 | N | Yes | 20 |
 | ReputationMarket-v0 | N | Yes | 20 |
+| TeamProduction-v0 | N | Yes | 20 |
+| LoyaltyTeam-v0 | N | Yes | 20 |
+| CoalitionFormation-v0 | N | Yes | 20 |
+| ApacheProject-v0 | Phase-specific | Yes (phase) | 40 |
+| PublicGoods-v0 | N | Yes | 20 |
 
 ---
 
