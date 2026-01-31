@@ -231,7 +231,7 @@ for agent in env.agent_iter():
 
 ## Exploring Available Environments
 
-Coopetition-Gym provides 10 environments:
+Coopetition-Gym provides 15 environments:
 
 ```python
 # List all available environments
@@ -250,6 +250,7 @@ for env_id in envs:
 | Benchmark | RecoveryRace-v0, SynergySearch-v0 | Algorithm evaluation |
 | Case Study | SLCD-v0, RenaultNissan-v0 | Validated real scenarios |
 | Extended | CooperativeNegotiation-v0, ReputationMarket-v0 | Advanced mechanics |
+| Collective Action (TR-3) | TeamProduction-v0, LoyaltyTeam-v0, CoalitionFormation-v0, ApacheProject-v0, PublicGoods-v0 | Team production with loyalty |
 
 ### Trying Different Environments
 
@@ -372,7 +373,7 @@ You've learned:
 
 ## Next Steps
 
-- **[Environment Reference](../environments/index.md)** - Explore all 10 environments
+- **[Environment Reference](../environments/index.md)** - Explore all 15 environments
 - **[SLCD-v0](../environments/slcd.md)** - Try the validated Samsung-Sony case study
 - **Training Tutorial** - Train RL agents with Stable-Baselines3
 

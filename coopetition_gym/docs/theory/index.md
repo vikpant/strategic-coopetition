@@ -221,12 +221,13 @@ Systematic parameter sweeps ensure phenomena emerge robustly:
 
 ### Track 2: Empirical Case Studies
 
-Real-world validation against documented business partnerships:
+Real-world validation against documented business partnerships and open source projects:
 
 | Case Study | Period | Validation Score | Dynamics Validated |
 |------------|--------|------------------|-------------------|
 | Samsung-Sony S-LCD | 2004-2011 | 58/60 (96.7%) | Interdependence, complementarity |
 | Renault-Nissan Alliance | 1999-2025 | 49/60 (81.7%) | Trust evolution, crisis, recovery |
+| Apache HTTP Server | 1995-2023 | 52/60 (86.7%) | Loyalty dynamics, phase transitions |
 
 ### Statistical Significance
 
@@ -288,6 +289,14 @@ If you use the theoretical framework in your research, please cite:
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2510.24909},
   year={2025}
+}
+
+@article{pant2026tr3,
+  title={Computational Foundations for Strategic Coopetition:
+         Formalizing Collective Action and Loyalty},
+  author={Pant, Vik and Yu, Eric},
+  journal={arXiv preprint arXiv:2601.16237},
+  year={2026}
 }
 ```
 

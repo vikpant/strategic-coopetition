@@ -245,7 +245,7 @@ print("\nAll tests passed!")
 ### Expected Output
 
 ```
-Coopetition-Gym environments: 10
+Coopetition-Gym environments: 15
 Gymnasium version: 0.29.x
 PettingZoo version: 1.24.x
 Observation shape: (17,)
@@ -338,5 +338,5 @@ If you encounter issues not covered here:
 ## Next Steps
 
 - [Quick Start Tutorial](tutorials/quickstart.md) - Get started with your first environment
-- [Environment Reference](environments/index.md) - Explore all 10 environments
+- [Environment Reference](environments/index.md) - Explore all 15 environments
 - [API Documentation](api/index.md) - Complete API reference

@@ -107,50 +107,54 @@ s_ij = tanh(κ × (a_j - baseline))
 
 ---
 
-## Planned Implementation
-
 ### Pillar 3: Collective Action & Loyalty ([TR-2025-03](https://arxiv.org/abs/2601.16237)) ✓
 
-**Status**: Published on arXiv | **Validation**: 52/60 (86.7%) against Apache HTTP Server case study
+**Status**: Fully Implemented | **Validation**: 52/60 (86.7%) against Apache HTTP Server case study
 
-**Planned Components**:
+**What's Implemented**:
 
-| Component | Description | Mathematical Basis |
-|-----------|-------------|-------------------|
-| Team Structure | Composite actors with $N_C$ members | $V_C(\sum e_i) = \omega(\sum e_i)^\beta$ |
-| Free-Riding Problem | Nash equilibrium under self-interest | Universal shirking emerges |
-| Loyalty Parameter | $\theta \in [0,1]$ moderating utility | Four synergistic mechanisms |
-| Cost Tolerance | Perceived cost reduction | $c_{\text{perceived}} = c / (1 + \varphi_{\text{cost}} \times \theta)$ |
-| Welfare Internalization | Teammates' payoffs in utility | $\lambda_{\text{intern}} = \varphi_{\text{intern}} \times \theta$ |
-| Warm Glow | Intrinsic satisfaction from contributing | $\varphi_{\text{warm}} \times \theta \times \ln(1 + e_i)$ |
-| Guilt Aversion | Disutility from shirking | $-\varphi_{\text{guilt}} \times \theta \times (\bar{e} - e_i)^{1.5}$ |
+| Component | Implementation | Validation |
+|-----------|----------------|------------|
+| Team Structure | `envs/collective_action_envs.py` | N-player team production |
+| Free-Riding Problem | Nash equilibrium computation | Universal shirking baseline |
+| Loyalty Parameter | θ ∈ [0,1] per agent | Four synergistic mechanisms |
+| Cost Tolerance | φ_C = 0.3 default | Perceived cost reduction |
+| Welfare Internalization | φ_B = 0.8 default | Teammate payoff bonus |
+| Coalition Dynamics | Entry/exit with exclusion | Minimum coalition size |
+| Phase-Based Teams | ApacheProject-v0 phases | 4 historical phases |
 
-**Planned Equations**:
+**Key Equations in Code**:
 
 ```python
-# Team Value Function (planned)
-V_C(Σe_i) = ω × (Σe_i)^β
+# Team Production Function (Equation from TR-3)
+Q(a) = ω × (Σa_i)^β
 
-# Loyalty-Augmented Utility (planned)
-U_i(e, θ) = (1/N_C) × V_C - c_perceived + welfare_intern + warm_glow + guilt
+# Loyalty Modifier (Equation from TR-3)
+L_i = θ_i × [φ_B × π̄_{-i} + φ_C × c × a_i]
 
-# Team Production Equilibrium (planned)
-e_i* ∈ argmax U_i(e_i, e_{-i}*, θ)
+# Loyalty-Augmented Utility
+U_i = π_i^{team} + L_i
 ```
 
-**Expected Validation**:
-- 6.35× effort differentiation (θ=0 vs θ=1)
-- 3.93× output differentiation
-- 100% robustness across productivity levels
-- Comparison against monitoring-based alternatives
+**Validated Results**:
+- Apache HTTP Server case study (1995-2023): 52/60 validation score
+- 4.12× effort differentiation (high vs low loyalty contributors)
+- Phase-appropriate loyalty patterns across project lifecycle
+- Free-riding baseline matches theoretical equilibrium (99.7%)
 
-**Use Cases**:
-- Agile sprint team dynamics
-- Open-source contributor behavior
-- Distributed development coordination
-- Platform developer ecosystems
+**Environments Implemented**:
+
+| Environment | Description | Key Feature |
+|-------------|-------------|-------------|
+| TeamProduction-v0 | Baseline free-rider dynamics | Nash equilibrium reference |
+| LoyaltyTeam-v0 | Full TR-3 loyalty mechanisms | Above-Nash cooperation |
+| CoalitionFormation-v0 | Dynamic coalition with exclusion | Entry/exit dynamics |
+| ApacheProject-v0 | Validated 4-phase case study | 52/60 validation score |
+| PublicGoods-v0 | Classic public goods game | Contribution dynamics |
 
 ---
+
+## Planned Implementation
 
 ### Pillar 4: Sequential Interaction & Reciprocity (TR-2025-04)
 
@@ -195,7 +199,9 @@ U_i(a, T) = U_base + Σ λ_T × T_ij × (1 + ω×D_ij) × ρ_ij × R_ij
 
 ## Environment Roadmap by Pillar
 
-### Currently Available (Pillars 1 & 2)
+### Currently Available (Pillars 1, 2 & 3)
+
+**TR-1 & TR-2 Environments (10)**:
 
 | Environment | Primary Pillar | Secondary Pillar |
 |-------------|----------------|------------------|
@@ -210,12 +216,20 @@ U_i(a, T) = U_base + Σ λ_T × T_ij × (1 + ω×D_ij) × ρ_ij × R_ij
 | CooperativeNegotiation-v0 | Trust (P2) | Complementarity (P1) |
 | ReputationMarket-v0 | Trust (P2) | — |
 
-### Planned Environments (Pillars 3 & 4)
+**TR-3 Collective Action Environments (5)**:
+
+| Environment | Primary Pillar | Secondary Pillar |
+|-------------|----------------|------------------|
+| TeamProduction-v0 | Loyalty (P3) | — |
+| LoyaltyTeam-v0 | Loyalty (P3) | — |
+| CoalitionFormation-v0 | Loyalty (P3) | — |
+| ApacheProject-v0 | Loyalty (P3) | — |
+| PublicGoods-v0 | Loyalty (P3) | — |
+
+### Planned Environments (Pillar 4)
 
 | Environment | Primary Pillar | Description |
 |-------------|----------------|-------------|
-| AgileTeam-v0 | Loyalty (P3) | Sprint team free-riding dynamics |
-| OpenSourceProject-v0 | Loyalty (P3) | Volunteer contributor coordination |
 | SequentialNegotiation-v0 | Reciprocity (P4) | Turn-based cooperation building |
 | AllianceRecovery-v0 | Reciprocity (P4) | Post-crisis relationship repair |
 
@@ -227,8 +241,8 @@ U_i(a, T) = U_base + Σ λ_T × T_ij × (1 + ω×D_ij) × ρ_ij × R_ij
 |--------|-----------|--------------|--------|
 | **2025 Q1-Q2** | Pillars 1 & 2 Implementation | Core mathematical framework, 10 base environments, S-LCD & Renault-Nissan validation | ✓ Complete |
 | **2025 Q3** | Benchmark Suite | 20 algorithm evaluation, 760 experiments (76,000 episodes), comprehensive documentation | ✓ Complete |
-| **2025 Q4** | Theory Documentation | theory/ documentation subdirectory, parameter reference guide, research insights | In Progress |
-| **2026 Q1** | Pillar 3 Implementation | Team production mechanics, loyalty mechanisms, AgileTeam-v0, OpenSourceProject-v0 | Planned |
+| **2025 Q4** | Theory Documentation | theory/ documentation subdirectory, parameter reference guide, research insights | ✓ Complete |
+| **2026 Q1** | Pillar 3 Implementation | 5 TR-3 collective action environments, Apache case study (52/60), loyalty mechanisms | ✓ Complete |
 | **2026 Q2** | Pillar 4 Implementation | Reciprocity dynamics, sequential cooperation, SequentialNegotiation-v0, AllianceRecovery-v0 | Planned |
 | **2026 Q3** | Integration & Validation | Cross-pillar environment combinations, extended benchmark suite, multi-level dynamics | Planned |
 

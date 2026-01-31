@@ -240,10 +240,11 @@ import coopetition_gym
 
 envs = coopetition_gym.list_environments()
 print(envs)
-# ['CooperativeNegotiation-v0', 'DynamicPartnerSelection-v0',
-#  'PartnerHoldUp-v0', 'PlatformEcosystem-v0', 'RecoveryRace-v0',
+# ['ApacheProject-v0', 'CoalitionFormation-v0', 'CooperativeNegotiation-v0',
+#  'DynamicPartnerSelection-v0', 'LoyaltyTeam-v0', 'PartnerHoldUp-v0',
+#  'PlatformEcosystem-v0', 'PublicGoods-v0', 'RecoveryRace-v0',
 #  'RenaultNissan-v0', 'ReputationMarket-v0', 'SLCD-v0',
-#  'SynergySearch-v0', 'TrustDilemma-v0']
+#  'SynergySearch-v0', 'TeamProduction-v0', 'TrustDilemma-v0']
 ```
 
 ---
@@ -315,7 +316,7 @@ RewardType = NDArray[np.floating]
 | [`core.interdependence`](core/interdependence.md) | Structural dependency matrices | TR-1 §3-4 |
 | [`core.trust_dynamics`](core/trust_dynamics.md) | Trust and reputation evolution | TR-2 §4-6 |
 | [`core.equilibrium`](core/equilibrium.md) | Payoff computation and equilibrium solving | TR-1 §7 |
-| [`core.collective_action`](core/collective_action.md) | Collective action mechanics (skeleton) | TR-3 |
+| [`core.collective_action`](core/collective_action.md) | Collective action and loyalty mechanics | TR-3 |
 | [`core.reciprocity`](core/reciprocity.md) | Reciprocity dynamics (skeleton) | TR-4 |
 
 ### Environment Modules
@@ -328,6 +329,7 @@ RewardType = NDArray[np.floating]
 | [`envs.benchmark_envs`](environments.md#benchmark-environments) | Research benchmarks |
 | [`envs.case_study_envs`](environments.md#case-study-environments) | Validated case studies |
 | [`envs.extended_envs`](environments.md#extended-environments) | Extended mechanics |
+| [`envs.collective_action_envs`](environments.md#collective-action-environments) | TR-3 collective action environments |
 
 ### Wrapper Modules
 
@@ -341,7 +343,13 @@ RewardType = NDArray[np.floating]
 
 ## Changelog
 
-### v0.2.0 (Current)
+### v0.3.0 (Current)
+
+- Added 5 TR-3 collective action environments
+- 15 environments now available
+- Implemented loyalty mechanics from TR-3
+
+### v0.2.0
 
 - Added `ObservationConfig` for configurable information asymmetry
 - Added `make_parallel()` and `make_aec()` factory functions
@@ -351,7 +359,7 @@ RewardType = NDArray[np.floating]
 ### v0.1.0
 
 - Initial release
-- 10 environments implemented
+- 10 TR-1/TR-2 environments implemented
 - Core mathematical framework complete
 
 ---
