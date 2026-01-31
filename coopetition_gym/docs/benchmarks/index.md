@@ -2,7 +2,9 @@
 
 **Comprehensive MARL Algorithm Evaluation on Coopetition-Gym**
 
-This section presents empirical results from evaluating 20 multi-agent reinforcement learning algorithms across all 10 Coopetition-Gym environments. These benchmarks provide evidence-based guidance for algorithm selection and validate the theoretical foundations established in TR-1 and TR-2.
+This section presents empirical results from evaluating 20 multi-agent reinforcement learning algorithms across the 10 TR-1/TR-2 environments in Coopetition-Gym. These benchmarks provide evidence-based guidance for algorithm selection and validate the theoretical foundations established in TR-1 and TR-2.
+
+> **Note:** These benchmarks cover the original 10 environments. Benchmarks for the 5 TR-3 collective action environments are forthcoming.
 
 ---
 

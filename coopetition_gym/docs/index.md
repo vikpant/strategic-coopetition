@@ -57,10 +57,11 @@ print(f"Action space: {env.action_space}")
 
 - **TR-1**: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802)
 - **TR-2**: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/abs/2510.24909)
+- **TR-3**: [Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty](https://arxiv.org/abs/2601.16237)
 
 ### Key Features
 
-- **10 Specialized Environments** spanning dyadic relationships to multi-agent ecosystems
+- **15 Specialized Environments** spanning dyadic relationships to multi-agent ecosystems
 - **Validated Case Studies** based on real business partnerships (Samsung-Sony, Renault-Nissan)
 - **Trust Dynamics** with asymmetric updating and reputation hysteresis
 - **Multiple APIs**: Gymnasium (single-agent), PettingZoo Parallel, and PettingZoo AEC
@@ -128,7 +129,7 @@ for agent in env.agent_iter():
 
 ## Environment Categories
 
-Coopetition-Gym provides 10 environments organized into 5 categories:
+Coopetition-Gym provides 15 environments organized into 6 categories:
 
 ### Dyadic Environments (2-Agent)
 
@@ -174,6 +175,18 @@ Advanced scenarios with additional mechanics.
 |-------------|-------------|---------------|
 | [CooperativeNegotiation-v0](environments/cooperative_negotiation.md) | Multi-round negotiation | Commitment and breach penalties |
 | [ReputationMarket-v0](environments/reputation_market.md) | Market with reputation tiers | Reputation as strategic asset |
+
+### Collective Action Environments (TR-3)
+
+Team production and collective action scenarios with loyalty dynamics.
+
+| Environment | Description | Key Challenge |
+|-------------|-------------|---------------|
+| [TeamProduction-v0](environments/team_production.md) | Team production with free-rider dynamics | Nash equilibrium baseline |
+| [LoyaltyTeam-v0](environments/loyalty_team.md) | Team production with loyalty mechanisms | Sustaining above-Nash cooperation |
+| [CoalitionFormation-v0](environments/coalition_formation.md) | Dynamic coalition with entry/exit | Coalition stability under exclusion |
+| [ApacheProject-v0](environments/apache_project.md) | Apache HTTP Server case study (52/60) | Phase-dependent contributor dynamics |
+| [PublicGoods-v0](environments/public_goods.md) | Classic public goods game | Contribution and punishment dynamics |
 
 ---
 
@@ -284,12 +297,13 @@ When you depend heavily on a partner, their betrayal hurts more.
 
 ### Empirical Validation
 
-The mathematical framework has been validated against real business partnerships:
+The mathematical framework has been validated against real business partnerships and open source projects:
 
 | Case Study | Validation Score | Key Dynamics Captured |
 |------------|------------------|----------------------|
 | **Samsung-Sony S-LCD** (2004-2011) | 58/60 (96.7%) | Interdependence, complementarity, cooperation levels |
 | **Renault-Nissan Alliance** (1999-2025) | 49/60 (81.7%) | Trust evolution, crisis, recovery across 5 phases |
+| **Apache HTTP Server** (1995-2023) | 52/60 (86.7%) | Loyalty dynamics, phase transitions, contributor effort |
 
 These validations ensure the environments produce realistic coopetitive dynamics rather than artificial constructs.
 
@@ -420,6 +434,13 @@ If you use Coopetition-Gym in your research, please cite:
   journal = {arXiv preprint arXiv:2510.24909},
   year = {2025}
 }
+
+@article{pant2026tr3,
+  title = {Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty},
+  author = {Pant, Vik and Yu, Eric},
+  journal = {arXiv preprint arXiv:2601.16237},
+  year = {2026}
+}
 ```
 
 ---
@@ -459,7 +480,7 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 
 ## Benchmark Highlights
 
-We have evaluated **20 MARL algorithms** across all 10 environments with **760 experiments** totaling **76,000 evaluation episodes**. Key findings:
+We have evaluated **20 MARL algorithms** across the 10 TR-1/TR-2 environments with **760 experiments** totaling **76,000 evaluation episodes**. Key findings:
 
 | Finding | Implication |
 |---------|-------------|
