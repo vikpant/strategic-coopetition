@@ -233,6 +233,9 @@ def free_riding_equilibrium(params: TR3Parameters, n: int) -> float:
     This is the effort level each agent would choose if acting selfishly,
     ignoring positive externalities to teammates.
 
+    Note: When β=1.0 (linear returns), the formula has no interior solution.
+    The equilibrium is a corner solution: 0 if ω/n < c, else a_max.
+
     Args:
         params: TR3 parameters
         n: Number of agents
@@ -240,6 +243,14 @@ def free_riding_equilibrium(params: TR3Parameters, n: int) -> float:
     Returns:
         Nash equilibrium effort level
     """
+    # Handle linear returns (beta=1.0) - corner solution
+    if abs(params.beta - 1.0) < 1e-9:
+        marginal_benefit = params.omega / n
+        if marginal_benefit < params.c:
+            return 0.0  # Free-riding dominates
+        else:
+            return params.a_max  # Contributing dominates
+
     numerator = params.omega * params.beta
     denominator = n * params.c
     exponent = 1.0 / (1.0 - params.beta)
@@ -255,6 +266,9 @@ def social_optimum_effort(params: TR3Parameters, n: int) -> float:
 
     This is the effort level that maximizes total team welfare.
 
+    Note: When β=1.0 (linear returns), the formula has no interior solution.
+    The social optimum is a_max if ω > c, else 0.
+
     Args:
         params: TR3 parameters
         n: Number of agents
@@ -262,6 +276,14 @@ def social_optimum_effort(params: TR3Parameters, n: int) -> float:
     Returns:
         Socially optimal effort level
     """
+    # Handle linear returns (beta=1.0) - corner solution
+    if abs(params.beta - 1.0) < 1e-9:
+        # With linear returns, social optimum is max effort if multiplier > cost
+        if params.omega > params.c:
+            return params.a_max
+        else:
+            return 0.0
+
     numerator = params.omega * params.beta
     denominator = params.c
     exponent = 1.0 / (1.0 - params.beta)
