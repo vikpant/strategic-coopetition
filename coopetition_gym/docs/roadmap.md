@@ -14,16 +14,16 @@ Coopetition-Gym implements a coordinated research program examining strategic co
 
 | Pillar | Focus | Technical Report | Status |
 |--------|-------|------------------|--------|
-| **1** | Interdependence & Complementarity | [TR-2025-01](https://arxiv.org/abs/2510.18802) | ✓ Implemented |
-| **2** | Trust & Reputation Dynamics | [TR-2025-02](https://arxiv.org/abs/2510.24909) | ✓ Implemented |
-| **3** | Collective Action & Loyalty | [TR-2025-03](https://arxiv.org/abs/2601.16237) | ✓ Implemented |
-| **4** | Sequential Interaction & Reciprocity | TR-2025-04 (Draft) | Planned |
+| **1** | Interdependence & Complementarity | TR-1 ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) | ✓ Implemented |
+| **2** | Trust & Reputation Dynamics | TR-2 ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) | ✓ Implemented |
+| **3** | Collective Action & Loyalty | TR-3 ([arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) | ✓ Implemented |
+| **4** | Sequential Interaction & Reciprocity | TR-4 (Draft) | Planned |
 
 ---
 
 ## Current Implementation Status
 
-### Pillar 1: Interdependence & Complementarity (TR-2025-01) ✓
+### Pillar 1: Interdependence & Complementarity (TR-1, [arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) ✓
 
 **Status**: Fully Implemented | **Validation**: 58/60 (96.7%) against S-LCD case study
 
@@ -58,7 +58,7 @@ U_i(a) = π_i(a) + Σ D_ij × π_j(a)
 
 ---
 
-### Pillar 2: Trust Dynamics & Reputation (TR-2025-02) ✓
+### Pillar 2: Trust & Reputation Dynamics (TR-2, [arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) ✓
 
 **Status**: Fully Implemented | **Validation**: 49/60 (81.7%) against Renault-Nissan case study
 
@@ -107,7 +107,7 @@ s_ij = tanh(κ × (a_j - baseline))
 
 ---
 
-### Pillar 3: Collective Action & Loyalty ([TR-2025-03](https://arxiv.org/abs/2601.16237)) ✓
+### Pillar 3: Collective Action & Loyalty (TR-3, [arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) ✓
 
 **Status**: Fully Implemented | **Validation**: 52/60 (86.7%) against Apache HTTP Server case study
 
@@ -201,22 +201,27 @@ U_i(a, T) = U_base + Σ λ_T × T_ij × (1 + ω×D_ij) × ρ_ij × R_ij
 
 ### Currently Available (Pillars 1, 2 & 3)
 
-**TR-1 & TR-2 Environments (10)**:
+**TR-1 Interdependence & Complementarity Environments (5)**:
 
-| Environment | Primary Pillar | Secondary Pillar |
-|-------------|----------------|------------------|
-| TrustDilemma-v0 | Trust (P2) | Interdependence (P1) |
-| PartnerHoldUp-v0 | Trust (P2) | Interdependence (P1) |
-| PlatformEcosystem-v0 | Complementarity (P1) | Trust (P2) |
-| DynamicPartnerSelection-v0 | Trust (P2) | Complementarity (P1) |
-| RecoveryRace-v0 | Trust (P2) | — |
-| SynergySearch-v0 | Complementarity (P1) | — |
-| SLCD-v0 | Interdependence (P1) | Trust (P2) |
-| RenaultNissan-v0 | Trust (P2) | Interdependence (P1) |
-| CooperativeNegotiation-v0 | Trust (P2) | Complementarity (P1) |
-| ReputationMarket-v0 | Trust (P2) | — |
+| Environment | Primary Focus | Secondary Pillar |
+|-------------|---------------|------------------|
+| PartnerHoldUp-v0 | Asymmetric Interdependence | Trust (P2) |
+| PlatformEcosystem-v0 | Ecosystem Complementarity | Trust (P2) |
+| DynamicPartnerSelection-v0 | Partner Value Creation | Trust (P2) |
+| SynergySearch-v0 | Hidden Complementarity (γ) | — |
+| RenaultNissan-v0 | Alliance Interdependence | Trust (P2) |
 
-**TR-3 Collective Action Environments (5)**:
+**TR-2 Trust & Reputation Dynamics Environments (5)**:
+
+| Environment | Primary Focus | Secondary Pillar |
+|-------------|---------------|------------------|
+| TrustDilemma-v0 | Trust Evolution | Interdependence (P1) |
+| RecoveryRace-v0 | Trust Recovery | — |
+| SLCD-v0 | Trust Model (Validated 58/60) | Interdependence (P1) |
+| CooperativeNegotiation-v0 | Commitment & Breach | Complementarity (P1) |
+| ReputationMarket-v0 | Reputation Dynamics | — |
+
+**TR-3 Collective Action & Loyalty Environments (5)**:
 
 | Environment | Primary Pillar | Secondary Pillar |
 |-------------|----------------|------------------|

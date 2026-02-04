@@ -2,9 +2,9 @@
 
 **Comprehensive MARL Algorithm Evaluation on Coopetition-Gym**
 
-This section presents empirical results from evaluating 20 multi-agent reinforcement learning algorithms across the 10 TR-1/TR-2 environments in Coopetition-Gym. These benchmarks provide evidence-based guidance for algorithm selection and validate the theoretical foundations established in TR-1 and TR-2.
+This section presents empirical results from evaluating 20 multi-agent reinforcement learning algorithms across the 10 TR-1 and TR-2 environments in Coopetition-Gym. These benchmarks provide evidence-based guidance for algorithm selection and validate the theoretical foundations established in TR-1 (Interdependence & Complementarity) and TR-2 (Trust & Reputation Dynamics).
 
-> **Note:** These benchmarks cover the original 10 environments. Benchmarks for the 5 TR-3 collective action environments are forthcoming.
+> **Note:** These benchmarks cover the 5 TR-1 environments and 5 TR-2 environments. Benchmarks for the 5 TR-3 collective action environments are forthcoming.
 
 ---
 
@@ -37,12 +37,22 @@ This section presents empirical results from evaluating 20 multi-agent reinforce
 
 ### Environment Categories
 
+**TR-1: Interdependence & Complementarity (5 Environments)**
+
 | Category | Environments | Agents |
 |----------|--------------|--------|
-| **Dyadic** | TrustDilemma-v0, PartnerHoldUp-v0 | 2 |
+| **Dyadic** | PartnerHoldUp-v0 | 2 |
 | **Ecosystem** | PlatformEcosystem-v0, DynamicPartnerSelection-v0 | 4-5 |
-| **Benchmark** | RecoveryRace-v0, SynergySearch-v0 | 2 |
-| **Validated** | SLCD-v0, RenaultNissan-v0 | 2 |
+| **Benchmark** | SynergySearch-v0 | 2 |
+| **Validated** | RenaultNissan-v0 | 2 |
+
+**TR-2: Trust & Reputation Dynamics (5 Environments)**
+
+| Category | Environments | Agents |
+|----------|--------------|--------|
+| **Dyadic** | TrustDilemma-v0 | 2 |
+| **Benchmark** | RecoveryRace-v0 | 2 |
+| **Validated** | SLCD-v0 | 2 |
 | **Extended** | CooperativeNegotiation-v0, ReputationMarket-v0 | 2-4 |
 
 ---
