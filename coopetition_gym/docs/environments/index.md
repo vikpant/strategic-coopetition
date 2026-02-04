@@ -6,18 +6,23 @@ This section provides detailed documentation for all 15 environments in Coopetit
 
 ## Environment Overview
 
-### TR-1 & TR-2: Interdependence and Trust Dynamics (10 Environments)
+### TR-1: Interdependence and Complementarity (5 Environments)
+
+| Environment | Agents | Category | Key Challenge |
+|-------------|--------|----------|---------------|
+| [PartnerHoldUp-v0](partner_holdup.md) | 2 | Dyadic | Power dynamics and exploitation |
+| [PlatformEcosystem-v0](platform_ecosystem.md) | 1+N | Ecosystem | Ecosystem health management |
+| [DynamicPartnerSelection-v0](dynamic_partner_selection.md) | N | Ecosystem | Social learning and signaling |
+| [SynergySearch-v0](synergy_search.md) | 2 | Benchmark | Exploration vs. exploitation |
+| [RenaultNissan-v0](renault_nissan.md) | 2 | Case Study | Multi-phase alliance dynamics |
+
+### TR-2: Trust and Reputation Dynamics (5 Environments)
 
 | Environment | Agents | Category | Key Challenge |
 |-------------|--------|----------|---------------|
 | [TrustDilemma-v0](trust_dilemma.md) | 2 | Dyadic | Long-horizon impulse control |
-| [PartnerHoldUp-v0](partner_holdup.md) | 2 | Dyadic | Power dynamics and exploitation |
-| [PlatformEcosystem-v0](platform_ecosystem.md) | 1+N | Ecosystem | Ecosystem health management |
-| [DynamicPartnerSelection-v0](dynamic_partner_selection.md) | N | Ecosystem | Social learning and signaling |
 | [RecoveryRace-v0](recovery_race.md) | 2 | Benchmark | Planning under trust constraints |
-| [SynergySearch-v0](synergy_search.md) | 2 | Benchmark | Exploration vs. exploitation |
 | [SLCD-v0](slcd.md) | 2 | Case Study | Validated Samsung-Sony model |
-| [RenaultNissan-v0](renault_nissan.md) | 2 | Case Study | Multi-phase alliance dynamics |
 | [CooperativeNegotiation-v0](cooperative_negotiation.md) | 2 | Extended | Commitment and breach penalties |
 | [ReputationMarket-v0](reputation_market.md) | N | Extended | Reputation as strategic asset |
 

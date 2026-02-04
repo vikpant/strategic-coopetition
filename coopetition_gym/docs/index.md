@@ -480,7 +480,7 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 
 ## Benchmark Highlights
 
-We have evaluated **20 MARL algorithms** across the 10 TR-1/TR-2 environments with **760 experiments** totaling **76,000 evaluation episodes**. Key findings:
+We have evaluated **20 MARL algorithms** across the 5 TR-1 environments and 5 TR-2 environments with **760 experiments** totaling **76,000 evaluation episodes**. Key findings:
 
 | Finding | Implication |
 |---------|-------------|

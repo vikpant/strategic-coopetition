@@ -359,7 +359,7 @@ RewardType = NDArray[np.floating]
 ### v0.1.0
 
 - Initial release
-- 10 TR-1/TR-2 environments implemented
+- 5 TR-1 environments + 5 TR-2 environments implemented
 - Core mathematical framework complete
 
 ---
