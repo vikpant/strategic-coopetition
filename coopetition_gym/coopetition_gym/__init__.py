@@ -28,7 +28,7 @@ __author__ = "Vik Pant, Eric Yu"
 
 from .core import (
     # TR-1: Value Functions
-    ValueSpecification, ValueFunctionParameters, individual_value, 
+    ValueSpecification, ValueFunctionParameters, individual_value,
     synergy_function, total_value, create_slcd_parameters,
     # TR-1: Interdependence
     InterdependenceMatrix, create_slcd_interdependence,
@@ -37,22 +37,25 @@ from .core import (
     TrustParameters, TrustState, TrustDynamicsModel,
     # Equilibrium
     PayoffParameters, compute_rewards, solve_equilibrium,
-    # TR-3: Collective Action (skeleton)
+    # TR-3: Collective Action & Loyalty
     CollectiveActionParameters, CollectiveActionState, CollectiveActionModel,
-    # TR-4: Reciprocity (skeleton)
+    # TR-4: Reciprocity (planned)
     ReciprocityParameters, ReciprocityState, ReciprocityModel,
 )
 
 from .envs import (
     # Base classes
     CoopetitionEnv, EnvironmentConfig, AbstractCoopetitionEnv,
-    # Environments
+    # TR-1 & TR-2 Environments
     TrustDilemmaEnv, PartnerHoldUpEnv,
     PlatformEcosystemEnv, DynamicPartnerSelectionEnv,
     RecoveryRaceEnv, SynergySearchEnv,
     SLCDEnv, RenaultNissanEnv,
     CooperativeNegotiationEnv, ReputationMarketEnv,
-    # Wrappers (v0.2.0)
+    # TR-3 Collective Action Environments
+    TeamProductionEnv, LoyaltyTeamEnv, CoalitionFormationEnv,
+    ApacheProjectEnv, PublicGoodsEnv, TR3Parameters,
+    # Wrappers
     ObservationConfig, CoopetitionParallelEnv, CoopetitionAECEnv,
     # Factory functions
     make, make_parallel, make_aec, list_environments,
@@ -70,26 +73,30 @@ def info():
 
 __all__ = [
     "__version__", "version", "info",
-    # TR-1
+    # TR-1: Value Functions & Interdependence
     "ValueSpecification", "ValueFunctionParameters", "individual_value",
     "synergy_function", "total_value", "create_slcd_parameters",
     "InterdependenceMatrix", "create_slcd_interdependence",
     "create_renault_nissan_interdependence", "create_symmetric_interdependence",
-    # TR-2
+    # TR-2: Trust Dynamics
     "TrustParameters", "TrustState", "TrustDynamicsModel",
     "PayoffParameters", "compute_rewards", "solve_equilibrium",
-    # TR-3 (skeleton)
+    # TR-3: Collective Action & Loyalty
     "CollectiveActionParameters", "CollectiveActionState", "CollectiveActionModel",
-    # TR-4 (skeleton)
+    # TR-4: Reciprocity (planned)
     "ReciprocityParameters", "ReciprocityState", "ReciprocityModel",
-    # Environments
+    # Base Environment Classes
     "CoopetitionEnv", "EnvironmentConfig", "AbstractCoopetitionEnv",
+    # TR-1 & TR-2 Environment Classes
     "TrustDilemmaEnv", "PartnerHoldUpEnv",
     "PlatformEcosystemEnv", "DynamicPartnerSelectionEnv",
     "RecoveryRaceEnv", "SynergySearchEnv",
     "SLCDEnv", "RenaultNissanEnv",
     "CooperativeNegotiationEnv", "ReputationMarketEnv",
-    # Wrappers (v0.2.0)
+    # TR-3 Environment Classes
+    "TeamProductionEnv", "LoyaltyTeamEnv", "CoalitionFormationEnv",
+    "ApacheProjectEnv", "PublicGoodsEnv", "TR3Parameters",
+    # Wrappers
     "ObservationConfig", "CoopetitionParallelEnv", "CoopetitionAECEnv",
     # Factory functions
     "make", "make_parallel", "make_aec", "list_environments",

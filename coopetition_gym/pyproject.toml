@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coopetition-gym"
-version = "0.2.0"
-description = "Multi-agent RL environments for strategic coopetition with PettingZoo support"
+version = "0.3.0"
+description = "Multi-agent RL environments for strategic coopetition with trust dynamics, collective action, and PettingZoo support"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
@@ -23,6 +23,9 @@ keywords = [
     "gymnasium",
     "pettingzoo",
     "trust-dynamics",
+    "collective-action",
+    "loyalty",
+    "team-production",
     "strategic-interaction",
 ]
 classifiers = [
