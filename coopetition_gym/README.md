@@ -16,8 +16,11 @@ This library implements computational frameworks from peer-reviewed game-theoret
 |-------|-------|------------------|
 | **TR-1** ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) | Interdependence & Complementarity | Value functions, synergy, coopetitive equilibrium |
 | **TR-2** ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) | Trust Dynamics | Asymmetric updating, negativity bias, hysteresis |
+| **TR-3** ([arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) | Collective Action & Loyalty | Team production, loyalty mechanisms, coalition dynamics |
 
-The S-LCD environment achieves a **58/60 validation score** against historical data from the Samsung-Sony LCD joint venture.
+**Validated Case Studies:**
+- S-LCD (Samsung-Sony): **58/60** validation score (TR-1 §8)
+- Apache HTTP Server: **52/60** validation score (TR-3 §7)
 
 ## 🚀 Quick Start
 
@@ -63,7 +66,7 @@ print(coopetition_gym.list_environments())
 
 ## 🎯 Environments
 
-Coopetition-Gym includes **10 environments** across five categories:
+Coopetition-Gym includes **15 environments** across six categories:
 
 ### Category 1: Dyadic (Micro)
 Fundamental 2-agent mechanics for understanding core dynamics.
@@ -104,6 +107,17 @@ Advanced mechanics for specialized research.
 |-------------|-------------|-----------|
 | `CooperativeNegotiation-v0` | Multi-round negotiation with commitment | Agreement formation, breach consequences |
 | `ReputationMarket-v0` | Market with public reputation scores | Reputation as strategic asset |
+
+### Category 6: Collective Action (TR-3)
+Team production with loyalty dynamics and coalition formation.
+
+| Environment | Description | Challenge |
+|-------------|-------------|-----------|
+| `TeamProduction-v0` | N-agent team production game | Free-rider dynamics at Nash equilibrium |
+| `LoyaltyTeam-v0` | Team production with loyalty mechanisms | Sustaining above-Nash cooperation |
+| `CoalitionFormation-v0` | Dynamic coalition with entry/exit | Coalition stability under exclusion threat |
+| `ApacheProject-v0` | Apache HTTP Server (validated 52/60) | Phase-dependent contributor dynamics |
+| `PublicGoods-v0` | Classic public goods game | Contribution with optional punishment |
 
 ## 📐 Mathematical Framework
 
@@ -305,21 +319,23 @@ print(f"Total welfare: {equilibrium.total_welfare:.2f}")
 
 ```
 coopetition_gym/
-├── __init__.py           # Package entry point
-├── core/                 # Mathematical foundations
-│   ├── value_functions.py    # TR-1 value calculations
-│   ├── interdependence.py    # Dependency matrices
-│   ├── trust_dynamics.py     # TR-2 trust evolution
-│   └── equilibrium.py        # Payoffs and equilibrium
-├── envs/                 # Gymnasium environments
-│   ├── base.py               # CoopetitionEnv base class
-│   ├── dyadic_envs.py        # TrustDilemma, PartnerHoldUp
-│   ├── ecosystem_envs.py     # Platform, PartnerSelection
-│   ├── benchmark_envs.py     # RecoveryRace, SynergySearch
-│   ├── case_study_envs.py    # SLCD, RenaultNissan
-│   └── extended_envs.py      # Negotiation, ReputationMarket
-├── utils/                # Utilities and helpers
-└── tests/                # Test suite
+├── __init__.py               # Package entry point
+├── core/                     # Mathematical foundations
+│   ├── value_functions.py        # TR-1 value calculations
+│   ├── interdependence.py        # Dependency matrices
+│   ├── trust_dynamics.py         # TR-2 trust evolution
+│   ├── collective_action.py      # TR-3 loyalty mechanisms
+│   └── equilibrium.py            # Payoffs and equilibrium
+├── envs/                     # Gymnasium environments
+│   ├── base.py                   # CoopetitionEnv base class
+│   ├── dyadic_envs.py            # TrustDilemma, PartnerHoldUp
+│   ├── ecosystem_envs.py         # Platform, PartnerSelection
+│   ├── benchmark_envs.py         # RecoveryRace, SynergySearch
+│   ├── case_study_envs.py        # SLCD, RenaultNissan
+│   ├── extended_envs.py          # Negotiation, ReputationMarket
+│   └── collective_action_envs.py # TR-3: TeamProduction, Loyalty, Coalition, Apache
+├── utils/                    # Utilities and helpers
+└── tests/                    # Test suite
 ```
 
 ## 🧪 Running Tests
@@ -356,6 +372,13 @@ If you use this library in your research, please cite:
   author = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2510.24909},
   year = {2025}
+}
+
+@article{pant2026collective,
+  title = {Collective Action and Loyalty in Coopetitive Relationships},
+  author = {Pant, Vik and Yu, Eric},
+  journal = {arXiv preprint arXiv:2601.16237},
+  year = {2026}
 }
 ```
 
