@@ -66,6 +66,8 @@ This environment is formalized as a 2-player Markov Game with **endogenous agree
 - **Pre-agreement**: Proposal for cooperation level
 - **Post-agreement**: Actual cooperation level (subject to breach detection)
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Competition emerges through commitment enforcement and breach penalties rather than explicit competitive actions.
+
 ### Agreement Formation
 
 **Agreement condition**: Proposals converge within threshold

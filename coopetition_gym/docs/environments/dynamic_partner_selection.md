@@ -70,6 +70,8 @@ For each agent i ∈ {1, ..., N}:
 
 **A**_i = [0, 100] ⊂ ℝ
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Partner competition emerges through reputation-based selection rather than explicit competitive actions.
+
 ### Interdependence Matrix (Fully Connected)
 
 ```

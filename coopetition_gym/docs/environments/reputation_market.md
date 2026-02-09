@@ -67,6 +67,8 @@ This environment is formalized as an N-player Markov Game with **tiered reputati
 ### Action Space
 **A**_i = [0, 100] ⊂ ℝ for each agent
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Market competition emerges through reputation tier dynamics rather than explicit competitive actions.
+
 ### Interdependence Matrix
 
 ```

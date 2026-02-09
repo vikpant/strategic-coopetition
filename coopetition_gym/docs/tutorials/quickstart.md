@@ -8,6 +8,18 @@ This tutorial introduces Coopetition-Gym through hands-on examples. You'll learn
 
 ---
 
+## Understanding the Action Model
+
+Coopetition-Gym v1.x environments use the **uniaxial treatment** of coopetition. Agents choose a single value representing their cooperation/investment level:
+
+- **Action range**: `[0, endowment]` where higher values mean more cooperation
+- **Zero action**: Non-participation or resource retention (not sabotage)
+- **Competition**: Emerges through structural parameters—who depends on whom, how value is divided—rather than explicit competitive actions
+
+This follows established game-theoretic traditions for modeling social dilemmas. Future versions will introduce biaxial action spaces where cooperation and competition are independent dimensions.
+
+---
+
 ## Your First Environment
 
 Let's create and interact with the TrustDilemma-v0 environment:

@@ -68,6 +68,8 @@ Standard observation excludes γ. Extended mode (`reveal_gamma_in_obs=True`) app
 ### Action Space
 **A**_i = [0, 100] ⊂ ℝ for each agent
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Competition emerges through value capture (bargaining shares) rather than explicit competitive actions.
+
 ### Transition Dynamics
 
 Standard TR-2 trust dynamics (see TrustDilemma-v0).

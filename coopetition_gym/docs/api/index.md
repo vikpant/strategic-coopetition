@@ -37,6 +37,18 @@ coopetition_gym.list_environments()
 
 ---
 
+## Action Space Semantics
+
+All environments in Coopetition-Gym v1.x use the **uniaxial treatment** of coopetition:
+
+- **Action space**: `Box(low=0, high=endowment, shape=(n_agents,))` representing cooperation/investment levels
+- **Interpretation**: Actions specify how much each agent contributes to joint value creation
+- **Competition**: Modeled through structural parameters (interdependence, bargaining shares) rather than explicit competitive actions
+
+This design reflects one established paradigm in coopetition research. Version 2.x will introduce biaxial action spaces with independent cooperation and competition dimensions. See [Theoretical Foundations](../theory/index.md#modeling-philosophy-uniaxial-treatment) for rationale.
+
+---
+
 ## Factory Functions
 
 ### make

@@ -147,6 +147,8 @@ Dimension varies by phase (based on team size).
 **Dtype:** `float32`
 **Range:** `[0.0, 50.0]` for each agent
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Contributor competition for recognition and influence emerges through phase-dependent loyalty dynamics rather than explicit competitive actions.
+
 ---
 
 ## Metrics and Info

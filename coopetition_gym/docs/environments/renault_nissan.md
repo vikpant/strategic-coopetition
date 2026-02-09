@@ -58,6 +58,8 @@ Renault's slight advantage reflects initial controlling stake.
 - **Nissan**: **A**_0 = [0, 90] ⊂ ℝ
 - **Renault**: **A**_1 = [0, 100] ⊂ ℝ
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Renault-Nissan competition in vehicle markets is captured through phase-specific trust dynamics rather than explicit competitive actions.
+
 ### Phase-Specific Initial Conditions
 
 | Phase | Period | τ₀ | R₀ | Θ₀ | Interpretation |

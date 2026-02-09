@@ -129,6 +129,8 @@ Includes actions, trust, reputation, interdependence, loyalty scores, coalition 
 **Dtype:** `float32`
 **Range:** `[0.0, 50.0]` for each agent
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Competition emerges through coalition exclusion dynamics rather than explicit competitive actions.
+
 ---
 
 ## Metrics and Info

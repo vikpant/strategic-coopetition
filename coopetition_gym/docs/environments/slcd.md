@@ -58,6 +58,8 @@ Samsung's slight bargaining advantage (55% vs 45%) reflects technology control.
 ### Action Space
 **A**_i = [0, 100] ⊂ ℝ representing investment in joint venture operations.
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Samsung-Sony competition in consumer TVs is captured through bargaining shares (α=0.55/0.45) rather than explicit competitive actions.
+
 ### Validated Trust Parameters (TR-1 §8.3)
 
 | Parameter | Symbol | Value | Validation Source |
