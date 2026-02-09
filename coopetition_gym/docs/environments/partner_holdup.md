@@ -64,6 +64,8 @@ Agent-specific continuous action spaces:
 - **Strong**: $A_0 = [0, 120] \subset \mathbb{R}$
 - **Weak**: $A_1 = [0, 80] \subset \mathbb{R}$
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Competition emerges through structural power asymmetry (D_strong=0.35, D_weak=0.85) rather than explicit competitive actions.
+
 ### Interdependence Matrix (Critical Asymmetry)
 
 ```

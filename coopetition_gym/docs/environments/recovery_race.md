@@ -56,6 +56,8 @@ This environment is formalized as a 2-player Markov Game with **constrained reco
 ### Action Space
 $A_i = [0, 100] \subset \mathbb{R}$ for each agent
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Competition emerges through value capture dynamics rather than explicit competitive actions.
+
 ### Initial State (Post-Crisis)
 
 | Variable | Initial Value | Interpretation |

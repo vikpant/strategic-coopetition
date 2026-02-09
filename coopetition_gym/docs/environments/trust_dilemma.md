@@ -59,6 +59,8 @@ $$A_i = [0, e_i] = [0, 100] \subset \mathbb{R}$$
 
 where $e_i = 100$ is the endowment. Actions represent **cooperation level** (investment in joint value creation).
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Competition emerges through structural parameters (interdependence, bargaining shares) rather than explicit competitive actions.
+
 ### Transition Dynamics
 
 **Trust Update** (TR-2 dynamics):

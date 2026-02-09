@@ -67,6 +67,8 @@ This environment is formalized as an (N+1)-player Markov Game with hub-spoke str
 - **Platform**: **A**_0 = [0, 150] ⊂ ℝ
 - **Each Developer**: **A**_i = [0, 80] ⊂ ℝ for i ∈ {1, ..., N}
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Platform-developer competition emerges through hub-spoke interdependence asymmetry rather than explicit competitive actions.
+
 ### Interdependence Matrix (Hub-Spoke Topology)
 
 ```

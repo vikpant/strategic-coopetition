@@ -133,6 +133,8 @@ Includes actions, trust matrix, reputation, interdependence, loyalty scores, and
 **Dtype:** `float32`
 **Range:** `[0.0, 50.0]` for each agent
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. Competition emerges through the free-rider dynamic modulated by loyalty mechanisms rather than explicit competitive actions.
+
 ---
 
 ## Metrics and Info

@@ -180,6 +180,17 @@ Then create a pull request on GitHub.
 
 ## Adding New Environments
 
+### Action Space Requirements (v1.x)
+
+All Coopetition-Gym v1.x environments must implement the **uniaxial treatment** of coopetition:
+
+- **Action space**: `Box(low=0, high=endowment, shape=(n_agents,))` representing cooperation/investment levels
+- **Action interpretation**: Higher values = greater contribution to joint value creation
+- **Competition modeling**: Through structural parameters (interdependence matrix, bargaining shares, trust dynamics) rather than explicit competitive actions
+- **Zero interpretation**: Non-participation or resource retention, not sabotage or active harm
+
+This design maintains consistency with the Foundations series (TR-1 through TR-4) and established social dilemma benchmarks. Biaxial action spaces with independent cooperation and competition dimensions are planned for v2.x.
+
 ### Environment Structure
 
 New environments should follow this structure:

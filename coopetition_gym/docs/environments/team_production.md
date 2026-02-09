@@ -76,6 +76,8 @@ $$A_i = [0, a_{max}] = [0, 50] \subset \mathbb{R}$$
 
 Actions represent **effort contribution** to team production.
 
+> **Uniaxial Treatment**: This environment uses the single-dimension action space characteristic of Coopetition-Gym v1.x. The free-rider dynamic emerges through divergence between individual and collective incentives rather than explicit competitive actions.
+
 ### Reward Function
 
 In the baseline TeamProduction-v0, rewards are pure team payoffs without loyalty:
