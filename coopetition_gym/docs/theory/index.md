@@ -25,6 +25,40 @@ The synthesis produces environments where:
 
 ---
 
+## Modeling Philosophy: Uniaxial Treatment
+
+### The Coopetition Modeling Debate
+
+The coopetition literature contains a substantive debate about whether cooperation and competition should be modeled as opposite poles of a single continuum (**uniaxial**) or as independent strategic dimensions (**biaxial**).
+
+| Treatment | Proponents | Key Insight |
+|-----------|------------|-------------|
+| **Uniaxial** | Bengtsson & Kock (2000), Lado et al. (1997) | Cooperation-competition as resource allocation tradeoff |
+| **Biaxial** | Brandenburger & Nalebuff (1996), Gnyawali & Park (2011) | Value creation and value capture as orthogonal choices |
+
+### Foundations Series Approach
+
+The Computational Foundations series (TR-1 through TR-4) adopts the **uniaxial treatment** following the social dilemma tradition:
+
+- **Action space**: `a_i ∈ [0, endowment]` representing contribution to joint value creation
+- **"Zero" interpretation**: Non-contribution (retention of resources), not active harm
+- **Competition modeling**: Through structural parameters (D, α) rather than explicit competitive actions
+
+This approach provides:
+1. **Computational tractability**: Single-dimension optimization compatible with standard MARL algorithms
+2. **Literature grounding**: Direct comparison with established social dilemma benchmarks
+3. **Empirical validation**: Successfully validated against real-world cases (SLCD, Renault-Nissan, Apache)
+
+### Future Extensions
+
+The planned Extensions series (TR-5 onwards) will introduce **biaxial treatment** with independent cooperation and competition dimensions, addressing scenarios where agents can simultaneously:
+- Invest in joint value creation (cooperation dimension)
+- Compete for value capture (competition dimension)
+
+For complete theoretical rationale and strategic roadmap, see [Scope and Strategic Roadmap](../scope_roadmap.md).
+
+---
+
 ## Research Program Structure
 
 The theoretical foundations are organized into four pillars, of which **Pillars 1 and 2** are currently implemented:
@@ -313,5 +347,6 @@ If you use the theoretical framework in your research, please cite:
 ### Related Documentation
 - [Documentation Home](../index.md)
 - [Implementation Roadmap](../roadmap.md)
+- [Scope and Strategic Roadmap](../scope_roadmap.md)
 - [Environment Reference](../environments/index.md)
 - [Benchmark Results](../benchmarks/index.md)

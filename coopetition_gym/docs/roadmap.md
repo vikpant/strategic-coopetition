@@ -4,6 +4,8 @@
 
 This document outlines the research-driven development roadmap for Coopetition-Gym, organized around four theoretical pillars derived from the computational foundations for strategic coopetition research program.
 
+> **Scope Note**: This roadmap covers the **Foundations series** (TR-1 through TR-4), which adopts the uniaxial treatment of coopetition following the social dilemma tradition (Bengtsson & Kock, 2000). Agents choose cooperation levels along a [0, endowment] continuum, with competitive dynamics emerging through structural parameters (interdependence, bargaining shares, trust). For the theoretical rationale, literature justification, and future **Extensions roadmap** (biaxial treatment with independent cooperation and competition dimensions), see the [Scope and Strategic Roadmap](scope_roadmap.md).
+
 ---
 
 ## Research Program Architecture
@@ -306,6 +308,7 @@ See [Contributing Guide](contributing.md) for:
 ## Navigation
 
 - [Documentation Home](index.md)
+- [Scope and Strategic Roadmap](scope_roadmap.md)
 - [Theoretical Foundations](theory/index.md)
 - [Environment Reference](environments/index.md)
 - [Benchmark Results](benchmarks/index.md)

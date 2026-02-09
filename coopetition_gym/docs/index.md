@@ -62,10 +62,16 @@ print(f"Action space: {env.action_space}")
 ### Key Features
 
 - **15 Specialized Environments** spanning dyadic relationships to multi-agent ecosystems
-- **Validated Case Studies** based on real business partnerships (Samsung-Sony, Renault-Nissan)
+- **Validated Case Studies** based on real business partnerships (Samsung-Sony, Renault-Nissan, Apache)
 - **Trust Dynamics** with asymmetric updating and reputation hysteresis
 - **Multiple APIs**: Gymnasium (single-agent), PettingZoo Parallel, and PettingZoo AEC
 - **Configurable Parameters** for research flexibility
+
+### Modeling Approach
+
+Coopetition-Gym v1.x implements the **uniaxial treatment** of coopetition, modeling strategic choice along the cooperation-defection continuum (Bengtsson & Kock, 2000). Agents choose cooperation levels in `[0, endowment]`, with competitive dynamics emerging through structural parameters (interdependence matrix, bargaining shares, trust evolution). This foundational approach enables computational tractability while capturing core coopetitive phenomena validated against real-world cases.
+
+Future versions will introduce **biaxial treatment** with independent cooperation and competition dimensions, following Brandenburger & Nalebuff (1996). See [Scope and Strategic Roadmap](scope_roadmap.md) for theoretical rationale and extension plans.
 
 ---
 
@@ -464,12 +470,13 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 - [Parameter Reference](theory/parameters.md)
 
 ### Theory & Research
-- [Theoretical Foundations](theory/index.md) **NEW**
+- [Theoretical Foundations](theory/index.md)
   - [Interdependence Framework](theory/interdependence.md)
   - [Value Creation & Complementarity](theory/value_creation.md)
   - [Trust Dynamics](theory/trust_dynamics.md)
 - [Benchmark Results](benchmarks/index.md)
-- [Implementation Roadmap](roadmap.md) **NEW**
+- [Implementation Roadmap](roadmap.md)
+- [Scope and Strategic Roadmap](scope_roadmap.md) **NEW** - Modeling philosophy and future extensions
 
 ### Development
 - [Evaluation Protocol](evaluation_protocol.md)
