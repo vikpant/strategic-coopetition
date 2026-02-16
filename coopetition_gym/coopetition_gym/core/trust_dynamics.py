@@ -343,12 +343,12 @@ class TrustDynamicsModel:
         Compute the trust update delta.
         
         This implements TR-2 Equations 7-8 with asymmetric dynamics:
-        - When s > 0: ΔT = λ+·s·(1-T)·ceiling (trust building)
+        - When s > 0: ΔT = λ+·s·max(0, ceiling-T) (trust building)
         - When s < 0: ΔT = λ-·s·T·(1+ξ·D) (trust erosion)
-        
-        Trust building is gradual and constrained by both the current
-        trust level (harder to build when already high) and the ceiling
-        imposed by reputation damage.
+
+        Trust building is gradual and constrained by remaining room
+        below the ceiling: max(0, ceiling - T). Growth halts exactly
+        when trust reaches the ceiling imposed by reputation damage.
         
         Trust erosion is faster and amplified by interdependence - agents
         who depend more on a partner are more sensitive to violations.

@@ -310,8 +310,8 @@ def get_slcd_parameters() -> Dict[str, Any]:
         'endowments': np.array([100.0, 100.0]),
         'alpha': np.array([0.55, 0.45]),  # Samsung, Sony
         'D': np.array([
-            [0.0, 0.86],   # Samsung's row: depends on Sony at 0.86? No - this is transposed
-            [0.64, 0.0]    # Sony's row
+            [0.0, 0.64],   # Samsung's row: D_{Samsung,Sony} = 0.64
+            [0.86, 0.0]    # Sony's row: D_{Sony,Samsung} = 0.86
         ]),
         'D_sony_samsung': 0.86,  # Sony depends on Samsung
         'D_samsung_sony': 0.64,  # Samsung depends on Sony
@@ -329,7 +329,7 @@ def get_test_cases() -> Dict[str, Dict[str, Any]]:
             'name': 'S-LCD Joint Venture',
             'endowments': np.array([100.0, 100.0]),
             'alpha': np.array([0.55, 0.45]),
-            'D': np.array([[0.0, 0.86], [0.64, 0.0]])
+            'D': np.array([[0.0, 0.64], [0.86, 0.0]])
         },
         'symmetric_high': {
             'name': 'Symmetric High Interdependence',
