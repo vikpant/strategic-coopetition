@@ -228,7 +228,7 @@ def free_riding_equilibrium(params: TR3Parameters, n: int) -> float:
     """
     Compute the Nash equilibrium effort level (free-riding equilibrium).
 
-    a* = (ωβ / nc)^(1/(1-β))
+    a* = (ωβ / (c · n^(2-β)))^(1/(1-β))
 
     This is the effort level each agent would choose if acting selfishly,
     ignoring positive externalities to teammates.
@@ -252,7 +252,7 @@ def free_riding_equilibrium(params: TR3Parameters, n: int) -> float:
             return params.a_max  # Contributing dominates
 
     numerator = params.omega * params.beta
-    denominator = n * params.c
+    denominator = params.c * (n ** (2 - params.beta))
     exponent = 1.0 / (1.0 - params.beta)
 
     return (numerator / denominator) ** exponent
@@ -260,11 +260,12 @@ def free_riding_equilibrium(params: TR3Parameters, n: int) -> float:
 
 def social_optimum_effort(params: TR3Parameters, n: int) -> float:
     """
-    Compute the socially optimal effort level.
+    Compute the socially optimal per-agent effort level.
 
-    a^opt = (ωβ / c)^(1/(1-β))
+    a^opt = (ωβ / c)^(1/(1-β)) / n
 
-    This is the effort level that maximizes total team welfare.
+    This is the per-agent effort level that maximizes total team welfare,
+    distributing the socially optimal total effort equally across agents.
 
     Note: When β=1.0 (linear returns), the formula has no interior solution.
     The social optimum is a_max if ω > c, else 0.
@@ -274,7 +275,7 @@ def social_optimum_effort(params: TR3Parameters, n: int) -> float:
         n: Number of agents
 
     Returns:
-        Socially optimal effort level
+        Socially optimal per-agent effort level
     """
     # Handle linear returns (beta=1.0) - corner solution
     if abs(params.beta - 1.0) < 1e-9:
@@ -288,7 +289,7 @@ def social_optimum_effort(params: TR3Parameters, n: int) -> float:
     denominator = params.c
     exponent = 1.0 / (1.0 - params.beta)
 
-    return (numerator / denominator) ** exponent
+    return (numerator / denominator) ** exponent / n
 
 
 def team_cohesion(

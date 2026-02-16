@@ -248,9 +248,9 @@ def base_team_payoff(i: int, actions: np.ndarray, params: TeamParameters) -> flo
 
 def teammates_payoff(i: int, actions: np.ndarray, params: TeamParameters) -> float:
     """
-    Compute aggregate payoff of teammates (excluding member i).
+    Compute average payoff of teammates (excluding member i).
 
-    π̄_{-i} = ((n-1)/n)·Q(a) - c·Σ_{j≠i} a_j
+    π̄_{-i} = (1/(n-1)) · Σ_{j≠i} π_j = Q/n - c·Σ_{j≠i} a_j / (n-1)
 
     Args:
         i: Member index (to exclude)
@@ -258,11 +258,11 @@ def teammates_payoff(i: int, actions: np.ndarray, params: TeamParameters) -> flo
         params: Team parameters
 
     Returns:
-        Teammates' aggregate payoff
+        Teammates' average payoff
     """
     Q = team_production(actions, params.omega, params.beta)
-    teammates_share = Q * (params.n - 1) / params.n
-    teammates_cost = params.c * (np.sum(actions) - actions[i])
+    teammates_share = Q / params.n
+    teammates_cost = params.c * (np.sum(actions) - actions[i]) / (params.n - 1)
     return teammates_share - teammates_cost
 
 

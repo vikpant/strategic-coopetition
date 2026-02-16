@@ -42,9 +42,9 @@ KEY RESULTS REPRODUCED:
 
 MATHEMATICAL FOUNDATIONS (from TR-2025-02):
 - Cooperation signal: s_ij = tanh(kappa * (a_j - baseline))    [Eq. 6]
-- Trust building: Delta_T = lambda_+ * s * (1-T) * ceiling     [Eq. 7]
+- Trust building: Delta_T = lambda_+ * s * max(0, ceiling - T) [Eq. 7]
 - Trust erosion: Delta_T = lambda_- * s * T * (1 + xi*interdep)[Eq. 8]
-- Reputation damage: Delta_R = -mu_R * s * (1-R) if s<0        [Eq. 9]
+- Reputation: Delta_R = mu_R*|s|*(1-R) if s<0; -delta_R*R if s>=0 [Eqs. 8-9]
 - Trust ceiling: ceiling = 1 - R_ij
 
 USAGE:
@@ -119,7 +119,6 @@ class TrustParameters:
     
     # Amplification factors
     xi: float = 0.50             # Interdependence amplification
-    rho: float = 0.20            # Reciprocity strength
     
     # Signal processing
     kappa_trust: float = 1.0     # Trust signal sensitivity
@@ -135,7 +134,6 @@ class TrustParameters:
             'mu_R': self.mu_R,
             'delta_R': self.delta_R,
             'xi': self.xi,
-            'rho': self.rho,
             'kappa_trust': self.kappa_trust,
             'beta_discount': self.beta_discount,
             'negativity_ratio': self.lambda_minus / self.lambda_plus
@@ -149,7 +147,6 @@ class TrustParameters:
             self.mu_R,
             self.delta_R,
             self.xi,
-            self.rho,
             self.kappa_trust
         ])
     
@@ -162,8 +159,7 @@ class TrustParameters:
             mu_R=arr[2],
             delta_R=arr[3],
             xi=arr[4],
-            rho=arr[5],
-            kappa_trust=arr[6]
+            kappa_trust=arr[5]
         )
 
 
@@ -247,11 +243,10 @@ class TrustDynamicsModel:
                     interdependence: float) -> float:
         """Update immediate trust T_ij based on cooperation signal."""
         if cooperation_signal > 0:
-            # Trust building: gradual, constrained by ceiling
-            delta_T = (self.params.lambda_plus * 
-                      cooperation_signal * 
-                      (1 - current_trust) * 
-                      trust_ceiling)
+            # Trust building: gradual, constrained by ceiling gap
+            delta_T = (self.params.lambda_plus *
+                      cooperation_signal *
+                      max(0.0, trust_ceiling - current_trust))
         else:
             # Trust erosion: faster, amplified by interdependence
             delta_T = (self.params.lambda_minus * 
@@ -267,12 +262,12 @@ class TrustDynamicsModel:
                          cooperation_signal: float) -> float:
         """Update reputation damage R_ij based on cooperation signal."""
         if cooperation_signal < 0:
-            # Violation increases reputation damage
-            delta_R = (-self.params.mu_R * 
-                      cooperation_signal * 
+            # Violation: damage accumulates, no decay (regime-separated)
+            delta_R = (-self.params.mu_R *
+                      cooperation_signal *
                       (1 - current_reputation))
         else:
-            # Cooperation allows gradual reputation recovery
+            # Non-violation: damage decays, no accumulation (regime-separated)
             delta_R = -self.params.delta_R * current_reputation
         
         new_reputation = np.clip(current_reputation + delta_R, 0.0, 1.0)
@@ -363,7 +358,6 @@ class EnhancedExperimentalValidator:
             mu_R_vals = [0.50, 0.60, 0.70]
             delta_R_vals = [0.01, 0.03, 0.05]
             xi_vals = [0.30, 0.50, 0.70]
-            rho_vals = [0.10, 0.20, 0.30]
             kappa_vals = [0.5, 1.0, 1.5]
         elif granularity == 'standard':
             lambda_plus_vals = [0.05, 0.08, 0.10, 0.12, 0.15]
@@ -371,7 +365,6 @@ class EnhancedExperimentalValidator:
             mu_R_vals = [0.50, 0.55, 0.60, 0.65, 0.70]
             delta_R_vals = [0.01, 0.02, 0.03, 0.04, 0.05]
             xi_vals = [0.30, 0.40, 0.50, 0.60, 0.70]
-            rho_vals = [0.10, 0.15, 0.20, 0.25, 0.30]
             kappa_vals = [0.5, 0.75, 1.0, 1.25, 1.5]
         elif granularity == 'fine':
             lambda_plus_vals = np.linspace(0.05, 0.15, 6)
@@ -379,7 +372,6 @@ class EnhancedExperimentalValidator:
             mu_R_vals = np.linspace(0.50, 0.70, 6)
             delta_R_vals = np.linspace(0.01, 0.05, 6)
             xi_vals = np.linspace(0.30, 0.70, 6)
-            rho_vals = np.linspace(0.10, 0.30, 6)
             kappa_vals = np.linspace(0.5, 1.5, 6)
         else:  # ultra
             lambda_plus_vals = np.linspace(0.05, 0.15, 8)
@@ -387,23 +379,21 @@ class EnhancedExperimentalValidator:
             mu_R_vals = np.linspace(0.50, 0.70, 8)
             delta_R_vals = np.linspace(0.01, 0.05, 8)
             xi_vals = np.linspace(0.30, 0.70, 8)
-            rho_vals = np.linspace(0.10, 0.30, 8)
             kappa_vals = np.linspace(0.5, 1.5, 8)
-        
-        total_configs = (len(lambda_plus_vals) * len(lambda_minus_vals) * 
-                        len(mu_R_vals) * len(delta_R_vals) * len(xi_vals) * 
-                        len(rho_vals) * len(kappa_vals))
-        
+
+        total_configs = (len(lambda_plus_vals) * len(lambda_minus_vals) *
+                        len(mu_R_vals) * len(delta_R_vals) * len(xi_vals) *
+                        len(kappa_vals))
+
         print(f"\nGranularity: {granularity}")
         print(f"Total configurations: {total_configs:,}")
-        print(f"Parameters: λ+, λ-, μ_R, δ_R, ξ, ρ, κ")
+        print(f"Parameters: λ+, λ-, μ_R, δ_R, ξ, κ")
         print(f"\nParameter ranges:")
         print(f"  λ+ (trust building): {lambda_plus_vals[0]:.3f} to {lambda_plus_vals[-1]:.3f}")
         print(f"  λ- (trust erosion): {lambda_minus_vals[0]:.3f} to {lambda_minus_vals[-1]:.3f}")
         print(f"  μ_R (reputation damage): {mu_R_vals[0]:.3f} to {mu_R_vals[-1]:.3f}")
         print(f"  δ_R (reputation decay): {delta_R_vals[0]:.3f} to {delta_R_vals[-1]:.3f}")
         print(f"  ξ (interdependence amp): {xi_vals[0]:.3f} to {xi_vals[-1]:.3f}")
-        print(f"  ρ (reciprocity strength): {rho_vals[0]:.3f} to {rho_vals[-1]:.3f}")
         print(f"  κ (signal sensitivity): {kappa_vals[0]:.3f} to {kappa_vals[-1]:.3f}")
         
         print(f"\nEstimated runtime: {total_configs * 0.1 / 60:.1f} minutes")
@@ -411,17 +401,16 @@ class EnhancedExperimentalValidator:
         
         config_num = 0
         for params in product(lambda_plus_vals, lambda_minus_vals, mu_R_vals,
-                             delta_R_vals, xi_vals, rho_vals, kappa_vals):
+                             delta_R_vals, xi_vals, kappa_vals):
             config_num += 1
-            
+
             trust_params = TrustParameters(
                 lambda_plus=params[0],
                 lambda_minus=params[1],
                 mu_R=params[2],
                 delta_R=params[3],
                 xi=params[4],
-                rho=params[5],
-                kappa_trust=params[6]
+                kappa_trust=params[5]
             )
             
             # Compute comprehensive metrics
@@ -435,8 +424,7 @@ class EnhancedExperimentalValidator:
                 'mu_R': params[2],
                 'delta_R': params[3],
                 'xi': params[4],
-                'rho': params[5],
-                'kappa_trust': params[6],
+                'kappa_trust': params[5],
                 **metrics
             }
             self.comprehensive_results.append(result)
@@ -744,8 +732,8 @@ class EnhancedExperimentalValidator:
         print("SENSITIVITY ANALYSIS")
         print("-"*70)
         
-        parameters = ['lambda_plus', 'lambda_minus', 'mu_R', 'delta_R', 
-                     'xi', 'rho', 'kappa_trust']
+        parameters = ['lambda_plus', 'lambda_minus', 'mu_R', 'delta_R',
+                     'xi', 'kappa_trust']
         
         key_outcomes = ['negativity_ratio', 'hysteresis_recovery_35', 
                        'cumulative_amplification', 'building_rate']
@@ -839,7 +827,7 @@ class EnhancedExperimentalValidator:
             print(f"\nConfig {row['config_id']:.0f}:")
             print(f"  λ+={row['lambda_plus']:.3f}, λ-={row['lambda_minus']:.3f}, "
                   f"μ_R={row['mu_R']:.3f}, δ_R={row['delta_R']:.3f}")
-            print(f"  ξ={row['xi']:.3f}, ρ={row['rho']:.3f}, κ={row['kappa_trust']:.3f}")
+            print(f"  ξ={row['xi']:.3f}, κ={row['kappa_trust']:.3f}")
             print(f"  Negativity ratio: {row['negativity_ratio']:.3f}")
             print(f"  Hysteresis recovery: {row['hysteresis_recovery_35']:.3f}")
             print(f"  Cumulative amplification: {row['cumulative_amplification']:.3f}")
@@ -905,7 +893,7 @@ class EnhancedExperimentalValidator:
         
         # Plot 5: Correlation heatmap of parameters
         ax5 = fig.add_subplot(gs[1, :2])
-        param_cols = ['lambda_plus', 'lambda_minus', 'mu_R', 'delta_R', 'xi', 'rho', 'kappa_trust']
+        param_cols = ['lambda_plus', 'lambda_minus', 'mu_R', 'delta_R', 'xi', 'kappa_trust']
         corr_matrix = results_df[param_cols].corr()
         sns.heatmap(corr_matrix, annot=True, fmt='.2f', cmap='coolwarm', center=0,
                    ax=ax5, cbar_kws={'label': 'Correlation'}, vmin=-1, vmax=1)
@@ -1755,20 +1743,20 @@ def load_renault_nissan_case() -> Dict:
             {
                 'name': 'Crisis Period (2018-2019)',
                 'duration': 4,
-                'actions': [3.0, 3.5],
-                'description': 'Ghosn arrest, trust collapse'
+                'actions': [2.0, 2.0],
+                'description': 'Ghosn arrest, trust collapse (-3.0 below baseline)'
             },
             {
                 'name': 'Recovery Efforts (2019-2023)',
                 'duration': 15,
-                'actions': [5.5, 5.8],
-                'description': 'Moderate cooperation, partial recovery'
+                'actions': [6.2, 6.2],
+                'description': 'Moderate cooperation, partial recovery (+1.2 above baseline)'
             },
             {
                 'name': 'Current State (2023-present)',
                 'duration': 8,
-                'actions': [6.0, 6.2],
-                'description': 'Gradual improvement'
+                'actions': [6.5, 6.5],
+                'description': 'Gradual improvement (+1.5 above baseline)'
             }
         ]
     }
@@ -1835,9 +1823,13 @@ def main():
         print("ENHANCED EMPIRICAL VALIDATION")
         print("="*70)
         
-        # Use optimal parameters from experimental validation if available
-        # Or use defaults
-        params = TrustParameters()
+        # Use Renault-Nissan case-specific parameters (matching gym RenaultNissanEnv)
+        params = TrustParameters(
+            lambda_plus=0.08,
+            lambda_minus=0.25,
+            mu_R=0.55,
+            delta_R=0.02,
+        )
         model = TrustDynamicsModel(params)
         
         emp_validator = EnhancedEmpiricalValidator(output_dir)

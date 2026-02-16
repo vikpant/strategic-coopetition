@@ -1,0 +1,302 @@
+{
+  "metadata": {
+    "arxiv_id": "2510.18802",
+    "version": "1.0.0",
+    "authors": "Vik Pant, Eric Yu",
+    "timestamp": "2026-02-16T08:27:06.363128",
+    "seed": 42,
+    "n_trials": 500
+  },
+  "exp1_tr_parameters": {
+    "power": {
+      "parameters": {
+        "beta": 0.75,
+        "gamma": 0.5
+      },
+      "baseline_actions": [
+        0.31640532942294736,
+        0.31640532942294736
+      ],
+      "equilibrium_actions": [
+        0.8329475359591768,
+        0.8767045068355548
+      ],
+      "validation": {
+        "score": 46,
+        "max_score": 60,
+        "percentage": 76.7,
+        "categories": {
+          "convergence": 10,
+          "cooperation": 7,
+          "value": 9,
+          "distribution": 10,
+          "strategic": 10
+        },
+        "metrics": {
+          "cooperation_increase_pct": 170.17,
+          "value_increase_pct": 120.09,
+          "actor0_share": 0.5001,
+          "asymmetry": 0.0512,
+          "baseline_mean": 0.3164,
+          "equilibrium_mean": 0.8548
+        },
+        "in_historical_range": "False",
+        "converged": true
+      }
+    },
+    "logarithmic": {
+      "parameters": {
+        "theta": 20.0,
+        "gamma": 0.65
+      },
+      "baseline_actions": [
+        18.99999841369799,
+        18.99999841369799
+      ],
+      "equilibrium_actions": [
+        26.633376774688713,
+        27.39914180691819
+      ],
+      "validation": {
+        "score": 58,
+        "max_score": 60,
+        "percentage": 96.7,
+        "categories": {
+          "convergence": 10,
+          "cooperation": 15,
+          "value": 13,
+          "distribution": 10,
+          "strategic": 10
+        },
+        "metrics": {
+          "cooperation_increase_pct": 42.19,
+          "value_increase_pct": 14.14,
+          "actor0_share": 0.5033,
+          "asymmetry": 0.0283,
+          "baseline_mean": 19.0,
+          "equilibrium_mean": 27.0163
+        },
+        "in_historical_range": "True",
+        "converged": true
+      }
+    },
+    "comparison": {
+      "log_advantage": 12,
+      "log_better": true
+    }
+  },
+  "exp2_monte_carlo": {
+    "n_trials": 500,
+    "noise_level": 0.15,
+    "seed": 42,
+    "power": {
+      "mean": 45.408,
+      "std": 1.4647648275405851,
+      "ci_95": [
+        42.0,
+        46.0
+      ],
+      "historical_alignment_pct": 0.0
+    },
+    "logarithmic": {
+      "mean": 56.728,
+      "std": 1.9914858774292121,
+      "ci_95": [
+        54.0,
+        58.0
+      ],
+      "historical_alignment_pct": 100.0
+    },
+    "comparison": {
+      "log_wins": 500,
+      "power_wins": 0,
+      "ties": 0,
+      "log_win_rate": 100.0
+    }
+  },
+  "exp3_statistics": {
+    "n_trials": 500,
+    "mean_difference": 11.904,
+    "std_difference": 0.6121960470306878,
+    "paired_ttest": {
+      "t_statistic": 434.3628459792724,
+      "p_value": 0.0,
+      "significant_001": "True"
+    },
+    "wilcoxon": {
+      "w_statistic": 0.0,
+      "p_value": 2.8727194002435555e-108,
+      "significant_001": "True"
+    },
+    "effect_size": {
+      "cohens_d": 19.44475149380258,
+      "interpretation": "large"
+    },
+    "log_significantly_better": true
+  },
+  "exp4_convergence": {
+    "n_starts": 50,
+    "power_convergence_rate": 100.0,
+    "log_convergence_rate": 100.0,
+    "power_converged": 50,
+    "log_converged": 50
+  },
+  "exp5_multi_case": {
+    "slcd": {
+      "name": "S-LCD Joint Venture",
+      "power_score": 46,
+      "log_score": 58,
+      "winner": "logarithmic",
+      "power_in_range": "False",
+      "log_in_range": "True"
+    },
+    "symmetric_high": {
+      "name": "Symmetric High Interdependence",
+      "power_score": 38,
+      "log_score": 56,
+      "winner": "logarithmic",
+      "power_in_range": "False",
+      "log_in_range": "True"
+    },
+    "symmetric_medium": {
+      "name": "Symmetric Medium Interdependence",
+      "power_score": 41,
+      "log_score": 54,
+      "winner": "logarithmic",
+      "power_in_range": "False",
+      "log_in_range": "True"
+    },
+    "asymmetric": {
+      "name": "Strong Asymmetry",
+      "power_score": 49,
+      "log_score": 58,
+      "winner": "logarithmic",
+      "power_in_range": "False",
+      "log_in_range": "True"
+    },
+    "platform_developer": {
+      "name": "Platform-Developer Ecosystem",
+      "power_score": 39,
+      "log_score": 51,
+      "winner": "logarithmic",
+      "power_in_range": "False",
+      "log_in_range": "True"
+    },
+    "summary": {
+      "total_cases": 5,
+      "log_wins": 5,
+      "power_wins": 0,
+      "ties": 0
+    }
+  },
+  "exp6_sensitivity": {
+    "D_sony_samsung": {
+      "values": [
+        0.3,
+        0.39999999999999997,
+        0.5,
+        0.6,
+        0.7,
+        0.7999999999999999,
+        0.8999999999999999,
+        1.0
+      ],
+      "power_scores": [
+        49,
+        49,
+        42,
+        42,
+        46,
+        46,
+        46,
+        46
+      ],
+      "log_scores": [
+        58,
+        58,
+        54,
+        54,
+        58,
+        58,
+        58,
+        58
+      ],
+      "power_range": [
+        42,
+        49
+      ],
+      "log_range": [
+        54,
+        58
+      ]
+    },
+    "gamma": {
+      "values": [
+        0.1,
+        0.2,
+        0.30000000000000004,
+        0.4,
+        0.5,
+        0.6,
+        0.7000000000000001,
+        0.8,
+        0.9,
+        1.0
+      ],
+      "power_scores": [
+        54,
+        60,
+        54,
+        49,
+        46,
+        46,
+        46,
+        46,
+        46,
+        46
+      ],
+      "log_scores": [
+        42,
+        44,
+        49,
+        49,
+        53,
+        58,
+        60,
+        60,
+        57,
+        55
+      ],
+      "power_range": [
+        46,
+        60
+      ],
+      "log_range": [
+        42,
+        60
+      ]
+    }
+  },
+  "summary": {
+    "validation_scores": {
+      "power": 46,
+      "logarithmic": 58,
+      "difference": 12
+    },
+    "cooperation_increase": {
+      "power": 170.17,
+      "logarithmic": 42.19
+    },
+    "monte_carlo": {
+      "log_win_rate": 100.0,
+      "power_historical_alignment": 0.0,
+      "log_historical_alignment": 100.0
+    },
+    "statistical_significance": {
+      "p_value": 0.0,
+      "cohens_d": 19.44475149380258,
+      "log_significantly_better": true
+    },
+    "claims_verified": true
+  }
+}
