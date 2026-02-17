@@ -233,12 +233,15 @@ U_i(a, T) = U_base + Σ λ_T × T_ij × (1 + ω×D_ij) × ρ_ij × R_ij
 | ApacheProject-v0 | Loyalty (P3) | — |
 | PublicGoods-v0 | Loyalty (P3) | — |
 
-### Planned Environments (Pillar 4)
+### Implemented Environments (Pillar 4)
 
 | Environment | Primary Pillar | Description |
 |-------------|----------------|-------------|
-| SequentialNegotiation-v0 | Reciprocity (P4) | Turn-based cooperation building |
-| AllianceRecovery-v0 | Reciprocity (P4) | Post-crisis relationship repair |
+| ReciprocalDilemma-v0 | Reciprocity (P4) | Direct reciprocity via bounded memory |
+| GiftExchange-v0 | Reciprocity (P4) | Asymmetric employer-worker reciprocity |
+| IndirectReciprocity-v0 | Reciprocity (P4) | Reputation-mediated cooperation |
+| GraduatedSanction-v0 | Reciprocity (P4) | Proportional sanctions with escalation |
+| AppleAppStore-v0 | Reciprocity (P4) | Validated case study (48/55) |
 
 ---
 
