@@ -1,0 +1,209 @@
+{
+  "metadata": {
+    "version": "1.0.0",
+    "arxiv_id": "(forthcoming)",
+    "authors": "Vik Pant, Eric Yu",
+    "timestamp": "2026-02-16T21:50:05.858179",
+    "seed": 42,
+    "granularity": "standard"
+  },
+  "experimental": {
+    "n_configurations": 15625,
+    "behavioral_targets": {
+      "cooperation_emergence": {
+        "metric": "cooperation_emerged",
+        "achieved": 15235,
+        "total": 15625,
+        "achievement_pct": 97.504,
+        "threshold": 85.0,
+        "passed": true
+      },
+      "defection_punishment": {
+        "metric": "defection_punished",
+        "achieved": 15625,
+        "total": 15625,
+        "achievement_pct": 100.0,
+        "threshold": 95.0,
+        "passed": true
+      },
+      "forgiveness_dynamics": {
+        "metric": "forgiveness_achieved",
+        "achieved": 13728,
+        "total": 15625,
+        "achievement_pct": 87.8592,
+        "threshold": 80.0,
+        "passed": true
+      },
+      "asymmetric_differentiation": {
+        "metric": "asymmetric_differentiated",
+        "achieved": 15625,
+        "total": 15625,
+        "achievement_pct": 100.0,
+        "threshold": 90.0,
+        "passed": true
+      },
+      "trust_reciprocity_interaction": {
+        "metric": "trust_recip_interaction",
+        "achieved": 15625,
+        "total": 15625,
+        "achievement_pct": 100.0,
+        "threshold": 90.0,
+        "passed": true
+      },
+      "bounded_responses": {
+        "metric": "bounded_check",
+        "achieved": 15625,
+        "total": 15625,
+        "achievement_pct": 100.0,
+        "threshold": 100.0,
+        "passed": true
+      }
+    },
+    "sensitivity": {
+      "rho_0": {
+        "final_coop_mean": {
+          "r": 0.4556107588621044,
+          "p": 0.0
+        },
+        "differentiation_ratio": {
+          "r": -2.7755575615628914e-17,
+          "p": 1.0
+        }
+      },
+      "eta": {
+        "final_coop_mean": {
+          "r": -0.22079025239883737,
+          "p": 8.227715666863663e-172
+        },
+        "differentiation_ratio": {
+          "r": 0.992606504765056,
+          "p": 0.0
+        }
+      },
+      "kappa": {
+        "final_coop_mean": {
+          "r": 0.3986527504103656,
+          "p": 0.0
+        },
+        "differentiation_ratio": {
+          "r": -2.3418766925686896e-17,
+          "p": 1.0
+        }
+      },
+      "k": {
+        "final_coop_mean": {
+          "r": -4.336808689942018e-19,
+          "p": 1.0
+        },
+        "differentiation_ratio": {
+          "r": 3.686287386450715e-18,
+          "p": 1.0
+        }
+      },
+      "lambda_R": {
+        "final_coop_mean": {
+          "r": 0.4556107588621044,
+          "p": 0.0
+        },
+        "differentiation_ratio": {
+          "r": -9.75781955236954e-19,
+          "p": 1.0
+        }
+      },
+      "T_0": {
+        "final_coop_mean": {
+          "r": 0.18951971982727342,
+          "p": 2.7160332604544455e-126
+        },
+        "differentiation_ratio": {
+          "r": -4.336808689942018e-18,
+          "p": 1.0
+        }
+      }
+    }
+  },
+  "statistical_tests": {
+    "paired_ttest": {
+      "t_statistic": 195.727889815941,
+      "p_value": 0.0,
+      "df": 15624,
+      "mean": 2.754534691727113,
+      "std": 0.801198217654913,
+      "cohens_d": 1.565823118527528
+    },
+    "bootstrap_ci": {
+      "ci_95_lower": 2.7415923344214006,
+      "ci_95_upper": 2.7669537844573076,
+      "n_resamples": 10000,
+      "boot_mean": 2.754397737032475,
+      "boot_std": 0.006472401299311639
+    },
+    "wilcoxon": {
+      "w_statistic": 122078125.0,
+      "p_value": 0.0,
+      "significant_001": true
+    }
+  },
+  "monte_carlo": {
+    "n_trials": 2000,
+    "noise_level": 0.15,
+    "all_targets_pct": 94.5,
+    "mean_differentiation": 1.9971032470478627,
+    "std_differentiation": 0.1208697321991127,
+    "min_differentiation": 1.8025207258963662,
+    "success_count": 1890
+  },
+  "functional_experiments": {
+    "exp1_pd_cooperation": {
+      "without_reciprocity": 0.4090968638764874,
+      "with_reciprocity": 1.0,
+      "payoff_ratio": 2.4444088632806418,
+      "validated": true
+    },
+    "exp2_asymmetric": {
+      "high_dep_response": 0.3149477921669579,
+      "low_dep_response": 0.06998839825932397,
+      "differentiation_ratio": 4.5,
+      "validated": "True"
+    },
+    "exp3_memory_window": {
+      "1": {
+        "recovery_time": 2,
+        "within_2k": true
+      },
+      "3": {
+        "recovery_time": 2,
+        "within_2k": true
+      },
+      "5": {
+        "recovery_time": 2,
+        "within_2k": true
+      },
+      "10": {
+        "recovery_time": 2,
+        "within_2k": true
+      }
+    },
+    "exp4_trust_interaction": {
+      "cooperation_by_trust": {
+        "0.3": 0.38106706301212107,
+        "0.6": 0.7214482770157942,
+        "0.9": 1.0
+      },
+      "variation_ratio": 2.624210006751992,
+      "validated": true
+    },
+    "exp5_team_production": {
+      "without_reciprocity": 1.1431182568010072,
+      "with_reciprocity": 3.0,
+      "output_increase_pct": 162.44003909056948,
+      "validated": true
+    }
+  },
+  "empirical": {
+    "apple_score": 43.0,
+    "apple_percentage": 84.31372549019608,
+    "apple_passed": true
+  },
+  "summary": "\nTR-4 VALIDATION RESULTS:\n\n1. EXPERIMENTAL VALIDATION (15,625 configurations):\n   - Cooperation emergence: 97.5% (threshold >85%)\n   - Defection punishment: 100.0% (threshold >95%)\n   - Forgiveness dynamics: 87.9% (threshold >80%)\n   - Asymmetric diff.: 100.0% (threshold >90%)\n   - Trust-recip interaction: 100.0% (threshold >90%)\n   - Bounded responses: 100.0% (threshold =100%)\n\n2. STATISTICAL SIGNIFICANCE:\n   - t-test: p < 0.001\n   - Cohen's d: 1.57 (large)\n   - Wilcoxon signed-rank: p < 0.001\n\n3. MONTE CARLO ROBUSTNESS (2000 trials, +/-15% noise):\n   - All targets met: 94.5%\n   - Mean differentiation: 2.00 +/- 0.12\n\n4. FUNCTIONAL EXPERIMENTS: 5/5 completed\n\n5. EMPIRICAL VALIDATION (Apple iOS App Store):\n   - Score: 43.0/51\n   - Percentage: 84.3%\n   - Status: PASSED\n\nVALIDATION COMPLETE.\n"
+}
