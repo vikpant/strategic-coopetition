@@ -126,7 +126,7 @@ The Foundations series extends this tradition to model **cooperation with struct
 | Free-riding | Nash equilibrium analysis | TR-3, TeamProduction-v0 |
 | Loyalty | Welfare internalization | TR-3, LoyaltyTeam-v0 |
 | Coalition stability | Entry/exit dynamics | TR-3, CoalitionFormation-v0 |
-| Reciprocity | History-dependent response | TR-4 (planned) |
+| Reciprocity | History-dependent response | TR-4, ReciprocalDilemma-v0, GiftExchange-v0, IndirectReciprocity-v0, GraduatedSanction-v0, AppleAppStore-v0 |
 
 ### 2.4 What the Current Model Does NOT Capture
 
@@ -365,7 +365,7 @@ env_biaxial = coopetition_gym.make("ValueCapture-v0")
 
 3. Pant, V., & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty. *arXiv:2601.16237*.
 
-4. Pant, V., & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Technical Report TR-2025-04* (forthcoming).
+4. Pant, V., & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Forthcoming*.
 
 ---
 

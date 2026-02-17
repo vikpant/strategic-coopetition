@@ -338,5 +338,5 @@ If you encounter issues not covered here:
 ## Next Steps
 
 - [Quick Start Tutorial](tutorials/quickstart.md) - Get started with your first environment
-- [Environment Reference](environments/index.md) - Explore all 15 environments
+- [Environment Reference](environments/index.md) - Explore all 20 environments
 - [API Documentation](api/index.md) - Complete API reference

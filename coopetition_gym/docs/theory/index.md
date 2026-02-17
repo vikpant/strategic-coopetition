@@ -61,7 +61,7 @@ For complete theoretical rationale and strategic roadmap, see [Scope and Strateg
 
 ## Research Program Structure
 
-The theoretical foundations are organized into four pillars, of which **Pillars 1 and 2** are currently implemented:
+The theoretical foundations are organized into four pillars, all of which are currently implemented:
 
 ### Implemented Pillars
 
@@ -70,12 +70,7 @@ The theoretical foundations are organized into four pillars, of which **Pillars 
 | **1** | TR-1 ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) | Interdependence & Complementarity | ✓ Implemented |
 | **2** | TR-2 ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) | Trust & Reputation Dynamics | ✓ Implemented |
 | **3** | TR-3 ([arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) | Collective Action & Loyalty | ✓ Implemented |
-
-### Planned Pillars
-
-| Pillar | Technical Report | Focus | Status |
-|--------|-----------------|-------|--------|
-| **4** | TR-2025-04 (Draft) | Sequential Interaction & Reciprocity | Planned |
+| **4** | TR-4 *(forthcoming)* | Sequential Interaction & Reciprocity | ✓ Implemented |
 
 See [Implementation Roadmap](../roadmap.md) for development timeline and planned features.
 
@@ -165,6 +160,20 @@ The following notation is used consistently throughout the documentation:
 | $\xi$ | Interdependence amplification factor | $[0, 1]$ |
 | $\kappa$ | Signal sensitivity | $\mathbb{R}^+$ |
 
+### Reciprocity (Pillar 4)
+
+| Symbol | Definition | Range |
+|--------|------------|-------|
+| $s_{ij}$ | Cooperation signal (deviation from memory average) | $\mathbb{R}$ |
+| $\bar{a}_j$ | Memory average of agent $j$'s recent actions | $\mathbb{R}^+$ |
+| $\varphi(x)$ | Bounded response function $\tanh(\kappa x)$ | $(-1, 1)$ |
+| $\rho_{ij}$ | Reciprocity sensitivity (dependency-scaled) | $\mathbb{R}^+$ |
+| $\rho_0$ | Base reciprocity strength | $\mathbb{R}^+$ |
+| $\eta$ | Dependency elasticity | $\mathbb{R}^+$ |
+| $k$ | Memory window length (steps) | $\mathbb{N}^+$ |
+| $\lambda_R$ | Reciprocity weight | $\mathbb{R}^+$ |
+| $\omega$ | Dependency amplification in trust gating | $\mathbb{R}^+$ |
+
 ---
 
 ## Core Equations Summary
@@ -237,6 +246,30 @@ $$
 \end{cases}
 $$
 
+### Pillar 4: Reciprocity Dynamics
+
+**Cooperation Signal** (Equation 19, TR-4):
+
+$$\Large s_{ij} = a_j - \bar{a}_j$$
+
+where $\bar{a}_j$ is the memory average over the last $k$ steps.
+
+**Memory Average** (Equation 20, TR-4):
+
+$$\Large \bar{a}_j = \frac{1}{\min(k, t-1)} \sum_{\tau=\max(1,t-k)}^{t-1} a_j^\tau$$
+
+**Bounded Response** (Equation 21, TR-4):
+
+$$\Large \varphi(x) = \tanh(\kappa \cdot x)$$
+
+**Reciprocity Sensitivity** (Equation 23, TR-4):
+
+$$\Large \rho_{ij} = \rho_0 \cdot D_{ij}^{\eta}$$
+
+**Reciprocity Modifier** (Equation 44, TR-4):
+
+$$\Large U_{\text{recip},i} = \lambda_R \sum_{j \neq i} T_{ij} \cdot (1 + \omega D_{ij}) \cdot \rho_{ij} \cdot \varphi(s_{ij})$$
+
 ---
 
 ## Validation Methodology
@@ -262,6 +295,7 @@ Real-world validation against documented business partnerships and open source p
 | Samsung-Sony S-LCD | 2004-2011 | 58/60 (96.7%) | Interdependence, complementarity |
 | Renault-Nissan Alliance | 1999-2025 | 49/60 (81.7%) | Trust evolution, crisis, recovery |
 | Apache HTTP Server | 1995-2023 | 52/60 (86.7%) | Loyalty dynamics, phase transitions |
+| Apple iOS App Store | 2008-2024 | 48/55 (87.3%) | Reciprocity dynamics, platform power |
 
 ### Statistical Significance
 
@@ -330,6 +364,14 @@ If you use the theoretical framework in your research, please cite:
          Formalizing Collective Action and Loyalty},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2601.16237},
+  year={2026}
+}
+
+@article{pant2026tr4,
+  title={Computational Foundations for Strategic Coopetition:
+         Formalizing Sequential Interaction and Reciprocity},
+  author={Pant, Vik and Yu, Eric},
+  note={Forthcoming},
   year={2026}
 }
 ```

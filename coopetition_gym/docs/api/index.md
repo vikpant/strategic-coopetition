@@ -357,8 +357,10 @@ RewardType = NDArray[np.floating]
 
 ### v0.3.0 (Current)
 
+- Added 5 TR-4 reciprocity environments
 - Added 5 TR-3 collective action environments
-- 15 environments now available
+- 20 environments now available
+- Implemented reciprocity mechanics from TR-4
 - Implemented loyalty mechanics from TR-3
 
 ### v0.2.0
