@@ -1,6 +1,6 @@
 # Quick Reference
 
-Coopetition-Gym v0.2.0 quick reference card.
+Coopetition-Gym v0.3.0 quick reference card.
 
 ---
 
@@ -38,6 +38,16 @@ coopetition_gym.list_environments()
 | `RenaultNissan-v0` | Case Study | 2 | Multi-phase |
 | `CooperativeNegotiation-v0` | Extended | 2 | Commitments |
 | `ReputationMarket-v0` | Extended | N | Tiered rewards |
+| `TeamProduction-v0` | Collective Action | N | Free-rider dynamics |
+| `LoyaltyTeam-v0` | Collective Action | N | Above-Nash cooperation |
+| `CoalitionFormation-v0` | Collective Action | N | Coalition stability |
+| `ApacheProject-v0` | Collective Action | 4 | Validated (52/60) |
+| `PublicGoods-v0` | Collective Action | N | Contribution dynamics |
+| `ReciprocalDilemma-v0` | Reciprocity | 2 | Conditional cooperation |
+| `GiftExchange-v0` | Reciprocity | 2 | Asymmetric reciprocity |
+| `IndirectReciprocity-v0` | Reciprocity | 4 | Reputation-mediated |
+| `GraduatedSanction-v0` | Reciprocity | 6 | Graduated sanctions |
+| `AppleAppStore-v0` | Reciprocity | 3 | Validated (48/55) |
 
 ---
 
@@ -105,6 +115,17 @@ env.close()
 | $\delta_R$ | 0.03 | (0, 0.1) | Reputation decay |
 | ξ | 0.50 | (0, 1) | Dependency amplification |
 
+### Reciprocity Dynamics (TR-4)
+
+| Symbol | Default | Range | Meaning |
+|--------|---------|-------|---------|
+| ρ₀ | 1.0 | > 0 | Base reciprocity strength |
+| η | 1.0 | > 0 | Dependency elasticity |
+| κ | 1.0 | (0, 2) | Response sensitivity |
+| k | 5 | [1, 20] | Memory window length |
+| λ_R | 1.0 | > 0 | Reciprocity weight |
+| ω | 0.6 | [0, 2] | Dependency amplification |
+
 ### Value Function
 
 | Symbol | Default | Range | Meaning |
@@ -128,6 +149,10 @@ env.close()
 | `true_gamma` | float | SynergySearch |
 | `weak_trust_in_strong` | float | PartnerHoldUp |
 | `phase` | str | RenaultNissan |
+| `cooperation_signals` | dict | TR-4 envs |
+| `reciprocity_effects` | dict | TR-4 envs |
+| `memory_averages` | dict | TR-4 envs |
+| `tr4_memory_window` | int | TR-4 envs |
 
 ---
 

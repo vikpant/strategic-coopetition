@@ -5,7 +5,7 @@ COOPETITION-GYM: Comprehensive Test Suite
 
 This test suite validates all components of the coopetition-gym library:
 - Core mathematical modules (value functions, interdependence, trust, equilibrium)
-- All 10 environments (API compliance, dynamics, edge cases)
+- All 20 environments (API compliance, dynamics, edge cases)
 - Utility functions
 
 Run with: pytest tests/test_coopetition_gym.py -v
@@ -465,12 +465,12 @@ class TestBaseEnvironment:
 
 
 # =============================================================================
-# Test Environments: All 10 Environments
+# Test Environments: All 20 Environments
 # =============================================================================
 
 class TestAllEnvironments:
-    """Test all 10 environments for basic functionality."""
-    
+    """Test all 20 environments for basic functionality."""
+
     @pytest.fixture
     def env_ids(self):
         """List of all environment IDs."""
@@ -485,6 +485,16 @@ class TestAllEnvironments:
             "RenaultNissan-v0",
             "CooperativeNegotiation-v0",
             "ReputationMarket-v0",
+            "TeamProduction-v0",
+            "LoyaltyTeam-v0",
+            "CoalitionFormation-v0",
+            "ApacheProject-v0",
+            "PublicGoods-v0",
+            "ReciprocalDilemma-v0",
+            "GiftExchange-v0",
+            "IndirectReciprocity-v0",
+            "GraduatedSanction-v0",
+            "AppleAppStore-v0",
         ]
     
     def test_all_environments_instantiate(self, env_ids):

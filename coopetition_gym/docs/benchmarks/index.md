@@ -4,7 +4,7 @@
 
 This section presents empirical results from evaluating 20 multi-agent reinforcement learning algorithms across the 10 TR-1 and TR-2 environments in Coopetition-Gym. These benchmarks provide evidence-based guidance for algorithm selection and validate the theoretical foundations established in TR-1 (Interdependence & Complementarity) and TR-2 (Trust & Reputation Dynamics).
 
-> **Note:** These benchmarks cover the 5 TR-1 environments and 5 TR-2 environments. Benchmarks for the 5 TR-3 collective action environments are forthcoming.
+> **Note:** These benchmarks cover the 5 TR-1 environments and 5 TR-2 environments. Benchmarks for the 5 TR-3 collective action environments and 5 TR-4 reciprocity environments are forthcoming.
 
 > **Scope:** These results apply to Coopetition-Gym v1.x environments, which implement the **uniaxial treatment** of coopetition with action spaces in `[0, endowment]`. Algorithm performance characteristics may differ under the biaxial treatment planned for v2.x, where cooperation and competition become independent action dimensions.
 

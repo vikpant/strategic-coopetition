@@ -263,6 +263,7 @@ for env_id in envs:
 | Case Study | SLCD-v0, RenaultNissan-v0 | Validated real scenarios |
 | Extended | CooperativeNegotiation-v0, ReputationMarket-v0 | Advanced mechanics |
 | Collective Action (TR-3) | TeamProduction-v0, LoyaltyTeam-v0, CoalitionFormation-v0, ApacheProject-v0, PublicGoods-v0 | Team production with loyalty |
+| Reciprocity (TR-4) | ReciprocalDilemma-v0, GiftExchange-v0, IndirectReciprocity-v0, GraduatedSanction-v0, AppleAppStore-v0 | Memory-bounded reciprocity |
 
 ### Trying Different Environments
 

@@ -1,6 +1,6 @@
 # API Reference
 
-Complete API documentation for **Coopetition-Gym v0.2.0**.
+Complete API documentation for **Coopetition-Gym v0.3.0**.
 
 *Generated: 2026-01-13*
 
@@ -290,7 +290,7 @@ Print package information including version, authors, and available environments
 ```python
 import coopetition_gym
 coopetition_gym.info()
-# Coopetition-Gym v0.2.0
+# Coopetition-Gym v0.3.0
 # Authors: Vik Pant, Eric Yu
 # Faculty of Information, University of Toronto
 # ...
