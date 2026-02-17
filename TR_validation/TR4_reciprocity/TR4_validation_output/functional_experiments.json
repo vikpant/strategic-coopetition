@@ -1,0 +1,47 @@
+{
+  "exp1_pd_cooperation": {
+    "without_reciprocity": 0.4090968638764874,
+    "with_reciprocity": 1.0,
+    "payoff_ratio": 2.4444088632806418,
+    "validated": true
+  },
+  "exp2_asymmetric": {
+    "high_dep_response": 0.3149477921669579,
+    "low_dep_response": 0.06998839825932397,
+    "differentiation_ratio": 4.5,
+    "validated": "True"
+  },
+  "exp3_memory_window": {
+    "1": {
+      "recovery_time": 2,
+      "within_2k": true
+    },
+    "3": {
+      "recovery_time": 2,
+      "within_2k": true
+    },
+    "5": {
+      "recovery_time": 2,
+      "within_2k": true
+    },
+    "10": {
+      "recovery_time": 2,
+      "within_2k": true
+    }
+  },
+  "exp4_trust_interaction": {
+    "cooperation_by_trust": {
+      "0.3": 0.38106706301212107,
+      "0.6": 0.7214482770157942,
+      "0.9": 1.0
+    },
+    "variation_ratio": 2.624210006751992,
+    "validated": true
+  },
+  "exp5_team_production": {
+    "without_reciprocity": 1.1431182568010072,
+    "with_reciprocity": 3.0,
+    "output_increase_pct": 162.44003909056948,
+    "validated": true
+  }
+}

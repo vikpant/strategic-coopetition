@@ -1,0 +1,210 @@
+{
+  "case_name": "apple_ios",
+  "actors": [
+    "Apple",
+    "MajorDev",
+    "SmallDev"
+  ],
+  "num_quarters": 66,
+  "num_phases": 5,
+  "simulation": {
+    "phase_means": {
+      "Symbiosis": {
+        "Apple": 0.8545697243035661,
+        "MajorDev": 0.7598776850101082,
+        "SmallDev": 0.7886728069071449
+      },
+      "Maturation": {
+        "Apple": 0.9936612419814731,
+        "MajorDev": 0.9514840238965595,
+        "SmallDev": 0.9614449632207797
+      },
+      "Tension": {
+        "Apple": 0.9330558923916104,
+        "MajorDev": 0.8262868645586621,
+        "SmallDev": 0.9373564451663854
+      },
+      "Crisis": {
+        "Apple": 0.7122522130395488,
+        "MajorDev": 0.40655720223205505,
+        "SmallDev": 0.8310397531129005
+      },
+      "Adjustment": {
+        "Apple": 0.8799003616858491,
+        "MajorDev": 0.4447323394878272,
+        "SmallDev": 0.8480104404557921
+      }
+    },
+    "final_actions": [
+      0.8801250336521205,
+      0.43454174705346077,
+      0.8893137822918923
+    ],
+    "final_trust": [
+      [
+        1.0,
+        0.10392382613448688,
+        0.5120309892435909
+      ],
+      [
+        0.4055061483801906,
+        1.0,
+        0.46857373280376907
+      ],
+      [
+        0.40168122584277643,
+        0.11780327716306345,
+        1.0
+      ]
+    ]
+  },
+  "validation_score": {
+    "total_score": 43.0,
+    "total_applicable": 51,
+    "validation_percentage": 84.31372549019608,
+    "phase_scores": {
+      "Symbiosis": 8.5,
+      "Maturation": 10.0,
+      "Tension": 8.0,
+      "Crisis": 6.5,
+      "Adjustment": 10.0
+    },
+    "phase_applicable": {
+      "Symbiosis": 9,
+      "Maturation": 10,
+      "Tension": 10,
+      "Crisis": 10,
+      "Adjustment": 12
+    },
+    "indicator_totals": {
+      "coop_trend": 4.5,
+      "response_magnitude": 2.5,
+      "memory_effects": 3.5,
+      "asymmetry": 5.0,
+      "trust_recip_align": 4.5,
+      "punishment": 3.5,
+      "forgiveness": 0.5,
+      "phase_timing": 5.0,
+      "recovery_shape": 1.0,
+      "eq_stability": 5.0,
+      "param_sensitivity": 4.5,
+      "overall_fit": 3.5
+    },
+    "passed": true
+  },
+  "statistical_tests": {
+    "anova": {
+      "F_statistic": 92.1352246641908,
+      "p_value": 2.832393653499093e-26,
+      "significant": "True"
+    },
+    "pearson": {
+      "r": 0.7855174281721996,
+      "p_value": 0.0005192803707515883,
+      "r_squared": 0.6170376299622667,
+      "n_observations": 15
+    },
+    "rmse": 0.18735928377759933,
+    "trajectory_correlation": {
+      "aggregate_r": 0.7732088284267968,
+      "aggregate_p": 1.8076586847146361e-12,
+      "per_actor": {
+        "Apple": {
+          "r": 0.8594634292051508,
+          "p_value": 2.4228923184623123e-06
+        },
+        "MajorDev": {
+          "r": 0.8730068916058946,
+          "p_value": 1.0743382252100884e-06
+        },
+        "SmallDev": {
+          "r": 0.3088491982356334,
+          "p_value": 0.1982413099688674
+        }
+      },
+      "n_points": 57
+    }
+  },
+  "counterfactual": {
+    "scenario": "Early commission reduction (2019 vs 2021)",
+    "base_final_actions": [
+      0.8801250336521205,
+      0.43454174705346077,
+      0.8893137822918923
+    ],
+    "cf_final_actions": [
+      0.9815092075950346,
+      0.8068321734612365,
+      0.9940723501089869
+    ],
+    "cooperation_improvement": 0.19281105605592808,
+    "trust_comparison": {
+      "base_final_trust": [
+        [
+          1.0,
+          0.10392382613448688,
+          0.5120309892435909
+        ],
+        [
+          0.4055061483801906,
+          1.0,
+          0.46857373280376907
+        ],
+        [
+          0.40168122584277643,
+          0.11780327716306345,
+          1.0
+        ]
+      ],
+      "cf_final_trust": [
+        [
+          1.0,
+          0.5292491794786263,
+          0.7459537018859872
+        ],
+        [
+          0.7575331114911406,
+          1.0,
+          0.6496446411283825
+        ],
+        [
+          0.7570545142721917,
+          0.47802213030450014,
+          1.0
+        ]
+      ]
+    },
+    "phase_comparison": {
+      "Symbiosis": {
+        "base_mean": 0.8010400720736065,
+        "counterfactual_mean": 0.8010400720736065,
+        "difference": 0.0,
+        "pct_change": 0.0
+      },
+      "Maturation": {
+        "base_mean": 0.968863409699604,
+        "counterfactual_mean": 0.9720380128742073,
+        "difference": 0.0031746031746032743,
+        "pct_change": 0.32766261403014074
+      },
+      "Tension": {
+        "base_mean": 0.8988997340388858,
+        "counterfactual_mean": 0.9778745629427673,
+        "difference": 0.07897482890388152,
+        "pct_change": 8.785721689897077
+      },
+      "Crisis": {
+        "base_mean": 0.6499497227948348,
+        "counterfactual_mean": 0.923473755825851,
+        "difference": 0.27352403303101624,
+        "pct_change": 42.08387563500165
+      },
+      "Adjustment": {
+        "base_mean": 0.7242143805431562,
+        "counterfactual_mean": 0.9392983625635614,
+        "difference": 0.21508398202040513,
+        "pct_change": 29.698938297675543
+      }
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "cooperation_emergence": {
+    "metric": "cooperation_emerged",
+    "achieved": 15235,
+    "total": 15625,
+    "achievement_pct": 97.504,
+    "threshold": 85.0,
+    "passed": true
+  },
+  "defection_punishment": {
+    "metric": "defection_punished",
+    "achieved": 15625,
+    "total": 15625,
+    "achievement_pct": 100.0,
+    "threshold": 95.0,
+    "passed": true
+  },
+  "forgiveness_dynamics": {
+    "metric": "forgiveness_achieved",
+    "achieved": 13728,
+    "total": 15625,
+    "achievement_pct": 87.8592,
+    "threshold": 80.0,
+    "passed": true
+  },
+  "asymmetric_differentiation": {
+    "metric": "asymmetric_differentiated",
+    "achieved": 15625,
+    "total": 15625,
+    "achievement_pct": 100.0,
+    "threshold": 90.0,
+    "passed": true
+  },
+  "trust_reciprocity_interaction": {
+    "metric": "trust_recip_interaction",
+    "achieved": 15625,
+    "total": 15625,
+    "achievement_pct": 100.0,
+    "threshold": 90.0,
+    "passed": true
+  },
+  "bounded_responses": {
+    "metric": "bounded_check",
+    "achieved": 15625,
+    "total": 15625,
+    "achievement_pct": 100.0,
+    "threshold": 100.0,
+    "passed": true
+  }
+}
