@@ -55,6 +55,9 @@ from .envs import (
     # TR-3 Collective Action Environments
     TeamProductionEnv, LoyaltyTeamEnv, CoalitionFormationEnv,
     ApacheProjectEnv, PublicGoodsEnv, TR3Parameters,
+    # TR-4 Reciprocity Environments
+    ReciprocalDilemmaEnv, GiftExchangeEnv, IndirectReciprocityEnv,
+    GraduatedSanctionEnv, AppleAppStoreEnv, TR4Parameters,
     # Wrappers
     ObservationConfig, CoopetitionParallelEnv, CoopetitionAECEnv,
     # Factory functions
@@ -83,7 +86,7 @@ __all__ = [
     "PayoffParameters", "compute_rewards", "solve_equilibrium",
     # TR-3: Collective Action & Loyalty
     "CollectiveActionParameters", "CollectiveActionState", "CollectiveActionModel",
-    # TR-4: Reciprocity (planned)
+    # TR-4: Reciprocity (core skeleton)
     "ReciprocityParameters", "ReciprocityState", "ReciprocityModel",
     # Base Environment Classes
     "CoopetitionEnv", "EnvironmentConfig", "AbstractCoopetitionEnv",
@@ -96,6 +99,9 @@ __all__ = [
     # TR-3 Environment Classes
     "TeamProductionEnv", "LoyaltyTeamEnv", "CoalitionFormationEnv",
     "ApacheProjectEnv", "PublicGoodsEnv", "TR3Parameters",
+    # TR-4 Environment Classes
+    "ReciprocalDilemmaEnv", "GiftExchangeEnv", "IndirectReciprocityEnv",
+    "GraduatedSanctionEnv", "AppleAppStoreEnv", "TR4Parameters",
     # Wrappers
     "ObservationConfig", "CoopetitionParallelEnv", "CoopetitionAECEnv",
     # Factory functions

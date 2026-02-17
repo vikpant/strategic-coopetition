@@ -6,7 +6,7 @@ COOPETITION-GYM: Environments Module (v0.2.0)
 This module provides Gymnasium and PettingZoo-compatible environments for
 multi-agent strategic coopetition research.
 
-Environment Categories (15 Total):
+Environment Categories (20 Total):
 ----------------------------------
 TR-1 & TR-2 Environments (10):
 1. Dyadic (Micro): TrustDilemma-v0, PartnerHoldUp-v0
@@ -21,6 +21,13 @@ TR-3 Collective Action Environments (5):
 8. CoalitionFormation-v0: Dynamic coalition with entry/exit
 9. ApacheProject-v0: Validated Apache HTTP Server case study (52/60)
 10. PublicGoods-v0: Classic public goods with collective action modifiers
+
+TR-4 Reciprocity Environments (5):
+11. ReciprocalDilemma-v0: Continuous PD with direct reciprocity
+12. GiftExchange-v0: Asymmetric employer-worker gift exchange
+13. IndirectReciprocity-v0: Population-level reputation and image scoring
+14. GraduatedSanction-v0: Common-pool resource with graduated sanctions
+15. AppleAppStore-v0: Validated Apple iOS case study (48/55)
 
 API Modes (v0.2.0):
 -------------------
@@ -55,6 +62,14 @@ from .collective_action_envs import (
     PublicGoodsEnv,
     TR3Parameters,
 )
+from .reciprocity_envs import (
+    ReciprocalDilemmaEnv,
+    GiftExchangeEnv,
+    IndirectReciprocityEnv,
+    GraduatedSanctionEnv,
+    AppleAppStoreEnv,
+    TR4Parameters,
+)
 
 from .wrappers import (
     ObservationConfig,
@@ -84,6 +99,12 @@ _ENVIRONMENT_REGISTRY = {
     "CoalitionFormation-v0": CoalitionFormationEnv,
     "ApacheProject-v0": ApacheProjectEnv,
     "PublicGoods-v0": PublicGoodsEnv,
+    # Reciprocity (TR-4)
+    "ReciprocalDilemma-v0": ReciprocalDilemmaEnv,
+    "GiftExchange-v0": GiftExchangeEnv,
+    "IndirectReciprocity-v0": IndirectReciprocityEnv,
+    "GraduatedSanction-v0": GraduatedSanctionEnv,
+    "AppleAppStore-v0": AppleAppStoreEnv,
 }
 
 
@@ -227,6 +248,13 @@ __all__ = [
     "ApacheProjectEnv",
     "PublicGoodsEnv",
     "TR3Parameters",
+    # Reciprocity environments (TR-4)
+    "ReciprocalDilemmaEnv",
+    "GiftExchangeEnv",
+    "IndirectReciprocityEnv",
+    "GraduatedSanctionEnv",
+    "AppleAppStoreEnv",
+    "TR4Parameters",
     # Wrappers
     "ObservationConfig",
     "CoopetitionParallelEnv",
