@@ -1,6 +1,6 @@
 # Environment Reference
 
-This section provides detailed documentation for all 15 environments in Coopetition-Gym.
+This section provides detailed documentation for all 20 environments in Coopetition-Gym.
 
 ---
 
@@ -49,6 +49,16 @@ Coopetition-Gym v2.x will introduce **biaxial treatment** with independent coope
 | [ApacheProject-v0](apache_project.md) | 8-40 | Validated (TR-3) | Phase-dependent contributor dynamics |
 | [PublicGoods-v0](public_goods.md) | 5 | Collective Action | Classic public goods contribution |
 
+### TR-4: Sequential Interaction and Reciprocity (5 Environments)
+
+| Environment | Agents | Category | Key Challenge |
+|-------------|--------|----------|---------------|
+| [ReciprocalDilemma-v0](reciprocal_dilemma.md) | 2 | Reciprocity | Conditional cooperation via memory |
+| [GiftExchange-v0](gift_exchange.md) | 2 | Reciprocity | Asymmetric reciprocity sensitivity |
+| [IndirectReciprocity-v0](indirect_reciprocity.md) | 4 | Reciprocity | Reputation-mediated cooperation |
+| [GraduatedSanction-v0](graduated_sanction.md) | 6 | Reciprocity | Graduated proportional sanctions |
+| [AppleAppStore-v0](apple_app_store.md) | 3 | Validated (TR-4) | Platform power and reciprocity dynamics |
+
 ---
 
 ## MARL Classification Summary
@@ -74,6 +84,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | CoalitionFormation-v0 | N-player Markov Game | Coalition-based with exclusion | Full | Dynamic membership |
 | ApacheProject-v0 | N-player Markov Game | Open source contribution | Full | Phase-symmetric |
 | PublicGoods-v0 | N-player Markov Game | Classic public goods | Full | Symmetric |
+| ReciprocalDilemma-v0 | 2-player Markov Game | Mixed-Motive + reciprocity | Full | Symmetric |
+| GiftExchange-v0 | 2-player Markov Game | Asymmetric gift exchange | Full | Asymmetric |
+| IndirectReciprocity-v0 | 4-player Markov Game | Reputation externalities | Full | Symmetric |
+| GraduatedSanction-v0 | 6-player Markov Game | Common-pool resource | Full | Symmetric |
+| AppleAppStore-v0 | 3-player Markov Game | Platform coopetition | Full | Asymmetric |
 
 ### Action and State Spaces
 
@@ -94,6 +109,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | CoalitionFormation-v0 | Continuous [0,50]ᴺ | Phase-dependent | T=150 | Coalition collapse |
 | ApacheProject-v0 | Continuous [0,50]ᴺ | Phase-dependent | T=60 | None |
 | PublicGoods-v0 | Continuous [0,endowment]ᴺ | Phase-dependent | T=100 | None |
+| ReciprocalDilemma-v0 | Continuous [0,100]² | 17+ | T=100 | None |
+| GiftExchange-v0 | Continuous [0,100]×[0,80] | 17+ | T=100 | None |
+| IndirectReciprocity-v0 | Continuous [0,100]⁴ | Phase-dependent | T=150 | None |
+| GraduatedSanction-v0 | Continuous [0,100]⁶ | Phase-dependent | T=200 | None |
+| AppleAppStore-v0 | Continuous [0,100]×[0,80]×[0,60] | Phase-dependent | T=66 | None |
 
 ### Canonical Literature Comparisons
 
@@ -114,6 +134,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | CoalitionFormation-v0 | Ray (2007); Greenberg (1994) |
 | ApacheProject-v0 | Mockus et al. (2002); Lerner & Tirole (2002) |
 | PublicGoods-v0 | Fehr & Gächter (2000); Ledyard (1995) |
+| ReciprocalDilemma-v0 | Axelrod (1984); Killingback & Doebeli (2002) |
+| GiftExchange-v0 | Fehr, Kirchsteiger & Riedl (1993); Akerlof (1982) |
+| IndirectReciprocity-v0 | Nowak & Sigmund (1998, 2005); Panchanathan & Boyd (2004) |
+| GraduatedSanction-v0 | Ostrom (1990); Fehr & Gächter (2000) |
+| AppleAppStore-v0 | Parker, Van Alstyne & Choudary (2016); Rochet & Tirole (2003) |
 
 ### Special Features
 
@@ -133,6 +158,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | CoalitionFormation-v0 | Dynamic exclusion/reentry, minimum coalition |
 | ApacheProject-v0 | Empirically validated (52/60), four project phases |
 | PublicGoods-v0 | Configurable multiplier, punishment mechanism |
+| ReciprocalDilemma-v0 | TR-4 reciprocity modifier, k=5 memory window |
+| GiftExchange-v0 | Asymmetric reciprocity (ρ worker 2.3× employer) |
+| IndirectReciprocity-v0 | 4-agent reputation cascades, k=7 memory |
+| GraduatedSanction-v0 | Graduated sanctions (κ=0.8), k=10 escalation |
+| AppleAppStore-v0 | Empirically validated (48/55), 66-quarter history |
 
 ### Equilibrium Summary
 
@@ -151,6 +181,11 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | CoalitionFormation-v0 | Coalition-stable | Full coalition | ~1.4 | Exclusion threat maintains |
 | ApacheProject-v0 | Phase-specific | Validated | N/A | 52/60 historical accuracy |
 | PublicGoods-v0 | Zero contribution | Full contribution | ~2.0 | Classic public goods |
+| ReciprocalDilemma-v0 | ~35 (similar to TD) | 100 | ~1.55 | Reciprocity enables TFT |
+| GiftExchange-v0 | Low effort from worker | Fair exchange | ~1.6 | Asymmetric reciprocity |
+| IndirectReciprocity-v0 | Free-riding | Full cooperation | ~2.0 | Reputation sustains cooperation |
+| GraduatedSanction-v0 | Under-contribution | Full contribution | ~2.0 | Graduated sanctions deter |
+| AppleAppStore-v0 | Phase-specific | Validated | N/A | 48/55 historical accuracy |
 
 **Key Insights:**
 - All environments exhibit **cooperation deficit** in myopic equilibrium
@@ -159,6 +194,8 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 - SynergySearch-v0 requires **exploration** to discover optimal equilibrium
 - TR-3 environments demonstrate **loyalty mechanisms** can sustain above-Nash cooperation
 - ApacheProject-v0 achieves **52/60 empirical validation** against real open source data
+- TR-4 environments demonstrate **reciprocity mechanisms** enable conditional cooperation
+- AppleAppStore-v0 achieves **48/55 empirical validation** against real platform data
 
 ---
 
@@ -234,6 +271,21 @@ Team production and collective action scenarios with loyalty dynamics. Ideal for
 - [ApacheProject-v0](apache_project.md) - Validated Apache HTTP Server case study (52/60)
 - [PublicGoods-v0](public_goods.md) - Classic public goods with collective action modifiers
 
+### Reciprocity Environments (TR-4)
+
+Sequential interaction and reciprocity scenarios with bounded memory. Ideal for:
+- Studying conditional cooperation and tit-for-tat strategies
+- Understanding how memory and reputation sustain cooperation
+- Testing reciprocity in asymmetric power structures
+- Validating against real platform ecosystem data
+
+**Environments:**
+- [ReciprocalDilemma-v0](reciprocal_dilemma.md) - Continuous PD with direct reciprocity
+- [GiftExchange-v0](gift_exchange.md) - Asymmetric employer-worker gift exchange
+- [IndirectReciprocity-v0](indirect_reciprocity.md) - Population-level reputation and image scoring
+- [GraduatedSanction-v0](graduated_sanction.md) - Common-pool resource with graduated sanctions
+- [AppleAppStore-v0](apple_app_store.md) - Validated Apple iOS case study (48/55)
+
 ---
 
 ## Common Interface
@@ -280,8 +332,13 @@ endowments = env.endowments
 | Free-rider problems | TeamProduction-v0 |
 | Loyalty dynamics | LoyaltyTeam-v0 |
 | Coalition stability | CoalitionFormation-v0 |
-| Empirical validation | ApacheProject-v0, SLCD-v0 |
+| Empirical validation | ApacheProject-v0, SLCD-v0, AppleAppStore-v0 |
 | Public goods | PublicGoods-v0 |
+| Conditional cooperation | ReciprocalDilemma-v0 |
+| Asymmetric reciprocity | GiftExchange-v0 |
+| Reputation dynamics | IndirectReciprocity-v0 |
+| Commons governance | GraduatedSanction-v0 |
+| Platform reciprocity | AppleAppStore-v0 |
 
 ### By Research Area
 
@@ -296,6 +353,10 @@ endowments = env.endowments
 | Coalition Theory | CoalitionFormation-v0 |
 | Open Source Dynamics | ApacheProject-v0 |
 | Mechanism Design | LoyaltyTeam-v0, PublicGoods-v0 |
+| Reciprocity & Memory | ReciprocalDilemma-v0, GiftExchange-v0 |
+| Reputation Systems | IndirectReciprocity-v0, DynamicPartnerSelection-v0 |
+| Commons & Sanctions | GraduatedSanction-v0, PublicGoods-v0 |
+| Platform Ecosystems | AppleAppStore-v0, PlatformEcosystem-v0 |
 
 ---
 
@@ -321,6 +382,16 @@ endowments = env.endowments
 | ApacheProject-v0 | Phase-dependent | Phase-dependent |
 | PublicGoods-v0 | Moderate | High |
 
+### Reciprocity Dynamics Intensity (TR-4)
+
+| Environment | Reciprocity Sensitivity | Memory Length | Agents |
+|-------------|------------------------|---------------|--------|
+| ReciprocalDilemma-v0 | Moderate (ρ=0.5) | k=5 | 2 |
+| GiftExchange-v0 | High (asymmetric, ρ up to 0.7) | k=3 | 2 |
+| IndirectReciprocity-v0 | Moderate (ρ=0.32, but 3 partners) | k=7 | 4 |
+| GraduatedSanction-v0 | Graduated (ρ=0.12, but 5 partners) | k=10 | 6 |
+| AppleAppStore-v0 | Very High asymmetry (0.16-0.82) | k=4 | 3 |
+
 ### Scalability
 
 | Environment | Fixed Agents | Configurable | Max Tested |
@@ -334,6 +405,11 @@ endowments = env.endowments
 | CoalitionFormation-v0 | N | Yes | 20 |
 | ApacheProject-v0 | Phase-specific | Yes (phase) | 40 |
 | PublicGoods-v0 | N | Yes | 20 |
+| ReciprocalDilemma-v0 | 2 | No | 2 |
+| GiftExchange-v0 | 2 | No | 2 |
+| IndirectReciprocity-v0 | 4 | No | 4 |
+| GraduatedSanction-v0 | 6 | No | 6 |
+| AppleAppStore-v0 | 3 | No | 3 |
 
 ---
 

@@ -243,7 +243,7 @@ for agent in env.agent_iter():
 
 ## Exploring Available Environments
 
-Coopetition-Gym provides 15 environments:
+Coopetition-Gym provides 20 environments:
 
 ```python
 # List all available environments
@@ -385,7 +385,7 @@ You've learned:
 
 ## Next Steps
 
-- **[Environment Reference](../environments/index.md)** - Explore all 15 environments
+- **[Environment Reference](../environments/index.md)** - Explore all 20 environments
 - **[SLCD-v0](../environments/slcd.md)** - Try the validated Samsung-Sony case study
 - **Training Tutorial** - Train RL agents with Stable-Baselines3
 

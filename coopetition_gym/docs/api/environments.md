@@ -2,7 +2,7 @@
 
 API documentation for all coopetition environment classes.
 
-*Module version: 0.2.0*
+*Module version: 0.3.0*
 
 ---
 
@@ -331,6 +331,138 @@ class ReputationMarketEnv(CoopetitionEnv):
 ```
 
 **Environment ID:** `ReputationMarket-v0`
+
+---
+
+## Reciprocity Environments (TR-4)
+
+### ReciprocalDilemmaEnv
+
+```python
+class ReciprocalDilemmaEnv(BaseTR4Env):
+    """
+    ReciprocalDilemma-v0: Continuous iterated PD with TR-4 reciprocity.
+
+    Two symmetric agents with direct reciprocity via bounded memory window.
+    Enables tit-for-tat-like conditional cooperation strategies.
+    """
+```
+
+**Environment ID:** `ReciprocalDilemma-v0`
+
+**Parameters:**
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `max_steps` | 100 | Episode length |
+
+**Agent Configuration:** 2 symmetric agents, endowment 100 each, D=0.5
+
+**TR-4 Parameters:** ρ₀=1.0, η=1.0, κ=1.0, k=5, λ_R=1.0, ω=0.6
+
+---
+
+### GiftExchangeEnv
+
+```python
+class GiftExchangeEnv(BaseTR4Env):
+    """
+    GiftExchange-v0: Asymmetric employer-worker gift exchange.
+
+    Employer sets wage-cooperation, worker responds with effort-cooperation.
+    Asymmetric dependency amplifies worker's reciprocity (ρ_21 ≈ 0.70 vs ρ_12 ≈ 0.30).
+    """
+```
+
+**Environment ID:** `GiftExchange-v0`
+
+**Agent Configuration:**
+
+| Agent | Role | Endowment | Dependency |
+|-------|------|-----------|------------|
+| 0 | Employer | 100 | D₀₁=0.4 |
+| 1 | Worker | 80 | D₁₀=0.7 |
+
+**TR-4 Parameters:** ρ₀=1.2, η=1.5, κ=1.0, k=3, λ_R=1.2, ω=0.8
+
+---
+
+### IndirectReciprocityEnv
+
+```python
+class IndirectReciprocityEnv(BaseTR4Env):
+    """
+    IndirectReciprocity-v0: 4-agent population with reputation-mediated cooperation.
+
+    Cooperation with any partner is observed by all, enabling indirect reciprocity.
+    Longer memory (k=7) and higher reciprocity weight (λ_R=1.5) amplify reputation effects.
+    """
+```
+
+**Environment ID:** `IndirectReciprocity-v0`
+
+**Parameters:**
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `max_steps` | 150 | Extended for reputation dynamics |
+
+**Agent Configuration:** 4 symmetric agents, endowment 100 each, D=0.4
+
+**TR-4 Parameters:** ρ₀=0.8, η=1.0, κ=1.0, k=7, λ_R=1.5, ω=0.5
+
+---
+
+### GraduatedSanctionEnv
+
+```python
+class GraduatedSanctionEnv(BaseTR4Env):
+    """
+    GraduatedSanction-v0: 6-agent commons with graduated reciprocity sanctions.
+
+    Lower κ=0.8 creates proportional (graduated) response. Long memory k=10
+    enables escalation for repeated violations. Captures Ostrom's design principles.
+    """
+```
+
+**Environment ID:** `GraduatedSanction-v0`
+
+**Parameters:**
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `max_steps` | 200 | Extended for graduated dynamics |
+
+**Agent Configuration:** 6 symmetric agents, endowment 100 each, D=0.35
+
+**TR-4 Parameters:** ρ₀=0.6, η=1.5, κ=0.8, k=10, λ_R=1.8, ω=1.0
+
+---
+
+### AppleAppStoreEnv
+
+```python
+class AppleAppStoreEnv(BaseTR4Env):
+    """
+    AppleAppStore-v0: Validated Apple iOS App Store case study (2008-2024).
+
+    3 agents (Apple, Major Developers, Small Developers) with asymmetric
+    dependencies. 66-step episodes map to 66 historical quarters.
+    Validation: 48/55 (87.3%).
+    """
+```
+
+**Environment ID:** `AppleAppStore-v0`
+
+**Agent Configuration:**
+
+| Agent | Role | Endowment | Key Dependencies |
+|-------|------|-----------|-----------------|
+| 0 | Apple | 100 | D₀₁=0.3, D₀₂=0.2 |
+| 1 | Major Devs | 80 | D₁₀=0.8 |
+| 2 | Small Devs | 60 | D₂₀=0.85 |
+
+**TR-4 Parameters:** ρ₀=1.0, η=1.2, κ=0.8, k=4, λ_R=1.0, ω=0.8
 
 ---
 

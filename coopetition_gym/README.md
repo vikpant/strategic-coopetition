@@ -17,10 +17,12 @@ This library implements computational frameworks from peer-reviewed game-theoret
 | **TR-1** ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) | Interdependence & Complementarity | Value functions, synergy, coopetitive equilibrium |
 | **TR-2** ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) | Trust Dynamics | Asymmetric updating, negativity bias, hysteresis |
 | **TR-3** ([arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) | Collective Action & Loyalty | Team production, loyalty mechanisms, coalition dynamics |
+| **TR-4** *(forthcoming)* | Sequential Interaction & Reciprocity | Memory-bounded reciprocity, graduated sanctions, platform dynamics |
 
 **Validated Case Studies:**
 - S-LCD (Samsung-Sony): **58/60** validation score (TR-1 §8)
 - Apache HTTP Server: **52/60** validation score (TR-3 §7)
+- Apple iOS App Store: **48/55** validation score (TR-4 §8)
 
 ## 🚀 Quick Start
 
@@ -66,7 +68,7 @@ print(coopetition_gym.list_environments())
 
 ## 🎯 Environments
 
-Coopetition-Gym includes **15 environments** across six categories:
+Coopetition-Gym includes **20 environments** across seven categories:
 
 ### Category 1: Dyadic (Micro)
 Fundamental 2-agent mechanics for understanding core dynamics.
@@ -119,6 +121,17 @@ Team production with loyalty dynamics and coalition formation.
 | `ApacheProject-v0` | Apache HTTP Server (validated 52/60) | Phase-dependent contributor dynamics |
 | `PublicGoods-v0` | Classic public goods game | Contribution with optional punishment |
 
+### Category 7: Reciprocity (TR-4)
+Sequential interaction with memory-bounded reciprocity dynamics.
+
+| Environment | Description | Challenge |
+|-------------|-------------|-----------|
+| `ReciprocalDilemma-v0` | Continuous PD with direct reciprocity | Conditional cooperation via bounded memory |
+| `GiftExchange-v0` | Asymmetric employer-worker exchange | Asymmetric reciprocity sensitivity |
+| `IndirectReciprocity-v0` | 4-agent reputation-mediated cooperation | Indirect reciprocity via image scoring |
+| `GraduatedSanction-v0` | 6-agent commons with graduated sanctions | Proportional punishment and escalation |
+| `AppleAppStore-v0` | Apple iOS App Store (validated 48/55) | Platform power asymmetry and reciprocity |
+
 ## 📐 Mathematical Framework
 
 ### Value Creation (TR-1)
@@ -168,6 +181,30 @@ U_i(a) = π_i(a) + Σ_{j≠i} D_ij · π_j(a)
 ```
 
 Agents maximize integrated utility, which includes weighted concern for partners' payoffs based on interdependence coefficients D_ij.
+
+### Reciprocity Dynamics (TR-4)
+
+**Cooperation Signal** (Equation 19):
+```
+s_ij = a_j - ā_j    deviation from memory average
+```
+
+**Bounded Response** (Equation 21):
+```
+φ(x) = tanh(κ · x)    where κ = 0.8-1.0
+```
+
+**Reciprocity Sensitivity** (Equation 23):
+```
+ρ_ij = ρ_0 · D_ij^η    dependency scales reciprocity
+```
+
+**Reciprocity Modifier** (Equation 44):
+```
+U_recip = λ_R Σ T_ij · (1 + ω·D_ij) · ρ_ij · φ(s_ij)
+```
+
+Agents condition behavior on observed partner actions over a bounded memory window (k = 3-10 steps). Higher dependency creates stronger reciprocal responses.
 
 ## 🧪 Training with RL Algorithms
 
@@ -333,7 +370,8 @@ coopetition_gym/
 │   ├── benchmark_envs.py         # RecoveryRace, SynergySearch
 │   ├── case_study_envs.py        # SLCD, RenaultNissan
 │   ├── extended_envs.py          # Negotiation, ReputationMarket
-│   └── collective_action_envs.py # TR-3: TeamProduction, Loyalty, Coalition, Apache
+│   ├── collective_action_envs.py # TR-3: TeamProduction, Loyalty, Coalition, Apache
+│   └── reciprocity_envs.py      # TR-4: ReciprocalDilemma, GiftExchange, IndirectReciprocity, GraduatedSanction, AppleAppStore
 ├── utils/                    # Utilities and helpers
 └── tests/                    # Test suite
 ```
@@ -378,6 +416,13 @@ If you use this library in your research, please cite:
   title = {Collective Action and Loyalty in Coopetitive Relationships},
   author = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2601.16237},
+  year = {2026}
+}
+
+@article{pant2026reciprocity,
+  title = {Sequential Interaction and Reciprocity in Coopetitive Relationships},
+  author = {Pant, Vik and Yu, Eric},
+  note = {Forthcoming},
   year = {2026}
 }
 ```

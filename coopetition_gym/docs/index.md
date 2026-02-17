@@ -58,11 +58,12 @@ print(f"Action space: {env.action_space}")
 - **TR-1**: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802)
 - **TR-2**: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/abs/2510.24909)
 - **TR-3**: [Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty](https://arxiv.org/abs/2601.16237)
+- **TR-4**: Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity *(forthcoming)*
 
 ### Key Features
 
-- **15 Specialized Environments** spanning dyadic relationships to multi-agent ecosystems
-- **Validated Case Studies** based on real business partnerships (Samsung-Sony, Renault-Nissan, Apache)
+- **20 Specialized Environments** spanning dyadic relationships to multi-agent ecosystems
+- **Validated Case Studies** based on real business partnerships (Samsung-Sony, Renault-Nissan, Apache, Apple App Store)
 - **Trust Dynamics** with asymmetric updating and reputation hysteresis
 - **Multiple APIs**: Gymnasium (single-agent), PettingZoo Parallel, and PettingZoo AEC
 - **Configurable Parameters** for research flexibility
@@ -135,7 +136,7 @@ for agent in env.agent_iter():
 
 ## Environment Categories
 
-Coopetition-Gym provides 15 environments organized into 6 categories:
+Coopetition-Gym provides 20 environments organized into 7 categories:
 
 ### Dyadic Environments (2-Agent)
 
@@ -193,6 +194,18 @@ Team production and collective action scenarios with loyalty dynamics.
 | [CoalitionFormation-v0](environments/coalition_formation.md) | Dynamic coalition with entry/exit | Coalition stability under exclusion |
 | [ApacheProject-v0](environments/apache_project.md) | Apache HTTP Server case study (52/60) | Phase-dependent contributor dynamics |
 | [PublicGoods-v0](environments/public_goods.md) | Classic public goods game | Contribution and punishment dynamics |
+
+### Reciprocity Environments (TR-4)
+
+Sequential interaction and reciprocity scenarios with bounded memory.
+
+| Environment | Description | Key Challenge |
+|-------------|-------------|---------------|
+| [ReciprocalDilemma-v0](environments/reciprocal_dilemma.md) | Continuous PD with direct reciprocity | Conditional cooperation via memory |
+| [GiftExchange-v0](environments/gift_exchange.md) | Asymmetric employer-worker exchange | Asymmetric reciprocity sensitivity |
+| [IndirectReciprocity-v0](environments/indirect_reciprocity.md) | 4-agent reputation-mediated cooperation | Indirect reciprocity via image scoring |
+| [GraduatedSanction-v0](environments/graduated_sanction.md) | 6-agent commons with graduated sanctions | Proportional punishment and escalation |
+| [AppleAppStore-v0](environments/apple_app_store.md) | Apple iOS App Store (validated 48/55) | Platform power and reciprocity dynamics |
 
 ---
 
@@ -301,15 +314,38 @@ $$\Large \text{Erosion factor} = (1 + \xi \cdot D_{ij}) \quad \text{where } \xi 
 
 When you depend heavily on a partner, their betrayal hurts more.
 
+### Reciprocity Dynamics (TR-4)
+
+Reciprocity captures how agents condition current behavior on observed partner actions over a bounded memory window. Unlike slow-moving trust (TR-2), reciprocity enables fast behavioral responses within 1-10 steps.
+
+**Cooperation Signal** (Equation 19):
+
+$$s_{ij} = a_j - \bar{a}_j \quad \text{(deviation from recent average)}$$
+
+**Bounded Response** (Equation 21):
+
+$$\varphi(x) = \tanh(\kappa \cdot x) \quad \text{where } \kappa \text{ controls sensitivity}$$
+
+**Reciprocity Modifier** (Equation 44):
+
+$$U_{\text{recip},i} = \lambda_R \sum_{j \neq i} T_{ij} \cdot (1 + \omega D_{ij}) \cdot \rho_{ij} \cdot \varphi(s_{ij})$$
+
+**Key Property: Dependency-Scaled Reciprocity**
+
+$$\rho_{ij} = \rho_0 \cdot D_{ij}^{\eta} \quad \text{(higher dependency → stronger reciprocal response)}$$
+
+Agents who depend more on a partner reciprocate more strongly—capturing why workers respond to wage changes more than employers respond to effort changes.
+
 ### Empirical Validation
 
-The mathematical framework has been validated against real business partnerships and open source projects:
+The mathematical framework has been validated against real business partnerships, open source projects, and platform ecosystems:
 
 | Case Study | Validation Score | Key Dynamics Captured |
 |------------|------------------|----------------------|
 | **Samsung-Sony S-LCD** (2004-2011) | 58/60 (96.7%) | Interdependence, complementarity, cooperation levels |
 | **Renault-Nissan Alliance** (1999-2025) | 49/60 (81.7%) | Trust evolution, crisis, recovery across 5 phases |
 | **Apache HTTP Server** (1995-2023) | 52/60 (86.7%) | Loyalty dynamics, phase transitions, contributor effort |
+| **Apple iOS App Store** (2008-2024) | 48/55 (87.3%) | Reciprocity dynamics, platform power, phase transitions |
 
 These validations ensure the environments produce realistic coopetitive dynamics rather than artificial constructs.
 
@@ -363,6 +399,17 @@ Higher actions = more cooperation/investment.
 | Logarithmic Scale | θ | 18 - 25 | Value magnitude |
 | Complementarity | γ | 0.50 - 0.75 | Synergy from cooperation |
 | Power Exponent | β | 0.70 - 0.80 | Diminishing returns |
+
+### Reciprocity Parameters (TR-4)
+
+| Parameter | Symbol | Typical Range | Description |
+|-----------|--------|---------------|-------------|
+| Base Reciprocity | $\rho_0$ | 0.6 - 1.2 | Reciprocity strength |
+| Dependency Elasticity | $\eta$ | 1.0 - 1.5 | How dependency scales reciprocity |
+| Response Sensitivity | $\kappa$ | 0.8 - 1.0 | Bounded response steepness |
+| Memory Window | $k$ | 3 - 10 | Steps of recent history |
+| Reciprocity Weight | $\lambda_R$ | 1.0 - 1.8 | Overall reciprocity scaling |
+| Dependency Amplification | $\omega$ | 0.5 - 1.0 | Dependency boost in trust gating |
 
 ---
 
@@ -445,6 +492,13 @@ If you use Coopetition-Gym in your research, please cite:
   title = {Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty},
   author = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2601.16237},
+  year = {2026}
+}
+
+@article{pant2026tr4,
+  title = {Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity},
+  author = {Pant, Vik and Yu, Eric},
+  note = {Forthcoming},
   year = {2026}
 }
 ```
