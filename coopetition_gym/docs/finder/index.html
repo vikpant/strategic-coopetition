@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Environment Finder | Coopetition-Gym</title>
+<style>
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --border: #d4d4d8;
+    --border-light: #e4e4e7;
+    --text: #18181b;
+    --text-secondary: #52525b;
+    --text-muted: #71717a;
+    --accent: #2563eb;
+    --accent-light: #dbeafe;
+    --accent-hover: #1d4ed8;
+    --tag-bg: #f4f4f5;
+    --match-high: #dcfce7;
+    --match-high-border: #86efac;
+    --match-med: #fef9c3;
+    --match-med-border: #fde047;
+    --match-low: #f4f4f5;
+    --match-low-border: #d4d4d8;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.04);
+    --radius: 8px;
+    --radius-sm: 6px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-light);
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  header p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  header .version {
+    display: inline-block;
+    font-size: 0.75rem;
+    background: var(--tag-bg);
+    color: var(--text-muted);
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* --- Filter Section --- */
+  .filters {
+    display: grid;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .filter-group {
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+  }
+
+  .filter-group legend {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+
+  .filter-group .hint {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .options label {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    user-select: none;
+    background: var(--surface);
+    color: var(--text-secondary);
+  }
+
+  .options label:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .options label.selected {
+    background: var(--accent-light);
+    border-color: var(--accent);
+    color: var(--accent-hover);
+    font-weight: 500;
+  }
+
+  .options input { display: none; }
+
+  .controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .controls .count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .controls .count strong {
+    color: var(--text);
+  }
+
+  .btn-reset {
+    font-size: 0.82rem;
+    color: var(--accent);
+    background: none;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .btn-reset:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* --- Results Table --- */
+  .results-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--surface);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
+  .results-table thead th {
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--border-light);
+    background: var(--bg);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+
+  .results-table tbody tr {
+    transition: opacity 0.2s ease, background 0.2s ease;
+  }
+
+  .results-table tbody tr.hidden {
+    display: none;
+  }
+
+  .results-table tbody td {
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid var(--border-light);
+    vertical-align: top;
+  }
+
+  .results-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .results-table tbody tr.match-high {
+    background: var(--match-high);
+  }
+
+  .results-table tbody tr.match-med {
+    background: var(--match-med);
+  }
+
+  .results-table tbody tr.match-low {
+    background: var(--match-low);
+  }
+
+  .results-table tbody tr.match-none {
+    opacity: 0.35;
+  }
+
+  td.env-name {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  td.env-name a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  td.env-name a:hover {
+    text-decoration: underline;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .tag-pillar {
+    background: #ede9fe;
+    color: #5b21b6;
+  }
+
+  .tag-category {
+    background: #e0f2fe;
+    color: #075985;
+  }
+
+  .tag-validated {
+    background: #dcfce7;
+    color: #166534;
+  }
+
+  .match-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.4rem;
+    vertical-align: middle;
+  }
+
+  .match-indicator.high { background: #22c55e; }
+  .match-indicator.med { background: #eab308; }
+  .match-indicator.low { background: #a1a1aa; }
+
+  .no-results {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    display: none;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-light);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 640px) {
+    .container { padding: 1rem; }
+    header h1 { font-size: 1.35rem; }
+    .results-table { font-size: 0.8rem; }
+    .results-table thead th,
+    .results-table tbody td { padding: 0.5rem 0.6rem; }
+    .col-mechanism { display: none; }
+    .col-tags { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>Environment Finder</h1>
+    <p>Select your research criteria below to find matching Coopetition-Gym environments. Results are ranked by relevance to your selections.</p>
+    <span class="version">Coopetition-Gym v0.3.0 &middot; 20 Environments</span>
+  </header>
+
+  <!-- Filters -->
+  <div class="filters">
+
+    <fieldset class="filter-group">
+      <legend>Theoretical Focus</legend>
+      <div class="hint">Which theoretical mechanism are you studying?</div>
+      <div class="options" data-filter="pillar" data-mode="multi">
+        <label><input type="checkbox" value="tr1">Value &amp; Interdependence (TR-1)</label>
+        <label><input type="checkbox" value="tr2">Trust &amp; Reputation (TR-2)</label>
+        <label><input type="checkbox" value="tr3">Collective Action &amp; Loyalty (TR-3)</label>
+        <label><input type="checkbox" value="tr4">Reciprocity &amp; Memory (TR-4)</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="filter-group">
+      <legend>Agent Scale</legend>
+      <div class="hint">How many interacting agents does your study require?</div>
+      <div class="options" data-filter="scale" data-mode="multi">
+        <label><input type="checkbox" value="dyadic">Dyadic (2 agents)</label>
+        <label><input type="checkbox" value="small">Small group (3-4 agents)</label>
+        <label><input type="checkbox" value="large">Larger group (5-6 agents)</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="filter-group">
+      <legend>Agent Symmetry</legend>
+      <div class="hint">Should agents have equal or unequal roles, endowments, and dependencies?</div>
+      <div class="options" data-filter="symmetry" data-mode="multi">
+        <label><input type="checkbox" value="symmetric">Symmetric (equal agents)</label>
+        <label><input type="checkbox" value="asymmetric">Asymmetric (power imbalance)</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="filter-group">
+      <legend>Research Dynamic</legend>
+      <div class="hint">Which dynamics are central to your research question? Select all that apply.</div>
+      <div class="options" data-filter="dynamic" data-mode="multi">
+        <label><input type="checkbox" value="trust_evolution">Trust building and erosion</label>
+        <label><input type="checkbox" value="cooperation_emergence">Cooperation emergence</label>
+        <label><input type="checkbox" value="power_asymmetry">Power asymmetry and exploitation</label>
+        <label><input type="checkbox" value="reputation">Reputation and partner selection</label>
+        <label><input type="checkbox" value="punishment">Punishment and sanctions</label>
+        <label><input type="checkbox" value="memory_reciprocity">Memory-based reciprocity</label>
+        <label><input type="checkbox" value="coalition">Coalition and team formation</label>
+        <label><input type="checkbox" value="free_riding">Free-riding and social dilemmas</label>
+        <label><input type="checkbox" value="platform">Platform and ecosystem dynamics</label>
+      </div>
+    </fieldset>
+
+    <fieldset class="filter-group">
+      <legend>Empirical Validation</legend>
+      <div class="hint">Do you need environments calibrated against real-world historical data?</div>
+      <div class="options" data-filter="validation" data-mode="multi">
+        <label><input type="checkbox" value="validated">Validated against historical data</label>
+        <label><input type="checkbox" value="theoretical">Theoretically grounded (sufficient)</label>
+      </div>
+    </fieldset>
+
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <span class="count"><strong id="match-count">20</strong> of 20 environments match</span>
+    <button class="btn-reset" onclick="resetFilters()">Clear All Filters</button>
+  </div>
+
+  <!-- Results -->
+  <table class="results-table">
+    <thead>
+      <tr>
+        <th style="width:4%"></th>
+        <th style="width:22%">Environment</th>
+        <th style="width:8%">Agents</th>
+        <th class="col-tags" style="width:22%">Classification</th>
+        <th class="col-mechanism" style="width:28%">Key Mechanism</th>
+        <th style="width:16%">Validation</th>
+      </tr>
+    </thead>
+    <tbody id="env-tbody"></tbody>
+  </table>
+
+  <div class="no-results" id="no-results">
+    No environments match all selected criteria. Try broadening your selections.
+  </div>
+
+  <footer>
+    <a href="../environments/index.md">Full Environment Reference</a> &middot;
+    <a href="../theory/index.md">Theoretical Foundations</a> &middot;
+    <a href="../benchmarks/index.md">Benchmark Results</a>
+    <br>
+    Coopetition-Gym &copy; 2025-2026 Vik Pant &amp; Eric Yu, Faculty of Information, University of Toronto
+  </footer>
+
+</div>
+
+<script>
+// ============================================================================
+// Environment Database
+// ============================================================================
+const ENVIRONMENTS = [
+  {
+    id: "TrustDilemma-v0",
+    doc: "../environments/trust_dilemma.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["symmetric"],
+    pillar: ["tr1", "tr2"],
+    category: "Dyadic",
+    dynamics: ["trust_evolution", "cooperation_emergence", "free_riding"],
+    validated: false,
+    mechanism: "Continuous iterated PD with trust dynamics. Trust builds slowly and erodes 3\u00d7 faster (negativity bias).",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "PartnerHoldUp-v0",
+    doc: "../environments/partner_holdup.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["asymmetric"],
+    pillar: ["tr1", "tr2"],
+    category: "Dyadic",
+    dynamics: ["power_asymmetry", "trust_evolution", "cooperation_emergence"],
+    validated: false,
+    mechanism: "Asymmetric vertical relationship. Strong partner can exploit weak partner; exit threshold creates credible commitment.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "PlatformEcosystem-v0",
+    doc: "../environments/platform_ecosystem.md",
+    agents: 5,
+    scale: ["small", "large"],
+    symmetry: ["asymmetric"],
+    pillar: ["tr1"],
+    category: "Ecosystem",
+    dynamics: ["platform", "power_asymmetry", "cooperation_emergence"],
+    validated: false,
+    mechanism: "Hub-and-spoke interdependence. Platform success depends on developer contributions; developers depend on platform.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "DynamicPartnerSelection-v0",
+    doc: "../environments/dynamic_partner_selection.md",
+    agents: 4,
+    scale: ["small"],
+    symmetry: ["symmetric"],
+    pillar: ["tr1", "tr2"],
+    category: "Ecosystem",
+    dynamics: ["reputation", "cooperation_emergence", "trust_evolution"],
+    validated: false,
+    mechanism: "Reputation-based marketplace. Cooperation builds reputation; reputation affects partner quality.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "RecoveryRace-v0",
+    doc: "../environments/recovery_race.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["symmetric"],
+    pillar: ["tr2"],
+    category: "Benchmark",
+    dynamics: ["trust_evolution", "cooperation_emergence"],
+    validated: false,
+    mechanism: "Post-crisis trust recovery. Agents start with low trust (0.25) and high reputation damage; goal is trust \u2265 0.90.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "SynergySearch-v0",
+    doc: "../environments/synergy_search.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["symmetric"],
+    pillar: ["tr1"],
+    category: "Benchmark",
+    dynamics: ["cooperation_emergence"],
+    validated: false,
+    mechanism: "Hidden complementarity discovery. Synergy parameter \u03b3 is sampled at episode start and hidden from agents.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "SLCD-v0",
+    doc: "../environments/slcd.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["asymmetric"],
+    pillar: ["tr1"],
+    category: "Case Study",
+    dynamics: ["cooperation_emergence", "power_asymmetry", "trust_evolution"],
+    validated: true,
+    mechanism: "Samsung-Sony LCD Joint Venture (2004\u20132011). Calibrated against historical partnership data.",
+    validation_text: "58/60 (96.7%)"
+  },
+  {
+    id: "RenaultNissan-v0",
+    doc: "../environments/renault_nissan.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["asymmetric"],
+    pillar: ["tr2"],
+    category: "Case Study",
+    dynamics: ["trust_evolution", "power_asymmetry", "cooperation_emergence"],
+    validated: true,
+    mechanism: "Renault-Nissan Alliance (1999\u20132025). Multi-phase simulation with formation, maturity, crisis, and strained phases.",
+    validation_text: "TR-2 \u00a79"
+  },
+  {
+    id: "CooperativeNegotiation-v0",
+    doc: "../environments/cooperative_negotiation.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["symmetric"],
+    pillar: ["tr1", "tr2"],
+    category: "Extended",
+    dynamics: ["cooperation_emergence", "trust_evolution"],
+    validated: false,
+    mechanism: "Multi-round negotiation with binding commitments. Aligned proposals form agreements; breach penalties apply.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "ReputationMarket-v0",
+    doc: "../environments/reputation_market.md",
+    agents: 4,
+    scale: ["small"],
+    symmetry: ["symmetric"],
+    pillar: ["tr1", "tr2"],
+    category: "Extended",
+    dynamics: ["reputation", "cooperation_emergence", "free_riding"],
+    validated: false,
+    mechanism: "N-agent market with tiered reputation bonuses. Reputation determines reward multiplier (0.40\u00d7 to 1.30\u00d7).",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "TeamProduction-v0",
+    doc: "../environments/team_production.md",
+    agents: 4,
+    scale: ["small"],
+    symmetry: ["symmetric"],
+    pillar: ["tr3"],
+    category: "Collective Action",
+    dynamics: ["free_riding", "cooperation_emergence", "coalition"],
+    validated: false,
+    mechanism: "N-agent team production game. Free-rider dynamics emerge at Nash equilibrium; tests collective action problems.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "LoyaltyTeam-v0",
+    doc: "../environments/loyalty_team.md",
+    agents: 4,
+    scale: ["small"],
+    symmetry: ["symmetric"],
+    pillar: ["tr3"],
+    category: "Collective Action",
+    dynamics: ["cooperation_emergence", "coalition", "free_riding"],
+    validated: false,
+    mechanism: "Team production with loyalty mechanisms. Tests whether loyalty can sustain above-Nash cooperation levels.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "CoalitionFormation-v0",
+    doc: "../environments/coalition_formation.md",
+    agents: 4,
+    scale: ["small"],
+    symmetry: ["symmetric"],
+    pillar: ["tr3"],
+    category: "Collective Action",
+    dynamics: ["coalition", "free_riding", "punishment"],
+    validated: false,
+    mechanism: "Dynamic coalition with entry and exit. Coalition stability under exclusion threat; tests Olson\u2019s logic.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "ApacheProject-v0",
+    doc: "../environments/apache_project.md",
+    agents: 4,
+    scale: ["small"],
+    symmetry: ["asymmetric"],
+    pillar: ["tr3"],
+    category: "Case Study",
+    dynamics: ["coalition", "cooperation_emergence", "free_riding"],
+    validated: true,
+    mechanism: "Apache HTTP Server open-source project. Phase-dependent contributor dynamics calibrated against project history.",
+    validation_text: "52/60 (86.7%)"
+  },
+  {
+    id: "PublicGoods-v0",
+    doc: "../environments/public_goods.md",
+    agents: 4,
+    scale: ["small"],
+    symmetry: ["symmetric"],
+    pillar: ["tr3"],
+    category: "Collective Action",
+    dynamics: ["free_riding", "punishment", "cooperation_emergence"],
+    validated: false,
+    mechanism: "Classic public goods game with optional punishment. Tests contribution dynamics and second-order free-riding.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "ReciprocalDilemma-v0",
+    doc: "../environments/reciprocal_dilemma.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["symmetric"],
+    pillar: ["tr4"],
+    category: "Reciprocity",
+    dynamics: ["memory_reciprocity", "cooperation_emergence", "trust_evolution"],
+    validated: false,
+    mechanism: "Continuous PD with bounded-memory reciprocity (k=5). Enables tit-for-tat-like conditional cooperation via TR-4 Eq 19\u201344.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "GiftExchange-v0",
+    doc: "../environments/gift_exchange.md",
+    agents: 2,
+    scale: ["dyadic"],
+    symmetry: ["asymmetric"],
+    pillar: ["tr4"],
+    category: "Reciprocity",
+    dynamics: ["memory_reciprocity", "power_asymmetry", "cooperation_emergence"],
+    validated: false,
+    mechanism: "Asymmetric employer-worker exchange. Worker reciprocity (\u03c1\u22480.70) is 2.3\u00d7 employer reciprocity (\u03c1\u22480.30).",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "IndirectReciprocity-v0",
+    doc: "../environments/indirect_reciprocity.md",
+    agents: 4,
+    scale: ["small"],
+    symmetry: ["symmetric"],
+    pillar: ["tr4"],
+    category: "Reciprocity",
+    dynamics: ["memory_reciprocity", "reputation", "cooperation_emergence"],
+    validated: false,
+    mechanism: "4-agent population with reputation-mediated cooperation. Cooperation observed by all enables indirect reciprocity (k=7).",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "GraduatedSanction-v0",
+    doc: "../environments/graduated_sanction.md",
+    agents: 6,
+    scale: ["large"],
+    symmetry: ["symmetric"],
+    pillar: ["tr4"],
+    category: "Reciprocity",
+    dynamics: ["punishment", "memory_reciprocity", "free_riding", "cooperation_emergence"],
+    validated: false,
+    mechanism: "6-agent commons with graduated reciprocity sanctions. Lower \u03ba=0.8 creates proportional response; long memory k=10 enables escalation.",
+    validation_text: "Theoretical"
+  },
+  {
+    id: "AppleAppStore-v0",
+    doc: "../environments/apple_app_store.md",
+    agents: 3,
+    scale: ["small"],
+    symmetry: ["asymmetric"],
+    pillar: ["tr4"],
+    category: "Case Study",
+    dynamics: ["memory_reciprocity", "platform", "power_asymmetry"],
+    validated: true,
+    mechanism: "Apple iOS App Store (2008\u20132024). 66 quarterly steps across 5 historical phases. Platform-developer reciprocity asymmetry.",
+    validation_text: "48/55 (87.3%)"
+  }
+];
+
+// ============================================================================
+// Filter Logic
+// ============================================================================
+function getSelected(filterName) {
+  const container = document.querySelector(`[data-filter="${filterName}"]`);
+  const checked = container.querySelectorAll('input:checked');
+  return Array.from(checked).map(cb => cb.value);
+}
+
+function scoreEnvironment(env) {
+  const pillarSel = getSelected('pillar');
+  const scaleSel = getSelected('scale');
+  const symSel = getSelected('symmetry');
+  const dynSel = getSelected('dynamic');
+  const valSel = getSelected('validation');
+
+  const noFilters = pillarSel.length === 0 && scaleSel.length === 0 &&
+                    symSel.length === 0 && dynSel.length === 0 && valSel.length === 0;
+
+  if (noFilters) return { score: 1, maxScore: 1, matches: true };
+
+  let score = 0;
+  let maxScore = 0;
+  let hardFail = false;
+
+  // Pillar match (weight: 3)
+  if (pillarSel.length > 0) {
+    maxScore += 3;
+    const overlap = pillarSel.filter(p => env.pillar.includes(p)).length;
+    if (overlap > 0) {
+      score += 3 * (overlap / pillarSel.length);
+    } else {
+      hardFail = true;
+    }
+  }
+
+  // Scale match (weight: 2)
+  if (scaleSel.length > 0) {
+    maxScore += 2;
+    const overlap = scaleSel.filter(s => env.scale.includes(s)).length;
+    if (overlap > 0) {
+      score += 2;
+    } else {
+      hardFail = true;
+    }
+  }
+
+  // Symmetry match (weight: 2)
+  if (symSel.length > 0) {
+    maxScore += 2;
+    const overlap = symSel.filter(s => env.symmetry.includes(s)).length;
+    if (overlap > 0) {
+      score += 2;
+    } else {
+      hardFail = true;
+    }
+  }
+
+  // Dynamics match (weight: 3, proportional)
+  if (dynSel.length > 0) {
+    maxScore += 3;
+    const overlap = dynSel.filter(d => env.dynamics.includes(d)).length;
+    score += 3 * (overlap / dynSel.length);
+  }
+
+  // Validation match (weight: 2)
+  if (valSel.length > 0) {
+    maxScore += 2;
+    if (valSel.includes('validated') && env.validated) {
+      score += 2;
+    } else if (valSel.includes('theoretical') && !valSel.includes('validated')) {
+      score += 2; // All environments are theoretically grounded
+    } else if (valSel.includes('validated') && valSel.includes('theoretical')) {
+      score += 2; // Both selected means no preference
+    } else if (valSel.includes('validated') && !env.validated) {
+      score += 0;
+    }
+  }
+
+  const ratio = maxScore > 0 ? score / maxScore : 1;
+  return { score, maxScore, ratio, matches: !hardFail && ratio > 0 };
+}
+
+function updateResults() {
+  const tbody = document.getElementById('env-tbody');
+  const noResults = document.getElementById('no-results');
+
+  // Score all environments
+  const scored = ENVIRONMENTS.map(env => ({
+    env,
+    ...scoreEnvironment(env)
+  }));
+
+  // Sort: matching first (by score desc), then non-matching
+  scored.sort((a, b) => {
+    if (a.matches && !b.matches) return -1;
+    if (!a.matches && b.matches) return 1;
+    return b.ratio - a.ratio;
+  });
+
+  const matchCount = scored.filter(s => s.matches).length;
+  document.getElementById('match-count').textContent = matchCount;
+
+  // Check if any filters are active
+  const anyFilters = getSelected('pillar').length > 0 || getSelected('scale').length > 0 ||
+                     getSelected('symmetry').length > 0 || getSelected('dynamic').length > 0 ||
+                     getSelected('validation').length > 0;
+
+  tbody.innerHTML = '';
+
+  scored.forEach(({ env, ratio, matches }) => {
+    const tr = document.createElement('tr');
+
+    // Determine match tier
+    let tierClass, indicatorClass;
+    if (!anyFilters) {
+      tierClass = '';
+      indicatorClass = '';
+    } else if (!matches) {
+      tierClass = 'match-none';
+      indicatorClass = '';
+    } else if (ratio >= 0.8) {
+      tierClass = 'match-high';
+      indicatorClass = 'high';
+    } else if (ratio >= 0.5) {
+      tierClass = 'match-med';
+      indicatorClass = 'med';
+    } else {
+      tierClass = 'match-low';
+      indicatorClass = 'low';
+    }
+
+    tr.className = tierClass;
+
+    // Match indicator
+    const tdIndicator = document.createElement('td');
+    if (anyFilters && matches) {
+      tdIndicator.innerHTML = `<span class="match-indicator ${indicatorClass}"></span>`;
+    }
+    tr.appendChild(tdIndicator);
+
+    // Environment name with link
+    const tdName = document.createElement('td');
+    tdName.className = 'env-name';
+    tdName.innerHTML = `<a href="${env.doc}">${env.id}</a>`;
+    tr.appendChild(tdName);
+
+    // Agent count
+    const tdAgents = document.createElement('td');
+    tdAgents.textContent = env.agents;
+    tr.appendChild(tdAgents);
+
+    // Tags
+    const tdTags = document.createElement('td');
+    tdTags.className = 'col-tags';
+    const pillarLabels = { tr1: 'TR-1', tr2: 'TR-2', tr3: 'TR-3', tr4: 'TR-4' };
+    const pillarTags = env.pillar.map(p => `<span class="tag tag-pillar">${pillarLabels[p]}</span>`).join(' ');
+    const catTag = `<span class="tag tag-category">${env.category}</span>`;
+    const valTag = env.validated ? ' <span class="tag tag-validated">Validated</span>' : '';
+    tdTags.innerHTML = pillarTags + ' ' + catTag + valTag;
+    tr.appendChild(tdTags);
+
+    // Mechanism
+    const tdMech = document.createElement('td');
+    tdMech.className = 'col-mechanism';
+    tdMech.textContent = env.mechanism;
+    tr.appendChild(tdMech);
+
+    // Validation
+    const tdVal = document.createElement('td');
+    tdVal.textContent = env.validation_text;
+    tr.appendChild(tdVal);
+
+    tbody.appendChild(tr);
+  });
+
+  noResults.style.display = matchCount === 0 ? 'block' : 'none';
+}
+
+function resetFilters() {
+  document.querySelectorAll('.options input').forEach(cb => {
+    cb.checked = false;
+    cb.parentElement.classList.remove('selected');
+  });
+  updateResults();
+}
+
+// ============================================================================
+// UI Event Binding
+// ============================================================================
+document.querySelectorAll('.options input').forEach(cb => {
+  cb.addEventListener('change', function() {
+    this.parentElement.classList.toggle('selected', this.checked);
+    updateResults();
+  });
+});
+
+// Initialize
+updateResults();
+</script>
+</body>
+</html>

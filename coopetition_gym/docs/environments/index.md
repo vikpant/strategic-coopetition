@@ -2,6 +2,8 @@
 
 This section provides detailed documentation for all 20 environments in Coopetition-Gym.
 
+> **Not sure which environment to use?** Try the [Environment Finder](../finder/index.html) - an interactive tool that matches your research questions to the most relevant environments.
+
 ---
 
 ## Action Space Model
