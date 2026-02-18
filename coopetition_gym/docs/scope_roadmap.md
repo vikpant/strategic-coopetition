@@ -285,9 +285,10 @@ action_space = spaces.Box(
 | Dyadic | TrustDilemma-v0, PartnerHoldUp-v0 | Uniaxial |
 | Ecosystem | PlatformEcosystem-v0, DynamicPartnerSelection-v0 | Uniaxial |
 | Benchmark | RecoveryRace-v0, SynergySearch-v0 | Uniaxial |
-| Case Study | SLCD-v0, RenaultNissan-v0 | Uniaxial |
+| Case Study | SLCD-v0, RenaultNissan-v0, ApacheProject-v0, AppleAppStore-v0 | Uniaxial |
 | Extended | CooperativeNegotiation-v0, ReputationMarket-v0 | Uniaxial |
 | TR-3 | TeamProduction-v0, LoyaltyTeam-v0, CoalitionFormation-v0, ApacheProject-v0, PublicGoods-v0 | Uniaxial |
+| TR-4 | ReciprocalDilemma-v0, GiftExchange-v0, IndirectReciprocity-v0, GraduatedSanction-v0, AppleAppStore-v0 | Uniaxial |
 
 ### 4.2 Planned Environment Categories (v2.x)
 

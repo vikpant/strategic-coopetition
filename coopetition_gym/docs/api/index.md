@@ -27,7 +27,7 @@ Complete API documentation for **Coopetition-Gym v0.3.0**.
 import coopetition_gym
 
 # Version and metadata
-coopetition_gym.__version__  # '0.2.0'
+coopetition_gym.__version__  # '0.3.0'
 coopetition_gym.__author__   # 'Vik Pant, Eric Yu'
 
 # List available environments
@@ -273,7 +273,7 @@ Return the package version string.
 
 | Type | Description |
 |------|-------------|
-| `str` | Version in semver format (e.g., `"0.2.0"`) |
+| `str` | Version in semver format (e.g., `"0.3.0"`) |
 
 ---
 
