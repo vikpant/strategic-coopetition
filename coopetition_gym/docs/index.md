@@ -519,6 +519,7 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 - [Quick Start](tutorials/quickstart.md)
 
 ### Reference
+- [Environment Finder](finder/index.html) - Interactive tool to match research questions to environments
 - [Environment Reference](environments/index.md)
 - [API Documentation](api/index.md)
 - [Parameter Reference](theory/parameters.md)
