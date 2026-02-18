@@ -21,6 +21,7 @@ This library implements computational frameworks from peer-reviewed game-theoret
 
 **Validated Case Studies:**
 - S-LCD (Samsung-Sony): **58/60** validation score (TR-1 §8)
+- Renault-Nissan Alliance: **49/60** validation score (TR-2 §9)
 - Apache HTTP Server: **52/60** validation score (TR-3 §7)
 - Apple iOS App Store: **48/55** validation score (TR-4 §8)
 
