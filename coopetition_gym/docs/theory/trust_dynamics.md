@@ -563,8 +563,7 @@ trusted_env = coopetition_gym.make("TrustDilemma-v0",
 - [Parameter Reference](parameters.md)
 
 ### Benchmark Analysis
-- [Trust Dynamics Validation](../benchmarks/trust_dynamics.md)
-- [Algorithm Comparison](../benchmarks/algorithm_comparison.md)
+- [Benchmarks](../benchmarks/index.md) (forthcoming)
 
 ---
 
