@@ -70,7 +70,7 @@ The theoretical foundations are organized into four pillars, all of which are cu
 | **1** | TR-1 ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) | Interdependence & Complementarity | ✓ Implemented |
 | **2** | TR-2 ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) | Trust & Reputation Dynamics | ✓ Implemented |
 | **3** | TR-3 ([arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) | Collective Action & Loyalty | ✓ Implemented |
-| **4** | TR-4 *(forthcoming)* | Sequential Interaction & Reciprocity | ✓ Implemented |
+| **4** | TR-4 ([arXiv:2604.01240](https://arxiv.org/abs/2604.01240)) | Sequential Interaction & Reciprocity | ✓ Implemented |
 
 See [Implementation Roadmap](../roadmap.md) for development timeline and planned features.
 
@@ -371,7 +371,7 @@ If you use the theoretical framework in your research, please cite:
   title={Computational Foundations for Strategic Coopetition:
          Formalizing Sequential Interaction and Reciprocity},
   author={Pant, Vik and Yu, Eric},
-  note={Forthcoming},
+  journal={arXiv preprint arXiv:2604.01240},
   year={2026}
 }
 ```

@@ -222,6 +222,6 @@ ReciprocalDilemma-v0 is suitable for studying:
 
 ## References
 
-1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Forthcoming*.
+1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *arXiv:2604.01240*. [Link](https://arxiv.org/abs/2604.01240)
 2. Axelrod, R. (1984). The Evolution of Cooperation. Basic Books.
 3. Killingback, T. & Doebeli, M. (2002). The Continuous Prisoner's Dilemma and the Evolution of Cooperation through Reciprocal Altruism with Variable Investment. American Naturalist.

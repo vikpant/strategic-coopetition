@@ -366,7 +366,7 @@ env_biaxial = coopetition_gym.make("ValueCapture-v0")
 
 3. Pant, V., & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty. *arXiv:2601.16237*.
 
-4. Pant, V., & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Forthcoming*.
+4. Pant, V., & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *arXiv:2604.01240*. [Link](https://arxiv.org/abs/2604.01240)
 
 ---
 

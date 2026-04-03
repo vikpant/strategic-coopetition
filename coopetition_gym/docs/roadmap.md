@@ -19,7 +19,7 @@ Coopetition-Gym implements a coordinated research program examining strategic co
 | **1** | Interdependence & Complementarity | TR-1 ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) | ✓ Implemented |
 | **2** | Trust & Reputation Dynamics | TR-2 ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) | ✓ Implemented |
 | **3** | Collective Action & Loyalty | TR-3 ([arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) | ✓ Implemented |
-| **4** | Sequential Interaction & Reciprocity | TR-4 *(forthcoming)* | ✓ Implemented |
+| **4** | Sequential Interaction & Reciprocity | TR-4 ([arXiv:2604.01240](https://arxiv.org/abs/2604.01240)) | ✓ Implemented |
 
 ---
 
@@ -156,11 +156,9 @@ U_i = π_i^{team} + L_i
 
 ---
 
-## Planned Implementation
+### Pillar 4: Sequential Interaction & Reciprocity (TR-4, [arXiv:2604.01240](https://arxiv.org/abs/2604.01240)) ✓
 
-### Pillar 4: Sequential Interaction & Reciprocity (TR-4)
-
-**Status**: ✓ Implemented | **Environments**: 5
+**Status**: Fully Implemented | **Environments**: 5 | **Validation**: 48/55 (87.3%) against Apple App Store case study
 
 **Implemented Components**:
 
@@ -296,9 +294,7 @@ See [Contributing Guide](contributing.md) for:
 
 3. Pant, V. & Yu, E. (2025). Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty. *arXiv:2601.16237*
 
-### Forthcoming Technical Reports
-
-4. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Forthcoming*.
+4. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *arXiv:2604.01240*
 
 ### Foundational Work
 

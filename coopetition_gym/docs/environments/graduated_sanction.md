@@ -224,7 +224,7 @@ GraduatedSanction-v0 is suitable for studying:
 
 ## References
 
-1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Forthcoming*.
+1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *arXiv:2604.01240*. [Link](https://arxiv.org/abs/2604.01240)
 2. Ostrom, E. (1990). Governing the Commons: The Evolution of Institutions for Collective Action. Cambridge University Press.
 3. Ostrom, E., Walker, J. & Gardner, R. (1992). Covenants With and Without a Sword: Self-Governance Is Possible. American Political Science Review.
 4. Fehr, E. & Gächter, S. (2000). Cooperation and Punishment in Public Goods Experiments. American Economic Review.

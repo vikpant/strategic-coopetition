@@ -239,6 +239,6 @@ GiftExchange-v0 is suitable for studying:
 
 ## References
 
-1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Forthcoming*.
+1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *arXiv:2604.01240*. [Link](https://arxiv.org/abs/2604.01240)
 2. Fehr, E., Kirchsteiger, G. & Riedl, A. (1993). Does Fairness Prevent Market Clearing? An Experimental Investigation. Quarterly Journal of Economics.
 3. Akerlof, G. A. (1982). Labor Contracts as Partial Gift Exchange. Quarterly Journal of Economics.
