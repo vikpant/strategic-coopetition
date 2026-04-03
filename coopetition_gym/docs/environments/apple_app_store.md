@@ -306,6 +306,6 @@ for phase, trusts in phase_data.items():
 
 ## References
 
-1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Forthcoming*.
+1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *arXiv:2604.01240*. [Link](https://arxiv.org/abs/2604.01240)
 2. Parker, G. G., Van Alstyne, M. W. & Choudary, S. P. (2016). Platform Revolution. W. W. Norton.
 3. Rochet, J.-C. & Tirole, J. (2003). Platform Competition in Two-Sided Markets. Journal of the European Economic Association.

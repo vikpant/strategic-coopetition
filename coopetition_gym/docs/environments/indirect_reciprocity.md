@@ -207,7 +207,7 @@ IndirectReciprocity-v0 is suitable for studying:
 
 ## References
 
-1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *Forthcoming*.
+1. Pant, V. & Yu, E. (2026). Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity. *arXiv:2604.01240*. [Link](https://arxiv.org/abs/2604.01240)
 2. Nowak, M. A. & Sigmund, K. (1998). Evolution of Indirect Reciprocity by Image Scoring. Nature.
 3. Nowak, M. A. & Sigmund, K. (2005). Evolution of Indirect Reciprocity. Nature.
 4. Panchanathan, K. & Boyd, R. (2004). Indirect Reciprocity Can Stabilize Cooperation Without the Second-Order Free Rider Problem. Nature.

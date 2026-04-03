@@ -58,7 +58,7 @@ print(f"Action space: {env.action_space}")
 - **TR-1**: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802)
 - **TR-2**: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/abs/2510.24909)
 - **TR-3**: [Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty](https://arxiv.org/abs/2601.16237)
-- **TR-4**: Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity *(forthcoming)*
+- **TR-4**: [Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity](https://arxiv.org/abs/2604.01240)
 
 ### Key Features
 
@@ -498,7 +498,7 @@ If you use Coopetition-Gym in your research, please cite:
 @article{pant2026tr4,
   title = {Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity},
   author = {Pant, Vik and Yu, Eric},
-  note = {Forthcoming},
+  journal = {arXiv preprint arXiv:2604.01240},
   year = {2026}
 }
 ```

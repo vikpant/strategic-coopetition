@@ -17,7 +17,7 @@ This library implements computational frameworks from peer-reviewed game-theoret
 | **TR-1** ([arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) | Interdependence & Complementarity | Value functions, synergy, coopetitive equilibrium |
 | **TR-2** ([arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) | Trust Dynamics | Asymmetric updating, negativity bias, hysteresis |
 | **TR-3** ([arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) | Collective Action & Loyalty | Team production, loyalty mechanisms, coalition dynamics |
-| **TR-4** *(forthcoming)* | Sequential Interaction & Reciprocity | Memory-bounded reciprocity, graduated sanctions, platform dynamics |
+| **TR-4** ([arXiv:2604.01240](https://arxiv.org/abs/2604.01240)) | Sequential Interaction & Reciprocity | Memory-bounded reciprocity, graduated sanctions, platform dynamics |
 
 **Validated Case Studies:**
 - S-LCD (Samsung-Sony): **58/60** validation score (TR-1 §8)
@@ -421,9 +421,9 @@ If you use this library in your research, please cite:
 }
 
 @article{pant2026reciprocity,
-  title = {Sequential Interaction and Reciprocity in Coopetitive Relationships},
+  title = {Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity},
   author = {Pant, Vik and Yu, Eric},
-  note = {Forthcoming},
+  journal = {arXiv preprint arXiv:2604.01240},
   year = {2026}
 }
 ```
