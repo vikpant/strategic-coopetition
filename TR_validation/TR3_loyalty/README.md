@@ -250,7 +250,7 @@ This validation suite is part of a coordinated research program on computational
 | TR-1 | Interdependence & Complementarity | [2510.18802](https://arxiv.org/abs/2510.18802) |
 | TR-2 | Trust and Reputation Dynamics | [2510.24909](https://arxiv.org/abs/2510.24909) |
 | **TR-3** (this work) | Collective Action & Loyalty | [2601.16237](https://arxiv.org/abs/2601.16237) |
-| TR-4 | Sequential Interaction & Reciprocity | forthcoming |
+| TR-4 | Sequential Interaction & Reciprocity | [2604.01240](https://arxiv.org/abs/2604.01240) |
 
 ## Citation
 

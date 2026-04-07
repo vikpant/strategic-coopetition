@@ -19,7 +19,7 @@ The research program comprises four technical reports, each addressing a fundame
 | TR-1 | Interdependence & Complementarity | [2510.18802](https://arxiv.org/abs/2510.18802) | [TR1_foundations/](TR1_foundations/) |
 | TR-2 | Trust and Reputation Dynamics | [2510.24909](https://arxiv.org/abs/2510.24909) | [TR2_trust/](TR2_trust/) |
 | TR-3 | Collective Action & Loyalty | [2601.16237](https://arxiv.org/abs/2601.16237) | [TR3_loyalty/](TR3_loyalty/) |
-| TR-4 | Sequential Interaction & Reciprocity | (forthcoming) | [TR4_reciprocity/](TR4_reciprocity/) |
+| TR-4 | Sequential Interaction & Reciprocity | [2604.01240](https://arxiv.org/abs/2604.01240) | [TR4_reciprocity/](TR4_reciprocity/) |
 
 ## Validation Methodology
 
@@ -54,7 +54,7 @@ TR_validation/
 │   ├── README.md
 │   ├── TR3_validation_suite.py
 │   └── requirements.txt
-└── TR4_reciprocity/             # Reciprocity validation (forthcoming)
+└── TR4_reciprocity/             # Reciprocity validation (arXiv:2604.01240)
     └── LICENSE
 ```
 
@@ -146,6 +146,15 @@ If you use these validation suites in your research, please cite the relevant te
   year={2025},
   institution={University of Toronto},
   note={arXiv:2601.16237}
+}
+
+@techreport{pant2026reciprocity,
+  title={Computational Foundations for Strategic Coopetition:
+         Formalizing Sequential Interaction and Reciprocity},
+  author={Pant, Vik and Yu, Eric},
+  year={2026},
+  institution={University of Toronto},
+  note={arXiv:2604.01240}
 }
 ```
 
