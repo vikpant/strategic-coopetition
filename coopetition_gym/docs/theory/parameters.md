@@ -387,6 +387,24 @@ For parameter validation methodology:
   year={2025},
   note={Section 7: Parameter validation; 78,125 configurations}
 }
+
+@article{pant2026tr3,
+  title={Computational Foundations for Strategic Coopetition:
+         Formalizing Collective Action and Loyalty},
+  author={Pant, Vik and Yu, Eric},
+  journal={arXiv preprint arXiv:2601.16237},
+  year={2026},
+  note={Loyalty parameters: $\phi_B$=0.8, $\phi_C$=0.3; Apache validation 52/60}
+}
+
+@article{pant2026tr4,
+  title={Computational Foundations for Strategic Coopetition:
+         Formalizing Sequential Interaction and Reciprocity},
+  author={Pant, Vik and Yu, Eric},
+  journal={arXiv preprint arXiv:2604.01240},
+  year={2026},
+  note={Reciprocity parameters: $\rho_0$, $\eta$, $\kappa$, $k$; Apple App Store validation 48/55}
+}
 ```
 
 ---

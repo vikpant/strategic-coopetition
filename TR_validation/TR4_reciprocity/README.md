@@ -10,7 +10,7 @@ This repository contains the validation suite for the technical report:
 > **Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity**
 > Vik Pant, Eric Yu
 > Faculty of Information, University of Toronto
-> arXiv: (forthcoming)
+> arXiv: [2604.01240](https://arxiv.org/abs/2604.01240)
 
 The validation suite provides complete reproducibility for all experimental and empirical validation results presented in Sections 7-8 of the technical report.
 
@@ -140,12 +140,13 @@ Validation uses a 12-indicator x 5-phase scoring matrix (48.0/55 applicable poin
 ## Citation
 
 ```bibtex
-@techreport{pant2025reciprocity,
+@techreport{pant2026reciprocity,
   title={Computational Foundations for Strategic Coopetition:
          Formalizing Sequential Interaction and Reciprocity},
   author={Pant, Vik and Yu, Eric},
-  year={2025},
-  institution={University of Toronto}
+  year={2026},
+  institution={University of Toronto},
+  note={arXiv:2604.01240}
 }
 ```
 

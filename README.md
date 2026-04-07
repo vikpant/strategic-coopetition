@@ -17,7 +17,7 @@ and reinforcement learning.
 - [arXiv:2510.18802](https://arxiv.org/abs/2510.18802) — Formalizing Interdependence and Complementarity (TR-1)
 - [arXiv:2510.24909](https://arxiv.org/abs/2510.24909) — Formalizing Trust and Reputation Dynamics (TR-2)
 - [arXiv:2601.16237](https://arxiv.org/abs/2601.16237) — Formalizing Collective Action and Loyalty (TR-3)
-- Formalizing Sequential Interaction and Reciprocity (TR-4) [Forthcoming]
+- [arXiv:2604.01240](https://arxiv.org/abs/2604.01240) — Formalizing Sequential Interaction and Reciprocity (TR-4)
 
 #### Connect
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/vikpant)
