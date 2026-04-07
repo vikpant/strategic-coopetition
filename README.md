@@ -5,13 +5,14 @@ Faculty of Information, University of Toronto
 
 #### Research Program
 I develop computational techniques for modeling strategic coopetition 
-by formalizing how actors cooperate and compete simultaneously in multi-agent systems. 
+by formalizing how actors cooperate and compete simultaneously in mixed motive 
+multi-agent environments. 
 My research bridges conceptual modeling with computational game theory 
 and reinforcement learning.
 
 #### Current Projects
 - 📄 **strategic-coopetition**: Computational frameworks for modeling interdependence, 
-  complementarity, trust, reciprocity, and collective action under concomitant cooperation and competition.
+  complementarity, trust, reciprocity, and loyalty under concomitant cooperation and competition.
 
 #### Technical Reports
 - [arXiv:2510.18802](https://arxiv.org/abs/2510.18802) — Formalizing Interdependence and Complementarity (TR-1)
