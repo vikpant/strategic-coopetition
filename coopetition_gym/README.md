@@ -453,7 +453,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 ## 👥 Authors
 
 - **Vik Pant, PhD** - Faculty of Information, University of Toronto
-- **Eric Yu, PhD** - Faculty of Information, University of Toronto
+- **Eric Yu, PhD** - Faculty of Information and Department of Computer Science, University of Toronto
 
 ## 🤝 Contributing
 

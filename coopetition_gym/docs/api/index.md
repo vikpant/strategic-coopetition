@@ -291,8 +291,9 @@ Print package information including version, authors, and available environments
 import coopetition_gym
 coopetition_gym.info()
 # Coopetition-Gym v0.3.0
-# Authors: Vik Pant, Eric Yu
-# Faculty of Information, University of Toronto
+# Authors:
+#   Vik Pant - Faculty of Information, University of Toronto
+#   Eric Yu  - Faculty of Information and Department of Computer Science, University of Toronto
 # ...
 ```
 

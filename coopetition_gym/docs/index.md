@@ -470,7 +470,7 @@ If you use Coopetition-Gym in your research, please cite:
   title = {Coopetition-Gym: Multi-Agent RL Environments for Strategic Coopetition},
   author = {Pant, Vik and Yu, Eric},
   year = {2025},
-  institution = {Faculty of Information, University of Toronto},
+  institution = {Faculty of Information and Department of Computer Science, University of Toronto},
   url = {https://github.com/your-org/strategic-coopetition}
 }
 

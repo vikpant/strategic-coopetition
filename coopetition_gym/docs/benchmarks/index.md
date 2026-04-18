@@ -15,6 +15,6 @@ For questions about benchmarks, please contact the authors.
   title = {Coopetition-Gym: Environments for Mixed-Motive Multi-Agent Reinforcement Learning},
   author = {Pant, Vik and Yu, Eric},
   year = {2026},
-  institution = {Faculty of Information, University of Toronto}
+  institution = {Faculty of Information and Department of Computer Science, University of Toronto}
 }
 ```
