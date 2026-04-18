@@ -20,10 +20,12 @@ This library implements computational frameworks from peer-reviewed game-theoret
 | **TR-4** ([arXiv:2604.01240](https://arxiv.org/abs/2604.01240)) | Sequential Interaction & Reciprocity | Memory-bounded reciprocity, graduated sanctions, platform dynamics |
 
 **Validated Case Studies:**
-- S-LCD (Samsung-Sony): **58/60** validation score (TR-1 §8)
-- Renault-Nissan Alliance: **49/60** validation score (TR-2 §9)
-- Apache HTTP Server: **52/60** validation score (TR-3 §7)
-- Apple iOS App Store: **48/55** validation score (TR-4 §8)
+- S-LCD (Samsung-Sony): **58/60** validation score — 96.7% (TR-1 §8)
+- Renault-Nissan Alliance: **49/60** validation score — 81.7% (TR-2 §9)
+- Apache HTTP Server: **52/60** validation score — 86.7% (TR-3 §7)
+- Apple iOS App Store: **48/55** validation score — 87.3% (TR-4 §8)
+
+**Accompanying NeurIPS paper (under review):** Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* NeurIPS 2026 Evaluations and Datasets Track. Releases a 25,708-file training dataset and a 1,116-file behavioral audit dataset alongside this benchmark suite. See [REPRODUCE.md](../REPRODUCE.md) for reproduction instructions.
 
 ## 🚀 Quick Start
 
@@ -206,6 +208,22 @@ U_recip = λ_R Σ T_ij · (1 + ω·D_ij) · ρ_ij · φ(s_ij)
 ```
 
 Agents condition behavior on observed partner actions over a bounded memory window (k = 3-10 steps). Higher dependency creates stronger reciprocal responses.
+
+## 🎯 Game-Theoretic Oracles
+
+Seven oracle policies provide non-learning reference points for algorithmic comparison. Each oracle applies to a specific mechanism class.
+
+| Oracle | Role | Covers |
+|---|---|---|
+| `Oracle_Equilibrium` | TR-1 interdependence equilibrium (Nash reference) | DynamicPartnerSelection, PartnerHoldUp, PlatformEcosystem, SynergySearch, RenaultNissan |
+| `Oracle_TrustAware` | TR-2 trust-aware equilibrium | CooperativeNegotiation, RecoveryRace, ReputationMarket, SLCD, TrustDilemma |
+| `Oracle_Nash` | TR-3 Nash equilibrium (lower bound) | ApacheProject, CoalitionFormation, LoyaltyTeam, PublicGoods, TeamProduction |
+| `Oracle_Loyalty` | TR-3 social optimum (upper bound) | All 5 TR-3 environments |
+| `Oracle_SocialOptimum` | TR-3 social optimum (equivalent to Oracle_Loyalty) | All 5 TR-3 environments |
+| `Oracle_ReciprocityEquilibrium` | TR-4 Nash-style equilibrium (lower bound) | ReciprocalDilemma, GiftExchange, IndirectReciprocity, GraduatedSanction, AppleAppStore |
+| `Oracle_BoundedReciprocity` | TR-4 cooperation upper bound | All 5 TR-4 environments |
+
+Trained reinforcement learning algorithms can be compared against these oracles to assess how closely they approach the Nash equilibrium (lower bound) or the social optimum (upper bound) for each mechanism class.
 
 ## 🧪 Training with RL Algorithms
 
