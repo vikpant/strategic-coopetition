@@ -5,7 +5,7 @@ Faculty of Information, University of Toronto
 
 #### Research Program
 I develop computational techniques for modeling strategic coopetition
-by formalizing how actors cooperate and compete simultaneously in mixed motive
+by formalizing how actors cooperate and compete simultaneously in mixed-motive
 multi-agent environments.
 My research bridges conceptual modeling with computational game theory
 and reinforcement learning.

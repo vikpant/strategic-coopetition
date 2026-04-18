@@ -84,7 +84,7 @@ All scripts write results to `results/` with the same filename structure used in
 
 ## 4. Regenerating the Training Dataset from Scratch
 
-> **Warning**: Full regeneration requires approximately 3,400 GPU-hours across 18 training algorithms × 20 environments × 3 reward conditions × 7 seeds. Expected cost on commodity cloud GPUs (RTX 4090): approximately $3,400 at $1/GPU-hour spot pricing.
+> **Warning**: Full regeneration requires approximately 3,400 GPU-hours across 16 training algorithms × 20 environments × 3 reward conditions × 7 seeds. The original campaign cost approximately $8,100 USD on commodity cloud GPUs (NVIDIA RTX 4090). Rates vary by provider and hardware generation; budget accordingly.
 
 ### 4.1 Single-experiment launch
 
@@ -161,11 +161,12 @@ Seeds are passed to `numpy.random.default_rng()`, `torch.manual_seed()`, and the
 
 ### 6.2 Algorithms
 
-Eighteen training algorithms:
+Sixteen training algorithms:
 
-- **CTDE (centralized training, decentralized execution)**: MADDPG, MATD3, M3DDPG, MASAC, QMIX, VDN, COMA, MAPPO, MeanFieldAC, FCP
-- **Independent learning**: ISAC, IPPO, IA2C, SelfPlay_PPO, LOLA, IndependentREINFORCE
-- **Heuristic**: Random, TitForTat
+- **CTDE (centralized training, decentralized execution)** — 9: MADDPG, MATD3, M3DDPG, MASAC, QMIX, VDN, COMA, MAPPO, MeanFieldAC
+- **Independent learning** — 7: ISAC, IPPO, IA2C, FCP, SelfPlay_PPO, LOLA, IndependentREINFORCE
+
+Two heuristic baselines (no training): Random, TitForTat
 
 Seven game-theoretic oracles:
 
@@ -181,7 +182,7 @@ One hundred and one constant-action policies (cooperation fractions from 0 to 1 
 
 ### 6.3 Hardware
 
-The original campaign used 7 Vast.ai cloud instances with RTX 4090, RTX 3090, and RTX 2080Ti GPUs. All training results are hardware-invariant within floating-point tolerance because seeds are propagated through PyTorch's deterministic mode. No GPU is required for the behavioral audit.
+The original campaign used 7 cloud GPU instances with RTX 4090, RTX 3090, and RTX 2080Ti GPUs. All training results are hardware-invariant within floating-point tolerance because seeds are propagated through PyTorch's deterministic mode. No GPU is required for the behavioral audit.
 
 ## 7. Known Deviations
 
