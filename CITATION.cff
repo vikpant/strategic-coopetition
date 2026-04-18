@@ -1,0 +1,98 @@
+cff-version: 1.2.0
+message: "If you use this software or the accompanying datasets in your research, please cite the technical reports and, if applicable, the forthcoming NeurIPS 2026 paper."
+title: "Strategic Coopetition: Coopetition-Gym benchmark and reproducibility package"
+type: software
+authors:
+  - family-names: Pant
+    given-names: Vik
+    affiliation: "Faculty of Information, University of Toronto"
+    orcid: "https://orcid.org/0000-0002-9017-7466"
+  - family-names: Yu
+    given-names: Eric
+    affiliation: "Faculty of Information, University of Toronto"
+repository-code: "https://github.com/vikpant/strategic-coopetition"
+url: "https://github.com/vikpant/strategic-coopetition"
+keywords:
+  - multi-agent reinforcement learning
+  - mixed-motive games
+  - coopetition
+  - benchmark
+  - PettingZoo
+  - Gymnasium
+  - trust dynamics
+  - collective action
+  - reciprocity
+  - interdependence
+license: MIT
+version: "1.0.0"
+date-released: "2026-04-18"
+
+# Preferred citation: when the NeurIPS 2026 paper is accepted and published,
+# users should cite the paper. While under review, users may cite this
+# software release directly.
+preferred-citation:
+  type: article
+  title: "Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation"
+  authors:
+    - family-names: Pant
+      given-names: Vik
+      affiliation: "Faculty of Information, University of Toronto"
+    - family-names: Yu
+      given-names: Eric
+      affiliation: "Faculty of Information, University of Toronto"
+  year: 2026
+  journal: "NeurIPS 2026 Evaluations and Datasets Track (under review)"
+  notes: "Update this entry to the proceedings citation after acceptance."
+
+references:
+  - type: article
+    title: "Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity"
+    authors:
+      - family-names: Pant
+        given-names: Vik
+      - family-names: Yu
+        given-names: Eric
+    year: 2025
+    journal: "arXiv preprint"
+    identifiers:
+      - type: other
+        value: "arXiv:2510.18802"
+
+  - type: article
+    title: "Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics"
+    authors:
+      - family-names: Pant
+        given-names: Vik
+      - family-names: Yu
+        given-names: Eric
+    year: 2025
+    journal: "arXiv preprint"
+    identifiers:
+      - type: other
+        value: "arXiv:2510.24909"
+
+  - type: article
+    title: "Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty"
+    authors:
+      - family-names: Pant
+        given-names: Vik
+      - family-names: Yu
+        given-names: Eric
+    year: 2026
+    journal: "arXiv preprint"
+    identifiers:
+      - type: other
+        value: "arXiv:2601.16237"
+
+  - type: article
+    title: "Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity"
+    authors:
+      - family-names: Pant
+        given-names: Vik
+      - family-names: Yu
+        given-names: Eric
+    year: 2026
+    journal: "arXiv preprint"
+    identifiers:
+      - type: other
+        value: "arXiv:2604.01240"

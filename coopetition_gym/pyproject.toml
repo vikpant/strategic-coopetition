@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coopetition-gym"
-version = "0.3.0"
+version = "1.0.0"
 description = "Multi-agent RL environments for strategic coopetition with trust dynamics, collective action, and PettingZoo support"
 readme = "README.md"
 license = {text = "MIT"}
