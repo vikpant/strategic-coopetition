@@ -9,8 +9,8 @@
 This repository contains the validation suite for the technical report:
 
 > **Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty**
-> Vik Pant, Eric Yu
-> Faculty of Information, University of Toronto
+> Vik Pant — Faculty of Information, University of Toronto
+> Eric Yu — Faculty of Information and Department of Computer Science, University of Toronto
 > arXiv: [2601.16237](https://arxiv.org/abs/2601.16237)
 
 The validation suite provides complete reproducibility for all experimental and empirical validation results presented in Sections 6-7 of the technical report.
@@ -270,10 +270,9 @@ If you use this validation suite in your research, please cite:
 
 ## Authors
 
-- **Vik Pant** - [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
-- **Eric Yu** - [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
+- **Vik Pant** — Faculty of Information, University of Toronto — [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
+- **Eric Yu** — Faculty of Information and Department of Computer Science, University of Toronto — [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
 
-Faculty of Information
 University of Toronto
 140 St George St, Toronto, ON M5S 3G6, Canada
 
