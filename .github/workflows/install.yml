@@ -17,6 +17,12 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ['3.10', '3.12']
 
+    # Use bash on every runner so the heredoc syntax below works on Windows
+    # too (Windows GitHub runners default to PowerShell otherwise).
+    defaults:
+      run:
+        shell: bash
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -32,12 +38,20 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e .
 
+      # All verification steps run from ``coopetition_gym/`` so that cwd-based
+      # import resolution finds the inner ``coopetition_gym/coopetition_gym/``
+      # package (which has ``__init__.py``) rather than the outer folder (which
+      # has no top-level ``__init__.py`` and would otherwise be resolved as a
+      # namespace package with no public API).
+
       - name: Verify imports and environment registration
+        working-directory: coopetition_gym
         run: |
           python -c "import coopetition_gym; print('coopetition_gym version:', coopetition_gym.__version__ if hasattr(coopetition_gym, '__version__') else 'installed')"
           python -c "import coopetition_gym; envs = coopetition_gym.list_environments(); print(f'Registered {len(envs)} environments'); assert len(envs) >= 20, f'Expected >=20 environments, found {len(envs)}'"
 
       - name: Verify Gymnasium API
+        working-directory: coopetition_gym
         run: |
           python - <<'PY'
           import coopetition_gym
@@ -52,6 +66,7 @@ jobs:
           PY
 
       - name: Verify PettingZoo Parallel API
+        working-directory: coopetition_gym
         run: |
           python - <<'PY'
           import coopetition_gym
