@@ -29,3 +29,8 @@ htmlcov/
 
 # Type checking
 .mypy_cache/
+
+# Experiment outputs (default directories for experiments/campaign.py etc.)
+results/
+data/
+texput.log
