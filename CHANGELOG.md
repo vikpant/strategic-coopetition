@@ -4,6 +4,54 @@ All notable changes to this project are documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] — 2026-04-19
+
+### Documentation clarifications
+
+- **Clarified role of `core/collective_action.py`** — module docstring
+  rewritten to state that this module provides support utilities
+  (dataclasses, state-tracking containers) used by the TR-3
+  environments, and that the authoritative TR-3 paper formalism is
+  implemented in `envs/collective_action_envs.py`. No code changes.
+- **Clarified role of `core/reciprocity.py`** — module docstring
+  rewritten to state that this module provides support utilities used
+  by the TR-4 environments, and that the authoritative TR-4 paper
+  formalism is implemented in `envs/reciprocity_envs.py`. No code
+  changes.
+- **Added architectural pointer to `envs/collective_action_envs.py`** —
+  module docstring now explicitly identifies this file as the
+  authoritative TR-3 implementation and points to the `core/` helper
+  location.
+- **Added architectural pointer to `envs/reciprocity_envs.py`** —
+  module docstring now explicitly identifies this file as the
+  authoritative TR-4 implementation and points to the `core/` helper
+  location.
+
+### Provenance notes
+
+- The code state that produced the 25,708-file training dataset and
+  the 1,116-file behavioral audit dataset is preserved at the git tag
+  `v1.0.0-campaign` on `master`. Users who require byte-exact
+  reproduction of campaign-era package behavior should pin to that
+  tag.
+- All 143 pytest tests pass on v1.0.1 with identical behavior to
+  v1.0.0. No computational code, no class or function signatures, no
+  import paths, and no numerical outputs have changed.
+
+### Not changed
+
+- `experiments/` reproducibility package (unchanged)
+- Algorithm implementations (unchanged)
+- Dataset formats or contents (unchanged)
+- `coopetition_gym` public API surface (unchanged)
+- Class and function names in `core/collective_action.py` and
+  `core/reciprocity.py` (unchanged; these remain stable across v1.x).
+  Consolidation of these helper modules into `envs/` or renaming to
+  `core/*_support.py` is reserved for v2.0.0, where a SemVer-major
+  break is already planned.
+
+---
+
 ## [1.0.0] — 2026-04-18
 
 ### Added

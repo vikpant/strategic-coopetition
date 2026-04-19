@@ -3,7 +3,15 @@
 COOPETITION-GYM: Reciprocity Environments (TR-4 Category)
 ================================================================================
 
-Technical Report: TR-4 (forthcoming)
+AUTHORITATIVE TR-4 implementation. The full paper formalism
+(cooperation signal, memory-windowed baseline, bounded response,
+reciprocity sensitivity, trust-gated reciprocity modifier, and
+complete utility) is implemented in this file via the TR4Parameters
+dataclass and its helper functions. Auxiliary state-tracking utilities
+(ReciprocityParameters, ReciprocityState, ReciprocityModel) live in
+core/reciprocity.py.
+
+Technical Report: TR-4 (arXiv:2604.01240)
 Title: Computational Foundations for Strategic Coopetition:
        Formalizing Sequential Interaction and Reciprocity
 
