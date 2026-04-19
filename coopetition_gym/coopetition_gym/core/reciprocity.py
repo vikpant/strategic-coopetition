@@ -1,32 +1,53 @@
 """
 ================================================================================
-COOPETITION-GYM: Sequential Interaction & Reciprocity Module (TR-4)
+COOPETITION-GYM: TR-4 Support Utilities (Sequential Interaction & Reciprocity)
 ================================================================================
 
-This module will implement TR-4 when available. Currently provides skeleton
-interfaces for forward compatibility.
+Technical Report: TR-4 (arXiv:2604.01240)
+Title: Computational Foundations for Strategic Coopetition:
+       Formalizing Sequential Interaction and Reciprocity
 
-TR-4 Focus Areas:
------------------
-1. Conditional Cooperation
-   - "I cooperate if you cooperated"
-   - Threshold-based reciprocity
-   - Gradual vs. binary responses
+Role in the package
+-------------------
+This module provides SUPPORT UTILITIES used by the TR-4 environments:
+parameter dataclasses for forgiveness and punishment logic,
+state-tracking containers for cooperation history and punishment
+counters, and helper functions used internally by the TR-4 environment
+classes.
 
-2. Sequential Reciprocity
-   - Turn-based reaction dynamics
-   - Observation before action
-   - Strategic timing of cooperation/defection
+It is NOT the authoritative implementation of the TR-4 paper formalism.
 
-3. Forgiveness & Punishment
-   - Recovery from defection episodes
-   - Punishment severity and duration
-   - Forgiveness conditions
+Authoritative TR-4 implementation
+---------------------------------
+The authoritative implementation of the TR-4 mathematical formalism ---
+cooperation signal s_ij = a_j - ā_j (Eq 19), memory-windowed baseline
+(Eq 20), bounded response φ(x) = tanh(κx) (Eq 21), reciprocity
+sensitivity ρ_ij = ρ_0·D_ij^η (Eq 23), trust-gated reciprocity modifier
+U_recip = λ_R Σ T_ij·(1 + ω·D_ij)·ρ_ij·φ(s_ij) (Eq 44), and the
+complete utility U_i = π_base + U_interdep + U_trust + U_recip (Eq 45)
+--- lives in envs/reciprocity_envs.py. See the TR4Parameters dataclass
+and accompanying helper functions (cooperation_signal, memory_average,
+bounded_response, reciprocity_sensitivity, trust_gated_reciprocity) there.
 
-4. History Dependence
-   - How past trajectories shape present choices
-   - Memory horizons
-   - Weighted recency effects
+Exposed names (stable public API in v1.x)
+-----------------------------------------
+- ReciprocityParameters: auxiliary params for forgiveness/punishment logic
+- ReciprocityState: state-tracking container (cooperation history,
+  punishment counters, forgiveness counters, grim-trigger flags)
+- ReciprocityModel: small wrapper providing helper methods
+
+These names are stable across v1.x. A cleaner architectural consolidation
+(merging these support utilities into envs/reciprocity_envs.py or renaming
+to core/reciprocity_support.py) is planned for v2.0.0.
+
+TR-4 focus areas
+----------------
+1. Conditional cooperation: threshold-based reciprocity, gradual vs.
+   binary responses.
+2. Sequential reciprocity: turn-based reaction, observation before action.
+3. Forgiveness and punishment: recovery dynamics, punishment severity,
+   forgiveness conditions.
+4. History dependence: memory horizons, weighted recency.
 
 Authors: Vik Pant, Eric Yu
          Faculty of Information, University of Toronto
