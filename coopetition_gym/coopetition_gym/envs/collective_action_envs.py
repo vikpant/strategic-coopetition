@@ -3,6 +3,13 @@
 COOPETITION-GYM: Collective Action Environments (TR-3 Category)
 ================================================================================
 
+AUTHORITATIVE TR-3 implementation. The full paper formalism
+(team production Q, base team payoff, loyalty modifier, free-riding
+equilibrium) is implemented in this file via the TR3Parameters
+dataclass and its helper functions. Auxiliary state-tracking
+utilities (CollectiveActionParameters, CollectiveActionState,
+CollectiveActionModel) live in core/collective_action.py.
+
 Technical Report: TR-3 (arXiv:2601.16237)
 Title: Computational Foundations for Strategic Coopetition:
        Formalizing Collective Action and Loyalty

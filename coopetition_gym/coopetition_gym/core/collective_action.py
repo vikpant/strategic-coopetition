@@ -1,36 +1,53 @@
 """
 ================================================================================
-COOPETITION-GYM: Collective Action & Loyalty Module (TR-3)
+COOPETITION-GYM: TR-3 Support Utilities (Collective Action & Loyalty)
 ================================================================================
 
 Technical Report: TR-3 (arXiv:2601.16237)
 Title: Computational Foundations for Strategic Coopetition:
        Formalizing Collective Action and Loyalty
 
-This module implements TR-3 concepts. Currently provides skeleton
-interfaces for forward compatibility with full implementation planned for v0.2.x.
+Role in the package
+-------------------
+This module provides SUPPORT UTILITIES used by the TR-3 environments:
+dataclasses for free-rider parameters, state-tracking structures for
+loyalty scores and coalition membership, and helper functions used
+internally by the TR-3 environment classes.
 
-TR-3 Focus Areas:
------------------
-1. Collective Action Problems
-   - N-agent coordination challenges
-   - Critical mass thresholds for partnership success
-   - Free-rider detection and response
+It is NOT the authoritative implementation of the TR-3 paper formalism.
 
-2. Loyalty Dynamics
-   - Commitment persistence over time
-   - Loyalty rewards for sustained cooperation
-   - Defection penalties and exclusion mechanisms
+Authoritative TR-3 implementation
+---------------------------------
+The authoritative implementation of the TR-3 mathematical formalism ---
+team production Q(a) = ω(Σa_i)^β, base team payoff π_i^team = (1/n)Q(a) - c·a_i,
+loyalty modifier L_i = θ_i·[φ_B·π̄_{-i} + φ_C·c·a_i], and the
+free-riding equilibrium a* = (ωβ/(nc))^(1/(1-β)) --- lives in
+envs/collective_action_envs.py. See the TR3Parameters dataclass and
+accompanying helper functions (team_production, base_team_payoff,
+teammates_payoff, loyalty_modifier, loyalty_augmented_utility) there.
 
-3. Coalition Stability
-   - Conditions for partnership sustainability
-   - Entry/exit dynamics
-   - Minimum viable coalition size
+Exposed names (stable public API in v1.x)
+-----------------------------------------
+- CollectiveActionParameters: auxiliary params for free-rider and coalition logic
+- CollectiveActionState: state-tracking container (loyalty scores, coalition
+  membership, exclusion lists, coordination flags)
+- CollectiveActionModel: small wrapper providing helper methods
 
-Key Distinction:
+These names are stable across v1.x. A cleaner architectural consolidation
+(merging these support utilities into envs/collective_action_envs.py or
+renaming to core/collective_action_support.py) is planned for v2.0.0,
+where a SemVer-major break is acceptable.
+
+TR-3 focus areas
 ----------------
-TR-3 concerns INTERNAL partnership dynamics (coordination within coalition),
-NOT external market competition between firms.
+1. Collective action problems: N-agent coordination, critical mass,
+   free-rider detection.
+2. Loyalty dynamics: commitment persistence, loyalty rewards,
+   defection penalties, exclusion mechanisms.
+3. Coalition stability: entry/exit dynamics, minimum viable size.
+
+Key distinction: TR-3 concerns INTERNAL partnership dynamics
+(coordination within coalition), NOT external market competition.
 
 Authors: Vik Pant, Eric Yu
          Faculty of Information, University of Toronto
