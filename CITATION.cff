@@ -1,5 +1,5 @@
 cff-version: 1.2.0
-message: "If you use this software or the accompanying datasets in your research, please cite the technical reports and, if applicable, the forthcoming NeurIPS 2026 paper."
+message: "If you use this software or the accompanying datasets in your research, please cite the technical reports and, if applicable, the forthcoming companion research paper."
 title: "Strategic Coopetition: Coopetition-Gym benchmark and reproducibility package"
 type: software
 authors:
@@ -27,9 +27,9 @@ license: MIT
 version: "1.0.0"
 date-released: "2026-04-18"
 
-# Preferred citation: when the NeurIPS 2026 paper is accepted and published,
-# users should cite the paper. While under review, users may cite this
-# software release directly.
+# Preferred citation: until the companion research paper is published,
+# users may cite this software release directly. Update this entry to the
+# proceedings or journal citation once the companion paper is published.
 preferred-citation:
   type: article
   title: "Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation"
@@ -41,8 +41,8 @@ preferred-citation:
       given-names: Eric
       affiliation: "Faculty of Information, University of Toronto"
   year: 2026
-  journal: "NeurIPS 2026 Evaluations and Datasets Track (under review)"
-  notes: "Update this entry to the proceedings citation after acceptance."
+  journal: "Manuscript in preparation"
+  notes: "Update this entry to the proceedings or journal citation once the companion paper is published."
 
 references:
   - type: article

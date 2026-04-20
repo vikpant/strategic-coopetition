@@ -7,7 +7,8 @@ these values.
 
 The defaults in this file are the exact values used to produce the 25,708-file
 training dataset and the 1,116-file behavioral audit dataset released with the
-NeurIPS 2026 paper. Modifying a default does not change the released datasets.
+companion research paper. Modifying a default does not change the released
+datasets.
 Reproducing a paper result requires the default shown here.
 
 Grouping:
@@ -546,8 +547,8 @@ class SafetyConfig:
     """Safety defaults for long-running campaigns.
 
     All defaults are opt-out only: disabling them requires an explicit flag.
-    These values reflect lessons learned from the NeurIPS campaign where
-    lack of checkpoints caused 30-40 GPU-hours of lost work and disk
+    These values reflect lessons learned from the v1 training campaign
+    where lack of checkpoints caused 30-40 GPU-hours of lost work and disk
     pressure filled instances three times.
     """
 

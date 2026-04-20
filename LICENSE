@@ -27,7 +27,7 @@ Notes:
 This license covers the code in this repository, including:
 
   coopetition_gym/   the Python package (also covered by its own LICENSE file)
-  experiments/       the reproducibility package for the NeurIPS 2026 paper
+  experiments/       the reproducibility package for the companion research paper
   TR_validation/     the validation suites reproducing the technical reports
 
 Datasets released to HuggingFace Hub under the companion paper are licensed

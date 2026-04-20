@@ -45,7 +45,7 @@ for _ in range(100):
 
 ### Reproducing paper results
 
-See [REPRODUCE.md](REPRODUCE.md) for step-by-step instructions to reproduce the tables, figures, and datasets in the accompanying NeurIPS 2026 submission.
+See [REPRODUCE.md](REPRODUCE.md) for step-by-step instructions to reproduce the tables, figures, and datasets in the accompanying research paper.
 
 ---
 
@@ -55,8 +55,8 @@ See [REPRODUCE.md](REPRODUCE.md) for step-by-step instructions to reproduce the 
 - [arXiv:2601.16237](https://arxiv.org/abs/2601.16237) — Formalizing Collective Action and Loyalty (TR-3)
 - [arXiv:2604.01240](https://arxiv.org/abs/2604.01240) — Formalizing Sequential Interaction and Reciprocity (TR-4)
 
-#### Conference paper (under review)
-- Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Submitted to NeurIPS 2026 Evaluations and Datasets Track.
+#### Companion research paper
+- Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Manuscript in preparation.
 
 #### Validated Case Studies
 | Case study | Validation score | Technical report |
@@ -68,7 +68,7 @@ See [REPRODUCE.md](REPRODUCE.md) for step-by-step instructions to reproduce the 
 
 #### Citation
 
-If you use this work in your research, please cite the accompanying technical reports and the conference paper (BibTeX entries in [coopetition_gym/README.md](coopetition_gym/README.md#-citation)).
+If you use this work in your research, please cite the accompanying technical reports and the companion research paper (BibTeX entries in [coopetition_gym/README.md](coopetition_gym/README.md#-citation)).
 
 #### License
 

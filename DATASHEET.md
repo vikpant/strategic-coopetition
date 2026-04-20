@@ -2,7 +2,7 @@
 
 Following the framework proposed by Gebru et al., *Datasheets for Datasets*,
 Communications of the ACM (2021). This datasheet covers the two datasets
-released alongside the NeurIPS 2026 paper *Reward-Type Ablation Reveals
+released alongside the companion research paper *Reward-Type Ablation Reveals
 Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*.
 
 | Dataset | Purpose | Size | HuggingFace repo |
@@ -16,7 +16,7 @@ Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*.
 
 ### For what purpose were the datasets created?
 
-To support the NeurIPS 2026 paper submission demonstrating that algorithm
+To support the companion research paper demonstrating that algorithm
 rankings in mixed-motive multi-agent reinforcement learning are mechanism-
 dependent — specifically, that the dominance of Centralized Training with
 Decentralized Execution (CTDE) over independent learning breaks down
@@ -216,12 +216,12 @@ produce the paper's tables and figures from the raw JSON files.
 
 ### Has the dataset been used for any tasks already?
 
-The companion NeurIPS 2026 paper. No other uses at time of release.
+The companion research paper. No other uses at time of release.
 
 ### Is there a repository that links to any or all papers or systems that use the dataset?
 
-The GitHub repository README lists the NeurIPS paper as the primary user.
-Future uses will be tracked as they become available.
+The GitHub repository README lists the companion research paper as the
+primary user. Future uses will be tracked as they become available.
 
 ### What other tasks could the dataset be used for?
 
@@ -269,7 +269,7 @@ Yes, via HuggingFace Hub under CC-BY-4.0.
 ### When will the dataset be released?
 
 Training dataset and audit dataset: on or before May 6, 2026, to coincide
-with NeurIPS 2026 Evaluations and Datasets Track submission.
+with the companion research paper release.
 
 ### Will the dataset be distributed under a copyright or IP license?
 
@@ -307,8 +307,8 @@ CHANGELOG.md and on the HuggingFace dataset page.
 
 ### Will the dataset be updated?
 
-The **v1** dataset released for NeurIPS 2026 is frozen as a reproducibility
-reference. Future extensions (e.g., biaxial action spaces, dynamic D_ij) will
+The **v1** dataset released alongside the companion research paper is frozen
+as a reproducibility reference. Future extensions (e.g., biaxial action spaces, dynamic D_ij) will
 be released as separate versioned datasets (v2, v3, ...) with their own
 datasheets.
 
