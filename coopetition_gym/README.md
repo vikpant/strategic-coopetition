@@ -25,7 +25,7 @@ This library implements computational frameworks from peer-reviewed game-theoret
 - Apache HTTP Server: **52/60** validation score — 86.7% (TR-3 §7)
 - Apple iOS App Store: **48/55** validation score — 87.3% (TR-4 §8)
 
-**Accompanying NeurIPS paper (under review):** Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* NeurIPS 2026 Evaluations and Datasets Track. Releases a 25,708-file training dataset and a 1,116-file behavioral audit dataset alongside this benchmark suite. See [REPRODUCE.md](../REPRODUCE.md) for reproduction instructions.
+**Companion research paper:** Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Manuscript in preparation. Releases a 25,708-file training dataset and a 1,116-file behavioral audit dataset alongside this benchmark suite. See [REPRODUCE.md](../REPRODUCE.md) for reproduction instructions.
 
 ## 🚀 Quick Start
 

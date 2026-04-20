@@ -1,4 +1,4 @@
-"""Analysis pipeline for the NeurIPS 2026 benchmark dataset.
+"""Analysis pipeline for the Coopetition-Gym v1 benchmark dataset.
 
 This module consolidates the paper's analysis scripts into a single
 command-line tool with subcommands for each analysis artifact. It produces
@@ -1240,7 +1240,7 @@ def _cmd_reward_ablation(args):
 def _build_parser():
     import argparse
     parser = argparse.ArgumentParser(
-        description="Analysis pipeline for the NeurIPS 2026 benchmark dataset. "
+        description="Analysis pipeline for the Coopetition-Gym v1 benchmark dataset. "
                     "Run one of the subcommands below. See the module docstring "
                     "(experiments/analyze.py) for full details on each analysis.",
         formatter_class=argparse.RawDescriptionHelpFormatter,

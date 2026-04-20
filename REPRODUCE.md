@@ -2,7 +2,7 @@
 
 This document describes how to reproduce the empirical results reported in:
 
-> Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* NeurIPS 2026 Evaluations and Datasets Track.
+> Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Manuscript in preparation.
 
 The paper presents two complementary empirical artifacts:
 

@@ -12,7 +12,7 @@ os.environ.setdefault("VECLIB_MAXIMUM_THREADS", "2")
 os.environ.setdefault("NUMEXPR_NUM_THREADS", "2")
 # =============================================================================
 
-"""Unified campaign orchestrator for the NeurIPS 2026 benchmark.
+"""Unified campaign orchestrator for the Coopetition-Gym v1 benchmark.
 
 Single entry point for running training campaigns across all three reward
 configurations used in the paper. Consolidates the original

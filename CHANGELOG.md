@@ -57,8 +57,8 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 ### Added
 
 - **`experiments/` reproducibility package** (13,663 lines across 9 modules).
-  Single entry point for reproducing every table and figure in the NeurIPS
-  2026 paper *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm
+  Single entry point for reproducing every table and figure in the companion
+  research paper *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm
   Rankings in Mixed-Motive Multi-Agent Evaluation*.
   - `config.py` — single source of truth for all defaults (seeds, reward
     types, environments, algorithms, oracle references, safety settings).
@@ -100,7 +100,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   summary, and technical report references.
 - `coopetition_gym/README.md` extended with a new oracles section documenting
   all 7 game-theoretic oracles and their TR-tier applicability, plus a
-  NeurIPS paper callout block.
+  companion-paper callout block.
 - Case study validation scores corrected to match the authoritative
   `TR_validation/` suite values (Apache 52/60 = 86.7%; Apple 48/55 = 87.3%;
   Samsung-Sony and Renault-Nissan unchanged at 58/60 = 96.7% and
@@ -157,8 +157,7 @@ identifiers and SSH credentials, and has been archived to
 ## [0.3.0] — 2026 (pre-consolidation)
 
 Editable-install package release of `coopetition-gym` supporting Gymnasium and
-PettingZoo APIs. Internal release; used during the NeurIPS 2026 training
-campaign.
+PettingZoo APIs. Internal release; used during the v1 training campaign.
 
 ## [0.2.0] — 2025
 

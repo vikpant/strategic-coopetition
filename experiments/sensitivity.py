@@ -9,7 +9,7 @@ os.environ.setdefault("VECLIB_MAXIMUM_THREADS", "2")
 os.environ.setdefault("NUMEXPR_NUM_THREADS", "2")
 # =============================================================================
 
-"""Network capacity sensitivity analysis for the NeurIPS 2026 benchmark.
+"""Network capacity sensitivity analysis for the Coopetition-Gym v1 benchmark.
 
 Runs a subset of the training algorithms at multiple network capacities to
 verify that the paper's findings are not artifacts of the baseline

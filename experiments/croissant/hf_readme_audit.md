@@ -16,7 +16,7 @@ size_categories:
 
 # Coopetition-Gym Behavioral Audit
 
-Behavioral audit results from the NeurIPS 2026 Coopetition-Gym campaign.
+Behavioral audit results from the Coopetition-Gym v1 campaign.
 1,116 JSON files across two subsets:
 
 - **Static response-surface audit** (1,056 files): 18 policies × 20 environments
@@ -34,8 +34,8 @@ ramp-down produces marginal exploitation on 6 of 20 environments
 (+0.004% to +0.41% of baseline return), predominantly TR-4 reciprocity.
 
 **Companion paper**: *Reward-Type Ablation Reveals Mechanism-Dependent
-Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*, NeurIPS 2026
-Evaluations and Datasets Track.
+Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*, manuscript in
+preparation.
 
 **Companion code**: https://github.com/vikpant/strategic-coopetition
 
@@ -165,11 +165,11 @@ is limited to the audit's strategy set.
 ## Citation
 
 ```bibtex
-@inproceedings{pant2026rewardtype,
+@misc{pant2026rewardtype,
     title={Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation},
     author={Pant, Vik and Yu, Eric},
-    booktitle={NeurIPS 2026 Evaluations and Datasets Track},
-    year={2026}
+    year={2026},
+    note={Manuscript in preparation}
 }
 ```
 

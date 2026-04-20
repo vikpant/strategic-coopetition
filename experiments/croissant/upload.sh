@@ -17,7 +17,7 @@
 #
 # Usage:
 #   export TRAINING_TARBALL=/tmp/unified_dataset.tar.gz
-#   export AUDIT_TARBALL=.claude/experiments/neurips_ablation/behavioral_audits.tar.gz
+#   export AUDIT_TARBALL=/path/to/behavioral_audits.tar.gz
 #   bash experiments/croissant/upload.sh
 #
 # The script performs these steps idempotently:
@@ -145,7 +145,7 @@ Before making them public (recommended: same day as arXiv posting):
   huggingface-cli repo visibility vikpant/coopetition-gym-v1 --type dataset
   huggingface-cli repo visibility vikpant/coopetition-gym-audit --type dataset
 
-For reviewer access during NeurIPS review, share the repo URL and grant
+For reviewer access during peer review, share the repo URL and grant
 read access via the HuggingFace web UI (Settings → Access requests).
 MSG
 fi

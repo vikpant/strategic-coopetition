@@ -1,9 +1,10 @@
 # Croissant Metadata and HuggingFace Upload
 
 This directory contains the [ML Commons Croissant v1.0](http://mlcommons.org/croissant/)
-metadata descriptors for the two datasets released alongside the NeurIPS 2026
-paper. Both files have been validated against the `mlcroissant` reference
-implementation and conform to the Croissant + RAI (Responsible AI) extension.
+metadata descriptors for the two datasets released alongside the companion
+research paper. Both files have been validated against the `mlcroissant`
+reference implementation and conform to the Croissant + RAI (Responsible AI)
+extension.
 
 ## Files
 
@@ -137,9 +138,9 @@ appears in the sidebar.
 
 After upload:
 
-1. **OpenReview supplementary**: cite the two HuggingFace URLs in the
-   submission's data availability statement.
-2. **arXiv**: include the two URLs in the arXiv abstract submission.
+1. **Paper supplementary**: cite the two HuggingFace URLs in the paper's
+   data availability statement.
+2. **arXiv**: include the two URLs in the arXiv abstract upload.
 3. **Repository README**: update [../../REPRODUCE.md](../../REPRODUCE.md) to
    confirm the HuggingFace URLs (they are already referenced but check the
    download instructions resolve).

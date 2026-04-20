@@ -1,9 +1,9 @@
 # Experiments — Reproducibility Package
 
 This directory contains the consolidated orchestration, evaluation, analysis,
-and validation code used to produce the datasets released with the NeurIPS 2026
-submission *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings
-in Mixed-Motive Multi-Agent Evaluation*.
+and validation code used to produce the datasets released with the companion
+research paper *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm
+Rankings in Mixed-Motive Multi-Agent Evaluation*.
 
 See [../REPRODUCE.md](../REPRODUCE.md) for step-by-step instructions to reproduce
 paper tables and figures.

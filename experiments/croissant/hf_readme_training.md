@@ -17,7 +17,7 @@ size_categories:
 
 # Coopetition-Gym v1 — Training Results
 
-Training results from the NeurIPS 2026 Coopetition-Gym benchmark campaign.
+Training results from the Coopetition-Gym v1 benchmark campaign.
 25,708 JSON files, each recording the outcome of training one of 16
 reinforcement learning algorithms, 7 game-theoretic oracles, 2 heuristic
 baselines, or 101 constant-action policies on one of 20 mixed-motive
@@ -25,8 +25,8 @@ multi-agent environments under one of three reward configurations (private,
 integrated, cooperative) with one of seven random seeds.
 
 **Companion paper**: *Reward-Type Ablation Reveals Mechanism-Dependent
-Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*, NeurIPS 2026
-Evaluations and Datasets Track.
+Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*, manuscript in
+preparation.
 
 **Companion code**: https://github.com/vikpant/strategic-coopetition
 
@@ -153,11 +153,11 @@ for the complete Gebru et al. datasheet.
 ## Citation
 
 ```bibtex
-@inproceedings{pant2026rewardtype,
+@misc{pant2026rewardtype,
     title={Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation},
     author={Pant, Vik and Yu, Eric},
-    booktitle={NeurIPS 2026 Evaluations and Datasets Track},
-    year={2026}
+    year={2026},
+    note={Manuscript in preparation}
 }
 ```
 

@@ -1,4 +1,4 @@
-"""Algorithm implementations used in the NeurIPS 2026 benchmark.
+"""Algorithm implementations used in the Coopetition-Gym v1 benchmark.
 
 This module contains the exact algorithm implementations used to produce
 the released training dataset (25,708 files). It consolidates the original

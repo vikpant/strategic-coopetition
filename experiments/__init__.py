@@ -1,4 +1,4 @@
-"""Reproducibility package for the Coopetition-Gym NeurIPS 2026 submission.
+"""Reproducibility package for the Coopetition-Gym companion research paper.
 
 This package contains the consolidated orchestration, evaluation, analysis,
 and validation code used to produce the 25,708-file training dataset and
