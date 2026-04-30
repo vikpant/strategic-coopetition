@@ -13,7 +13,11 @@ multi-agent environments. Bridges conceptual modelling, computational
 game theory, and reinforcement learning.
 
 <p align="center">
-  <img src="papers/neurips_2026/crossover_all_casestudies.png" alt="Reward-type ablation crossover" width="80%"/>
+  <img src="coopetition_gym/docs/assets/images/manim/focused/phase_trajectory.gif" alt="Coopetition phase trajectory: Nash equilibrium and Pareto-optimal points in trust × cooperation space, with four behavioral regions" width="80%"/>
+</p>
+
+<p align="center">
+  <em>Trust × cooperation phase space with Nash equilibrium (square) and Pareto-optimal point (star). Four colour-coded behavioural regions: sustainable cooperation, paradoxical, defection spiral, and exploitative.</em>
 </p>
 
 ## At a glance
@@ -30,6 +34,14 @@ game theory, and reinforcement learning.
   configurations while holding mechanism rules fixed.
 - **Three-API design**: Gymnasium (single-agent style), PettingZoo
   Parallel (simultaneous moves), and PettingZoo AEC (sequential moves).
+
+<p align="center">
+  <img src="coopetition_gym/docs/assets/images/figures/algorithm_taxonomy.png" alt="Algorithm taxonomy: 16 training algorithms organised by paradigm (Independent Learning, CTDE, Opponent Modeling, Population &amp; Mean-Field)" width="75%"/>
+</p>
+
+<p align="center">
+  <em>Algorithm reference suite organised by paradigm. The benchmark covers four learning families plus heuristic and game-theoretic oracle baselines.</em>
+</p>
 
 ## Repository layout
 
