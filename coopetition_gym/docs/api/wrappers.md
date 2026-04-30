@@ -106,8 +106,7 @@ class CoopetitionParallelEnv:
         """
         Wrap a CoopetitionEnv for PettingZoo Parallel API.
 
-        Args:
-            base_env: Underlying Gymnasium environment
+        Args: base_env: Underlying Gymnasium environment
             obs_config: Observation configuration
             render_mode: Rendering mode
         """
@@ -138,8 +137,7 @@ def step(
     """
     Execute simultaneous actions.
 
-    Args:
-        actions: Dict mapping agent_id -> action
+    Args: actions: Dict mapping agent_id -> action
 
     Returns:
         (observations, rewards, terminations, truncations, infos)
@@ -223,8 +221,7 @@ def step(self, action: Optional[float]):
     """
     Execute action for current agent.
 
-    Args:
-        action: Action for current agent, or None if terminated
+    Args: action: Action for current agent, or None if terminated
     """
 
 def last(self) -> Tuple[NDArray, float, bool, bool, dict]:
@@ -246,13 +243,10 @@ env = coopetition_gym.make_aec("TrustDilemma-v0")
 env.reset(seed=42)
 
 # Standard AEC loop
-for agent in env.agent_iter():
-    observation, reward, termination, truncation, info = env.last()
+for agent in env.agent_iter(): observation, reward, termination, truncation, info = env.last()
 
-    if termination or truncation:
-        action = None
-    else:
-        action = 50.0  # Your policy here
+    if termination or truncation: action = None
+    else: action = 50.0  # Your policy here
 
     env.step(action)
 ```
@@ -282,8 +276,7 @@ from ray.tune.registry import register_env
 import coopetition_gym
 
 # Use PettingZoo Parallel API
-def env_creator(config):
-    return coopetition_gym.make_parallel("TrustDilemma-v0")
+def env_creator(config): return coopetition_gym.make_parallel("TrustDilemma-v0")
 
 register_env("trust_dilemma", env_creator)
 config = PPOConfig().environment("trust_dilemma")

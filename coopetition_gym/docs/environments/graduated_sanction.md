@@ -11,7 +11,7 @@
 
 GraduatedSanction-v0 implements a **six-agent common-pool resource game** with TR-4 graduated reciprocity sanctions. Agents share a common resource and decide how much to contribute. Reciprocity manifests as graduated sanctions: mild response to first defection, escalating with repeated violations.
 
-The environment captures Ostrom's (1990) insight about proportional punishment—effective governance relies on graduated rather than draconian responses to rule violations.
+The environment captures Ostrom's (1990) insight about proportional punishment, effective governance relies on graduated rather than draconian responses to rule violations.
 
 ---
 
@@ -44,9 +44,7 @@ Higher baselines ($b_i = 40$) reflect the social expectation in a commons settin
 
 ### Graduated Sanction Mechanism
 
-Graduated sanctions emerge from the interaction of TR-4 parameters:
-
-1. **Lower $\kappa = 0.8$**: The bounded response $\varphi(x) = \tanh(0.8x)$ has a **gentler slope**, producing proportional (not binary) reactions to defection
+Graduated sanctions emerge from the interaction of TR-4 parameters: 1. **Lower $\kappa = 0.8$**: The bounded response $\varphi(x) = \tanh(0.8x)$ has a **gentler slope**, producing proportional (not binary) reactions to defection
 2. **Long memory $k = 10$**: Extended memory window tracks behavioral patterns over time, enabling escalation based on repeated violations
 3. **High $\lambda_R = 1.8$**: Strong reciprocity weight amplifies the aggregate sanction effect across 5 partners
 4. **High $\omega = 1.0$**: Maximum dependency amplification in trust gating
@@ -72,7 +70,7 @@ Substantial aggregate effect when all 5 partners sanction simultaneously.
 | **Mechanism** | Static TR-3 collective action modifiers | Adaptive TR-4 history-dependent reciprocity |
 | **Sanctions** | Fixed free-rider penalties | Graduated proportional sanctions |
 | **Adaptation** | Loyalty score adjusts slowly | Memory window ($k=10$) enables rapid response |
-| **Escalation** | No escalation—penalty is constant | Repeated defection compounds via memory |
+| **Escalation** | No escalation, penalty is constant | Repeated defection compounds via memory |
 | **Key Equation** | Loyalty modifier (TR-3 Eq 5) | Reciprocity modifier (TR-4 Eq 44) |
 | **Agents** | 5 (default) | 6 |
 
@@ -82,9 +80,7 @@ Substantial aggregate effect when all 5 partners sanction simultaneously.
 
 ### Ostrom's Design Principles
 
-Ostrom (1990) identified **graduated sanctions** as a key institutional design principle for sustainable commons governance:
-
-1. **Proportional monitoring**: All agents observe each other's contributions
+Ostrom (1990) identified **graduated sanctions** as a key institutional design principle for sustainable commons governance: 1. **Proportional monitoring**: All agents observe each other's contributions
 2. **Graduated sanctions**: First offenses receive mild punishment
 3. **Escalation**: Repeated violations trigger increasingly severe responses
 4. **Low-cost enforcement**: Reciprocity provides decentralized sanctions
@@ -116,12 +112,10 @@ env = coopetition_gym.make("GraduatedSanction-v0")
 obs, info = env.reset(seed=42)
 
 # All agents contribute at baseline
-for step in range(200):
-    actions = np.full(6, 50.0)
+for step in range(200): actions = np.full(6, 50.0)
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Mean trust: {info['mean_trust']:.3f}")
 ```

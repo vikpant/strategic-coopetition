@@ -10,7 +10,7 @@ This document provides a comprehensive treatment of trust dynamics from Technica
 
 ## Executive Summary
 
-**For Practitioners**: Trust is not static—it evolves based on observed behavior. A single betrayal can destroy years of trust-building, but consistent cooperation slowly rebuilds confidence. Understanding these dynamics is essential for managing long-term partnerships.
+**For Practitioners**: Trust is not static, it evolves based on observed behavior. A single betrayal can destroy years of trust-building, but consistent cooperation slowly rebuilds confidence. Understanding these dynamics is essential for managing long-term partnerships.
 
 **For Researchers**: We formalize trust as a two-layer dynamic system: immediate trust (T) responds to current behavior while reputation damage (R) tracks violation history. Asymmetric updating (3:1 negativity bias) and trust ceiling mechanisms create path-dependent dynamics validated against the Renault-Nissan Alliance.
 
@@ -20,9 +20,7 @@ This document provides a comprehensive treatment of trust dynamics from Technica
 
 ### Why Trust Matters in Coopetition
 
-In coopetitive relationships, actors face ongoing temptation to defect—to capture short-term gains at the partner's expense. Trust addresses this by:
-
-1. **Enabling Cooperation**: High trust reduces perceived exploitation risk
+In coopetitive relationships, actors face ongoing temptation to defect, to capture short-term gains at the partner's expense. Trust addresses this by: 1. **Enabling Cooperation**: High trust reduces perceived exploitation risk
 2. **Gating Information Sharing**: Actors share more with trusted partners
 3. **Supporting Long-Horizon Planning**: Trust enables commitment to joint investments
 4. **Creating Relationship Value**: Trusted partnerships are more productive
@@ -285,7 +283,7 @@ $$\Large R(t) = R_0 \cdot (1 - \delta_R)^t$$
 - $0.25 = 0.50 \times 0.97^t$
 - $t \approx 23$ periods
 
-With $\delta_R = 0.03$, forgetting is slow—violations leave lasting marks.
+With $\delta_R = 0.03$, forgetting is slow, violations leave lasting marks.
 
 ---
 
@@ -476,10 +474,8 @@ def update_trust(T, signal, ceiling, lambda_plus, lambda_minus,
 
 def update_reputation(R, signal, mu_R, delta_R):
     """Equation 8: Reputation damage evolution."""
-    if signal < 0:
-        delta_R_damage = mu_R * abs(signal) * (1 - R)
-    else:
-        delta_R_damage = 0.0
+    if signal < 0: delta_R_damage = mu_R * abs(signal) * (1 - R)
+    else: delta_R_damage = 0.0
     decay = delta_R * R
     return np.clip(R + delta_R_damage - decay, 0.0, 1.0)
 

@@ -23,8 +23,7 @@ formatted source.
 
 ```bibtex
 @inproceedings{pant2026caise,
-  title     = {Computational Foundations for Strategic Coopetition:
-               Formalizing Interdependence and Complementarity},
+  title     = {Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity},
   author    = {Pant, Vik and Yu, Eric},
   booktitle = {Advanced Information Systems Engineering -- CAiSE 2026},
   series    = {Lecture Notes in Computer Science},

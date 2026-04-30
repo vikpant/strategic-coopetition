@@ -18,7 +18,7 @@ Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*.
 
 To support the companion research paper demonstrating that algorithm
 rankings in mixed-motive multi-agent reinforcement learning are mechanism-
-dependent — specifically, that the dominance of Centralized Training with
+dependent, specifically, that the dominance of Centralized Training with
 Decentralized Execution (CTDE) over independent learning breaks down
 systematically when the reward function structure is varied.
 
@@ -48,7 +48,7 @@ author. No external funding was involved.
 ### What do the instances represent?
 
 **Training dataset (`coopetition-gym-v1`)**: each instance is one training
-experiment — the result of training one algorithm on one environment under
+experiment, the result of training one algorithm on one environment under
 one reward configuration with one random seed. Each instance is a single JSON
 file with the following top-level structure:
 
@@ -67,12 +67,12 @@ file with the following top-level structure:
 
 The nested `metrics` object contains:
 
-* `mean_return`, `std_return` — evaluation return statistics
-* `mean_cooperation_rate` — mean fraction of endowment contributed
-* `mean_final_trust` — mean final-step trust level
-* `training_returns`, `training_timesteps` — training-time return curve
-* `training_metrics` — gradient-level diagnostics (loss values by step)
-* `tr_metrics` — TR-tier-specific domain metrics
+* `mean_return`, `std_return`, evaluation return statistics
+* `mean_cooperation_rate`, mean fraction of endowment contributed
+* `mean_final_trust`, mean final-step trust level
+* `training_returns`, `training_timesteps`, training-time return curve
+* `training_metrics`, gradient-level diagnostics (loss values by step)
+* `tr_metrics`, TR-tier-specific domain metrics
 
 **Behavioral audit dataset (`coopetition-gym-audit`)**: two subsets covering
 the static response-surface audit (1,056 JSON files) and the temporal
@@ -247,9 +247,7 @@ The dataset should **not** be used for:
 
 ### Are there any risks of harm?
 
-Limited, but noted in Appendix G of the paper:
-
-1. The integrated reward configuration permits exploitation when the private
+Limited, but noted in Appendix G of the paper: 1. The integrated reward configuration permits exploitation when the private
    gain exceeds the weighted partner loss. The behavioral audit empirically
    bounds this vulnerability (see Appendix F), but deploying policies trained
    under this configuration without further auditing is not recommended.

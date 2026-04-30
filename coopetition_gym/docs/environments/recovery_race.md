@@ -172,12 +172,10 @@ for step in range(150):
     actions = np.array([80.0, 80.0])  # 80% cooperation
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated:
-        print(f"Recovery achieved at step {step}!")
+    if terminated: print(f"Recovery achieved at step {step}!")
         break
 
-if not terminated:
-    print(f"Final trust: {info['mean_trust']:.3f}")
+if not terminated: print(f"Final trust: {info['mean_trust']:.3f}")
     print(f"Recovery target not reached")
 ```
 
@@ -259,8 +257,7 @@ Episode truncates at `max_steps` (150) if target not reached.
 If agents defect and trust collapses below 0.05:
 
 ```python
-if mean_trust < 0.05:
-    terminated = True
+if mean_trust < 0.05: terminated = True
     # Recovery failed - relationship ended
 ```
 
@@ -339,8 +336,7 @@ obs, info = env.reset(seed=42)
 
 recovery_achieved = False
 
-for step in range(150):
-    ceiling = 1 - info['mean_reputation_damage']
+for step in range(150): ceiling = 1 - info['mean_reputation_damage']
     current_trust = info['mean_trust']
 
     # Phase-based strategy
@@ -357,17 +353,14 @@ for step in range(150):
     actions = np.array([100.0 * coop_level, 100.0 * coop_level])
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if step % 20 == 0:
-        print(f"Step {step}: Trust={info['mean_trust']:.3f}, "
+    if step % 20 == 0: print(f"Step {step}: Trust={info['mean_trust']:.3f}, "
               f"Ceiling={ceiling:.3f}, Progress={info['recovery_progress']:.1%}")
 
-    if terminated and info['mean_trust'] >= 0.90:
-        print(f"\nRecovery achieved at step {step}!")
+    if terminated and info['mean_trust'] >= 0.90: print(f"\nRecovery achieved at step {step}!")
         recovery_achieved = True
         break
 
-if not recovery_achieved:
-    print(f"\nRecovery not achieved. Final trust: {info['mean_trust']:.3f}")
+if not recovery_achieved: print(f"\nRecovery not achieved. Final trust: {info['mean_trust']:.3f}")
 ```
 
 ---

@@ -27,8 +27,7 @@ class AbstractCoopetitionEnv(ABC):
         """
         Initialize environment with configuration.
 
-        Args:
-            config: Environment configuration dataclass
+        Args: config: Environment configuration dataclass
             obs_config: Optional observation configuration
         """
 ```
@@ -80,11 +79,9 @@ env = coopetition_gym.make("TrustDilemma-v0")
 
 # Standard Gymnasium loop
 obs, info = env.reset(seed=42)
-for _ in range(100):
-    actions = np.array([50.0, 50.0])
+for _ in range(100): actions = np.array([50.0, 50.0])
     obs, rewards, terminated, truncated, info = env.step(actions)
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 env.close()
 ```
 

@@ -212,13 +212,10 @@ env = coopetition_gym.make_aec("TrustDilemma-v0")
 env.reset(seed=42)
 
 # Iterate through agents sequentially
-for agent in env.agent_iter():
-    observation, reward, termination, truncation, info = env.last()
+for agent in env.agent_iter(): observation, reward, termination, truncation, info = env.last()
 
-    if termination or truncation:
-        action = None
-    else:
-        action = 50.0  # Your policy here
+    if termination or truncation: action = None
+    else: action = 50.0  # Your policy here
 
     env.step(action)
 ```

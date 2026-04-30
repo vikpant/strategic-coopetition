@@ -11,7 +11,7 @@
 
 ReciprocalDilemma-v0 implements a **continuous iterated Prisoner's Dilemma** with TR-4 reciprocity dynamics. Two symmetric firms decide cooperation levels in a shared project, where reciprocity enables tit-for-tat-like conditional cooperation through bounded memory windows.
 
-The environment tests whether reinforcement learning agents can learn **conditional cooperation**—responding to partner behavior over recent history rather than relying solely on slow-moving trust dynamics.
+The environment tests whether reinforcement learning agents can learn **conditional cooperation**,responding to partner behavior over recent history rather than relying solely on slow-moving trust dynamics.
 
 ---
 
@@ -119,12 +119,10 @@ env = coopetition_gym.make("ReciprocalDilemma-v0")
 obs, info = env.reset(seed=42)
 
 # Run episode with cooperative strategy
-for step in range(100):
-    actions = np.array([60.0, 60.0])
+for step in range(100): actions = np.array([60.0, 60.0])
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Mean trust: {info['mean_trust']:.3f}")
 ```

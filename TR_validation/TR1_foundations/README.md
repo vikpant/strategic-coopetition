@@ -9,8 +9,8 @@
 This repository contains the validation suite for the technical report:
 
 > **Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity**  
-> Vik Pant — Faculty of Information, University of Toronto  
-> Eric Yu — Faculty of Information and Department of Computer Science, University of Toronto  
+> Vik Pant, Faculty of Information, University of Toronto  
+> Eric Yu, Faculty of Information and Department of Computer Science, University of Toronto  
 > arXiv:2510.18802
 
 The validation suite provides complete reproducibility for all experimental and empirical validation results presented in Sections 7-8 of the technical report.
@@ -182,9 +182,7 @@ Authors: Vik Pant, Eric Yu
 Version: 1.0.0
 ...
 
-TR_1 VALIDATION RESULTS:
-
-1. VALIDATION SCORES (TR Claims: Power=46/60, Log=58/60):
+TR_1 VALIDATION RESULTS: 1. VALIDATION SCORES (TR Claims: Power=46/60, Log=58/60):
    - Power (β=0.75, γ=0.5): 46/60 ✓
    - Logarithmic (θ=20, γ=0.65): 58/60 ✓
    - Difference: 12 criteria ✓
@@ -223,8 +221,7 @@ If you use this validation suite in your research, please cite:
 
 ```bibtex
 @techreport{pant2025foundations,
-  title={Computational Foundations for Strategic Coopetition: 
-         Formalizing Interdependence and Complementarity},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity},
   author={Pant, Vik and Yu, Eric},
   year={2025},
   institution={University of Toronto},
@@ -235,8 +232,8 @@ If you use this validation suite in your research, please cite:
 
 ## Authors
 
-- **Vik Pant** — Faculty of Information, University of Toronto — [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
-- **Eric Yu** — Faculty of Information and Department of Computer Science, University of Toronto — [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
+- **Vik Pant**: Faculty of Information, University of Toronto, [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
+- **Eric Yu**: Faculty of Information and Department of Computer Science, University of Toronto, [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
 
 University of Toronto  
 140 St George St, Toronto, ON M5S 3G6, Canada

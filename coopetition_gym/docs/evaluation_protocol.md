@@ -56,14 +56,12 @@ def evaluate_policy(policy, env_id, n_episodes=100, seed_offset=0):
     final_trusts = []
     cooperation_rates = []
 
-    for seed in range(seed_offset, seed_offset + n_episodes):
-        obs, info = env.reset(seed=seed)
+    for seed in range(seed_offset, seed_offset + n_episodes): obs, info = env.reset(seed=seed)
         episode_return = 0.0
         steps = 0
 
         terminated, truncated = False, False
-        while not (terminated or truncated):
-            action = policy(obs)
+        while not (terminated or truncated): action = policy(obs)
             obs, reward, terminated, truncated, info = env.step(action)
             episode_return += np.sum(reward)  # Sum over agents
             steps += 1
@@ -165,8 +163,7 @@ Variants:
 class TitForTatPolicy:
     """Classic TFT adapted for continuous actions."""
 
-    def __init__(self, initial_action=0.5):
-        self.last_partner_action = initial_action
+    def __init__(self, initial_action=0.5): self.last_partner_action = initial_action
 
     def __call__(self, obs, env, agent_idx=0):
         # Extract partner's last action from observation
@@ -238,11 +235,9 @@ clip_range: 0.2
 ent_coef: 0.01
 vf_coef: 0.5
 max_grad_norm: 0.5
-network:
-  hidden_layers: [128, 128]
+network: hidden_layers: [128, 128]
   activation: ReLU
-training:
-  total_timesteps: 1_000_000
+training: total_timesteps: 1_000_000
   eval_freq: 10_000
   n_eval_episodes: 10
 ```
@@ -259,8 +254,7 @@ Use separate seeds for training and evaluation:
 ```python
 training_seeds = [100, 101, 102, 103, 104]
 
-for seed in training_seeds:
-    model = train_algorithm(env_id, seed=seed)
+for seed in training_seeds: model = train_algorithm(env_id, seed=seed)
     results = evaluate_policy(model.predict, env_id, n_episodes=100)
     save_results(results, seed)
 ```
@@ -438,8 +432,7 @@ Include in publications:
 """
 Standard evaluation script for Coopetition-Gym.
 
-Usage:
-    python evaluate.py --env TrustDilemma-v0 --algorithm ppo --seed 100
+Usage: python evaluate.py --env TrustDilemma-v0 --algorithm ppo --seed 100
 """
 
 import argparse
@@ -448,8 +441,7 @@ import numpy as np
 import coopetition_gym
 from datetime import datetime
 
-def main():
-    parser = argparse.ArgumentParser()
+def main(): parser = argparse.ArgumentParser()
     parser.add_argument("--env", default="TrustDilemma-v0")
     parser.add_argument("--algorithm", default="random")
     parser.add_argument("--seed", type=int, default=100)
@@ -461,12 +453,9 @@ def main():
     env = coopetition_gym.make(args.env)
 
     # Select policy
-    if args.algorithm == "random":
-        policy = lambda obs: env.action_space.sample()
-    elif args.algorithm == "constant":
-        policy = lambda obs: 0.5 * env.action_space.high
-    else:
-        raise ValueError(f"Unknown algorithm: {args.algorithm}")
+    if args.algorithm == "random": policy = lambda obs: env.action_space.sample()
+    elif args.algorithm == "constant": policy = lambda obs: 0.5 * env.action_space.high
+    else: raise ValueError(f"Unknown algorithm: {args.algorithm}")
 
     # Evaluate
     results = evaluate_policy(
@@ -483,15 +472,13 @@ def main():
     results['coopetition_gym_version'] = coopetition_gym.__version__
 
     # Save results
-    with open(args.output, 'w') as f:
-        json.dump(results, f, indent=2)
+    with open(args.output, 'w') as f: json.dump(results, f, indent=2)
 
     print(f"Results saved to {args.output}")
     print(f"Mean Return: {results['mean_return']:.2f} ± {results['std_return']:.2f}")
     print(f"Mean Final Trust: {results['mean_final_trust']:.3f}")
 
-if __name__ == "__main__":
-    main()
+if __name__ == "__main__": main()
 ```
 
 ---

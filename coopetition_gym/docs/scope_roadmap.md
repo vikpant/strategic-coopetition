@@ -8,9 +8,7 @@ This document provides the theoretical rationale, scope justification, and strat
 
 ## Document Purpose
 
-This scope roadmap addresses fundamental questions about the research program's design:
-
-1. **Why does coopetition-gym use a [0, endowment] action space?**
+This scope roadmap addresses fundamental questions about the research program's design: 1. **Why does coopetition-gym use a [0, endowment] action space?**
 2. **How is this grounded in game theory and coopetition literature?**
 3. **What is the relationship between cooperation and competition in the model?**
 4. **How will the research program evolve to address broader treatments?**
@@ -26,7 +24,7 @@ The document establishes that the current implementation represents **Phase 1 (F
 **Coopetition** is a portmanteau of "cooperation" and "competition" describing the phenomenon of simultaneous cooperation and competition between economic actors. The central maxim of coopetition is:
 
 > **"Cooperate to grow the pie, compete to split the pie."**
-> — Brandenburger & Nalebuff (1996)
+>, Brandenburger & Nalebuff (1996)
 
 This implies that cooperation and competition may operate as distinct strategic dimensions rather than opposite poles of a single continuum.
 
@@ -140,7 +138,7 @@ The uniaxial treatment does not model **active competition** as a strategic choi
 | Market capture | Aggressive positioning | Not modeled |
 | Rent-seeking | Contest for fixed prize | Not modeled |
 
-These mechanisms require agents to take actions that impose **direct costs on rivals**—something the [0, endowment] action space cannot express. This is the domain of the planned Extensions series.
+These mechanisms require agents to take actions that impose **direct costs on rivals**,something the [0, endowment] action space cannot express. This is the domain of the planned Extensions series.
 
 ### 2.5 Terminology Clarification
 
@@ -324,7 +322,7 @@ env_biaxial = coopetition_gym.make("ValueCapture-v0")
 
 ### Coopetition Literature (Uniaxial Tradition)
 
-- Bengtsson, M., & Kock, S. (2000). "Coopetition" in business networks—to cooperate and compete simultaneously. *Industrial Marketing Management*, 29(5), 411-426.
+- Bengtsson, M., & Kock, S. (2000). "Coopetition" in business networks, to cooperate and compete simultaneously. *Industrial Marketing Management*, 29(5), 411-426.
 
 - Lado, A. A., Boyd, N. G., & Hanlon, S. C. (1997). Competition, cooperation, and the search for economic rents: A syncretic model. *Academy of Management Review*, 22(1), 110-141.
 

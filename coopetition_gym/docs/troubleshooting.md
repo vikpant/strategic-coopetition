@@ -115,14 +115,12 @@ import numpy as np
 action = np.clip(raw_action, env.action_space.low, env.action_space.high)
 
 # Check for NaN before stepping
-if np.isnan(action).any():
-    action = env.action_space.sample()  # Fallback to random
+if np.isnan(action).any(): action = env.action_space.sample()  # Fallback to random
 
 obs, reward, terminated, truncated, info = env.step(action)
 
 # Verify output
-if np.isnan(obs).any() or np.isnan(reward).any():
-    print("Warning: NaN detected in environment output")
+if np.isnan(obs).any() or np.isnan(reward).any(): print("Warning: NaN detected in environment output")
     obs, info = env.reset()  # Reset if corrupted
 ```
 
@@ -173,9 +171,7 @@ env = coopetition_gym.make("TrustDilemma-v0", max_steps=200)
 
 # 3. Reward shaping (add cooperation bonus during training)
 # Note: Only for training, remove for evaluation
-class CooperationBonus(gym.Wrapper):
-    def step(self, action):
-        obs, reward, term, trunc, info = self.env.step(action)
+class CooperationBonus(gym.Wrapper): def step(self, action): obs, reward, term, trunc, info = self.env.step(action)
         coop_bonus = 0.1 * np.mean(action)  # Small bonus for cooperating
         return obs, reward + coop_bonus, term, trunc, info
 ```
@@ -238,9 +234,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = ""  # Disable GPU
 # 1. Use vectorized environments
 from stable_baselines3.common.vec_env import SubprocVecEnv
 
-def make_env(seed):
-    def _init():
-        env = coopetition_gym.make("TrustDilemma-v0")
+def make_env(seed): def _init(): env = coopetition_gym.make("TrustDilemma-v0")
         env.reset(seed=seed)
         return env
     return _init
@@ -342,8 +336,7 @@ observations, rewards, terminations, truncations, infos = env.step(actions)
 # AEC API: Agents act sequentially
 env = coopetition_gym.make_aec("TrustDilemma-v0")
 env.reset()
-for agent in env.agent_iter():
-    obs, reward, term, trunc, info = env.last()
+for agent in env.agent_iter(): obs, reward, term, trunc, info = env.last()
     action = None if term or trunc else env.action_space(agent).sample()
     env.step(action)  # Single action, not dict
 ```
@@ -367,8 +360,7 @@ def set_all_seeds(seed):
     np.random.seed(seed)
     random.seed(seed)
     torch.manual_seed(seed)
-    if torch.cuda.is_available():
-        torch.cuda.manual_seed_all(seed)
+    if torch.cuda.is_available(): torch.cuda.manual_seed_all(seed)
 
 # Set seeds before creating environment
 set_all_seeds(42)
@@ -412,8 +404,7 @@ obs, info = env.reset(seed=42)
 trust_history = [info['mean_trust']]
 action_history = []
 
-for _ in range(100):
-    action = np.array([50.0, 50.0])
+for _ in range(100): action = np.array([50.0, 50.0])
     obs, reward, term, trunc, info = env.step(action)
     trust_history.append(info['mean_trust'])
     action_history.append(action.mean())
@@ -459,8 +450,7 @@ env = coopetition_gym.make("TrustDilemma-v0")
 obs, info = env.reset(seed=42)
 
 rewards = []
-for _ in range(100):
-    action = np.array([50.0, 50.0])
+for _ in range(100): action = np.array([50.0, 50.0])
     obs, reward, term, trunc, info = env.step(action)
     rewards.append(reward)
 
@@ -475,12 +465,9 @@ print(f"Reward max: {rewards.max():.2f}")
 
 ## Getting Help
 
-If issues persist:
-
-1. **Check documentation**: [Environment Reference](environments/index.md), [API Documentation](api/index.md)
+If issues persist: 1. **Check documentation**: [Environment Reference](environments/index.md), [API Documentation](api/index.md)
 2. **Search issues**: [GitHub Issues](https://github.com/your-org/strategic-coopetition/issues)
-3. **Open new issue**: Include:
-   - Python version
+3. **Open new issue**, Include: - Python version
    - Package versions (`pip freeze`)
    - Minimal reproducing code
    - Full error traceback

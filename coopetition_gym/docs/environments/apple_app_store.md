@@ -151,8 +151,7 @@ for quarter in range(66):
     actions = np.array([60.0, 50.0, 40.0])
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Mean trust: {info['mean_trust']:.3f}")
 ```
@@ -224,7 +223,7 @@ Apple's reciprocity insensitivity ($\rho_{01} = 0.249$, $\rho_{02} = 0.157$) ver
 
 **Symbiosis → Tension**: As Apple tightens rules (lower cooperation), developers' high reciprocity sensitivity amplifies the negative signal, creating tension
 
-**Crisis**: Mutual defection—Apple's actions trigger strong negative reciprocity from developers, but Apple is relatively insensitive to developer defection
+**Crisis**: Mutual defection, Apple's actions trigger strong negative reciprocity from developers, but Apple is relatively insensitive to developer defection
 
 **Adjustment**: Apple partially restores cooperation; developers' strong reciprocity sensitivity drives rapid positive response
 
@@ -284,12 +283,9 @@ for q in range(66):
 
     phase_data[phase].append(info['mean_trust'])
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
-for phase, trusts in phase_data.items():
-    if trusts:
-        print(f"{phase}: mean_trust={np.mean(trusts):.3f}")
+for phase, trusts in phase_data.items(): if trusts: print(f"{phase}: mean_trust={np.mean(trusts):.3f}")
 ```
 
 ---

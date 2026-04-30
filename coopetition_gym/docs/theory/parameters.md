@@ -371,8 +371,7 @@ For parameter validation methodology:
 
 ```bibtex
 @article{pant2025tr1,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Interdependence and Complementarity},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2510.18802},
   year={2025},
@@ -380,8 +379,7 @@ For parameter validation methodology:
 }
 
 @article{pant2025tr2,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Trust and Reputation Dynamics},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2510.24909},
   year={2025},
@@ -389,8 +387,7 @@ For parameter validation methodology:
 }
 
 @article{pant2026tr3,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Collective Action and Loyalty},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2601.16237},
   year={2026},
@@ -398,8 +395,7 @@ For parameter validation methodology:
 }
 
 @article{pant2026tr4,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Sequential Interaction and Reciprocity},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2604.01240},
   year={2026},

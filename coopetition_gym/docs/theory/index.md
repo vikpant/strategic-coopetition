@@ -8,9 +8,7 @@ This section provides comprehensive documentation of the theoretical foundations
 
 ## Overview
 
-Coopetition-Gym implements a mathematically rigorous framework bridging two traditions:
-
-1. **Conceptual Modeling** (*i*\* Framework): Rich qualitative representations of strategic dependencies and actor relationships
+Coopetition-Gym implements a mathematically rigorous framework bridging two traditions: 1. **Conceptual Modeling** (*i*\* Framework): Rich qualitative representations of strategic dependencies and actor relationships
 2. **Game Theory**: Precise quantitative analysis of strategic interactions and equilibrium behavior
 
 The synthesis produces environments where:
@@ -344,32 +342,28 @@ If you use the theoretical framework in your research, please cite:
 
 ```bibtex
 @article{pant2025tr1,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Interdependence and Complementarity},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2510.18802},
   year={2025}
 }
 
 @article{pant2025tr2,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Trust and Reputation Dynamics},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2510.24909},
   year={2025}
 }
 
 @article{pant2026tr3,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Collective Action and Loyalty},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2601.16237},
   year={2026}
 }
 
 @article{pant2026tr4,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Sequential Interaction and Reciprocity},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity},
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2604.01240},
   year={2026}

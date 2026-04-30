@@ -6,7 +6,7 @@
 [![Gymnasium](https://img.shields.io/badge/Gymnasium-compatible-green.svg)](https://gymnasium.farama.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Coopetition-Gym provides Gymnasium-compatible environments for studying **coopetitive dynamics** in multi-agent systems. Coopetition refers to the simultaneous presence of cooperation and competition between agents—a phenomenon ubiquitous in business alliances, platform ecosystems, and strategic partnerships.
+Coopetition-Gym provides Gymnasium-compatible environments for studying **coopetitive dynamics** in multi-agent systems. Coopetition refers to the simultaneous presence of cooperation and competition between agents, a phenomenon ubiquitous in business alliances, platform ecosystems, and strategic partnerships.
 
 ## 🔬 Research Foundation
 
@@ -20,10 +20,10 @@ This library implements computational frameworks from peer-reviewed game-theoret
 | **TR-4** ([arXiv:2604.01240](https://arxiv.org/abs/2604.01240)) | Sequential Interaction & Reciprocity | Memory-bounded reciprocity, graduated sanctions, platform dynamics |
 
 **Validated Case Studies:**
-- S-LCD (Samsung-Sony): **58/60** validation score — 96.7% (TR-1 §8)
-- Renault-Nissan Alliance: **49/60** validation score — 81.7% (TR-2 §9)
-- Apache HTTP Server: **52/60** validation score — 86.7% (TR-3 §7)
-- Apple iOS App Store: **48/55** validation score — 87.3% (TR-4 §8)
+- S-LCD (Samsung-Sony): **58/60** validation score, 96.7% (TR-1 §8)
+- Renault-Nissan Alliance: **49/60** validation score, 81.7% (TR-2 §9)
+- Apache HTTP Server: **52/60** validation score, 86.7% (TR-3 §7)
+- Apple iOS App Store: **48/55** validation score, 87.3% (TR-4 §8)
 
 **Companion research paper:** Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Manuscript in preparation. Releases a 25,708-file training dataset and a 1,116-file behavioral audit dataset alongside this benchmark suite. See [REPRODUCE.md](../REPRODUCE.md) for reproduction instructions.
 
@@ -242,11 +242,9 @@ model.learn(total_timesteps=100_000)
 
 # Evaluate
 obs, _ = env.reset()
-for _ in range(100):
-    action, _ = model.predict(obs, deterministic=True)
+for _ in range(100): action, _ = model.predict(obs, deterministic=True)
     obs, reward, done, truncated, info = env.step(action)
-    if done or truncated:
-        break
+    if done or truncated: break
 print(f"Final trust: {info['mean_trust']:.3f}")
 ```
 
@@ -275,11 +273,9 @@ def cooperative_policy(obs, trust_threshold=0.5):
 env = coopetition_gym.make("TrustDilemma-v0")
 obs, _ = env.reset(seed=42)
 
-for step in range(100):
-    action = cooperative_policy(obs)
+for step in range(100): action = cooperative_policy(obs)
     obs, rewards, done, truncated, info = env.step(action)
-    if done or truncated:
-        break
+    if done or truncated: break
 
 print(f"Episode ended at step {step+1}")
 print(f"Final trust: {info['mean_trust']:.3f}")
@@ -301,8 +297,7 @@ policies = {
 # Run experiments
 env = coopetition_gym.make("TrustDilemma-v0", max_steps=100)
 
-for name, policy in policies.items():
-    results = [run_episode(env, policy, seed=i) for i in range(10)]
+for name, policy in policies.items(): results = [run_episode(env, policy, seed=i) for i in range(10)]
     stats = aggregate_results(results)
     
     print(f"\n{name.upper()} Policy:")

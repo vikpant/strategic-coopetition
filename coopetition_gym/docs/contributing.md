@@ -102,10 +102,8 @@ def compute_trust_update(
     float
         Updated trust level, clipped to [0, 1].
     """
-    if signal > 0:
-        delta = lambda_plus * signal * (1 - current_trust)
-    else:
-        delta = lambda_minus * signal * current_trust
+    if signal > 0: delta = lambda_plus * signal * (1 - current_trust)
+    else: delta = lambda_minus * signal * current_trust
 
     return np.clip(current_trust + delta, 0, 1)
 ```
@@ -268,9 +266,7 @@ register(
 
 ### Documentation
 
-Create documentation in `docs/environments/new_environment.md` following the existing template:
-
-1. MARL Classification table
+Create documentation in `docs/environments/new_environment.md` following the existing template: 1. MARL Classification table
 2. Formal Specification
 3. Game-Theoretic Background
 4. Environment Specification
@@ -286,18 +282,14 @@ import pytest
 import numpy as np
 import coopetition_gym
 
-class TestNewEnvironment:
-    def test_creation(self):
-        env = coopetition_gym.make("NewEnvironment-v0")
+class TestNewEnvironment: def test_creation(self): env = coopetition_gym.make("NewEnvironment-v0")
         assert env.n_agents == 2
 
-    def test_reset(self):
-        env = coopetition_gym.make("NewEnvironment-v0")
+    def test_reset(self): env = coopetition_gym.make("NewEnvironment-v0")
         obs, info = env.reset(seed=42)
         assert obs.shape == (expected_dim,)
 
-    def test_step(self):
-        env = coopetition_gym.make("NewEnvironment-v0")
+    def test_step(self): env = coopetition_gym.make("NewEnvironment-v0")
         obs, info = env.reset(seed=42)
         actions = np.array([50.0, 50.0])
         obs, rewards, terminated, truncated, info = env.step(actions)

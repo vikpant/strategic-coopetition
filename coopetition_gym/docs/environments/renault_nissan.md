@@ -214,9 +214,7 @@ env_strained = coopetition_gym.make("RenaultNissan-v0", phase="strained")
 
 ### Phase-Dependent Dependencies
 
-Created using `create_renault_nissan_interdependence(phase)`:
-
-The interdependence matrix varies by phase:
+Created using `create_renault_nissan_interdependence(phase)`: The interdependence matrix varies by phase:
 - **Formation**: Nissan highly dependent on Renault (rescue)
 - **Mature**: More balanced mutual dependency
 - **Crisis**: Reduced dependency as alliance frays
@@ -370,16 +368,14 @@ import numpy as np
 
 phases = ["formation", "mature", "crisis", "strained"]
 
-for phase in phases:
-    env = coopetition_gym.make("RenaultNissan-v0", phase=phase)
+for phase in phases: env = coopetition_gym.make("RenaultNissan-v0", phase=phase)
     obs, info = env.reset(seed=42)
 
     print(f"\n{phase.upper()} Phase ({info['period']})")
     print(f"  Initial trust: {info['mean_trust']:.2f}")
 
     # Run 50 steps with moderate cooperation
-    for step in range(50):
-        actions = np.array([50.0, 55.0])  # Nissan, Renault
+    for step in range(50): actions = np.array([50.0, 55.0])  # Nissan, Renault
         obs, rewards, terminated, truncated, info = env.step(actions)
 
     print(f"  Final trust: {info['mean_trust']:.2f}")

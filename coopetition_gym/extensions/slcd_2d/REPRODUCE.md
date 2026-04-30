@@ -60,5 +60,5 @@ Any re-run with the same code should give bit-identical smoke-campaign outputs; 
 ## Known limitations
 
 - Oracle only; no training algorithms wired in yet.
-- Calibration `(κ, β, η, ξ)` is a first pass — not fit to the SLCD 2004–11 dissolution timeline. Fine-tuning is a follow-up task.
+- Calibration `(κ, β, η, ξ)` is a first pass, not fit to the SLCD 2004–11 dissolution timeline. Fine-tuning is a follow-up task.
 - Extension is scoped to SLCD; transferring the 2D formalism to other v1 environments is out of scope for this sanity check.

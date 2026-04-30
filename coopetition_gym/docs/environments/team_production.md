@@ -11,7 +11,7 @@
 
 TeamProduction-v0 implements a **team production game** where agents contribute effort to a shared production function. This is the baseline TR-3 environment demonstrating free-rider dynamics without loyalty mechanisms.
 
-The environment tests whether reinforcement learning agents can overcome the **free-rider temptation**—contributing less effort while benefiting from teammates' contributions.
+The environment tests whether reinforcement learning agents can overcome the **free-rider temptation**,contributing less effort while benefiting from teammates' contributions.
 
 ---
 
@@ -92,9 +92,7 @@ With light penalty for severe free-riding (cooperation rate < 20%).
 
 ### The Free-Rider Problem
 
-Team production creates a classic collective action problem:
-
-1. **Individual incentive**: Contribute less effort (save cost) while sharing output
+Team production creates a classic collective action problem: 1. **Individual incentive**: Contribute less effort (save cost) while sharing output
 2. **Collective outcome**: If all free-ride, team output is minimal
 3. **Nash equilibrium**: Suboptimal effort level $a^* < a^{opt}$
 
@@ -132,13 +130,11 @@ print(f"Nash effort: {info['nash_equilibrium']:.2f}")
 print(f"Social optimum: {info['social_optimum']:.2f}")
 
 # Run episode with Nash equilibrium strategy
-for step in range(100):
-    nash_effort = info['nash_equilibrium']
+for step in range(100): nash_effort = info['nash_equilibrium']
     actions = np.array([nash_effort] * 4)
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Team output at Nash: {info['team_output']:.2f}")
 ```

@@ -184,8 +184,7 @@ pip install tensorflow[and-cuda]
 # PyTorch
 import torch
 print(f"CUDA available: {torch.cuda.is_available()}")
-if torch.cuda.is_available():
-    print(f"GPU: {torch.cuda.get_device_name(0)}")
+if torch.cuda.is_available(): print(f"GPU: {torch.cuda.get_device_name(0)}")
 
 # TensorFlow
 import tensorflow as tf
@@ -203,8 +202,7 @@ model = PPO("MlpPolicy", env, batch_size=64, policy_kwargs=dict(net_arch=[128, 1
 
 # TensorFlow: Enable memory growth
 gpus = tf.config.list_physical_devices('GPU')
-for gpu in gpus:
-    tf.config.experimental.set_memory_growth(gpu, True)
+for gpu in gpus: tf.config.experimental.set_memory_growth(gpu, True)
 ```
 
 ---
@@ -323,9 +321,7 @@ env = SubprocVecEnv([lambda: coopetition_gym.make("TrustDilemma-v0") for _ in ra
 
 ### Getting Help
 
-If you encounter issues not covered here:
-
-1. Check the [GitHub Issues](https://github.com/your-org/strategic-coopetition/issues)
+If you encounter issues not covered here: 1. Check the [GitHub Issues](https://github.com/your-org/strategic-coopetition/issues)
 2. Search existing issues for similar problems
 3. Open a new issue with:
    - Python version (`python --version`)

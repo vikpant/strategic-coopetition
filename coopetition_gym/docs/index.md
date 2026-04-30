@@ -53,7 +53,7 @@ print(f"Action space: {env.action_space}")
 
 ## Overview
 
-**Coopetition-Gym** is a Python research library providing multi-agent reinforcement learning environments for studying *coopetitive dynamics*—scenarios where agents must simultaneously cooperate and compete. The library implements mathematical frameworks from published research:
+**Coopetition-Gym** is a Python research library providing multi-agent reinforcement learning environments for studying *coopetitive dynamics*,scenarios where agents must simultaneously cooperate and compete. The library implements mathematical frameworks from published research:
 
 - **TR-1**: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/abs/2510.18802)
 - **TR-2**: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/abs/2510.24909)
@@ -126,8 +126,7 @@ observations, rewards, terminations, truncations, infos = env.step(actions)
 # AEC API (sequential moves)
 env = coopetition_gym.make_aec("TrustDilemma-v0")
 env.reset()
-for agent in env.agent_iter():
-    obs, reward, term, trunc, info = env.last()
+for agent in env.agent_iter(): obs, reward, term, trunc, info = env.last()
     action = policy(obs) if not term else None
     env.step(action)
 ```
@@ -225,11 +224,11 @@ Coopetition occurs when entities simultaneously cooperate (to create value) and 
 - **Platform Ecosystems**: Developers depend on platforms that also compete with them (e.g., iOS App Store)
 - **Supply Chains**: Suppliers share information for efficiency while competing for contracts
 
-**The Coopetition Paradox**: The same relationship exhibits both cooperative and competitive dynamics simultaneously—not sequentially or in separate domains. This creates strategic tension that standard game theory struggles to capture.
+**The Coopetition Paradox**: The same relationship exhibits both cooperative and competitive dynamics simultaneously, not sequentially or in separate domains. This creates strategic tension that standard game theory struggles to capture.
 
 ### Interdependence & Structural Coupling (TR-1)
 
-Interdependence captures why actors must consider partner outcomes even while competing. When Actor A depends on Actor B for critical resources, A's success structurally requires B's success—creating *instrumental* concern for B's welfare distinct from altruism.
+Interdependence captures why actors must consider partner outcomes even while competing. When Actor A depends on Actor B for critical resources, A's success structurally requires B's success, creating *instrumental* concern for B's welfare distinct from altruism.
 
 **The Interdependence Matrix** quantifies structural dependencies:
 
@@ -241,7 +240,7 @@ $$\Large D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \
 | $\text{Dep}(i,j,d)$ | Does i depend on j for d? | Developer depends on platform for distribution |
 | $\text{crit}(i,j,d)$ | Criticality (1 = sole provider) | API provider with no alternatives: 1.0 |
 
-**Key Insight**: $D_{ij} \neq D_{ji}$ in general. Asymmetric dependencies create power imbalances—a startup may critically depend on a platform ($D_{\text{startup,platform}} \approx 0.8$) while the platform barely notices any single startup ($D_{\text{platform,startup}} \approx 0.01$).
+**Key Insight**: $D_{ij} \neq D_{ji}$ in general. Asymmetric dependencies create power imbalances, a startup may critically depend on a platform ($D_{\text{startup,platform}} \approx 0.8$) while the platform barely notices any single startup ($D_{\text{platform,startup}} \approx 0.01$).
 
 ### Integrated Utility Function (TR-1)
 
@@ -256,7 +255,7 @@ $$\Large U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_
 | Private Payoff | $\pi_i = e_i - a_i + f(a_i) + \alpha_i \cdot \text{Synergy}$ | What I keep + what I create + my share of joint value |
 | Interdependence Term | $\sum_{j} D_{ij} \cdot \pi_j$ | Partner success weighted by my dependency on them |
 
-**Why This Matters**: Classical Nash Equilibrium assumes purely self-interested payoffs. The *Coopetitive Equilibrium* extends Nash by incorporating dependency-weighted concern for partner outcomes—capturing why dependent actors rationally care about partner success.
+**Why This Matters**: Classical Nash Equilibrium assumes purely self-interested payoffs. The *Coopetitive Equilibrium* extends Nash by incorporating dependency-weighted concern for partner outcomes, capturing why dependent actors rationally care about partner success.
 
 ### Value Creation & Complementarity (TR-1)
 
@@ -306,7 +305,7 @@ $$
 
 $$\Large \Theta = 1 - R \quad \text{(reputation damage limits maximum achievable trust)}$$
 
-Even with perfect cooperation, damaged reputation prevents trust from fully recovering—creating permanent relationship constraints (hysteresis).
+Even with perfect cooperation, damaged reputation prevents trust from fully recovering, creating permanent relationship constraints (hysteresis).
 
 **Interdependence Amplification**: High-dependency relationships experience 27% faster trust erosion for equivalent violations:
 
@@ -334,7 +333,7 @@ $$U_{\text{recip},i} = \lambda_R \sum_{j \neq i} T_{ij} \cdot (1 + \omega D_{ij}
 
 $$\rho_{ij} = \rho_0 \cdot D_{ij}^{\eta} \quad \text{(higher dependency → stronger reciprocal response)}$$
 
-Agents who depend more on a partner reciprocate more strongly—capturing why workers respond to wage changes more than employers respond to effort changes.
+Agents who depend more on a partner reciprocate more strongly, capturing why workers respond to wage changes more than employers respond to effort changes.
 
 ### Empirical Validation
 

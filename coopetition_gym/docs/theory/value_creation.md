@@ -10,7 +10,7 @@ This document provides a comprehensive treatment of value creation and complemen
 
 ## Executive Summary
 
-**For Practitioners**: Complementarity explains *why* cooperation creates value—joint action produces more than the sum of independent efforts. When Samsung and Sony combined manufacturing expertise with brand strength, they created value neither could achieve alone.
+**For Practitioners**: Complementarity explains *why* cooperation creates value, joint action produces more than the sum of independent efforts. When Samsung and Sony combined manufacturing expertise with brand strength, they created value neither could achieve alone.
 
 **For Researchers**: We formalize complementarity through value creation functions V(a|γ) exhibiting superadditivity. Two specifications (logarithmic, power) are validated, with logarithmic achieving 58/60 accuracy on the S-LCD case study. The complementarity parameter γ controls synergy strength.
 
@@ -29,7 +29,7 @@ This is the essence of Brandenburger and Nalebuff's coopetition framework: actor
 
 ### What is Complementarity?
 
-**Definition**: Complementarity exists when joint action creates superadditive value—the whole exceeds the sum of the parts.
+**Definition**: Complementarity exists when joint action creates superadditive value, the whole exceeds the sum of the parts.
 
 **Mathematically**:
 
@@ -109,7 +109,7 @@ $$\Large f_i(a_i) = a_i^{\beta} \quad \text{where } \beta = 0.75$$
 
 ### Synergy Function
 
-The synergy function captures value that exists *only* through collaboration—it requires multiple actors contributing.
+The synergy function captures value that exists *only* through collaboration, it requires multiple actors contributing.
 
 **Equation 4 (TR-1)**: Geometric Mean
 
@@ -232,15 +232,13 @@ The synergy being divided is:
 
 $$\Large \text{Synergy} = V(\mathbf{a}) - \sum_{j=1}^{N} f_j(a_j) = \gamma \cdot g(a_1, \ldots, a_N)$$
 
-This is the **Added Value** from collaboration—value that exists only because actors worked together.
+This is the **Added Value** from collaboration, value that exists only because actors worked together.
 
 ### Bargaining and Shares ($\alpha_i$)
 
 **Constraint**: $\Sigma\alpha_i = 1$ (all synergy must be allocated)
 
-**Determination Methods**:
-
-1. **Equal Shares**: $\alpha_i = 1/N$ (symmetric bargaining)
+**Determination Methods**: 1. **Equal Shares**: $\alpha_i = 1/N$ (symmetric bargaining)
 2. **Shapley Value**: $\alpha_i$ based on marginal contribution
 3. **Nash Bargaining**: $\alpha_i$ reflects relative bargaining power
 4. **Contractual**: Pre-negotiated based on relationship structure
@@ -289,20 +287,16 @@ The value functions are implemented in `coopetition_gym/core/value_functions.py`
 
 ```python
 # Logarithmic individual value
-def logarithmic_individual_value(action, theta=20.0):
-    return theta * np.log(1 + action)
+def logarithmic_individual_value(action, theta=20.0): return theta * np.log(1 + action)
 
 # Power individual value
-def power_individual_value(action, beta=0.75):
-    return action ** beta
+def power_individual_value(action, beta=0.75): return action ** beta
 
 # Geometric mean synergy
-def geometric_mean_synergy(actions):
-    return np.prod(actions) ** (1 / len(actions))
+def geometric_mean_synergy(actions): return np.prod(actions) ** (1 / len(actions))
 
 # Total value
-def total_value(actions, gamma=0.65, theta=20.0):
-    individual = sum(logarithmic_individual_value(a, theta) for a in actions)
+def total_value(actions, gamma=0.65, theta=20.0): individual = sum(logarithmic_individual_value(a, theta) for a in actions)
     synergy = gamma * geometric_mean_synergy(actions)
     return individual + synergy
 ```
@@ -339,9 +333,7 @@ Higher γ (more complementarity) shifts equilibrium toward:
 
 ### Complementarity and Trust
 
-Complementarity interacts with trust dynamics (TR-2):
-
-1. High γ creates incentive to cooperate → builds trust
+Complementarity interacts with trust dynamics (TR-2): 1. High γ creates incentive to cooperate → builds trust
 2. Built trust enables more cooperation → realizes synergy
 3. Realized synergy reinforces cooperative equilibrium
 

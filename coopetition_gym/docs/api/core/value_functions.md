@@ -18,7 +18,7 @@ The value functions module provides two validated specifications for computing v
 | **Logarithmic** (default) | $f(a) = \theta \cdot \ln(1 + a)$ | Manufacturing JVs | 58/60 |
 | **Power** | $f(a) = a^\beta$ | General scenarios | 46/60 |
 
-Both specifications exhibit diminishing marginal returns—each additional unit of cooperation yields progressively smaller value gains.
+Both specifications exhibit diminishing marginal returns, each additional unit of cooperation yields progressively smaller value gains.
 
 ---
 
@@ -351,8 +351,7 @@ def total_value(
     """
     Compute total value creation from all contributions.
 
-    Implements TR-1 Equation 8:
-    V(a|γ) = Σ_{i=1}^N f_i(a_i) + γ · g(a_1, ..., a_N)
+    Implements TR-1 Equation 8: V(a|γ) = Σ_{i=1}^N f_i(a_i) + γ · g(a_1, ..., a_N)
     """
 ```
 
@@ -462,8 +461,7 @@ def create_slcd_parameters() -> ValueFunctionParameters:
 
     These parameters achieved 58/60 validation score (96.7% accuracy).
 
-    Returns:
-        ValueFunctionParameters with:
+    Returns: ValueFunctionParameters with:
         - specification: LOGARITHMIC
         - theta: 20.0
         - gamma: 0.65

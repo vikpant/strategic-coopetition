@@ -114,7 +114,7 @@ schema.
 
 3. **Marginal gradual-ramp-down exploitation**: the gradual strategy (linear
    cooperation reduction over the final 20% of an episode) evades per-step
-   sanctions on 6 environments — but gains are two orders of magnitude
+   sanctions on 6 environments, but gains are two orders of magnitude
    smaller than the corresponding losses to partners.
 
 4. **TR-3 universal immunity**: all five TR-3 collective action environments

@@ -89,8 +89,7 @@ for step in range(100):
     actions = np.array([50.0] * 5)
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Total contribution: {info['total_contribution']:.1f}")
 print(f"Public good value: {info['public_good']:.1f}")
@@ -165,9 +164,7 @@ The `info` dictionary contains:
 
 ### Loyalty-Mediated Cooperation
 
-TR-3 loyalty mechanisms can overcome the dilemma:
-
-1. **High loyalty ($\theta \approx 1$):**
+TR-3 loyalty mechanisms can overcome the dilemma: 1. **High loyalty ($\theta \approx 1$):**
    - $\phi_B$ bonus from others' payoffs
    - $\phi_C$ bonus from own contribution
    - Sustains positive contributions
@@ -187,16 +184,13 @@ import numpy as np
 multipliers = [1.5, 2.0, 3.0, 4.0]
 results = {}
 
-for m in multipliers:
-    env = coopetition_gym.make("PublicGoods-v0", multiplier=m)
+for m in multipliers: env = coopetition_gym.make("PublicGoods-v0", multiplier=m)
     obs, info = env.reset(seed=42)
 
     # Mixed contribution strategy
-    for step in range(50):
-        actions = np.array([40.0] * 5)  # 80% contribution
+    for step in range(50): actions = np.array([40.0] * 5)  # 80% contribution
         obs, rewards, terminated, truncated, info = env.step(actions)
-        if terminated or truncated:
-            break
+        if terminated or truncated: break
 
     results[m] = {
         "public_good": info['public_good'],
@@ -205,8 +199,7 @@ for m in multipliers:
     }
     env.close()
 
-for m, data in results.items():
-    print(f"Multiplier {m}: PG={data['public_good']:.1f}, Eff={data['efficiency']:.1%}")
+for m, data in results.items(): print(f"Multiplier {m}: PG={data['public_good']:.1f}, Eff={data['efficiency']:.1%}")
 ```
 
 ---

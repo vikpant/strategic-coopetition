@@ -12,7 +12,7 @@ All Coopetition-Gym v1.x environments implement the **uniaxial treatment** of co
 
 **Key characteristics:**
 - **Action interpretation**: Higher values represent greater cooperation/investment in joint value creation
-- **Competition modeling**: Competitive dynamics emerge through structural parameters—interdependence matrices, bargaining shares, and trust evolution—rather than explicit competitive actions
+- **Competition modeling**: Competitive dynamics emerge through structural parameters, interdependence matrices, bargaining shares, and trust evolution, rather than explicit competitive actions
 - **Theoretical grounding**: The uniaxial and biaxial treatments represent complementary paradigms in the coopetition literature, each capturing different aspects of strategic interaction
 
 Coopetition-Gym v2.x will introduce **biaxial treatment** with independent cooperation and competition dimensions, enabling agents to simultaneously vary investment in value creation and value capture. See [Scope and Strategic Roadmap](../scope_roadmap.md) for theoretical rationale and extension plans.

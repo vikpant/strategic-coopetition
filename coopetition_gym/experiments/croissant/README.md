@@ -17,14 +17,14 @@ extension.
 
 Both files declare:
 
-- **Core metadata** — `name`, `description`, `citation`, `license` (CC-BY-4.0),
+- **Core metadata**: `name`, `description`, `citation`, `license` (CC-BY-4.0),
   `url`, `version`, `datePublished`, creators, publisher, keywords.
-- **RAI (Responsible AI) extension** — `dataCollection`, `dataPreprocessingProtocol`,
+- **RAI (Responsible AI) extension**: `dataCollection`, `dataPreprocessingProtocol`,
   `dataBiases`, `personalSensitiveInformation`, `useCases`, `dataLimitation`,
   `dataSocialImpact`, `dataReleaseMaintenancePlan`.
-- **Distribution** — one `FileObject` per tarball plus `FileSet` declarations
+- **Distribution**: one `FileObject` per tarball plus `FileSet` declarations
   for the JSON files within.
-- **Record sets** — field-level schema for each JSON file, with JSONPath
+- **Record sets**: field-level schema for each JSON file, with JSONPath
   extractions.
 
 The `sha256` fields are placeholders (`TBD-COMPUTED-AT-UPLOAD-TIME`) because
@@ -125,8 +125,7 @@ huggingface-cli upload vikpant/coopetition-gym-audit \
 python - <<'PY'
 from huggingface_hub import HfApi
 api = HfApi()
-for repo in ["vikpant/coopetition-gym-v1", "vikpant/coopetition-gym-audit"]:
-    info = api.dataset_info(repo)
+for repo in ["vikpant/coopetition-gym-v1", "vikpant/coopetition-gym-audit"]: info = api.dataset_info(repo)
     print(f"{repo}: {info.id}, private={info.private}, downloads={info.downloads}")
 PY
 ```
@@ -136,9 +135,7 @@ appears in the sidebar.
 
 ### 7. Cross-link in the paper and repository
 
-After upload:
-
-1. **Paper supplementary**: cite the two HuggingFace URLs in the paper's
+After upload: 1. **Paper supplementary**: cite the two HuggingFace URLs in the paper's
    data availability statement.
 2. **arXiv**: include the two URLs in the arXiv abstract upload.
 3. **Repository README**: update [../../REPRODUCE.md](../../REPRODUCE.md) to
@@ -153,8 +150,7 @@ To re-validate the Croissant files locally:
 python - <<'PY'
 import mlcroissant
 for path in ["experiments/croissant/training.json",
-             "experiments/croissant/audit.json"]:
-    ds = mlcroissant.Dataset(path)
+             "experiments/croissant/audit.json"]: ds = mlcroissant.Dataset(path)
     print(f"{path}: {ds.metadata.name} v{ds.metadata.version}")
     print(f"  distribution: {len(ds.metadata.distribution)} items")
     print(f"  recordSet: {len(ds.metadata.record_sets)} sets")

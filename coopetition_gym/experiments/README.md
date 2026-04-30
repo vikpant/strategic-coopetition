@@ -1,4 +1,4 @@
-# Experiments — Reproducibility Package
+# Experiments, Reproducibility Package
 
 This directory contains the consolidated orchestration, evaluation, analysis,
 and validation code used to produce the datasets released with the companion
@@ -49,11 +49,11 @@ python -m experiments.validate audit    data/audit/
 
 ## Design Principles
 
-1. **Single source of truth** — [config.py](config.py) defines every default. Other modules import from it rather than redefining values.
-2. **Safety defaults on** — Checkpoints, disk monitoring, and progress reporting are enabled by default. Opt-out flags exist for special cases but the defaults reflect lessons learned from the original campaign.
-3. **Idempotent** — Every module that writes output checks for existing files and skips completed work. Safe to re-run without losing progress.
-4. **Config-driven** — Campaign types, algorithm selections, and environment lists are data (in config.py), not code. Adding a new campaign type or algorithm is a dataclass addition, not a new module.
-5. **Determinism** — All randomness is seeded. Given the same seed, algorithm hyperparameters, and hardware, results are reproducible within floating-point tolerance.
+1. **Single source of truth**: [config.py](config.py) defines every default. Other modules import from it rather than redefining values.
+2. **Safety defaults on**: Checkpoints, disk monitoring, and progress reporting are enabled by default. Opt-out flags exist for special cases but the defaults reflect lessons learned from the original campaign.
+3. **Idempotent**: Every module that writes output checks for existing files and skips completed work. Safe to re-run without losing progress.
+4. **Config-driven**: Campaign types, algorithm selections, and environment lists are data (in config.py), not code. Adding a new campaign type or algorithm is a dataclass addition, not a new module.
+5. **Determinism**: All randomness is seeded. Given the same seed, algorithm hyperparameters, and hardware, results are reproducible within floating-point tolerance.
 
 ## Relationship to the Original Campaign Scripts
 
@@ -66,5 +66,5 @@ consolidated code match the original campaign outputs within floating-point
 tolerance (verified by a regression smoke test).
 
 Campaign-specific one-off scripts (per-instance launchers, patch scripts,
-cloud-orchestration utilities) are not included here — they are historical
+cloud-orchestration utilities) are not included here, they are historical
 artifacts that reference specific cloud instance IDs and have no reuse value.

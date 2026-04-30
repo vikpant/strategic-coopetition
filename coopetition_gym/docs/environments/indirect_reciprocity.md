@@ -9,7 +9,7 @@
 
 ## Overview
 
-IndirectReciprocity-v0 implements a **four-agent population** with reputation-mediated cooperation and TR-4 reciprocity dynamics. Cooperation with any partner is observed by all members, enabling indirect reciprocity—"I cooperate with you because you cooperated with someone else."
+IndirectReciprocity-v0 implements a **four-agent population** with reputation-mediated cooperation and TR-4 reciprocity dynamics. Cooperation with any partner is observed by all members, enabling indirect reciprocity,"I cooperate with you because you cooperated with someone else."
 
 The environment tests whether agents can learn that **reputation matters**: cooperation with any single partner builds reputation that encourages cooperation from all others.
 
@@ -46,7 +46,7 @@ Indirect reciprocity emerges from Eq 44's multi-agent summation. Agent $i$'s rec
 
 $$U_{\text{recip},i} = \lambda_R \sum_{j \neq i} T_{ij} \cdot (1 + \omega D_{ij}) \cdot \rho_{ij} \cdot \varphi(s_{ij})$$
 
-When agent $j$ cooperates with agent $k$ (not $i$), agent $i$ observes $j$'s high action level. This creates a positive memory average for $j$, generating positive cooperation signals when $i$ evaluates $j$—even without direct interaction history.
+When agent $j$ cooperates with agent $k$ (not $i$), agent $i$ observes $j$'s high action level. This creates a positive memory average for $j$, generating positive cooperation signals when $i$ evaluates $j$,even without direct interaction history.
 
 ### Reciprocity Sensitivity
 
@@ -85,9 +85,7 @@ Lower individual sensitivity, but with 3 partners contributing to each agent's m
 
 ### Indirect Reciprocity Theory
 
-Nowak & Sigmund (1998, 2005) established that cooperation can be sustained in populations through **image scoring**:
-
-1. **Direct reciprocity**: "I help you because you helped me" (TFT)
+Nowak & Sigmund (1998, 2005) established that cooperation can be sustained in populations through **image scoring**: 1. **Direct reciprocity**: "I help you because you helped me" (TFT)
 2. **Indirect reciprocity**: "I help you because you helped someone" (reputation)
 
 ### Strategic Implications
@@ -118,12 +116,10 @@ env = coopetition_gym.make("IndirectReciprocity-v0")
 obs, info = env.reset(seed=42)
 
 # All agents cooperate
-for step in range(150):
-    actions = np.array([60.0, 60.0, 60.0, 60.0])
+for step in range(150): actions = np.array([60.0, 60.0, 60.0, 60.0])
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Mean trust: {info['mean_trust']:.3f}")
 ```
@@ -178,7 +174,7 @@ The `info` dictionary contains:
 2. Agents $i$ and $l$ observe $j$'s high action in memory
 3. When evaluating $j$, both $i$ and $l$ compute positive $s_{ij}$ and $s_{lj}$
 4. Both $i$ and $l$ receive positive reciprocity modifier when cooperating with $j$
-5. This encourages all agents to cooperate with $j$—indirect reciprocity
+5. This encourages all agents to cooperate with $j$,indirect reciprocity
 
 ### Defection Contagion
 

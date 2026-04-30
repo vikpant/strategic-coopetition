@@ -4,26 +4,24 @@ All notable changes to this project are documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.1] — 2026-04-19
+## [1.0.1] (2026-04-19)
 
 ### Documentation clarifications
 
-- **Clarified role of `core/collective_action.py`** — module docstring
+- **Clarified role of `core/collective_action.py`**: module docstring
   rewritten to state that this module provides support utilities
   (dataclasses, state-tracking containers) used by the TR-3
   environments, and that the authoritative TR-3 paper formalism is
   implemented in `envs/collective_action_envs.py`. No code changes.
-- **Clarified role of `core/reciprocity.py`** — module docstring
+- **Clarified role of `core/reciprocity.py`**: module docstring
   rewritten to state that this module provides support utilities used
   by the TR-4 environments, and that the authoritative TR-4 paper
   formalism is implemented in `envs/reciprocity_envs.py`. No code
   changes.
-- **Added architectural pointer to `envs/collective_action_envs.py`** —
-  module docstring now explicitly identifies this file as the
+- **Added architectural pointer to `envs/collective_action_envs.py`**: module docstring now explicitly identifies this file as the
   authoritative TR-3 implementation and points to the `core/` helper
   location.
-- **Added architectural pointer to `envs/reciprocity_envs.py`** —
-  module docstring now explicitly identifies this file as the
+- **Added architectural pointer to `envs/reciprocity_envs.py`**: module docstring now explicitly identifies this file as the
   authoritative TR-4 implementation and points to the `core/` helper
   location.
 
@@ -52,7 +50,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-## [1.0.0] — 2026-04-18
+## [1.0.0] (2026-04-18)
 
 ### Added
 
@@ -60,32 +58,32 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
   Single entry point for reproducing every table and figure in the companion
   research paper *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm
   Rankings in Mixed-Motive Multi-Agent Evaluation*.
-  - `config.py` — single source of truth for all defaults (seeds, reward
+  - `config.py`, single source of truth for all defaults (seeds, reward
     types, environments, algorithms, oracle references, safety settings).
-  - `algorithms.py` — 16 training algorithms (IPPO, IA2C, ISAC, LOLA,
+  - `algorithms.py`, 16 training algorithms (IPPO, IA2C, ISAC, LOLA,
     SelfPlay_PPO, IndependentREINFORCE, FCP; MAPPO, MADDPG, MATD3, MASAC,
     M3DDPG, QMIX, VDN, COMA, MeanFieldAC), 7 game-theoretic oracles,
     2 heuristic baselines (Random, TitForTat), 101 constant-action policies.
-  - `campaign.py` — unified orchestrator with subcommands `baseline`,
+  - `campaign.py`, unified orchestrator with subcommands `baseline`,
     `private`, `cooperative`. Safety defaults on (checkpoints, GPU memory
     monitoring, thermal monitoring, dynamic backpressure).
-  - `sensitivity.py` — network capacity sensitivity analysis.
-  - `audit.py` — behavioral audit (static response surface + temporal
+  - `sensitivity.py`, network capacity sensitivity analysis.
+  - `audit.py`, behavioral audit (static response surface + temporal
     deviation). Subcommands `static`, `temporal`, `analyze`.
-  - `evaluate.py` — policy evaluation and cross-seed aggregation.
+  - `evaluate.py`, policy evaluation and cross-seed aggregation.
     Subcommands `agent`, `aggregate`.
-  - `analyze.py` — paper table and figure generators. Nine subcommands
+  - `analyze.py`, paper table and figure generators. Nine subcommands
     covering returns summary, oracle comparison, MASAC instability,
     learning curves, plots, reward-type ablation, and more.
-  - `validate.py` — dataset integrity checks. Subcommands `training`,
+  - `validate.py`, dataset integrity checks. Subcommands `training`,
     `audit`, `schema`.
-  - `monitor.py` — local-friendly progress, health, and disk monitor.
+  - `monitor.py`, local-friendly progress, health, and disk monitor.
     Subcommands `watch`, `clean-checkpoints`, `disk-status`, `health-check`.
-- **`REPRODUCE.md`** — step-by-step instructions for reproducing paper
+- **`REPRODUCE.md`**: step-by-step instructions for reproducing paper
   results from the released datasets.
-- **`.github/workflows/tests.yml`** — pytest matrix on Python 3.9/3.10/3.11/3.12
+- **`.github/workflows/tests.yml`**: pytest matrix on Python 3.9/3.10/3.11/3.12
   × ubuntu-latest.
-- **`.github/workflows/install.yml`** — install-verification matrix on
+- **`.github/workflows/install.yml`**: install-verification matrix on
   macos-latest / ubuntu-latest / windows-latest × Python 3.10/3.12,
   exercising Gymnasium and PettingZoo Parallel APIs.
 - **Root `LICENSE`** (MIT) covering the whole repository.
@@ -114,13 +112,13 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
-- **Namespace-package shadowing** — when running from the repository root,
+- **Namespace-package shadowing**: when running from the repository root,
   Python resolved `coopetition_gym` to the outer folder (which has no
   top-level `__init__.py`) as a namespace package, causing attribute errors
   when attempting to call `coopetition_gym.make(...)`. Fixed consistently
   across every consolidated module via a dedicated import helper that
   prepends the inner-package parent and drops stale imports.
-- **Install verification workflow** — Windows GitHub Actions runners default
+- **Install verification workflow**: Windows GitHub Actions runners default
   to PowerShell, which does not understand the bash heredoc syntax used in
   the install verification steps. Added `defaults.run.shell: bash` and
   `working-directory: coopetition_gym` to avoid both the heredoc issue and
@@ -134,7 +132,7 @@ project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 - **Deterministic regression** (Constant_50 on TrustDilemma-v0 seed 99) on a
   fresh clone of the public GitHub repository matches the released dataset
   within 1.7 × 10⁻⁷ relative error.
-- **Training regression** — IA2C (via SB3) and IndependentREINFORCE (custom
+- **Training regression**: IA2C (via SB3) and IndependentREINFORCE (custom
   PyTorch) both train to completion through the consolidated orchestrator.
 
 ### Not Included in the Public Release (Archived)
@@ -154,12 +152,12 @@ identifiers and SSH credentials, and has been archived to
 
 ---
 
-## [0.3.0] — 2026 (pre-consolidation)
+## [0.3.0] (2026 (pre-consolidation))
 
 Editable-install package release of `coopetition-gym` supporting Gymnasium and
 PettingZoo APIs. Internal release; used during the v1 training campaign.
 
-## [0.2.0] — 2025
+## [0.2.0] (2025)
 
 Initial public release of the Coopetition-Gym environment suite with 10
 environments and supporting utilities.

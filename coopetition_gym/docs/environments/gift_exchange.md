@@ -11,7 +11,7 @@
 
 GiftExchange-v0 implements an **asymmetric employer-worker gift exchange game** with TR-4 reciprocity dynamics. The employer (Agent 0) sets a wage-cooperation level, and the worker (Agent 1) responds with effort-cooperation. Fair wages elicit reciprocal effort; unfair wages trigger shirking.
 
-The environment tests whether agents can learn **asymmetric reciprocity**—the worker reciprocates more strongly than the employer due to higher structural dependency.
+The environment tests whether agents can learn **asymmetric reciprocity**,the worker reciprocates more strongly than the employer due to higher structural dependency.
 
 ---
 
@@ -49,7 +49,7 @@ With $\rho_0 = 1.2$ and $\eta = 1.5$:
 - **Worker's sensitivity**: $\rho_{21} = 1.2 \cdot 0.7^{1.5} \approx 0.703$
 - **Employer's sensitivity**: $\rho_{12} = 1.2 \cdot 0.4^{1.5} \approx 0.304$
 
-The worker reciprocates **2.3× more strongly** than the employer—capturing the empirical finding that dependent parties show stronger reciprocal responses.
+The worker reciprocates **2.3× more strongly** than the employer, capturing the empirical finding that dependent parties show stronger reciprocal responses.
 
 ### TR-4 Equations
 
@@ -92,7 +92,7 @@ All equations follow the standard TR-4 framework:
 |--------|-------------------|-----------------|
 | **Mechanism** | Structural lock-in (TR-1/TR-2) | Voluntary reciprocity (TR-4) |
 | **Asymmetry Source** | Endowment and dependency | Reciprocity sensitivity |
-| **Exit Option** | Weak partner can exit | No exit—ongoing exchange |
+| **Exit Option** | Weak partner can exit | No exit, ongoing exchange |
 | **Key Dynamic** | Hold-up exploitation | Gift-giving and reciprocation |
 | **Strategy** | Defensive vs. exploitative | Fair wages trigger effort |
 
@@ -102,9 +102,7 @@ All equations follow the standard TR-4 framework:
 
 ### The Gift Exchange Paradigm
 
-Akerlof's (1982) efficiency wage theory and Fehr et al.'s (1993) experimental findings establish that:
-
-1. **Standard prediction**: Workers exert minimum effort regardless of wage
+Akerlof's (1982) efficiency wage theory and Fehr et al.'s (1993) experimental findings establish that: 1. **Standard prediction**: Workers exert minimum effort regardless of wage
 2. **Observed behavior**: Higher wages elicit higher effort (positive reciprocity)
 3. **Unfair wages**: Below-baseline wages trigger effort reduction (negative reciprocity)
 4. **Asymmetric response**: Workers reciprocate more strongly when dependent
@@ -137,12 +135,10 @@ env = coopetition_gym.make("GiftExchange-v0")
 obs, info = env.reset(seed=42)
 
 # Employer offers fair wage, worker reciprocates
-for step in range(100):
-    actions = np.array([65.0, 55.0])  # Employer: 65%, Worker: 55%
+for step in range(100): actions = np.array([65.0, 55.0])  # Employer: 65%, Worker: 55%
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Mean trust: {info['mean_trust']:.3f}")
 ```

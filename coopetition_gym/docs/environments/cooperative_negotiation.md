@@ -84,8 +84,7 @@ agreed_level = (a_1 + a_2) / 2
 
 Post-agreement, deviations trigger penalties:
 ```
-if |a_i - agreed_level_i| > agreement_threshold:
-    breach_penalty = breach_multiplier × |a_i - agreed_level_i|
+if |a_i - agreed_level_i| > agreement_threshold: breach_penalty = breach_multiplier × |a_i - agreed_level_i|
     r_i = r_i - breach_penalty
 ```
 
@@ -166,8 +165,7 @@ for step in range(100):
     actions = np.array([agent_0_proposal, agent_1_proposal])
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if info['agreement_reached']:
-        print(f"Agreement reached at step {step}!")
+    if info['agreement_reached']: print(f"Agreement reached at step {step}!")
         print(f"Agreed levels: {info['current_agreement']}")
 ```
 
@@ -191,8 +189,7 @@ An agreement is reached when proposals are close:
 
 ```python
 proposal_diff = abs(action_0 - action_1)
-if proposal_diff <= agreement_threshold:
-    agreement_reached = True
+if proposal_diff <= agreement_threshold: agreement_reached = True
     agreed_level = (action_0 + action_1) / 2  # Average
 ```
 
@@ -206,11 +203,8 @@ Once an agreement is reached:
 ### Breach Detection
 
 ```python
-if has_agreement:
-    for agent in [0, 1]:
-        deviation = abs(action[agent] - agreement[agent])
-        if deviation > agreement_threshold:
-            breach_occurred = True
+if has_agreement: for agent in [0, 1]: deviation = abs(action[agent] - agreement[agent])
+        if deviation > agreement_threshold: breach_occurred = True
             penalty = breach_penalty_multiplier * deviation
             rewards[agent] -= penalty
 ```
@@ -234,8 +228,7 @@ if has_agreement:
 ```python
 # Check agreement status from observation
 has_agreement = obs[-1] > 0.5  # Last element is flag
-if has_agreement:
-    agreed_levels = obs[-3:-1]  # Second-to-last elements
+if has_agreement: agreed_levels = obs[-3:-1]  # Second-to-last elements
 ```
 
 ---
@@ -370,8 +363,7 @@ for step in range(100):
 
     partner_last = obs[1]  # Partner's last action
 
-    if step == 20:
-        print(f"Step 20: Agreement={info['agreement_reached']}, "
+    if step == 20: print(f"Step 20: Agreement={info['agreement_reached']}, "
               f"Proposals=({my_proposal:.1f}, {partner_proposal:.1f})")
 
 print(f"\nFinal: {info['total_agreements']} agreements, "
