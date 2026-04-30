@@ -232,3 +232,7 @@ Agents internalize partner payoffs proportional to structural dependency.
 - [Value Functions](value_functions.md) - Value computation
 - [Interdependence](interdependence.md) - Dependency matrices
 - [Trust Dynamics](trust_dynamics.md) - Trust-modulated payoffs
+
+## Technical Reports
+
+- TR-1: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/pdf/2510.18802) (arXiv:2510.18802)

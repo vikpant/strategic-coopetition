@@ -357,3 +357,8 @@ High $D_{{ij}}$ means agent i rationally cares about agent j's payoff, not from 
 - [Equilibrium](equilibrium.md) - Integrated utility computation
 - [TR-1 Theory](../../theory/interdependence.md) - Mathematical foundations
 - [PartnerHoldUp-v0](../../environments/partner_holdup.md) - Power asymmetry environment
+
+## Technical Reports
+
+- TR-1: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/pdf/2510.18802) (arXiv:2510.18802)
+- TR-2: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/pdf/2510.24909) (arXiv:2510.24909)
