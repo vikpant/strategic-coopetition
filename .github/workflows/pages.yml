@@ -28,7 +28,7 @@ jobs:
           ruby-version: '3.2'
           bundler-cache: false
       - name: Install Jekyll
-        run: gem install jekyll jekyll-relative-links jekyll-theme-cayman kramdown
+        run: gem install jekyll jekyll-relative-links jekyll-optional-front-matter jekyll-theme-cayman kramdown
       - name: Build with Jekyll
         working-directory: coopetition_gym/docs
         run: jekyll build --baseurl "${{ steps.pages.outputs.base_path }}" --destination ../../_site
