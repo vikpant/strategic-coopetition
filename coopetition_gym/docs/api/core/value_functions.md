@@ -543,3 +543,7 @@ This reflects economic reality: initial investments yield high returns, but even
 - [Equilibrium Module](equilibrium.md) - Full payoff computation
 - [TR-1 Theory](../../theory/value_creation.md) - Mathematical foundations
 - [SLCD-v0 Environment](../../environments/slcd.md) - Validated case study
+
+## Technical Reports
+
+- TR-1: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/pdf/2510.18802) (arXiv:2510.18802)

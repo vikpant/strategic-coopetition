@@ -182,3 +182,8 @@ CC-BY-4.0 (Creative Commons Attribution 4.0 International).
 - **Issues**: https://github.com/vikpant/strategic-coopetition/issues
 - **Contact**: vik.pant@utoronto.ca
 - **Changelog**: https://github.com/vikpant/strategic-coopetition/blob/master/CHANGELOG.md
+
+## Technical Reports
+
+- TR-3: [Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty](https://arxiv.org/pdf/2601.16237) (arXiv:2601.16237)
+- TR-4: [Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity](https://arxiv.org/pdf/2604.01240) (arXiv:2604.01240)

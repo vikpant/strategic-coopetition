@@ -97,3 +97,8 @@ pytest extensions/slcd_2d/tests/ -v
 - Does not register into `coopetition_gym.envs._ENVIRONMENT_REGISTRY`
 - Does not extend `experiments/campaign.py`, has its own `campaign.py`
 - Does not ship training-algorithm support; only the oracle is implemented
+
+## Technical Reports
+
+- TR-1: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/pdf/2510.18802) (arXiv:2510.18802)
+- TR-4: [Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity](https://arxiv.org/pdf/2604.01240) (arXiv:2604.01240)

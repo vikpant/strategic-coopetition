@@ -55,8 +55,10 @@ import coopetition_gym
 env = coopetition_gym.make("TrustDilemma-v0")
 obs, info = env.reset(seed=42)
 
-for _ in range(100): obs, reward, terminated, truncated, info = env.step([60.0, 55.0])
-    if terminated or truncated: break
+for _ in range(100):
+    obs, reward, terminated, truncated, info = env.step([60.0, 55.0])
+    if terminated or truncated:
+        break
 ```
 
 A runnable Jupyter walkthrough lives at
@@ -78,7 +80,7 @@ troubleshooting.
 If you use Coopetition-Gym in your research, please cite the relevant
 technical report.
 
-### Interdependence and complementarity (TR-1)
+### Interdependence and complementarity (TR-1) · [PDF on arXiv](https://arxiv.org/pdf/2510.18802)
 
 ```bibtex
 @article{pant2025interdependence,
@@ -89,7 +91,7 @@ technical report.
 }
 ```
 
-### Trust and reputation dynamics (TR-2)
+### Trust and reputation dynamics (TR-2) · [PDF on arXiv](https://arxiv.org/pdf/2510.24909)
 
 ```bibtex
 @article{pant2025trust,
@@ -100,7 +102,7 @@ technical report.
 }
 ```
 
-### Collective action and loyalty (TR-3)
+### Collective action and loyalty (TR-3) · [PDF on arXiv](https://arxiv.org/pdf/2601.16237)
 
 ```bibtex
 @article{pant2026collective,
@@ -111,7 +113,7 @@ technical report.
 }
 ```
 
-### Sequential interaction and reciprocity (TR-4)
+### Sequential interaction and reciprocity (TR-4) · [PDF on arXiv](https://arxiv.org/pdf/2604.01240)
 
 ```bibtex
 @article{pant2026reciprocity,

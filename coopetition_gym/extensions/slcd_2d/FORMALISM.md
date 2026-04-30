@@ -137,3 +137,7 @@ maintenance) or `p → 1` (dissolution). An interior low-but-nonzero `p*` is
 the signature of *calculated appropriation under trust constraint*, exactly
 what historians describe Samsung as doing 2008–2010. Report this as a
 headline, not a footnote.
+
+## Technical Reports
+
+- TR-2: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/pdf/2510.24909) (arXiv:2510.24909)
