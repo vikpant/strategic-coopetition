@@ -1,0 +1,6 @@
+{
+  "@context": "https://schema.org/",
+  "@type": "Dataset",
+  "name": "not-applicable",
+  "description": "This submission does not introduce a dataset; the validation evidence is in TR_validation/."
+}

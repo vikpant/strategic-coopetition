@@ -1,27 +1,45 @@
-### Vik Pant, PhD
-**Computational Game Theory | Multi-Agent Systems | Strategic Coopetition | Reinforcement Learning**
+# Strategic Coopetition
 
-Faculty of Information, University of Toronto
+[![Tests](https://github.com/vikpant/strategic-coopetition/actions/workflows/tests.yml/badge.svg)](https://github.com/vikpant/strategic-coopetition/actions/workflows/tests.yml)
+[![Install](https://github.com/vikpant/strategic-coopetition/actions/workflows/install.yml/badge.svg)](https://github.com/vikpant/strategic-coopetition/actions/workflows/install.yml)
+[![Docs](https://github.com/vikpant/strategic-coopetition/actions/workflows/pages.yml/badge.svg)](https://vikpant.github.io/strategic-coopetition/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/python-3.9%E2%80%933.12-blue.svg)](https://www.python.org/)
+[![Discussions](https://img.shields.io/badge/community-Discussions-blueviolet.svg)](https://github.com/vikpant/strategic-coopetition/discussions)
 
-#### Research Program
-I develop computational techniques for modeling strategic coopetition
-by formalizing how actors cooperate and compete simultaneously in mixed-motive
-multi-agent environments.
-My research bridges conceptual modeling with computational game theory
-and reinforcement learning.
+Computational techniques for modelling **strategic coopetition** (the
+simultaneous pursuit of cooperation and competition) in mixed-motive
+multi-agent environments. Bridges conceptual modelling, computational
+game theory, and reinforcement learning.
 
----
+<p align="center">
+  <img src="papers/neurips_2026/crossover_all_casestudies.png" alt="Reward-type ablation crossover" width="80%"/>
+</p>
 
-## 📦 Strategic Coopetition
+## At a glance
 
-This repository is the home of the **Strategic Coopetition** research program. It contains two publicly released artifacts and the supporting validation suite.
+- **20 multi-agent environments** spanning four mechanism classes
+  (interdependence, trust, collective action, reciprocity).
+- **126-algorithm reference suite**: 16 training algorithms, 7
+  game-theoretic oracles, 2 heuristics, and 101 constant-action policies.
+- **Four validated case studies** calibrated to real-world coopetitive
+  relationships: Samsung–Sony LCD (96.7%), Renault–Nissan (81.7%),
+  Apache HTTP Server (86.7%), Apple iOS App Store (87.3%).
+- **Reward-type ablation methodology** for mixed-motive evaluation,
+  varying reward mutuality across private, integrated, and cooperative
+  configurations while holding mechanism rules fixed.
+- **Three-API design**: Gymnasium (single-agent style), PettingZoo
+  Parallel (simultaneous moves), and PettingZoo AEC (sequential moves).
+
+## Repository layout
 
 | Folder | Contents |
 |---|---|
-| [`coopetition_gym/`](coopetition_gym/) | The Coopetition-Gym Python package — 20 multi-agent reinforcement learning environments for studying coopetitive dynamics. See [coopetition_gym/README.md](coopetition_gym/README.md). |
-| [`TR_validation/`](TR_validation/) | Validation suites that reproduce the empirical results reported in the four technical reports. |
+| [`coopetition_gym/`](coopetition_gym/) | The Coopetition-Gym Python package, runnable [examples](coopetition_gym/examples/), a [reproducibility experiments](coopetition_gym/experiments/) tier, and library [extensions](coopetition_gym/extensions/). |
+| [`TR_validation/`](TR_validation/) | Validation suites that reproduce the empirical results in the technical reports. |
+| [`papers/`](papers/) | Per-paper artifact bundles. See [`papers/README.md`](papers/README.md). |
 
-### Installation
+## Installation
 
 ```bash
 git clone https://github.com/vikpant/strategic-coopetition.git
@@ -29,7 +47,7 @@ cd strategic-coopetition/coopetition_gym
 pip install -e .
 ```
 
-### Quick start
+## Quickstart
 
 ```python
 import coopetition_gym
@@ -43,22 +61,75 @@ for _ in range(100):
         break
 ```
 
-### Reproducing paper results
+A runnable Jupyter walkthrough lives at
+[`coopetition_gym/examples/quickstart.ipynb`](coopetition_gym/examples/quickstart.ipynb).
 
-See [REPRODUCE.md](REPRODUCE.md) for step-by-step instructions to reproduce the tables, figures, and datasets in the accompanying research paper.
+## Documentation
 
----
+The hosted documentation site is at
+**<https://vikpant.github.io/strategic-coopetition/>** and is built
+automatically from [`coopetition_gym/docs/`](coopetition_gym/docs/) on
+every push to `master` by the
+[`pages.yml`](.github/workflows/pages.yml) workflow. The site covers
+installation, the API reference, the 20 environments, the evaluation
+protocol, the four mechanism-class theory chapters, tutorials, and
+troubleshooting.
 
-#### Technical Reports
-- [arXiv:2510.18802](https://arxiv.org/abs/2510.18802) — Formalizing Interdependence and Complementarity (TR-1)
-- [arXiv:2510.24909](https://arxiv.org/abs/2510.24909) — Formalizing Trust and Reputation Dynamics (TR-2)
-- [arXiv:2601.16237](https://arxiv.org/abs/2601.16237) — Formalizing Collective Action and Loyalty (TR-3)
-- [arXiv:2604.01240](https://arxiv.org/abs/2604.01240) — Formalizing Sequential Interaction and Reciprocity (TR-4)
+## Cite us
 
-#### Companion research paper
-- Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Manuscript in preparation.
+If you use Coopetition-Gym in your research, please cite the relevant
+technical report.
 
-#### Validated Case Studies
+### Interdependence and complementarity (TR-1)
+
+```bibtex
+@article{pant2025interdependence,
+  title   = {Computational Foundations for Strategic Coopetition:
+             Formalizing Interdependence and Complementarity},
+  author  = {Pant, Vik and Yu, Eric},
+  journal = {arXiv preprint arXiv:2510.18802},
+  year    = {2025}
+}
+```
+
+### Trust and reputation dynamics (TR-2)
+
+```bibtex
+@article{pant2025trust,
+  title   = {Computational Foundations for Strategic Coopetition:
+             Formalizing Trust and Reputation Dynamics},
+  author  = {Pant, Vik and Yu, Eric},
+  journal = {arXiv preprint arXiv:2510.24909},
+  year    = {2025}
+}
+```
+
+### Collective action and loyalty (TR-3)
+
+```bibtex
+@article{pant2026collective,
+  title   = {Computational Foundations for Strategic Coopetition:
+             Formalizing Collective Action and Loyalty},
+  author  = {Pant, Vik and Yu, Eric},
+  journal = {arXiv preprint arXiv:2601.16237},
+  year    = {2026}
+}
+```
+
+### Sequential interaction and reciprocity (TR-4)
+
+```bibtex
+@article{pant2026reciprocity,
+  title   = {Computational Foundations for Strategic Coopetition:
+             Formalizing Sequential Interaction and Reciprocity},
+  author  = {Pant, Vik and Yu, Eric},
+  journal = {arXiv preprint arXiv:2604.01240},
+  year    = {2026}
+}
+```
+
+## Validated Case Studies
+
 | Case study | Validation score | Technical report |
 |---|---|---|
 | Samsung–Sony S-LCD Joint Venture (2004–2011) | 58/60 (96.7%) | TR-1 §8 |
@@ -66,15 +137,24 @@ See [REPRODUCE.md](REPRODUCE.md) for step-by-step instructions to reproduce the 
 | Apache HTTP Server community evolution | 52/60 (86.7%) | TR-3 §7 |
 | Apple iOS App Store platform dynamics | 48/55 (87.3%) | TR-4 §8 |
 
-#### Citation
+## Community
 
-If you use this work in your research, please cite the accompanying technical reports and the companion research paper (BibTeX entries in [coopetition_gym/README.md](coopetition_gym/README.md#-citation)).
+Questions, ideas, and proposals are welcome on the project's
+[GitHub Discussions](https://github.com/vikpant/strategic-coopetition/discussions)
+board. Bug reports and feature requests should be filed via
+[GitHub Issues](https://github.com/vikpant/strategic-coopetition/issues).
 
-#### License
+## Contributing
 
-- **Code** (`coopetition_gym/`): MIT License — see [coopetition_gym/LICENSE](coopetition_gym/LICENSE).
-- **Validation suite** (`TR_validation/`): MIT License.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) and
+the [Code of Conduct](CODE_OF_CONDUCT.md).
 
-#### Connect
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/vikpant)
-[![Google Scholar](https://img.shields.io/badge/Google_Scholar-4285F4?style=flat&logo=google-scholar&logoColor=white)](https://scholar.google.com/citations?hl=en&user=eoKMjOMAAAAJ)
+## License
+
+MIT, see [LICENSE](LICENSE).
+
+## Authors
+
+**Vik Pant, PhD** ([LinkedIn](https://www.linkedin.com/in/vikpant) ·
+[Google Scholar](https://scholar.google.com/citations?hl=en&user=eoKMjOMAAAAJ)) ·
+**Eric Yu, PhD** · Faculty of Information, University of Toronto.

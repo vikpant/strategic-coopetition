@@ -1,0 +1,27 @@
+title: Coopetition-Gym
+description: >-
+  Multi-agent reinforcement learning environments for studying mixed-motive
+  coopetitive dynamics. Twenty environments organised into four mechanism
+  classes, with reward-type ablation methodology and four validated
+  case studies.
+theme: jekyll-theme-cayman
+baseurl: /strategic-coopetition
+url: https://vikpant.github.io
+markdown: kramdown
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - README.md
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default

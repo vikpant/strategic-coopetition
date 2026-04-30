@@ -16,8 +16,8 @@ Both artifacts are released as versioned datasets on HuggingFace Hub. This docum
 ## 1. Environment Setup
 
 ```bash
-git clone https://github.com/vikpant/coopetition-gym.git
-cd coopetition-gym
+git clone https://github.com/vikpant/strategic-coopetition.git
+cd strategic-coopetition
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev,rl,viz]"
@@ -31,13 +31,10 @@ All 143 tests should pass. If any fail, do not proceed — file an issue with th
 ### 2.1 Training Dataset (25,708 files)
 
 ```bash
-# Option A: HuggingFace CLI
+# HuggingFace CLI: full repo (training_runs/ + behavioral_audit/ + lr_ablation/ +
+# case_study_calibration/ + tier_1_5_2d_slcd/) is at vikpant/coopetition-gym-logs.
 pip install huggingface_hub
-huggingface-cli download vikpant/coopetition-gym-v1 --repo-type dataset --local-dir data/training
-
-# Option B: direct download
-wget https://huggingface.co/datasets/vikpant/coopetition-gym-v1/resolve/main/unified_dataset.tar.gz
-tar xzf unified_dataset.tar.gz
+huggingface-cli download vikpant/coopetition-gym-logs --repo-type dataset --local-dir data/
 ```
 
 Expected folder structure after extraction:
@@ -55,8 +52,11 @@ data/training/
 
 ### 2.2 Behavioral Audit Dataset (1,116 files)
 
+The behavioral audit lives in the same repo under `behavioral_audit/`. After Section 2.1 it is already present at `data/behavioral_audit/`. To pull only the behavioral-audit subset:
+
 ```bash
-huggingface-cli download vikpant/coopetition-gym-audit --repo-type dataset --local-dir data/audit
+huggingface-cli download vikpant/coopetition-gym-logs --repo-type dataset --local-dir data/ \
+    --include 'behavioral_audit/*'
 ```
 
 Expected folder structure:
@@ -84,7 +84,7 @@ All scripts write results to `results/` with the same filename structure used in
 
 ## 4. Regenerating the Training Dataset from Scratch
 
-> **Warning**: Full regeneration requires approximately 3,400 GPU-hours across 16 training algorithms × 20 environments × 3 reward conditions × 7 seeds. The original campaign cost approximately $8,100 USD on commodity cloud GPUs (NVIDIA RTX 4090). Rates vary by provider and hardware generation; budget accordingly.
+> **Warning**: Full regeneration requires approximately 3,400 GPU-hours across 16 training algorithms × 20 environments × 3 reward conditions × 7+ seeds (plus 135-cell controlled critic-lr ablation on ApacheProject-v0). The original campaign cost approximately $10,500 USD on commodity cloud GPUs (NVIDIA RTX 4090 and RTX 5090). Rates vary by provider and hardware generation; budget accordingly.
 
 ### 4.1 Single-experiment launch
 
@@ -192,7 +192,7 @@ The original campaign used 7 cloud GPU instances with RTX 4090, RTX 3090, and RT
 
 ## 8. Questions and Issues
 
-Open an issue at https://github.com/vikpant/coopetition-gym/issues. Include:
+Open an issue at https://github.com/vikpant/strategic-coopetition/issues. Include:
 
 - The script you ran
 - The full command line
