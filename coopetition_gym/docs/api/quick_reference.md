@@ -59,11 +59,9 @@ import numpy as np
 env = coopetition_gym.make("TrustDilemma-v0")
 obs, info = env.reset(seed=42)
 
-for _ in range(100):
-    actions = np.array([50.0, 50.0])
+for _ in range(100): actions = np.array([50.0, 50.0])
     obs, rewards, terminated, truncated, info = env.step(actions)
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 env.close()
 ```
@@ -76,11 +74,9 @@ env.close()
 env = coopetition_gym.make_parallel("TrustDilemma-v0")
 observations, infos = env.reset(seed=42)
 
-for _ in range(100):
-    actions = {agent: 50.0 for agent in env.agents}
+for _ in range(100): actions = {agent: 50.0 for agent in env.agents}
     observations, rewards, terms, truncs, infos = env.step(actions)
-    if all(terms.values()) or all(truncs.values()):
-        break
+    if all(terms.values()) or all(truncs.values()): break
 
 env.close()
 ```
@@ -93,8 +89,7 @@ env.close()
 env = coopetition_gym.make_aec("TrustDilemma-v0")
 env.reset(seed=42)
 
-for agent in env.agent_iter():
-    obs, reward, term, trunc, info = env.last()
+for agent in env.agent_iter(): obs, reward, term, trunc, info = env.last()
     action = None if term or trunc else 50.0
     env.step(action)
 

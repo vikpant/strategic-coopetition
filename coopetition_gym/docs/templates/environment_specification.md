@@ -65,9 +65,7 @@ where:
 R_ij(t+1) = clip(R_ij(t) · (1 - $\delta_R$) + $\mu_R$ · 𝟙[σ_ij < 0], 0, 1)
 
 ### Reward Function
-r_i(s, a) = U_i(a) where integrated utility is:
-
-U_i = (e_i - a_i) + f(a_i) + α_i · G(a) + Σ_j D_ij · π_j
+r_i(s, a) = U_i(a) where integrated utility is: U_i = (e_i - a_i) + f(a_i) + α_i · G(a) + Σ_j D_ij · π_j
 
 with:
 - f(a_i) = θ · ln(1 + a_i) (individual value)

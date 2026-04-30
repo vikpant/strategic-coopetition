@@ -7,14 +7,14 @@ Post-v1 extension adding a second per-agent action dimension to the Samsung-Sony
 
 ## Why a second dimension?
 
-TR-1 through TR-4 formalize *how agents coordinate* (interdependence, trust, loyalty, reciprocity). None formalize the **value-creation vs. value-capture tension** at the heart of coopetition (Brandenburger–Nalebuff, Ritala–Hurmelinna-Laukkanen). In the Samsung-Sony S-LCD joint venture, the two firms jointly invested in fab capacity (cooperation) while each pushed branded TVs that competed on the panels' downstream margin (appropriation). The dissolution in 2011 is what happens when appropriation pressure outruns cooperative returns — a dynamic v1 cannot currently express.
+TR-1 through TR-4 formalize *how agents coordinate* (interdependence, trust, loyalty, reciprocity). None formalize the **value-creation vs. value-capture tension** at the heart of coopetition (Brandenburger–Nalebuff, Ritala–Hurmelinna-Laukkanen). In the Samsung-Sony S-LCD joint venture, the two firms jointly invested in fab capacity (cooperation) while each pushed branded TVs that competed on the panels' downstream margin (appropriation). The dissolution in 2011 is what happens when appropriation pressure outruns cooperative returns, a dynamic v1 cannot currently express.
 
 ## Formalism
 
 Per-agent action is `(c_i, p_i)` where
 
-- `c_i ∈ [0, e_i]` — cooperation (TR-1 primitive, unchanged)
-- `p_i ∈ [0, 1]` — appropriation effort (new)
+- `c_i ∈ [0, e_i]`, cooperation (TR-1 primitive, unchanged)
+- `p_i ∈ [0, 1]`, appropriation effort (new)
 
 Extended private payoff:
 
@@ -52,7 +52,7 @@ With calibration `(κ=0.5, β=0.6, η=0.4, ξ=15)` on the v1 SLCD parameters:
 
 Converged in 7 iterations via scipy-based iterated best response.
 
-Since `c* ≈ 27 < baseline 30`, trust erodes over an episode and the oracle trajectory ends at `mean_trust = 0` by step 40 — the "dissolution" mode appearing endogenously.
+Since `c* ≈ 27 < baseline 30`, trust erodes over an episode and the oracle trajectory ends at `mean_trust = 0` by step 40, the "dissolution" mode appearing endogenously.
 
 ## Installation
 
@@ -83,9 +83,9 @@ pytest extensions/slcd_2d/tests/ -v
 
 | File | Purpose |
 | --- | --- |
-| `env.py` | `SLCDAppropriationEnv` — subclass of `SLCDEnv` with 2D action space |
+| `env.py` | `SLCDAppropriationEnv`, subclass of `SLCDEnv` with 2D action space |
 | `utility.py` | Pure 2D utility math (`compute_2d_integrated_utilities`) |
-| `oracle.py` | `AppropriationOracle` — solves interior `(c*, p*)` Nash |
+| `oracle.py` | `AppropriationOracle`, solves interior `(c*, p*)` Nash |
 | `calibration.json` | Default `(κ, β, η, ξ)` values |
 | `campaign.py` | Stand-alone smoke/sanity runner |
 | `tests/` | Backward-compat, shape, Nash-interior tests |
@@ -95,5 +95,5 @@ pytest extensions/slcd_2d/tests/ -v
 
 - Does not modify `coopetition_gym/` (read-only)
 - Does not register into `coopetition_gym.envs._ENVIRONMENT_REGISTRY`
-- Does not extend `experiments/campaign.py` — has its own `campaign.py`
+- Does not extend `experiments/campaign.py`, has its own `campaign.py`
 - Does not ship training-algorithm support; only the oracle is implemented

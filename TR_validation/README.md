@@ -8,8 +8,8 @@
 This directory contains validation suites for the **Computational Foundations for Strategic Coopetition** research program. The program develops computational game-theoretic frameworks for analyzing mixed-motive strategic interactions where actors simultaneously cooperate and compete.
 
 > **Authors:**
-> Vik Pant — Faculty of Information, University of Toronto
-> Eric Yu — Faculty of Information and Department of Computer Science, University of Toronto
+> Vik Pant, Faculty of Information, University of Toronto
+> Eric Yu, Faculty of Information and Department of Computer Science, University of Toronto
 
 ## Research Program
 
@@ -123,8 +123,7 @@ If you use these validation suites in your research, please cite the relevant te
 
 ```bibtex
 @techreport{pant2025foundations,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Interdependence and Complementarity},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity},
   author={Pant, Vik and Yu, Eric},
   year={2025},
   institution={University of Toronto},
@@ -132,8 +131,7 @@ If you use these validation suites in your research, please cite the relevant te
 }
 
 @techreport{pant2025trust,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Trust and Reputation Dynamics},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics},
   author={Pant, Vik and Yu, Eric},
   year={2025},
   institution={University of Toronto},
@@ -141,8 +139,7 @@ If you use these validation suites in your research, please cite the relevant te
 }
 
 @techreport{pant2025collective,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Collective Action and Loyalty},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty},
   author={Pant, Vik and Yu, Eric},
   year={2025},
   institution={University of Toronto},
@@ -150,8 +147,7 @@ If you use these validation suites in your research, please cite the relevant te
 }
 
 @techreport{pant2026reciprocity,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Sequential Interaction and Reciprocity},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity},
   author={Pant, Vik and Yu, Eric},
   year={2026},
   institution={University of Toronto},
@@ -161,8 +157,8 @@ If you use these validation suites in your research, please cite the relevant te
 
 ## Authors
 
-- **Vik Pant** — Faculty of Information, University of Toronto — [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
-- **Eric Yu** — Faculty of Information and Department of Computer Science, University of Toronto — [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
+- **Vik Pant**: Faculty of Information, University of Toronto, [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
+- **Eric Yu**: Faculty of Information and Department of Computer Science, University of Toronto, [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
 
 University of Toronto
 140 St George St, Toronto, ON M5S 3G6, Canada

@@ -99,8 +99,7 @@ for step in range(60):
     actions = np.full(env.n_agents, expected)
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Validation accuracy: {info['validation_accuracy']:.1%}")
 ```
@@ -235,16 +234,13 @@ import numpy as np
 phases = ["emergence", "growth", "maturity", "evolution"]
 results = {}
 
-for phase in phases:
-    env = coopetition_gym.make("ApacheProject-v0", phase=phase)
+for phase in phases: env = coopetition_gym.make("ApacheProject-v0", phase=phase)
     obs, info = env.reset(seed=42)
 
     # Cooperative strategy
-    for step in range(60):
-        actions = np.full(env.n_agents, 30.0)
+    for step in range(60): actions = np.full(env.n_agents, 30.0)
         obs, rewards, terminated, truncated, info = env.step(actions)
-        if terminated or truncated:
-            break
+        if terminated or truncated: break
 
     results[phase] = {
         "team_size": env.n_agents,
@@ -254,8 +250,7 @@ for phase in phases:
     }
     env.close()
 
-for phase, data in results.items():
-    print(f"{phase}: {data}")
+for phase, data in results.items(): print(f"{phase}: {data}")
 ```
 
 ---

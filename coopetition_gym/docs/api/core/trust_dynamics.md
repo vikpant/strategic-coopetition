@@ -206,8 +206,7 @@ class TrustDynamicsModel:
     - Interdependence amplification
     """
 
-    def __init__(self, params: TrustParameters):
-        self.params = params
+    def __init__(self, params: TrustParameters): self.params = params
 ```
 
 **Methods:**
@@ -223,14 +222,12 @@ def update(
     """
     Perform one trust update step.
 
-    Args:
-        state: Current trust state
+    Args: state: Current trust state
         actions: Agent cooperation levels
         baselines: Expected cooperation baselines
         D: Interdependence matrix
 
-    Returns:
-        New TrustState with updated trust and reputation
+    Returns: New TrustState with updated trust and reputation
     """
 
 def compute_cooperation_signal(
@@ -241,8 +238,7 @@ def compute_cooperation_signal(
     """
     Compute cooperation signals for all agent pairs.
 
-    Returns:
-        Signal matrix S[i,j] = tanh(κ · (a_j - b_j))
+    Returns: Signal matrix S[i,j] = tanh(κ · (a_j - b_j))
         Positive if j cooperated above baseline, negative if below
     """
 ```
@@ -273,8 +269,7 @@ print(f"Cooperation signals:\n{{signals}}")
 # Agent 0 sent positive signal, Agent 1 sent negative signal
 
 # Update trust
-for step in range(10):
-    state = model.update(state, actions, baselines, D)
+for step in range(10): state = model.update(state, actions, baselines, D)
 
 print(f"Final trust: {{state.trust_matrix}}")
 # Agent 0's trust in Agent 1 decreased (defection)
@@ -332,8 +327,7 @@ def analyze_negativity_bias(params: TrustParameters) -> Dict:
     """
     Analyze the negativity bias in trust dynamics.
 
-    Returns:
-        Dictionary with:
+    Returns: Dictionary with:
         - 'ratio': λ⁻/λ⁺
         - 'build_time_estimate': Steps to build from 0.5 to 0.8
         - 'erosion_time_estimate': Steps to erode from 0.8 to 0.5
@@ -366,8 +360,7 @@ def estimate_recovery_periods(params: TrustParameters) -> Dict:
     """
     Estimate time to recover trust after violations.
 
-    Returns:
-        Dictionary with recovery times for various damage levels.
+    Returns: Dictionary with recovery times for various damage levels.
     """
 ```
 
@@ -383,12 +376,10 @@ def compute_trust_equilibrium(
     """
     Compute steady-state trust given consistent behavior.
 
-    Args:
-        D: Interdependence matrix
+    Args: D: Interdependence matrix
         params: Trust parameters
 
-    Returns:
-        Dictionary with equilibrium trust levels for cooperation/defection
+    Returns: Dictionary with equilibrium trust levels for cooperation/defection
     """
 ```
 

@@ -1,4 +1,4 @@
-# Reproducibility — `papers/tr1_caise_2026`
+# Reproducibility, `papers/tr1_caise_2026`
 
 Validation suite for the formalism is at `TR_validation/TR1_interdependence/` at
 the repository root. The README in that subdirectory details how to

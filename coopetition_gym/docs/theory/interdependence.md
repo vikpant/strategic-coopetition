@@ -10,7 +10,7 @@ This document provides a comprehensive treatment of the interdependence formaliz
 
 ## Executive Summary
 
-**For Practitioners**: Interdependence captures *why* actors must consider partner outcomes even while competing. When your success depends on your partner's success, you have rational incentive to care about their performance—not from altruism, but from structural necessity.
+**For Practitioners**: Interdependence captures *why* actors must consider partner outcomes even while competing. When your success depends on your partner's success, you have rational incentive to care about their performance, not from altruism, but from structural necessity.
 
 **For Researchers**: We formalize interdependence through translation from *i*\* dependency networks to an interdependence matrix $\mathbf{D}$, where $D_{ij} \in [0,1]$ quantifies the structural coupling of actor $i$'s outcomes to actor $j$'s actions. This enables game-theoretic equilibrium analysis with dependency-augmented utility functions.
 
@@ -29,7 +29,7 @@ When Actor A depends on Actor B for critical resources, capabilities, or goal ac
 - A has *rational incentive* to care about B's performance
 - This concern is *instrumental*, not altruistic
 
-**Example**: A startup developing for iOS cannot succeed if Apple's App Store fails. The startup rationally cares about Apple's platform health—not from goodwill, but because their business depends on it.
+**Example**: A startup developing for iOS cannot succeed if Apple's App Store fails. The startup rationally cares about Apple's platform health, not from goodwill, but because their business depends on it.
 
 ### Distinguishing Interdependence from Altruism
 
@@ -94,9 +94,7 @@ $$\Large D_{ij} = \frac{\sum_{d \in \mathcal{D}_i} w_d \cdot \text{Dep}(i,j,d) \
 
 **Purpose**: Quantify the strategic priority of each goal/dependum for the actor.
 
-**Elicitation Methods**:
-
-1. **Analytic Hierarchy Process (AHP)**:
+**Elicitation Methods**: 1. **Analytic Hierarchy Process (AHP)**:
    - Pairwise comparison of goals
    - Eigenvalue analysis produces priority vector
    - Mathematically rigorous, stakeholder-validated
@@ -238,13 +236,11 @@ $$\Large U_i(\mathbf{a}) = \pi_i(\mathbf{a}) + \sum_{j \neq i} D_{ij} \cdot \pi_
 
 ### Why This Works
 
-The integrated utility captures rational self-interest in the presence of structural coupling:
-
-1. **When $D_{ij} = 0$**: $U_i = \pi_i$ (pure self-interest)
+The integrated utility captures rational self-interest in the presence of structural coupling: 1. **When $D_{ij} = 0$**: $U_i = \pi_i$ (pure self-interest)
 2. **When $D_{ij} > 0$**: $U_i$ includes weighted partner payoffs
 3. **Higher $D_{ij}$**: More weight on partner's success
 
-This is **not** altruism—it's recognizing that when your outcomes depend on your partner's performance, maximizing your utility requires considering their payoffs.
+This is **not** altruism, it's recognizing that when your outcomes depend on your partner's performance, maximizing your utility requires considering their payoffs.
 
 ### Coopetitive Equilibrium
 
@@ -287,7 +283,7 @@ $$\Large \mathbf{a}^* \text{ is Coopetitive Equilibrium if: } a_i^* \in \arg\max
 
 ### Iterative Refinement
 
-The translation process is inherently iterative—quantification translates qualitative dependencies into the $\mathbf{D}$ matrix, while equilibrium analysis reveals gaps in the conceptual model.
+The translation process is inherently iterative, quantification translates qualitative dependencies into the $\mathbf{D}$ matrix, while equilibrium analysis reveals gaps in the conceptual model.
 
 ---
 

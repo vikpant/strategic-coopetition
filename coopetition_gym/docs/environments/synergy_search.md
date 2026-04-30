@@ -175,9 +175,7 @@ Given uncertainty about $\gamma$, agents play a Bayesian game:
 **Threshold**: $\gamma^* = 0.60$ (high vs. low synergy)
 **Prior probability high synergy**: $P(\gamma > 0.60) \approx 43\%$
 
-**Bayesian NE without Learning**:
-
-Expected payoff-maximizing action given prior:
+**Bayesian NE without Learning**: Expected payoff-maximizing action given prior:
 ```
 a_BNE = 0.43 × 75 + 0.57 × 45 ≈ 58
 ```
@@ -199,9 +197,7 @@ The gap between informed and uninformed strategies:
 
 ### Exploration-Exploitation Tradeoff
 
-**Exploration Value**:
-
-Probing actions (e.g., trying high cooperation) provide information:
+**Exploration Value**: Probing actions (e.g., trying high cooperation) provide information:
 - Reward from action reveals γ estimate
 - Early exploration enables later exploitation
 
@@ -209,9 +205,7 @@ Probing actions (e.g., trying high cooperation) provide information:
 - Suboptimal immediate payoff during probing
 - Trust erosion if probing involves defection-like actions
 
-**Optimal Exploration Strategy**:
-
-Given T = 100 horizon:
+**Optimal Exploration Strategy**: Given T = 100 horizon:
 ```
 Exploration phase: ~3-5 steps (vary actions to estimate γ)
 Exploitation phase: ~95-97 steps (play conditional equilibrium)
@@ -254,16 +248,12 @@ Observing $r = 110$ strongly suggests high $\gamma$.
 
 ### Theoretical Connections
 
-**Thompson Sampling Analogy**:
-
-The environment structure matches Thompson Sampling problems:
+**Thompson Sampling Analogy**: The environment structure matches Thompson Sampling problems:
 - Unknown parameter (γ) with prior
 - Actions provide information
 - Optimal policy balances exploration/exploitation
 
-**Bayes-Adaptive MDP Structure**:
-
-State space augmented with belief:
+**Bayes-Adaptive MDP Structure**: State space augmented with belief:
 ```
 s' = (physical_state, belief_over_γ)
 ```
@@ -313,8 +303,7 @@ obs, info = env.reset(seed=42)
 print(f"True gamma: {info['true_gamma']:.3f}")  # For debugging only
 
 # Run episode
-for step in range(100):
-    actions = np.array([50.0, 50.0])
+for step in range(100): actions = np.array([50.0, 50.0])
     obs, rewards, terminated, truncated, info = env.step(actions)
 
 # Check gamma type
@@ -488,8 +477,7 @@ The `info` dictionary includes:
 
 ```python
 # High cooperation pays off
-if gamma_type == "high_synergy":
-    optimal_coop = 0.75  # 75% of endowment
+if gamma_type == "high_synergy": optimal_coop = 0.75  # 75% of endowment
 ```
 
 Expected dynamics:
@@ -501,8 +489,7 @@ Expected dynamics:
 
 ```python
 # Conservative investment is optimal
-if gamma_type == "low_synergy":
-    optimal_coop = 0.45  # 45% of endowment
+if gamma_type == "low_synergy": optimal_coop = 0.45  # 45% of endowment
 ```
 
 Expected dynamics:
@@ -525,8 +512,7 @@ obs, info = env.reset(seed=42)
 probe_rewards = []
 probe_actions = [30.0, 50.0, 70.0]
 
-for probe_action in probe_actions:
-    actions = np.array([probe_action, probe_action])
+for probe_action in probe_actions: actions = np.array([probe_action, probe_action])
     obs, rewards, _, _, info = env.step(actions)
     probe_rewards.append(sum(rewards))
 
@@ -536,11 +522,9 @@ gradient = (probe_rewards[2] - probe_rewards[0]) / 40.0  # Per unit action
 # High gradient suggests high synergy
 estimated_high_synergy = gradient > 0.5
 
-if estimated_high_synergy:
-    exploit_action = 75.0
+if estimated_high_synergy: exploit_action = 75.0
     print("Inferred: HIGH synergy - using heavy investment")
-else:
-    exploit_action = 45.0
+else: exploit_action = 45.0
     print("Inferred: LOW synergy - using conservative investment")
 
 # Exploitation phase
@@ -619,8 +603,7 @@ inner_lr: 0.1
 outer_lr: 3e-4
 adaptation_steps: 3
 meta_batch_size: 20
-network:
-  hidden_layers: [128, 128]
+network: hidden_layers: [128, 128]
 ```
 
 ---

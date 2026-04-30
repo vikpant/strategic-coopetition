@@ -11,7 +11,7 @@ Implements TR-1 Equations 1-4.
 
 ## Overview
 
-The interdependence module captures **structural coupling** between agents—why actors must consider partner outcomes even while competing.
+The interdependence module captures **structural coupling** between agents, why actors must consider partner outcomes even while competing.
 
 **Key Concept:** When Actor A depends on Actor B for critical resources, A's success structurally requires B's success, creating *instrumental* concern for B's welfare.
 
@@ -192,8 +192,7 @@ def create_slcd_interdependence() -> InterdependenceMatrix:
     - Sony depends on Samsung: 0.86
     - Samsung depends on Sony: 0.64
 
-    Returns:
-        InterdependenceMatrix with agent names ['Samsung', 'Sony']
+    Returns: InterdependenceMatrix with agent names ['Samsung', 'Sony']
     """
 ```
 
@@ -208,13 +207,9 @@ def create_renault_nissan_interdependence(
     """
     Create interdependence matrix for Renault-Nissan alliance.
 
-    Phase-specific parameters from TR-2:
+    Phase-specific parameters from TR-2: Args: phase: One of 'formation', 'mature', 'crisis', 'strained'
 
-    Args:
-        phase: One of 'formation', 'mature', 'crisis', 'strained'
-
-    Returns:
-        InterdependenceMatrix with phase-appropriate values
+    Returns: InterdependenceMatrix with phase-appropriate values
     """
 ```
 
@@ -289,8 +284,7 @@ def compute_power_index(D: InterdependenceMatrix) -> NDArray[np.floating]:
     Power = Total dependability / Total dependency
     High power = others depend on you more than you depend on them.
 
-    Returns:
-        Array of power indices (> 1 indicates power advantage)
+    Returns: Array of power indices (> 1 indicates power advantage)
     """
 ```
 
@@ -321,8 +315,7 @@ def compute_vulnerability_index(D: InterdependenceMatrix) -> NDArray[np.floating
     Vulnerability = Total dependency (sum of D[i,j] for all j≠i)
     High vulnerability = agent depends heavily on partners.
 
-    Returns:
-        Array of vulnerability indices
+    Returns: Array of vulnerability indices
     """
 ```
 
@@ -354,7 +347,7 @@ Interdependence enters the utility function:
 
 $$U_i(\mathbf{{a}}) = \pi_i(\mathbf{{a}}) + \sum_{{j \neq i}} D_{{ij}} \cdot \pi_j(\mathbf{{a}})$$
 
-High $D_{{ij}}$ means agent i rationally cares about agent j's payoff—not from altruism but from structural coupling.
+High $D_{{ij}}$ means agent i rationally cares about agent j's payoff, not from altruism but from structural coupling.
 
 ---
 

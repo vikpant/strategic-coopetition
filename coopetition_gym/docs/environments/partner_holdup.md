@@ -123,9 +123,7 @@ Private payoffs:
 
 ### The Hold-Up Problem
 
-The classic hold-up problem arises when:
-
-1. **Relationship-specific investments**: One party makes investments that have less value outside the relationship
+The classic hold-up problem arises when: 1. **Relationship-specific investments**: One party makes investments that have less value outside the relationship
 2. **Incomplete contracts**: Not all contingencies can be specified ex ante
 3. **Asymmetric switching costs**: One party can exit more easily than the other
 
@@ -139,18 +137,14 @@ This creates a tension between:
 
 ### Relationship to Classical Game Theory
 
-PartnerHoldUp-v0 extends the classical hold-up problem literature by incorporating:
-
-1. **Continuous investments**: Rather than binary invest/not-invest decisions, agents choose continuous contribution levels
+PartnerHoldUp-v0 extends the classical hold-up problem literature by incorporating: 1. **Continuous investments**: Rather than binary invest/not-invest decisions, agents choose continuous contribution levels
 2. **Dynamic power relations**: Trust and reputation evolve over time, affecting the effective power balance
 3. **Endogenous exit**: The weak partner's exit threshold creates a credible threat mechanism
 4. **Repeated interaction**: Unlike one-shot hold-up models, the environment captures ongoing relationship dynamics
 
 ### Key Theoretical Results
 
-**Stage-Game Analysis**:
-
-In the single-shot version (ignoring trust dynamics and exit):
+**Stage-Game Analysis**: In the single-shot version (ignoring trust dynamics and exit):
 
 - **Strong agent's dominant strategy**: Contribute near baseline (a₀* ≈ 42)
   - Captures maximum surplus given weak's limited response
@@ -159,9 +153,7 @@ In the single-shot version (ignoring trust dynamics and exit):
 - **Nash equilibrium**: (a₀*, a₁*) ≈ (45, 30) - Mutual low cooperation
 - **Pareto frontier**: Achievable only with binding commitments
 
-**Asymmetric Bargaining Analysis**:
-
-With bargaining shares $\alpha = (0.60, 0.40)$:
+**Asymmetric Bargaining Analysis**: With bargaining shares $\alpha = (0.60, 0.40)$:
 
 - **Nash Bargaining Solution** (with disagreement point at baseline):
   - Strong receives: 60% × (total surplus - disagreement payoffs)
@@ -209,9 +201,7 @@ The critical insight is that the exit threshold $\tau^* = 0.10$ creates a **cred
 
 ### Power Balance Mechanisms
 
-The environment embeds several mechanisms that affect the power balance:
-
-1. **Exit credibility**: τ < 0.10 termination gives weak partner leverage
+The environment embeds several mechanisms that affect the power balance: 1. **Exit credibility**: τ < 0.10 termination gives weak partner leverage
 2. **Reputation effects**: Exploitation damages strong's ability to sustain relationships
 3. **Trust ceiling**: Θ = 1 - R limits recovery from exploitation
 4. **Interdependence amplification**: High ξ = 0.70 magnifies trust effects for weak partner
@@ -255,8 +245,7 @@ for step in range(100):
     actions = np.array([70.0, 50.0])
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated:
-        print(f"Relationship ended at step {step}")
+    if terminated: print(f"Relationship ended at step {step}")
         print(f"Weak partner exited due to exploitation")
         break
 
@@ -374,9 +363,7 @@ This represents the weak partner:
 
 ### Integrated Utility with Asymmetry
 
-Rewards follow the standard integrated utility formula, but the asymmetry manifests through:
-
-1. **Bargaining shares**: Strong gets 60% of synergy, weak gets 40%
+Rewards follow the standard integrated utility formula, but the asymmetry manifests through: 1. **Bargaining shares**: Strong gets 60% of synergy, weak gets 40%
 2. **Interdependence**: Weak's utility includes 85% weight on strong's payoff
 3. **Trust modulation**: Both payoffs are affected by trust levels
 
@@ -395,9 +382,7 @@ Rewards follow the standard integrated utility formula, but the asymmetry manife
 
 Unlike TrustDilemma-v0, PartnerHoldUp-v0 has asymmetric equilibria due to differing capabilities.
 
-**Best Response Functions**:
-
-For strong agent ($i=0$) with $e_0 = 120$, $\alpha_0 = 0.60$, $D_{01} = 0.35$:
+**Best Response Functions**: For strong agent ($i=0$) with $e_0 = 120$, $\alpha_0 = 0.60$, $D_{01} = 0.35$:
 ```
 BR_strong(a_weak) = argmax_{a_0} [(120-a_0) + θ·ln(1+a_0) + 0.60·G(a_0,a_1) + 0.35·π_weak]
 ```
@@ -447,9 +432,7 @@ Weak prefers: Moderate cooperation with trust protection
 
 Given strong's power advantage, a Stackelberg analysis is relevant:
 
-**Strong as Leader**:
-
-If strong commits first, the optimal strategy is:
+**Strong as Leader**: If strong commits first, the optimal strategy is:
 1. Choose $a_0$ anticipating weak's best response $\text{BR}_{\text{weak}}(a_0)$
 2. Maximize own payoff subject to weak's participation constraint
 
@@ -458,9 +441,7 @@ If strong commits first, the optimal strategy is:
 - Weak: $\text{BR}_{\text{weak}} \approx 35\text{-}40$ (defensive response)
 - Strong extracts more surplus than simultaneous-move NE
 
-**Weak's Participation Constraint**:
-
-Weak will participate (not exit) iff:
+**Weak's Participation Constraint**: Weak will participate (not exit) iff:
 ```
 U_weak(a_0, BR_weak(a_0)) ≥ Outside_Option
 ```
@@ -471,22 +452,16 @@ The exit threshold $\tau < 0.10$ operationalizes this constraint dynamically.
 
 The exit threshold creates a credible commitment mechanism:
 
-**Exit as Punishment**:
-
-Weak's threat to exit if $\tau < 0.10$ is credible because:
+**Exit as Punishment**: Weak's threat to exit if $\tau < 0.10$ is credible because:
 - Weak loses from staying in exploitative relationship
 - Exit terminates strong's long-term gains
 - Creates dynamic incentive for strong to moderate
 
-**Modified Folk Theorem**:
-
-With exit threats, a range of equilibria becomes feasible:
+**Modified Folk Theorem**: With exit threats, a range of equilibria becomes feasible:
 - **Lower bound**: Strong exploits until exit threshold approached
 - **Upper bound**: Full cooperation if credible punishment exists
 
-**Equilibrium Exploitation Level**:
-
-Strong's optimal exploitation satisfies:
+**Equilibrium Exploitation Level**: Strong's optimal exploitation satisfies:
 ```
 ∂π_strong/∂(exploitation) = λ⁻ × (value_of_relationship) × ∂τ/∂a
 ```
@@ -507,9 +482,7 @@ Once strong exploits and causes reputation damage R:
 - Future cooperation limited
 - Weak's defensive options reduced
 
-**Irreversibility Premium**:
-
-Strong must weigh:
+**Irreversibility Premium**: Strong must weigh:
 - Short-term exploitation gains
 - Permanent ceiling reduction
 - Reduced future surplus to extract
@@ -612,8 +585,7 @@ for step in range(100):
     obs, rewards, terminated, truncated, info = env.step(actions)
     episode_rewards += rewards
 
-    if terminated:
-        print(f"Relationship ended at step {step}")
+    if terminated: print(f"Relationship ended at step {step}")
         break
 
 print(f"Strong total: {episode_rewards[0]:.1f}")
@@ -679,8 +651,7 @@ batch_size: 64
 gamma: 0.99
 # Higher entropy helps explore fair strategies
 ent_coef: 0.02
-network:
-  hidden_layers: [128, 128]
+network: hidden_layers: [128, 128]
 ```
 
 ---

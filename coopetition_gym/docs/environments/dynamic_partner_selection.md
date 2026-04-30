@@ -79,7 +79,7 @@ D_ij = 0.40 for all i ≠ j
 D_ii = 0.00
 ```
 
-All agents value each other's outcomes equally—no preferential partnerships.
+All agents value each other's outcomes equally, no preferential partnerships.
 
 ### Reputation Dynamics
 
@@ -215,8 +215,7 @@ Each agent maintains a public reputation score in [0, 1]:
 reputations = [0.5] * n_agents  # All start at 0.5
 
 # Update after each step
-for i, agent in enumerate(agents):
-    coop_score = actions[i] / endowments[i]  # [0, 1]
+for i, agent in enumerate(agents): coop_score = actions[i] / endowments[i]  # [0, 1]
     reputations[i] = 0.9 * reputations[i] + 0.1 * coop_score
 ```
 

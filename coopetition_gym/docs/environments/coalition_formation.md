@@ -56,17 +56,13 @@ $$r_i = 0.5 \times (\text{independent payoff})$$
 
 **Exclusion Mechanism:**
 ```python
-if loyalty[i] < exit_threshold:
-    if len(coalition) > min_coalition_size:
-        exclude(agent_i)
+if loyalty[i] < exit_threshold: if len(coalition) > min_coalition_size: exclude(agent_i)
         exclusion_timer[i] = reentry_cooldown
 ```
 
 **Reentry Mechanism:**
 ```python
-if i in excluded and timer[i] <= 0:
-    if loyalty[i] >= 0.4:
-        readmit(agent_i)
+if i in excluded and timer[i] <= 0: if loyalty[i] >= 0.4: readmit(agent_i)
 ```
 
 ---
@@ -90,8 +86,7 @@ for step in range(50):
     actions = np.array([40, 40, 40, 5, 5, 5])
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated:
-        print("Coalition collapsed!")
+    if terminated: print("Coalition collapsed!")
         break
 
 print(f"Coalition size: {info['coalition_size']}")
@@ -165,16 +160,14 @@ The `info` dictionary contains:
 
 Coalition members receive a 10% bonus when coalition is stable:
 ```python
-if len(coalition) >= min_coalition_size:
-    modifiers[coalition_members] *= 1.1
+if len(coalition) >= min_coalition_size: modifiers[coalition_members] *= 1.1
 ```
 
 ### Termination Condition
 
 Episode terminates if coalition collapses below minimum:
 ```python
-if len(coalition_members) < min_coalition_size:
-    terminated = True
+if len(coalition_members) < min_coalition_size: terminated = True
 ```
 
 ---
@@ -216,11 +209,9 @@ for step in range(150):
 
     coalition_history.append(info['coalition_size'])
 
-    if terminated:
-        print(f"Terminated at step {step}: coalition collapsed")
+    if terminated: print(f"Terminated at step {step}: coalition collapsed")
         break
-    if truncated:
-        break
+    if truncated: break
 
 print(f"Initial coalition: 6")
 print(f"Final coalition: {coalition_history[-1]}")

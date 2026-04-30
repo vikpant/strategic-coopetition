@@ -159,18 +159,14 @@ Developers face:
 
 ### Relationship to Classical Game Theory
 
-PlatformEcosystem-v0 extends the classical two-sided markets literature by incorporating:
-
-1. **Dynamic trust**: Rather than static participation decisions, agents maintain evolving trust relationships
+PlatformEcosystem-v0 extends the classical two-sided markets literature by incorporating: 1. **Dynamic trust**: Rather than static participation decisions, agents maintain evolving trust relationships
 2. **Hub-spoke topology**: Explicit modeling of platform centrality in interdependence structure
 3. **Ecosystem collapse**: Endogenous termination from collective trust breakdown
 4. **Continuous investment**: Graduated participation rather than binary join/leave decisions
 
 ### Key Theoretical Results
 
-**Stage-Game Analysis**:
-
-In the single-shot version (ignoring trust dynamics):
+**Stage-Game Analysis**: In the single-shot version (ignoring trust dynamics):
 
 - **Platform's myopic optimum**: a_P* ≈ 52.5 (baseline contribution)
   - At this level, platform extracts maximum surplus from developers' investments
@@ -179,17 +175,13 @@ In the single-shot version (ignoring trust dynamics):
 - **Nash equilibrium**: (a_P*, a_D*) ≈ (55, 35) - Mutual low investment
 - **Pareto-optimal outcome**: (a_P*, a_D*) ≈ (120, 65) - High mutual investment
 
-**Multi-Agent Coordination**:
-
-With N developers, additional coordination challenges emerge:
+**Multi-Agent Coordination**: With N developers, additional coordination challenges emerge:
 
 - **Free-rider problem**: Individual developer's defection has diluted effect
 - **Collective punishment**: Coordinated developer response required to discipline platform
 - **Mean-field approximation**: For large N, individual developer impact on platform → 0
 
-**Repeated Game Equilibria**:
-
-With T = 100 repetitions and trust dynamics:
+**Repeated Game Equilibria**: With T = 100 repetitions and trust dynamics:
 
 - **Platform exploitation equilibrium**: Platform extracts until trust threshold approached
 - **Cooperative equilibrium**: High mutual investment sustained by trust
@@ -226,9 +218,7 @@ The critical threshold avg_dev_trust < 0.15 creates a **collective action trigge
 
 ### Mean-Field Approximation
 
-For large N, the environment admits a mean-field game approximation:
-
-1. **Developer anonymity**: Individual developer impact on platform → 1/N → 0
+For large N, the environment admits a mean-field game approximation: 1. **Developer anonymity**: Individual developer impact on platform → 1/N → 0
 2. **Platform aggregates**: Platform observes mean developer behavior
 3. **Symmetric equilibrium**: All developers play identical mixed strategies
 4. **Tractable analysis**: Reduces N+1 player game to 2-player structure
@@ -269,8 +259,7 @@ for step in range(100):
     actions = np.array([platform_action] + developer_actions)
     obs, rewards, terminated, truncated, info = env.step(actions)
 
-    if terminated:
-        print(f"Ecosystem collapsed at step {step}")
+    if terminated: print(f"Ecosystem collapsed at step {step}")
         break
 
 print(f"Platform reward: {rewards[0]:.1f}")
@@ -380,8 +369,7 @@ Episode ends at `max_steps` (100) if ecosystem persists.
 **Critical condition:** If average developer trust in platform falls below 0.15:
 
 ```python
-if mean(trust_matrix[1:, 0]) < 0.15:
-    terminated = True
+if mean(trust_matrix[1:, 0]) < 0.15: terminated = True
     # Ecosystem collapse - developers abandon platform
 ```
 
@@ -520,8 +508,7 @@ for step in range(100):
     trust_history.append(info['developer_trust_in_platform'])
     value_history.append(info['total_ecosystem_value'])
 
-    if terminated:
-        print(f"Ecosystem collapsed at step {step}")
+    if terminated: print(f"Ecosystem collapsed at step {step}")
         break
 
 print(f"Final developer trust: {trust_history[-1]:.3f}")

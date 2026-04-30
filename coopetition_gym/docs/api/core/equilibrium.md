@@ -154,14 +154,12 @@ def compute_rewards(
     """
     Compute rewards for RL training.
 
-    Args:
-        actions: Agent actions
+    Args: actions: Agent actions
         params: Payoff parameters
         trust_state: Optional trust state for modulation
         reward_type: 'private', 'integrated', or 'cooperative'
 
-    Returns:
-        Reward array [r_1, ..., r_N]
+    Returns: Reward array [r_1, ..., r_N]
     """
 ```
 
@@ -177,12 +175,10 @@ def solve_equilibrium(
     """
     Solve for equilibrium action profile.
 
-    Args:
-        params: Payoff parameters
+    Args: params: Payoff parameters
         method: 'nash', 'stackelberg', or 'coopetitive'
 
-    Returns:
-        EquilibriumResult with optimal actions and payoffs
+    Returns: EquilibriumResult with optimal actions and payoffs
     """
 ```
 

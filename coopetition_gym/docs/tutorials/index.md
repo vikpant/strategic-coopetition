@@ -6,9 +6,7 @@ Learn to use Coopetition-Gym through hands-on examples, from basic environment i
 
 ## Getting Started
 
-Before diving into tutorials, ensure you have:
-
-1. [Installed Coopetition-Gym](../installation.md)
+Before diving into tutorials, ensure you have: 1. [Installed Coopetition-Gym](../installation.md)
 2. Verified your installation works
 3. Basic familiarity with Python and NumPy
 
@@ -42,9 +40,7 @@ Before diving into tutorials, ensure you have:
 
 ## Quick Start Guide
 
-The [Quick Start Tutorial](quickstart.md) covers:
-
-1. **Creating environments** - Using the factory functions
+The [Quick Start Tutorial](quickstart.md) covers: 1. **Creating environments** - Using the factory functions
 2. **Basic interaction** - Reset, step, observe
 3. **Understanding observations** - What agents see
 4. **Understanding rewards** - How payoffs work

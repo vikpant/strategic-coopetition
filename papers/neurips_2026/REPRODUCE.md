@@ -4,9 +4,7 @@ This document describes how to reproduce the empirical results reported in:
 
 > Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Manuscript in preparation.
 
-The paper presents two complementary empirical artifacts:
-
-1. A **training dataset** of 25,708 experiment result files across 128 algorithms × 20 environments × 3 reward types × 7 seeds.
+The paper presents two complementary empirical artifacts: 1. A **training dataset** of 25,708 experiment result files across 128 algorithms × 20 environments × 3 reward types × 7 seeds.
 2. A **behavioral audit** of 1,116 experiment result files characterizing the exploitation gradient under integrated reward.
 
 Both artifacts are released as versioned datasets on HuggingFace Hub. This document describes how to regenerate either artifact from source and how to map each paper table and figure to its producing script.
@@ -24,7 +22,7 @@ pip install -e ".[dev,rl,viz]"
 pytest coopetition_gym/tests/ -v
 ```
 
-All 143 tests should pass. If any fail, do not proceed — file an issue with the test failure output.
+All 143 tests should pass. If any fail, do not proceed, file an issue with the test failure output.
 
 ## 2. Dataset Access
 
@@ -163,20 +161,20 @@ Seeds are passed to `numpy.random.default_rng()`, `torch.manual_seed()`, and the
 
 Sixteen training algorithms:
 
-- **CTDE (centralized training, decentralized execution)** — 9: MADDPG, MATD3, M3DDPG, MASAC, QMIX, VDN, COMA, MAPPO, MeanFieldAC
-- **Independent learning** — 7: ISAC, IPPO, IA2C, FCP, SelfPlay_PPO, LOLA, IndependentREINFORCE
+- **CTDE (centralized training, decentralized execution)**, 9: MADDPG, MATD3, M3DDPG, MASAC, QMIX, VDN, COMA, MAPPO, MeanFieldAC
+- **Independent learning**, 7: ISAC, IPPO, IA2C, FCP, SelfPlay_PPO, LOLA, IndependentREINFORCE
 
 Two heuristic baselines (no training): Random, TitForTat
 
 Seven game-theoretic oracles:
 
-- `Oracle_Equilibrium` — TR-1 interdependence equilibrium (Nash reference)
-- `Oracle_TrustAware` — TR-2 trust-aware equilibrium
-- `Oracle_Nash` — TR-3 Nash equilibrium (lower bound)
-- `Oracle_Loyalty` — TR-3 social optimum (upper bound)
-- `Oracle_SocialOptimum` — TR-3 social optimum (equivalent to Oracle_Loyalty)
-- `Oracle_ReciprocityEquilibrium` — TR-4 Nash-style equilibrium (lower bound)
-- `Oracle_BoundedReciprocity` — TR-4 cooperation upper bound
+- `Oracle_Equilibrium`, TR-1 interdependence equilibrium (Nash reference)
+- `Oracle_TrustAware`, TR-2 trust-aware equilibrium
+- `Oracle_Nash`, TR-3 Nash equilibrium (lower bound)
+- `Oracle_Loyalty`, TR-3 social optimum (upper bound)
+- `Oracle_SocialOptimum`, TR-3 social optimum (equivalent to Oracle_Loyalty)
+- `Oracle_ReciprocityEquilibrium`, TR-4 Nash-style equilibrium (lower bound)
+- `Oracle_BoundedReciprocity`, TR-4 cooperation upper bound
 
 One hundred and one constant-action policies (cooperation fractions from 0 to 1 in 0.01 increments) complete the 128-algorithm benchmark set.
 

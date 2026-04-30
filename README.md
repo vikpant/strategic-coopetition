@@ -55,10 +55,8 @@ import coopetition_gym
 env = coopetition_gym.make("TrustDilemma-v0")
 obs, info = env.reset(seed=42)
 
-for _ in range(100):
-    obs, reward, terminated, truncated, info = env.step([60.0, 55.0])
-    if terminated or truncated:
-        break
+for _ in range(100): obs, reward, terminated, truncated, info = env.step([60.0, 55.0])
+    if terminated or truncated: break
 ```
 
 A runnable Jupyter walkthrough lives at
@@ -84,8 +82,7 @@ technical report.
 
 ```bibtex
 @article{pant2025interdependence,
-  title   = {Computational Foundations for Strategic Coopetition:
-             Formalizing Interdependence and Complementarity},
+  title   = {Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity},
   author  = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2510.18802},
   year    = {2025}
@@ -96,8 +93,7 @@ technical report.
 
 ```bibtex
 @article{pant2025trust,
-  title   = {Computational Foundations for Strategic Coopetition:
-             Formalizing Trust and Reputation Dynamics},
+  title   = {Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics},
   author  = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2510.24909},
   year    = {2025}
@@ -108,8 +104,7 @@ technical report.
 
 ```bibtex
 @article{pant2026collective,
-  title   = {Computational Foundations for Strategic Coopetition:
-             Formalizing Collective Action and Loyalty},
+  title   = {Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty},
   author  = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2601.16237},
   year    = {2026}
@@ -120,8 +115,7 @@ technical report.
 
 ```bibtex
 @article{pant2026reciprocity,
-  title   = {Computational Foundations for Strategic Coopetition:
-             Formalizing Sequential Interaction and Reciprocity},
+  title   = {Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity},
   author  = {Pant, Vik and Yu, Eric},
   journal = {arXiv preprint arXiv:2604.01240},
   year    = {2026}

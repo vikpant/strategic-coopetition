@@ -8,8 +8,8 @@
 This repository contains the validation suite for the technical report:
 
 > **Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity**
-> Vik Pant — Faculty of Information, University of Toronto
-> Eric Yu — Faculty of Information and Department of Computer Science, University of Toronto
+> Vik Pant, Faculty of Information, University of Toronto
+> Eric Yu, Faculty of Information and Department of Computer Science, University of Toronto
 > arXiv: [2604.01240](https://arxiv.org/abs/2604.01240)
 
 The validation suite provides complete reproducibility for all experimental and empirical validation results presented in Sections 7-8 of the technical report.
@@ -114,9 +114,7 @@ The validation suite implements the reciprocity dynamics model from TR-4:
 
 ## Empirical Case Study
 
-**Apple iOS App Store (2008-2024)**: Three-actor ecosystem (Apple, Major Developers, Small Developers) across five phases:
-
-1. **Symbiosis** (2008-2012): Platform launch and mutual cooperation
+**Apple iOS App Store (2008-2024)**: Three-actor ecosystem (Apple, Major Developers, Small Developers) across five phases: 1. **Symbiosis** (2008-2012): Platform launch and mutual cooperation
 2. **Maturation** (2013-2017): Stable high cooperation
 3. **Tension** (2018-2020): Declining reciprocity, developer grievances
 4. **Crisis** (2020-2021): Epic Games lawsuit, reciprocal defection
@@ -141,8 +139,7 @@ Validation uses a 12-indicator x 5-phase scoring matrix (48.0/55 applicable poin
 
 ```bibtex
 @techreport{pant2026reciprocity,
-  title={Computational Foundations for Strategic Coopetition:
-         Formalizing Sequential Interaction and Reciprocity},
+  title={Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity},
   author={Pant, Vik and Yu, Eric},
   year={2026},
   institution={University of Toronto},
@@ -152,8 +149,8 @@ Validation uses a 12-indicator x 5-phase scoring matrix (48.0/55 applicable poin
 
 ## Authors
 
-- **Vik Pant** — Faculty of Information, University of Toronto — [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
-- **Eric Yu** — Faculty of Information and Department of Computer Science, University of Toronto — [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
+- **Vik Pant**: Faculty of Information, University of Toronto, [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
+- **Eric Yu**: Faculty of Information and Department of Computer Science, University of Toronto, [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
 
 University of Toronto
 140 St George St, Toronto, ON M5S 3G6, Canada

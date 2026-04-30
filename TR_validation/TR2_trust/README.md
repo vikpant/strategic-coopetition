@@ -7,8 +7,8 @@
 ## Overview
 
 > **Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics**  
-> Vik Pant — Faculty of Information, University of Toronto  
-> Eric Yu — Faculty of Information and Department of Computer Science, University of Toronto  
+> Vik Pant, Faculty of Information, University of Toronto  
+> Eric Yu, Faculty of Information and Department of Computer Science, University of Toronto  
 > arXiv:2510.24909
 
 The validation suite provides complete reproducibility for all experimental and empirical validation results presented in Sections 8-9 of the technical report.
@@ -287,8 +287,7 @@ If you use this code in your research, please cite:
 
 ```bibtex
 @techreport{pant2025trust,
-  title = {Computational Foundations for Strategic Coopetition: 
-           Formalizing Trust and Reputation Dynamics},
+  title = {Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics},
   author={Pant, Vik and Yu, Eric},
   year={2025},
   institution={University of Toronto},
@@ -305,8 +304,8 @@ This code accompanies TR-2025-02, which builds on:
 
 ## Authors
 
-- **Vik Pant** — Faculty of Information, University of Toronto — [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
-- **Eric Yu** — Faculty of Information and Department of Computer Science, University of Toronto — [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
+- **Vik Pant**: Faculty of Information, University of Toronto, [vik.pant@mail.utoronto.ca](mailto:vik.pant@mail.utoronto.ca)
+- **Eric Yu**: Faculty of Information and Department of Computer Science, University of Toronto, [eric.yu@utoronto.ca](mailto:eric.yu@utoronto.ca)
 
 University of Toronto  
 140 St George St, Toronto, ON M5S 3G6, Canada

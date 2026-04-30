@@ -11,7 +11,7 @@
 
 TrustDilemma-v0 implements a **continuous iterated Prisoner's Dilemma** where payoffs evolve based on a hidden trust state. Unlike the classic discrete Prisoner's Dilemma, agents choose continuous cooperation levels, and the reward structure is dynamically modulated by the current trust between agents.
 
-This environment tests whether reinforcement learning agents can learn **long-horizon impulse control**—resisting the temptation of short-term defection gains to maintain the trust that enables higher long-term payoffs.
+This environment tests whether reinforcement learning agents can learn **long-horizon impulse control**,resisting the temptation of short-term defection gains to maintain the trust that enables higher long-term payoffs.
 
 ---
 
@@ -123,9 +123,7 @@ with:
 
 ### The Trust Dilemma
 
-In many real-world partnerships, the classic Prisoner's Dilemma structure is complicated by:
-
-1. **Continuous choices**: Partners don't simply "cooperate" or "defect"—they choose how much effort, investment, or commitment to contribute
+In many real-world partnerships, the classic Prisoner's Dilemma structure is complicated by: 1. **Continuous choices**: Partners don't simply "cooperate" or "defect",they choose how much effort, investment, or commitment to contribute
 2. **Dynamic payoffs**: The value of cooperation depends on the relationship's current state
 3. **Trust sensitivity**: Past behavior affects future opportunities through trust accumulation
 
@@ -151,18 +149,14 @@ The core challenge is learning that **today's defection constrains tomorrow's po
 
 ### Relationship to Classical Game Theory
 
-TrustDilemma-v0 extends the classical Iterated Prisoner's Dilemma (IPD) by incorporating:
-
-1. **Continuous action spaces**: Rather than discrete {Cooperate, Defect}, agents choose cooperation intensity $a_i \in [0, 100]$
+TrustDilemma-v0 extends the classical Iterated Prisoner's Dilemma (IPD) by incorporating: 1. **Continuous action spaces**: Rather than discrete {Cooperate, Defect}, agents choose cooperation intensity $a_i \in [0, 100]$
 2. **State-dependent payoffs**: Rewards are modulated by endogenous trust, creating a Markov Game rather than a repeated normal-form game
 3. **Asymmetric dynamics**: The 3:1 negativity bias (λ⁻/λ⁺) captures empirically-observed trust asymmetry (Slovic, 1993)
 4. **Reputation hysteresis**: Cumulative damage creates irreversibility absent from classical models
 
 ### Key Theoretical Results
 
-**Stage-Game Analysis**:
-
-In the single-shot version (ignoring trust dynamics), the environment resembles a continuous public goods game:
+**Stage-Game Analysis**: In the single-shot version (ignoring trust dynamics), the environment resembles a continuous public goods game:
 
 - **Nash equilibrium (myopic)**: $a^* \approx 35$ (baseline contribution)
   - At this level, marginal cost of contribution equals marginal private benefit
@@ -171,9 +165,7 @@ In the single-shot version (ignoring trust dynamics), the environment resembles 
 - **Price of Anarchy**: PoA ≈ 2.3
   - Ratio of optimal social welfare to welfare at Nash equilibrium
 
-**Repeated Game Considerations**:
-
-With T = 100 repetitions and trust dynamics, the Folk Theorem applies conditionally:
+**Repeated Game Considerations**: With T = 100 repetitions and trust dynamics, the Folk Theorem applies conditionally:
 
 - **Folk Theorem applicability**: Partial
   - Finite horizon limits exact Folk Theorem results
@@ -183,9 +175,7 @@ With T = 100 repetitions and trust dynamics, the Folk Theorem applies conditiona
   - Cooperative equilibria (a > 35) sustainable when trust amplification exceeds defection temptation
   - Critical threshold: τ* ≈ 0.45 for cooperation to be self-enforcing
 
-**Trust-Mediated Cooperation**:
-
-The trust dynamics create a novel mechanism for cooperation:
+**Trust-Mediated Cooperation**: The trust dynamics create a novel mechanism for cooperation:
 
 ```
 Cooperation sustainable iff: ∂U/∂τ × ∂τ/∂a > temptation_gain
@@ -228,9 +218,7 @@ Where the left side captures the long-term value of trust investment.
 
 In the single-shot game (ignoring trust dynamics), we analyze best responses:
 
-**Best Response Functions**:
-
-For agent $i$ with utility $U_i = (e_i - a_i) + \theta \cdot \ln(1 + a_i) + \alpha_i \cdot G(\mathbf{a}) + D_{ij} \cdot \pi_j$:
+**Best Response Functions**: For agent $i$ with utility $U_i = (e_i - a_i) + \theta \cdot \ln(1 + a_i) + \alpha_i \cdot G(\mathbf{a}) + D_{ij} \cdot \pi_j$:
 
 ```
 ∂U_i/∂a_i = -1 + θ/(1 + a_i) + α_i·∂G/∂a_i = 0
@@ -241,14 +229,12 @@ Solving for interior solutions:
 a_i* ≈ θ - 1 + α_i·(∂G/∂a_i)
 ```
 
-**Nash Equilibrium (Symmetric Case)**:
-
-With $\theta = 20$, $\alpha = 0.50$, and moderate complementarity:
+**Nash Equilibrium (Symmetric Case)**: With $\theta = 20$, $\alpha = 0.50$, and moderate complementarity:
 - **Myopic NE**: $a^* \approx 35$ (baseline level)
 - Both agents contribute at the minimum expected level
 - Neither has unilateral incentive to deviate
 
-**Interpretation**: The stage-game NE represents mutual caution—each agent invests just enough to avoid being seen as defecting.
+**Interpretation**: The stage-game NE represents mutual caution, each agent invests just enough to avoid being seen as defecting.
 
 ### Pareto Frontier
 
@@ -292,16 +278,12 @@ Grim trigger supports cooperation when:
 
 Where δ captures effective discount rate accounting for trust dynamics.
 
-**Trust-Augmented Trigger**:
-
-The trust dynamics provide a natural "soft" trigger:
+**Trust-Augmented Trigger**: The trust dynamics provide a natural "soft" trigger:
 - Defection erodes trust (λ⁻ = 0.45)
 - Eroded trust reduces future payoffs
 - Creates self-enforcing cooperation without explicit punishment
 
-**Cooperative Equilibrium Conditions**:
-
-Cooperation (a > baseline) is sustainable in equilibrium when:
+**Cooperative Equilibrium Conditions**: Cooperation (a > baseline) is sustainable in equilibrium when:
 ```
 τ > τ* where τ* ≈ 0.45
 ```
@@ -312,9 +294,7 @@ Below τ*, the trust-mediated payoff amplification is insufficient to deter defe
 
 The environment creates a novel equilibrium structure:
 
-**Trust Threshold Effects**:
-
-1. **High trust regime** (τ > 0.70):
+**Trust Threshold Effects**: 1. **High trust regime** (τ > 0.70):
    - Cooperation strongly reinforced
    - High payoffs sustain investment
    - Robust to small deviations
@@ -329,9 +309,7 @@ The environment creates a novel equilibrium structure:
    - Recovery difficult (3:1 negativity bias)
    - Approaching termination threshold
 
-**Basin of Attraction**:
-
-Starting from τ₀ = 0.50:
+**Basin of Attraction**: Starting from τ₀ = 0.50:
 - Sustained cooperation → converges to high-trust equilibrium
 - Early defection → converges to low-trust/collapse
 
@@ -341,9 +319,7 @@ The **separating trajectory** depends on initial cooperation and response to ear
 
 For RL agents learning in this environment:
 
-**Expected Learning Dynamics**:
-
-1. **Self-play with exploration**: May converge to either equilibrium
+**Expected Learning Dynamics**: 1. **Self-play with exploration**: May converge to either equilibrium
    - High exploration → samples cooperative outcomes → possible convergence to cooperation
    - Greedy exploitation → myopic defection → convergence to low equilibrium
 
@@ -480,10 +456,8 @@ Trust updates follow TR-2 dynamics:
 signal = (action - baseline) / baseline  # Positive = cooperative
 
 # Asymmetric update
-if signal > 0:
-    delta_trust = λ⁺ × signal × (1 - trust)  # Bounded by ceiling
-else:
-    delta_trust = λ⁻ × signal × trust  # Faster erosion
+if signal > 0: delta_trust = λ⁺ × signal × (1 - trust)  # Bounded by ceiling
+else: delta_trust = λ⁻ × signal × trust  # Faster erosion
 
 # Apply with reputation ceiling
 trust = min(trust + delta_trust, 1 - reputation_damage)
@@ -529,9 +503,7 @@ This creates strong incentives for **mutual high cooperation**.
 
 ### Termination Conditions
 
-The episode ends when:
-
-1. **Truncation**: Maximum steps (100) reached
+The episode ends when: 1. **Truncation**: Maximum steps (100) reached
 2. **Termination**: Mean trust falls below 0.05 (trust collapse)
 
 ### Typical Trajectories
@@ -592,8 +564,7 @@ for step in range(100):
     partner_last_action = obs[1]  # Partner's last action
     my_action = partner_last_action
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Final trust: {info['mean_trust']:.3f}")
 ```
@@ -659,8 +630,7 @@ n_epochs: 10
 gamma: 0.99
 gae_lambda: 0.95
 ent_coef: 0.01
-network:
-  hidden_layers: [128, 128]
+network: hidden_layers: [128, 128]
 ```
 
 ---

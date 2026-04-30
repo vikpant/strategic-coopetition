@@ -56,10 +56,8 @@ $$U_i = \pi_i^{team} + L_i$$
 Loyalty scores evolve based on cooperation:
 
 ```python
-if cooperation_rate >= 0.5:
-    loyalty += 0.02 * cooperation_rate  # Build slowly
-else:
-    loyalty -= 0.05 * (0.5 - cooperation_rate)  # Erode faster
+if cooperation_rate >= 0.5: loyalty += 0.02 * cooperation_rate  # Build slowly
+else: loyalty -= 0.05 * (0.5 - cooperation_rate)  # Erode faster
 ```
 
 ### Key Insight
@@ -227,8 +225,7 @@ for step in range(100):
 
     loyalty_history.append(info['mean_loyalty'])
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 # Loyalty should increase over time with cooperation
 print(f"Initial loyalty: {loyalty_history[0]:.2f}")

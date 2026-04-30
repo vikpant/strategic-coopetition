@@ -15,7 +15,7 @@ size_categories:
   - 10K<n<100K
 ---
 
-# Coopetition-Gym v1 — Training Results
+# Coopetition-Gym v1, Training Results
 
 Training results from the Coopetition-Gym v1 benchmark campaign.
 25,708 JSON files, each recording the outcome of training one of 16

@@ -13,7 +13,7 @@
 
 SLCD-v0 implements the **Samsung-Sony S-LCD Joint Venture** as described in TR-1 (arXiv:2510.18802). This is the **gold standard benchmark** for Coopetition-Gym, with parameters validated against real business data.
 
-The environment models the 2004-2012 joint venture where Samsung and Sony collaborated on LCD panel manufacturing while competing in the consumer electronics market—a quintessential coopetitive relationship.
+The environment models the 2004-2012 joint venture where Samsung and Sony collaborated on LCD panel manufacturing while competing in the consumer electronics market, a quintessential coopetitive relationship.
 
 **Validation Score:** 58/60 against historical data
 
@@ -317,9 +317,7 @@ Score = 58/60 = 96.7% accuracy
 
 ### Deviations (2 points)
 
-Two trust indicator data points showed deviation:
-
-1. **2008 Q4 Trust Spike** - External shock (global financial crisis)
+Two trust indicator data points showed deviation: 1. **2008 Q4 Trust Spike** - External shock (global financial crisis)
    - Model predicted continued trust decline
    - Historical: temporary trust increase as partners cooperated during crisis
    - Cause: Exogenous shock not modeled
@@ -447,12 +445,10 @@ phases = [
 total_samsung = 0
 total_sony = 0
 
-for phase_name, steps, (samsung, sony) in phases:
-    phase_samsung = 0
+for phase_name, steps, (samsung, sony) in phases: phase_samsung = 0
     phase_sony = 0
 
-    for step in range(steps):
-        actions = np.array([samsung, sony])
+    for step in range(steps): actions = np.array([samsung, sony])
         obs, rewards, terminated, truncated, info = env.step(actions)
         phase_samsung += rewards[0]
         phase_sony += rewards[1]

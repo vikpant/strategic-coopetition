@@ -14,7 +14,7 @@ Coopetition-Gym v1.x environments use the **uniaxial treatment** of coopetition.
 
 - **Action range**: `[0, endowment]` where higher values mean more cooperation
 - **Zero action**: Non-participation or resource retention (not sabotage)
-- **Competition**: Emerges through structural parameters—who depends on whom, how value is divided—rather than explicit competitive actions
+- **Competition**: Emerges through structural parameters, who depends on whom, how value is divided, rather than explicit competitive actions
 
 This follows established game-theoretic traditions for modeling social dilemmas. Future versions will introduce biaxial action spaces where cooperation and competition are independent dimensions.
 
@@ -119,8 +119,7 @@ while True:
     trust_history.append(info['mean_trust'])
     step_count += 1
 
-    if terminated or truncated:
-        break
+    if terminated or truncated: break
 
 print(f"Episode finished after {step_count} steps")
 print(f"Total rewards: Agent 0 = {total_rewards[0]:.1f}, Agent 1 = {total_rewards[1]:.1f}")
@@ -146,8 +145,7 @@ scenarios = [
     ("Agent 1 defects", np.array([70.0, 20.0])),
 ]
 
-for name, actions in scenarios:
-    obs, info = env.reset(seed=42)  # Reset to same state
+for name, actions in scenarios: obs, info = env.reset(seed=42)  # Reset to same state
     obs, rewards, _, _, info = env.step(actions)
     print(f"{name}: R0={rewards[0]:.1f}, R1={rewards[1]:.1f}, Trust={info['mean_trust']:.3f}")
 ```
@@ -168,20 +166,17 @@ print("Demonstrating trust dynamics:\n")
 
 # Phase 1: Build trust through cooperation
 print("Phase 1: Building trust (cooperation)")
-for _ in range(10):
-    obs, rewards, _, _, info = env.step(np.array([70.0, 70.0]))
+for _ in range(10): obs, rewards, _, _, info = env.step(np.array([70.0, 70.0]))
 print(f"  Trust after cooperation: {info['mean_trust']:.3f}")
 
 # Phase 2: Erode trust through defection
 print("\nPhase 2: Eroding trust (defection)")
-for _ in range(5):
-    obs, rewards, _, _, info = env.step(np.array([20.0, 20.0]))
+for _ in range(5): obs, rewards, _, _, info = env.step(np.array([20.0, 20.0]))
 print(f"  Trust after defection: {info['mean_trust']:.3f}")
 
 # Phase 3: Attempt recovery
 print("\nPhase 3: Attempting recovery")
-for _ in range(10):
-    obs, rewards, _, _, info = env.step(np.array([70.0, 70.0]))
+for _ in range(10): obs, rewards, _, _, info = env.step(np.array([70.0, 70.0]))
 print(f"  Trust after recovery attempt: {info['mean_trust']:.3f}")
 ```
 
@@ -228,13 +223,10 @@ print(f"Rewards: {rewards}")
 env = coopetition_gym.make_aec("TrustDilemma-v0")
 env.reset(seed=42)
 
-for agent in env.agent_iter():
-    observation, reward, termination, truncation, info = env.last()
+for agent in env.agent_iter(): observation, reward, termination, truncation, info = env.last()
 
-    if termination or truncation:
-        action = None
-    else:
-        action = env.action_space(agent).sample()
+    if termination or truncation: action = None
+    else: action = env.action_space(agent).sample()
 
     env.step(action)
 ```
@@ -249,8 +241,7 @@ Coopetition-Gym provides 20 environments:
 # List all available environments
 envs = coopetition_gym.list_environments()
 print("Available environments:")
-for env_id in envs:
-    print(f"  - {env_id}")
+for env_id in envs: print(f"  - {env_id}")
 ```
 
 ### Environment Categories
@@ -308,8 +299,7 @@ def tit_for_tat_episode(env, initial_action=60.0, num_steps=100):
         # Update my_action to match partner's last action
         my_action = obs[1]  # Partner's last action
 
-        if terminated or truncated:
-            break
+        if terminated or truncated: break
 
     return total_rewards, info
 
@@ -331,17 +321,14 @@ def run_strategy(env_name, strategy_fn, episodes=5, seed=42):
     """Run multiple episodes with a strategy and return average rewards."""
     all_rewards = []
 
-    for ep in range(episodes):
-        env = coopetition_gym.make(env_name)
+    for ep in range(episodes): env = coopetition_gym.make(env_name)
         obs, info = env.reset(seed=seed + ep)
 
         ep_rewards = np.zeros(2)
-        for _ in range(100):
-            actions = strategy_fn(obs, info)
+        for _ in range(100): actions = strategy_fn(obs, info)
             obs, rewards, terminated, truncated, info = env.step(actions)
             ep_rewards += rewards
-            if terminated or truncated:
-                break
+            if terminated or truncated: break
 
         all_rewards.append(ep_rewards)
         env.close()
@@ -349,14 +336,11 @@ def run_strategy(env_name, strategy_fn, episodes=5, seed=42):
     return np.mean(all_rewards, axis=0)
 
 # Define strategies
-def always_cooperate(obs, info):
-    return np.array([80.0, 80.0])
+def always_cooperate(obs, info): return np.array([80.0, 80.0])
 
-def always_defect(obs, info):
-    return np.array([20.0, 20.0])
+def always_defect(obs, info): return np.array([20.0, 20.0])
 
-def mixed_strategy(obs, info):
-    return np.array([50.0, 50.0])
+def mixed_strategy(obs, info): return np.array([50.0, 50.0])
 
 # Compare strategies
 print("Strategy Comparison on TrustDilemma-v0:")
@@ -364,8 +348,7 @@ print("-" * 45)
 
 for name, fn in [("Always Cooperate", always_cooperate),
                   ("Always Defect", always_defect),
-                  ("Mixed (50/50)", mixed_strategy)]:
-    rewards = run_strategy("TrustDilemma-v0", fn)
+                  ("Mixed (50/50)", mixed_strategy)]: rewards = run_strategy("TrustDilemma-v0", fn)
     print(f"{name:20s}: Agent0={rewards[0]:7.1f}, Agent1={rewards[1]:7.1f}")
 ```
 
@@ -373,9 +356,7 @@ for name, fn in [("Always Cooperate", always_cooperate),
 
 ## Summary
 
-You've learned:
-
-1. **Creating environments** with `coopetition_gym.make()`
+You've learned: 1. **Creating environments** with `coopetition_gym.make()`
 2. **Understanding observations** - trust, reputation, interdependence
 3. **Taking actions** - cooperation levels from 0 to endowment
 4. **Understanding rewards** - integrated utility framework

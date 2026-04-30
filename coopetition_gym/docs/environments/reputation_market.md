@@ -368,8 +368,7 @@ obs, info = env.reset(seed=42)
 my_reputation_history = []
 my_tier_history = []
 
-for step in range(100):
-    my_rep = info['public_reputations'][0]
+for step in range(100): my_rep = info['public_reputations'][0]
     my_tier = info['agent_tiers'].get(0, 'Standard')
 
     # Tier-aware strategy
