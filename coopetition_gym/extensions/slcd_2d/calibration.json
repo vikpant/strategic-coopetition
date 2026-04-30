@@ -1,0 +1,23 @@
+{
+  "description": "Default (kappa, beta, eta, xi) for the 2D SLCD sanity check. These values are chosen so that (a) p=0 recovers v1 bit-exact, (b) an interior Nash in (c*, p*) exists for the validated SLCD parameters (theta=20, gamma=0.65, alpha=[0.55,0.45], D=[[0,0.64],[0.86,0]]), and (c) appropriation is a plausible but not dominant strategy.",
+  "parameters": {
+    "kappa": 0.5,
+    "beta": 0.6,
+    "eta": 0.4,
+    "xi": 15.0
+  },
+  "semantics": {
+    "kappa": "linear cost of appropriation effort (resource diverted from endowment)",
+    "beta": "commons-erosion coefficient; synergy is scaled by (1 - beta * mean(p))",
+    "eta": "appropriation conversion rate; fraction of joint surplus captured per unit p",
+    "xi": "convex cost coefficient on p_i^2 (prevents bang-bang solutions)"
+  },
+  "bounds": {
+    "c": [0.0, 100.0],
+    "p": [0.0, 1.0]
+  },
+  "notes": [
+    "Calibration is deliberately coarse. Fine-tuning to the SLCD 2004-2011 dissolution timeline is a follow-up task.",
+    "The 58/60 rubric must continue to hold when p is clamped to 0; see tests/test_backward_compat.py."
+  ]
+}
