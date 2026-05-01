@@ -52,7 +52,7 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
-from experiments import config
+from coopetition_gym.experiments import config
 
 
 logger = logging.getLogger(__name__)

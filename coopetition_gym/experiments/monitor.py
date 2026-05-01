@@ -61,7 +61,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple
 
-from experiments import config
+from coopetition_gym.experiments import config
 
 
 logger = logging.getLogger(__name__)

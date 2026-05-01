@@ -38,8 +38,8 @@ import numpy as np
 
 # Initialize
 params = TrustParameters()
-state = TrustState.create_initial(n_agents=2, params=params)
 model = TrustDynamicsModel(params)
+state = model.create_initial_state(n_agents=2)
 
 # Cooperation signal (above baseline = positive)
 actions = np.array([60.0, 55.0])
@@ -179,13 +179,14 @@ def mean_reputation_damage(self) -> float:
 **Example:**
 
 ```python
-from coopetition_gym.core.trust_dynamics import TrustState, TrustParameters
+from coopetition_gym.core.trust_dynamics import TrustState, TrustParameters, TrustDynamicsModel
 
 params = TrustParameters(initial_trust=0.55)
-state = TrustState.create_initial(n_agents=2, params=params)
+model = TrustDynamicsModel(params)
+state = model.create_initial_state(n_agents=2)
 
 print(f"Trust matrix:\n{{state.trust_matrix}}")
-print(f"Mean trust: {{state.mean_trust:.3f}}")
+print(f"Mean trust: {{state.mean_trust():.3f}}")
 print(f"Trust ceiling: {{state.trust_ceiling}}")
 ```
 
@@ -255,8 +256,8 @@ import numpy as np
 
 # Setup
 params = TrustParameters()
-state = TrustState.create_initial(n_agents=2, params=params)
 model = TrustDynamicsModel(params)
+state = model.create_initial_state(n_agents=2)
 
 # Define scenario
 actions = np.array([60.0, 30.0])  # Agent 0 cooperates, Agent 1 defects
