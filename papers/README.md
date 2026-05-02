@@ -12,7 +12,7 @@ not in this repository.
 | Bundle | Status |
 |---|---|
 | [`caise_2026/`](caise_2026/) | Accepted at CAiSE 2026 (Verona, Italy). Manuscript on arXiv and Springer LNCS. |
-| [`neurips_2026/`](neurips_2026/) | Material for the NeurIPS 2026 Datasets and Benchmarks track submission. Manuscript will appear on arXiv at the time of submission. |
+| [`neurips_ed_2026/`](neurips_ed_2026/) | Material for the NeurIPS 2026 Datasets and Benchmarks track submission. Manuscript will appear on arXiv at the time of submission. |
 
 ## Technical reports
 

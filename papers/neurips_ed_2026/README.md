@@ -1,4 +1,4 @@
-# neurips_2026
+# neurips_ed_2026
 
 Coopetition-Gym benchmark and the reward-type ablation methodology for
 mixed-motive multi-agent reinforcement-learning evaluation. Submission
