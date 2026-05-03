@@ -9,11 +9,11 @@ description = "Multi-agent RL environments for strategic coopetition with trust 
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Vik Pant", email = "vik.pant@utoronto.ca"},
+    {name = "Vik Pant", email = "vik.pant@mail.utoronto.ca"},
     {name = "Eric Yu", email = "eric.yu@utoronto.ca"},
 ]
 maintainers = [
-    {name = "Vik Pant", email = "vik.pant@utoronto.ca"},
+    {name = "Vik Pant", email = "vik.pant@mail.utoronto.ca"},
 ]
 keywords = [
     "reinforcement-learning",

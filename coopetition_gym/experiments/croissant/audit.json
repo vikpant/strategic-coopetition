@@ -56,7 +56,7 @@
     {
       "@type": "sc:Person",
       "name": "Vik Pant",
-      "email": "vik.pant@utoronto.ca",
+      "email": "vik.pant@mail.utoronto.ca",
       "affiliation": "Faculty of Information, University of Toronto"
     },
     {
@@ -79,7 +79,7 @@
   "rai:annotationsPerItem": "not-applicable",
   "rai:dataLimitation": "The static audit tests deviation from fixed cooperation levels (cross-sectional), not dynamic trained-policy behavior. The temporal audit tests binary switchpoint and gradual ramp-down strategies, not arbitrary learned sequences. A trained RL policy could in principle discover strategies not covered by these audit classes; users interpreting the 'universal immunity to binary switchpoint strategies' result should note that coverage is limited to the audit's strategy set.",
   "rai:dataSocialImpact": "The audit's primary contribution is an algorithm-independent characterization of the exploitation landscape exposed by the Coopetition-Gym environments. This supports both researchers building on the benchmark and safety-conscious practitioners evaluating whether the environment's structural properties are sufficient for their use case. The audit reveals a small gradient under the 'gradual ramp-down' temporal class on a subset of TR-4 environments (+0.004 to +0.41 percent of baseline return), which is empirically marginal but theoretically present; users should be aware this is not an absolute safety guarantee.",
-  "rai:dataReleaseMaintenancePlan": "Frozen for reproducibility. Any corrections recorded in CHANGELOG.md. Contact vik.pant@utoronto.ca or open an issue at https://github.com/vikpant/strategic-coopetition/issues.",
+  "rai:dataReleaseMaintenancePlan": "Frozen for reproducibility. Any corrections recorded in CHANGELOG.md. Contact vik.pant@mail.utoronto.ca or open an issue at https://github.com/vikpant/strategic-coopetition/issues.",
 
   "distribution": [
     {
