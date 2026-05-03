@@ -82,7 +82,7 @@ All scripts write results to `results/` with the same filename structure used in
 
 ## 4. Regenerating the Training Dataset from Scratch
 
-> **Warning**: Full regeneration requires approximately 3,400 GPU-hours across 16 training algorithms × 20 environments × 3 reward conditions × 7+ seeds (plus 135-cell controlled critic-lr ablation on ApacheProject-v0). The original campaign cost approximately $10,500 USD on commodity cloud GPUs (NVIDIA RTX 4090 and RTX 5090). Rates vary by provider and hardware generation; budget accordingly.
+> **Warning**: Full regeneration requires approximately 3,400 GPU-hours across 16 training algorithms × 20 environments × 3 reward conditions × 7+ seeds (plus 135-cell controlled critic-lr ablation on ApacheProject-v0). The reference evaluation cost approximately $10,500 USD on commodity cloud NVIDIA RTX 5090 GPUs. Rates vary by provider; budget accordingly.
 
 ### 4.1 Single-experiment launch
 
@@ -96,7 +96,7 @@ python scripts/run_experiment.py \
     --output data/training/baseline_integrated/
 ```
 
-### 4.2 Full campaign orchestration
+### 4.2 Full evaluation orchestration
 
 ```bash
 python scripts/orchestrator.py \
@@ -109,7 +109,7 @@ python scripts/orchestrator.py \
     --output data/training/
 ```
 
-The `--enable-checkpoints` flag is mandatory; prior campaigns lost 30–40 GPU-hours when instances crashed without checkpointing.
+The `--enable-checkpoints` flag is mandatory; prior runs without checkpointing lost 30–40 GPU-hours when instances crashed without checkpointing.
 
 ## 5. Regenerating the Behavioral Audit
 
@@ -151,11 +151,11 @@ python scripts/analyze_audits.py \
 
 ### 6.1 Seeds
 
-The seven seeds used in the training campaign are: **99, 100, 101, 102, 103, 104, 105**.
+The seven seeds used in the reference evaluation are: **99, 100, 101, 102, 103, 104, 105**.
 
 The behavioral audit uses a subset: **99, 100, 101**.
 
-Seeds are passed to `numpy.random.default_rng()`, `torch.manual_seed()`, and the environment's `reset(seed=...)` call. All randomness in the campaign is seeded; results are deterministic given seed, algorithm hyperparameters, and hardware.
+Seeds are passed to `numpy.random.default_rng()`, `torch.manual_seed()`, and the environment's `reset(seed=...)` call. All randomness in the evaluation is seeded; results are deterministic given seed, algorithm hyperparameters, and hardware.
 
 ### 6.2 Algorithms
 
@@ -180,13 +180,12 @@ One hundred and one constant-action policies (cooperation fractions from 0 to 1 
 
 ### 6.3 Hardware
 
-The original campaign used 7 cloud GPU instances with RTX 4090, RTX 3090, and RTX 2080Ti GPUs. All training results are hardware-invariant within floating-point tolerance because seeds are propagated through PyTorch's deterministic mode. No GPU is required for the behavioral audit.
+The reference evaluation used cloud NVIDIA RTX 5090 GPU instances for all policy training and tuning. All training results are hardware-invariant within floating-point tolerance because seeds are propagated through PyTorch's deterministic mode. No GPU is required for the behavioral audit.
 
 ## 7. Known Deviations
 
 - **MeanFieldAC** is evaluated only on environments with N ≥ 3 agents (12 environments). The mean-field approximation degenerates for N = 2. This is documented in the paper's experimental setup section.
 - **62 files contain NaN returns** from documented training instability: 21 MASAC on TR-3 under baseline, 21 MADDPG/MATD3/M3DDPG on ApacheProject-v0 under cooperative reward, 20 MADDPG on AppleAppStore-v0 in network sensitivity. Analysis scripts exclude these; the exclusion does not affect any paper finding.
-- **Blackwell GPUs (RTX 5090, RTX PRO 6000)** are incompatible with PyTorch CUDA 12.1 at time of campaign. Use RTX 4090 or earlier.
 
 ## 8. Questions and Issues
 
