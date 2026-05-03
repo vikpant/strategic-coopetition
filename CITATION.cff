@@ -9,7 +9,7 @@ authors:
     orcid: "https://orcid.org/0000-0002-9017-7466"
   - family-names: Yu
     given-names: Eric
-    affiliation: "Faculty of Information, University of Toronto"
+    affiliation: "Faculty of Information and Department of Computer Science, University of Toronto"
 repository-code: "https://github.com/vikpant/strategic-coopetition"
 url: "https://github.com/vikpant/strategic-coopetition"
 keywords:
@@ -39,7 +39,7 @@ preferred-citation:
       affiliation: "Faculty of Information, University of Toronto"
     - family-names: Yu
       given-names: Eric
-      affiliation: "Faculty of Information, University of Toronto"
+      affiliation: "Faculty of Information and Department of Computer Science, University of Toronto"
   year: 2026
   journal: "Manuscript in preparation"
   notes: "Update this entry to the proceedings or journal citation once the companion paper is published."

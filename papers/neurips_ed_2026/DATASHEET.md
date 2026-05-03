@@ -34,7 +34,7 @@ The datasets enable independent researchers to:
 
 ### Who created the datasets?
 
-Vik Pant and Eric Yu, Faculty of Information, University of Toronto.
+Vik Pant (Faculty of Information, University of Toronto) and Eric Yu (Faculty of Information and Department of Computer Science, University of Toronto).
 
 ### Who funded their creation?
 
