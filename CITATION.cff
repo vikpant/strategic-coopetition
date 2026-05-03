@@ -25,13 +25,12 @@ keywords:
   - interdependence
 license: MIT
 version: "1.0.0"
-date-released: "2026-04-18"
+date-released: "2026-05-03"
 
-# Preferred citation: until the companion research paper is published,
-# users may cite this software release directly. To be updated.
+# Preferred citation: the companion technical report on arXiv.
 preferred-citation:
   type: article
-  title: "Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation"
+  title: "Coopetition-Gym v1: A Formally Grounded Platform for Mixed-Motive Multi-Agent Reinforcement Learning under Strategic Coopetition"
   authors:
     - family-names: Pant
       given-names: Vik
@@ -40,8 +39,7 @@ preferred-citation:
       given-names: Eric
       affiliation: "Faculty of Information and Department of Computer Science, University of Toronto"
   year: 2026
-  journal: "Manuscript in preparation"
-  notes: "To be updated."
+  journal: "arXiv preprint"
 
 references:
   - type: article
@@ -54,8 +52,8 @@ references:
     year: 2025
     journal: "arXiv preprint"
     identifiers:
-      - type: other
-        value: "arXiv:2510.18802"
+      - type: url
+        value: "https://arxiv.org/abs/2510.18802"
 
   - type: article
     title: "Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics"
@@ -67,8 +65,8 @@ references:
     year: 2025
     journal: "arXiv preprint"
     identifiers:
-      - type: other
-        value: "arXiv:2510.24909"
+      - type: url
+        value: "https://arxiv.org/abs/2510.24909"
 
   - type: article
     title: "Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty"
@@ -80,8 +78,8 @@ references:
     year: 2026
     journal: "arXiv preprint"
     identifiers:
-      - type: other
-        value: "arXiv:2601.16237"
+      - type: url
+        value: "https://arxiv.org/abs/2601.16237"
 
   - type: article
     title: "Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity"
@@ -93,5 +91,5 @@ references:
     year: 2026
     journal: "arXiv preprint"
     identifiers:
-      - type: other
-        value: "arXiv:2604.01240"
+      - type: url
+        value: "https://arxiv.org/abs/2604.01240"
