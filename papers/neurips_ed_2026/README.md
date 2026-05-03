@@ -6,19 +6,19 @@ material for the NeurIPS 2026 Datasets and Benchmarks track.
 
 ## The manuscript
 
-The manuscript will be posted to arXiv as a preprint at the time of
-conference submission. The arXiv identifier and the OpenReview forum
-identifier will be added below once available.
+The manuscript will be posted to arXiv as a preprint and the
+OpenReview forum identifier will be assigned at the time of
+conference submission.
 
-- arXiv: *(to be posted)*
-- OpenReview: *(to be filed)*
+- arXiv: *(to be updated)*
+- OpenReview: *(to be updated)*
 
 The manuscript is not redistributed from this repository while the
 arXiv preprint and the conference proceedings are the canonical sources.
 
 ## Citation
 
-A BibTeX entry will be added when the arXiv preprint is posted.
+BibTeX entry: *(to be updated)*.
 
 ## Dataset
 
