@@ -28,8 +28,7 @@ version: "1.0.0"
 date-released: "2026-04-18"
 
 # Preferred citation: until the companion research paper is published,
-# users may cite this software release directly. Update this entry to the
-# proceedings or journal citation once the companion paper is published.
+# users may cite this software release directly. To be updated.
 preferred-citation:
   type: article
   title: "Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation"
@@ -42,7 +41,7 @@ preferred-citation:
       affiliation: "Faculty of Information and Department of Computer Science, University of Toronto"
   year: 2026
   journal: "Manuscript in preparation"
-  notes: "Update this entry to the proceedings or journal citation once the companion paper is published."
+  notes: "To be updated."
 
 references:
   - type: article

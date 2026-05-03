@@ -13,7 +13,7 @@ The manuscript is hosted at its canonical sources:
 - **arXiv:2510.18802** extended technical report:
   <https://arxiv.org/abs/2510.18802>
 - **CAiSE 2026 LNCS proceedings** Springer Lecture Notes in Computer
-  Science (link added when the proceedings volume is published).
+  Science (link to be updated).
 
 The conference manuscript is not redistributed from this repository so
 that the canonical Springer LNCS version remains the authoritative
