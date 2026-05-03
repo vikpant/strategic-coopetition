@@ -174,7 +174,7 @@ attribution is given to the original authors.
 ## Maintenance
 
 - **Issues and corrections**: https://github.com/vikpant/strategic-coopetition/issues
-- **Contact**: vik.pant@utoronto.ca
+- **Contact**: vik.pant@mail.utoronto.ca
 - **Changelog**: https://github.com/vikpant/strategic-coopetition/blob/master/CHANGELOG.md
 
 The v1 dataset is frozen for reproducibility. Future extensions will be

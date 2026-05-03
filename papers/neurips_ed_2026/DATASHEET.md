@@ -296,7 +296,7 @@ tracker.
 ### How can the owner be contacted?
 
 Via GitHub Issues at `https://github.com/vikpant/strategic-coopetition/issues`
-or email vik.pant@utoronto.ca.
+or email vik.pant@mail.utoronto.ca.
 
 ### Is there an erratum?
 

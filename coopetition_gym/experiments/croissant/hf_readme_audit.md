@@ -180,7 +180,7 @@ CC-BY-4.0 (Creative Commons Attribution 4.0 International).
 ## Maintenance
 
 - **Issues**: https://github.com/vikpant/strategic-coopetition/issues
-- **Contact**: vik.pant@utoronto.ca
+- **Contact**: vik.pant@mail.utoronto.ca
 - **Changelog**: https://github.com/vikpant/strategic-coopetition/blob/master/CHANGELOG.md
 
 ## Technical Reports

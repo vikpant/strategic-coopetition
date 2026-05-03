@@ -60,7 +60,7 @@
     {
       "@type": "sc:Person",
       "name": "Vik Pant",
-      "email": "vik.pant@utoronto.ca",
+      "email": "vik.pant@mail.utoronto.ca",
       "affiliation": "Faculty of Information, University of Toronto"
     },
     {
@@ -83,7 +83,7 @@
   "rai:annotationsPerItem": "not-applicable",
   "rai:dataLimitation": "The dataset should not be used to train policies for deployment in actual business settings without additional domain-specific validation. The validated case studies (Samsung-Sony, Renault-Nissan, Apache, Apple) are abstract models of historical partnerships; they do not authorize operational use. The dataset does not reflect empirical human cooperative behavior.",
   "rai:dataSocialImpact": "Positive: enables reproducible research on mixed-motive MARL evaluation methodology. Negative: policies derived from this dataset under integrated-reward configurations can, in principle, rationally harm partners; the behavioral audit (coopetition-gym-audit) empirically bounds this vulnerability. Users training on this dataset should audit derived policies for the exploitation-gradient condition described in the paper Appendix F.",
-  "rai:dataReleaseMaintenancePlan": "The v1 dataset is frozen for reproducibility. Corrections will be recorded in the GitHub repository's CHANGELOG.md. Extensions will be released as versioned successors (v2, v3, ...) with their own datasheets. Contact vik.pant@utoronto.ca or open an issue at https://github.com/vikpant/strategic-coopetition/issues.",
+  "rai:dataReleaseMaintenancePlan": "The v1 dataset is frozen for reproducibility. Corrections will be recorded in the GitHub repository's CHANGELOG.md. Extensions will be released as versioned successors (v2, v3, ...) with their own datasheets. Contact vik.pant@mail.utoronto.ca or open an issue at https://github.com/vikpant/strategic-coopetition/issues.",
 
   "distribution": [
     {
