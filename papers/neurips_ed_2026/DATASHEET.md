@@ -27,7 +27,7 @@ The datasets enable independent researchers to:
 * Reproduce the paper's tables and figures using the published analysis
   pipeline (`experiments.analyze`).
 * Extend the empirical analysis to new algorithms or new reward configurations
-  without re-running the 3,400-GPU-hour campaign.
+  without re-running the 3,400-GPU-hour reference evaluation.
 * Audit the training dynamics and behavioral characteristics of each algorithm.
 * Verify the exploitation-gradient claims made in the societal impact
   discussion (Appendix G).
@@ -115,7 +115,7 @@ identifiable information of any kind.
 For 62 training-dataset files, certain per-episode metrics are `NaN` due to
 documented training instability (21 MASAC baseline, 21 MADDPG/MATD3/M3DDPG
 cooperative, 20 MADDPG network-sensitivity). These are retained for full
-transparency of the campaign output; `experiments.validate training` reports
+transparency of the evaluation output; `experiments.validate training` reports
 the 62-count as an expected invariant.
 
 ### Are relationships between individual instances made explicit?
@@ -185,7 +185,7 @@ policy on 100 episodes.
 
 ### Over what timeframe was the data collected?
 
-Primary training campaign: February 13, 2026 – April 14, 2026.
+Primary training period: February 13, 2026 – April 14, 2026.
 Behavioral audit: April 15, 2026.
 
 ### Were any ethical review processes conducted?
