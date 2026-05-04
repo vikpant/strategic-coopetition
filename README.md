@@ -28,7 +28,7 @@ game theory, and reinforcement learning.
 - **126-algorithm reference suite**: 16 training algorithms, 7
   game-theoretic oracles, 2 heuristics, and 101 constant-action policies.
 - **Four validated case studies** calibrated to real-world coopetitive
-  relationships: Samsung–Sony LCD (96.7%), Renault–Nissan (81.7%),
+  relationships: Samsung–Sony LCD (98.3%), Renault–Nissan (81.7%),
   Apache HTTP Server (86.7%), Apple iOS App Store (87.3%).
 - **Reward-type ablation methodology** for mixed-motive evaluation,
   varying reward mutuality across private, integrated, and cooperative
@@ -141,7 +141,7 @@ technical report.
 
 | Case study | Validation score | Technical report |
 |---|---|---|
-| Samsung–Sony S-LCD Joint Venture (2004–2011) | 58/60 (96.7%) | TR-1 §8 |
+| Samsung–Sony S-LCD Joint Venture (2004–2011) | 59/60 (98.3%) | TR-1 §8 |
 | Renault–Nissan Alliance (multi-phase) | 49/60 (81.7%) | TR-2 §9 |
 | Apache HTTP Server community evolution | 52/60 (86.7%) | TR-3 §7 |
 | Apple iOS App Store platform dynamics | 48/55 (87.3%) | TR-4 §8 |
