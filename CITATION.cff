@@ -13,11 +13,8 @@ authors:
 repository-code: "https://github.com/vikpant/strategic-coopetition"
 url: "https://github.com/vikpant/strategic-coopetition"
 license: MIT
-version: "1.0.0"
-date-released: "2026-05-03"
-identifiers:
-  - type: doi
-    value: "10.5281/zenodo.20015197"
+version: "1.0.2"
+date-released: "2026-05-04"
 keywords:
   - multi-agent reinforcement learning
   - mixed-motive games
