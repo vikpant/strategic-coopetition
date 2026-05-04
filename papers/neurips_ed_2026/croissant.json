@@ -91,12 +91,24 @@
   "rai:machineGenerated": true,
   "distribution": [
     {
+      "@type": "cr:FileObject",
+      "@id": "huggingface_repository",
+      "name": "huggingface_repository",
+      "description": "HuggingFace dataset repository (git remote). The validator's record-generation test attempts a full git clone of this remote to enumerate the JSONL shards. Anonymous git clone is permitted by HuggingFace for this public dataset; if the validator container does not have outbound git access or hits its sandbox timeout during the ~1.6 GB clone, the test will report 'Could not automatically generate records' which the NeurIPS Croissant Validator documents as non-blocking for submission. The dataset itself is fully accessible at https://huggingface.co/datasets/vikpant/coopetition-gym-logs and its files can be fetched individually via the HF resolve API.",
+      "contentUrl": "https://huggingface.co/datasets/vikpant/coopetition-gym-logs.git",
+      "encodingFormat": "git+https",
+      "sha256": "main"
+    },
+    {
       "@type": "cr:FileSet",
       "@id": "training_runs_fileset",
       "name": "training_runs",
       "description": "Training runs: 18 algorithms x 20 environments x 3 reward configurations x 10 seeds. One JSONL file per logical grouping with per-seed records.",
       "includes": "training_runs/*.jsonl",
-      "encodingFormat": "application/jsonlines"
+      "encodingFormat": "application/jsonlines",
+      "containedIn": {
+        "@id": "huggingface_repository"
+      }
     },
     {
       "@type": "cr:FileSet",
@@ -104,7 +116,10 @@
       "name": "behavioral_audit",
       "description": "1,116 behavioral exploitation-audit runs testing static and temporal deviation strategies on the 20 environments.",
       "includes": "behavioral_audit/*.jsonl",
-      "encodingFormat": "application/jsonlines"
+      "encodingFormat": "application/jsonlines",
+      "containedIn": {
+        "@id": "huggingface_repository"
+      }
     },
     {
       "@type": "cr:FileSet",
@@ -112,7 +127,10 @@
       "name": "case_study_calibration",
       "description": "The four case-study calibrations: i*-derived D_ij values, 60-point validation rubric scores, historical-correspondence indicators.",
       "includes": "case_study_calibration/*.jsonl",
-      "encodingFormat": "application/jsonlines"
+      "encodingFormat": "application/jsonlines",
+      "containedIn": {
+        "@id": "huggingface_repository"
+      }
     },
     {
       "@type": "cr:FileSet",
@@ -120,7 +138,10 @@
       "name": "tier_1_5_2d_slcd",
       "description": "Tier 1.5 2D SLCD sensitivity sweep results: eta x beta grid x 30 seeds x 2 algorithms, plus exploration-budget diagnostic and Hartigan's dip test artifacts.",
       "includes": "tier_1_5_2d_slcd/*.jsonl",
-      "encodingFormat": "application/jsonlines"
+      "encodingFormat": "application/jsonlines",
+      "containedIn": {
+        "@id": "huggingface_repository"
+      }
     },
     {
       "@type": "cr:FileSet",
@@ -128,7 +149,10 @@
       "name": "lr_ablation",
       "description": "Learning-rate ablation: 3 DDPG-family algorithms (MADDPG, MATD3, M3DDPG) x 3 reward modes (private, integrated, cooperative) x 3 critic learning rates (1e-3, 1e-4, 1e-5) x 5 seeds (99-103) on ApacheProject-v0 = 135 records. Each record reports nan_seen + nan_first_step + final_window_mean_return + training_returns time series at 60-step granularity to a 100,000-step horizon.",
       "includes": "lr_ablation/*.jsonl",
-      "encodingFormat": "application/jsonlines"
+      "encodingFormat": "application/jsonlines",
+      "containedIn": {
+        "@id": "huggingface_repository"
+      }
     }
   ],
   "recordSet": [
@@ -873,5 +897,7 @@
         }
       ]
     }
-  ]
+  ],
+  "rai:dataSocialImpact": "Positive impact: the dataset enables independent verification of multi-agent reinforcement learning algorithm rankings across reward-mutuality configurations; supports methodology research on mixed-motive evaluation; provides a reference benchmark for studies of CTDE-versus-independent-learning advantages, training stability, and saturation regimes; and grounds claims about MARL methodology in a 19,046-experiment empirical base. Potential negative impact: the four case-study calibrations encode documented corporate partnerships (Samsung-Sony S-LCD joint venture, Renault-Nissan Alliance, Apache HTTP Server community, Apple iOS App Store platform) and could in principle be misused to optimize for partner harm in real corporate settings or to make causal-historical inferences from policy behavior in the simulator. The companion paper (Section on Societal Impact) explicitly enumerates these out-of-scope deployments and the dataset is licensed CC-BY 4.0 with the use-restrictions narrative carried in rai:dataUseCases. No personally identifiable information is present (see rai:personalSensitiveInformation).",
+  "rai:hasSyntheticData": true
 }
