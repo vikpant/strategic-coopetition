@@ -24,13 +24,13 @@ baselines, or 101 constant-action policies on one of 20 mixed-motive
 multi-agent environments under one of three reward configurations (private,
 integrated, cooperative) with one of seven random seeds.
 
-**Companion paper**: *Reward-Type Ablation Reveals Mechanism-Dependent
-Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*, manuscript in
-preparation.
+**Companion technical report**: *Coopetition-Gym v1: A Formally Grounded
+Platform for Mixed-Motive Multi-Agent Reinforcement Learning under Strategic
+Coopetition*. Pant and Yu, arXiv preprint (May 2026; canonical arXiv ID forthcoming).
 
 **Companion code**: https://github.com/vikpant/strategic-coopetition
 
-**Companion audit dataset**: https://huggingface.co/datasets/vikpant/coopetition-gym-audit
+**Companion audit dataset**: https://huggingface.co/datasets/vikpant/coopetition-gym-logs
 
 ---
 
@@ -38,21 +38,24 @@ preparation.
 
 ```bash
 pip install huggingface_hub
-huggingface-cli download vikpant/coopetition-gym-v1 --repo-type dataset --local-dir data/training
-tar -xzf data/training/unified_dataset.tar.gz -C data/training/
+huggingface-cli download vikpant/coopetition-gym-logs \
+    --repo-type dataset --local-dir data/ \
+    --include "training_runs/*"
 ```
 
-Expected structure after extraction:
+The training corpus is delivered as 950 JSONL shards (`training_runs_NNNN.jsonl`, ~5 MB each) under `data/training_runs/`. Each line of each shard is one training-run record (one JSON object per training experiment). Shards can be read line-by-line without an extraction step:
 
-```
-data/training/
-├── baseline_integrated/       # 16,835 files — main campaign (integrated reward)
-├── ablation_private/          # 2,450 files — D_ij = 0 ablation
-├── ablation_cooperative/      # 2,450 files — fully shared reward ablation
-├── case_study/                # 3,402 files — validated case study calibrations
-├── france_bonus_isac_integrated/  # 21 files
-├── local_bonus/               # 70 files
-└── network_sensitivity/       # 480 files — capacity-sensitivity analysis
+```python
+import json
+from pathlib import Path
+
+for shard in sorted(Path("data/training_runs").glob("*.jsonl")):
+    with open(shard) as fh:
+        for line in fh:
+            record = json.loads(line)
+            # record contains: algorithm, environment, training_seed,
+            # status, training_time_seconds, evaluation_time_seconds,
+            # metrics, timestamp, gpu_id, tr_mode
 ```
 
 ## Schema
@@ -153,15 +156,28 @@ for the complete Gebru et al. datasheet.
 ## Citation
 
 ```bibtex
-@misc{pant2026rewardtype,
-    title={Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation},
+@misc{pant2026coopetitiongym,
+    title={Coopetition-Gym v1: A Formally Grounded Platform for Mixed-Motive
+           Multi-Agent Reinforcement Learning under Strategic Coopetition},
     author={Pant, Vik and Yu, Eric},
     year={2026},
-    note={Manuscript in preparation}
+    publisher={arXiv},
+    note={Companion technical report; arXiv ID forthcoming}
+}
+
+@software{pant2026coopetitiongym_software,
+    author={Pant, Vik and Yu, Eric},
+    title={Coopetition-Gym: reproducibility package for the Coopetition-Gym benchmark},
+    version={1.0.0},
+    year={2026},
+    publisher={Zenodo},
+    doi={10.5281/zenodo.20015197}
 }
 ```
 
-The benchmark environments are formalized in four technical reports:
+Software archival deposit: <https://doi.org/10.5281/zenodo.20015197> (concept DOI; resolves to latest version).
+
+The benchmark environments are formalized in four foundational technical reports:
 arXiv:2510.18802 (TR-1), arXiv:2510.24909 (TR-2), arXiv:2601.16237 (TR-3),
 arXiv:2604.01240 (TR-4).
 
