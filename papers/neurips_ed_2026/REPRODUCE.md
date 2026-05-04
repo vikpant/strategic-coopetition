@@ -18,8 +18,8 @@ git clone https://github.com/vikpant/strategic-coopetition.git
 cd strategic-coopetition
 python -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev,rl,viz]"
-pytest coopetition_gym/tests/ -v
+pip install -e ./coopetition_gym
+pytest coopetition_gym/coopetition_gym/tests/ -v
 ```
 
 All 143 tests should pass. If any fail, do not proceed, file an issue with the test failure output.
