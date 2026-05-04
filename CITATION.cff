@@ -2,23 +2,22 @@ cff-version: 1.2.0
 message: "If you use this software in your research, please cite it as below."
 title: "Coopetition-Gym: A Formally Grounded Benchmark for Mixed-Motive Multi-Agent Reinforcement Learning under Strategic Coopetition"
 type: software
+version: "1.0.3"
+license: "MIT"
+abstract: "Coopetition-Gym is a benchmark platform for mixed-motive multi-agent reinforcement learning under strategic coopetition. The platform comprises twenty environments organized into four mechanism classes (interdependence and complementarity, trust and reputation dynamics, collective action and loyalty, sequential interaction and reciprocity); each environment carries a closed-form payoff structure and a calibrated interdependence matrix derived from a corresponding foundational technical report. Every environment exposes a parameterized reward layer configurable across three structurally distinct modes (private, integrated, cooperative); this separation of payoff from reward enables reward-type ablation as a first-class evaluation protocol. Four environments are calibrated against historically documented coopetitive relationships (Samsung-Sony LCD, Renault-Nissan Alliance, Apache HTTP Server, Apple iOS App Store) at validation-rubric scores of 81.7 percent to 98.3 percent. The platform exposes Gymnasium, PettingZoo Parallel, and PettingZoo AEC interfaces and ships 126 reference algorithms."
 authors:
-  - family-names: Pant
-    given-names: Vik
+  - given-names: Vik
+    family-names: Pant
     affiliation: "Faculty of Information, University of Toronto"
     orcid: "https://orcid.org/0000-0002-9017-7466"
-  - family-names: Yu
-    given-names: Eric
+  - given-names: Eric
+    family-names: Yu
     affiliation: "Faculty of Information and Department of Computer Science, University of Toronto"
-repository-code: "https://github.com/vikpant/strategic-coopetition"
-url: "https://github.com/vikpant/strategic-coopetition"
-license: MIT
-version: "1.0.2"
-date-released: "2026-05-04"
 keywords:
   - multi-agent reinforcement learning
   - mixed-motive games
   - coopetition
   - benchmark
+  - reward-type ablation
   - PettingZoo
   - Gymnasium
