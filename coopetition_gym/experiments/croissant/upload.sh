@@ -3,7 +3,7 @@
 # vikpant/coopetition-gym-logs.
 #
 # The dataset is organized as four top-level subdirectories of JSONL shards:
-#   training_runs/         training corpus (~25,708 records across 949 JSONL shards)
+#   training_runs/         training corpus (~17,930 records across 949 JSONL shards)
 #   behavioral_audit/      behavioral audit corpus (1,116 records across 2 shards
 #                          plus a manifest CSV)
 #   case_study_calibration/ four case study calibration JSONL files

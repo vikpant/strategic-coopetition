@@ -7,7 +7,7 @@ Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*.
 
 | Corpus | Purpose | Size | HuggingFace location |
 |---|---|---|---|
-| **training corpus** | Training results | 25,708 JSON files | `vikpant/coopetition-gym-logs` (subdirectory `training/`) |
+| **training corpus** | Training results | 17,930 JSON files | `vikpant/coopetition-gym-logs` (subdirectory `training/`) |
 | **audit corpus** | Behavioral audit | 1,116 JSON files | `vikpant/coopetition-gym-logs` (subdirectory `audit/`) |
 
 Both corpora are released as a single unified HuggingFace dataset
@@ -86,7 +86,7 @@ the file `experiments/validate.py` (run
 
 ### How many instances are there in total?
 
-* Training dataset: **25,708** JSON files across 7 subfolders:
+* Training dataset: **17,930** JSON files across 7 subfolders:
   `baseline_integrated/` (16,835), `ablation_private/` (2,450),
   `ablation_cooperative/` (2,450), `case_study/` (3,402),
   `france_bonus_isac_integrated/` (21), `local_bonus/` (70),

@@ -37,7 +37,7 @@
   },
   "@type": "sc:Dataset",
   "name": "coopetition-gym-v1",
-  "description": "Training results from the Coopetition-Gym v1 benchmark campaign. Contains 25,708 JSON files, each recording the outcome of training one of 16 reinforcement learning algorithms, 7 game-theoretic oracles, 2 heuristic baselines, or 101 constant-action policies on one of 20 mixed-motive multi-agent environments under one of three reward configurations (private, integrated, cooperative) with one of seven random seeds. The dataset supports reproducibility of the companion research paper 'Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation'.",
+  "description": "Training results from the Coopetition-Gym v1 benchmark campaign. Contains 17,930 JSON files, each recording the outcome of training one of 16 reinforcement learning algorithms, 7 game-theoretic oracles, 2 heuristic baselines, or 101 constant-action policies on one of 20 mixed-motive multi-agent environments under one of three reward configurations (private, integrated, cooperative) with one of seven random seeds. The dataset supports reproducibility of the companion research paper 'Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation'.",
   "conformsTo": "http://mlcommons.org/croissant/1.0",
   "citeAs": "@misc{pant2026rewardtype, title={Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation}, author={Pant, Vik and Yu, Eric}, year={2026}, note={Manuscript in preparation}}",
   "license": "https://creativecommons.org/licenses/by/4.0/",
@@ -90,7 +90,7 @@
       "@type": "cr:FileObject",
       "@id": "training-tarball",
       "name": "unified_dataset.tar.gz",
-      "description": "gzip-compressed tarball containing all 25,708 training-result JSON files organized by reward configuration.",
+      "description": "gzip-compressed tarball containing all 17,930 training-result JSON files organized by reward configuration.",
       "contentUrl": "https://huggingface.co/datasets/vikpant/coopetition-gym-v1/resolve/main/unified_dataset.tar.gz",
       "encodingFormat": "application/gzip",
       "sha256": "TBD-COMPUTED-AT-UPLOAD-TIME"

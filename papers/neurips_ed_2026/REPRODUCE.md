@@ -4,7 +4,7 @@ This document describes how to reproduce the empirical results reported in:
 
 > Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Manuscript in preparation.
 
-The paper presents two complementary empirical artifacts: 1. A **training dataset** of 25,708 experiment result files across 128 algorithms × 20 environments × 3 reward types × 7 seeds.
+The paper presents two complementary empirical artifacts: 1. A **training dataset** of 17,930 experiment result files across 128 algorithms × 20 environments × 3 reward types × 7 seeds.
 2. A **behavioral audit** of 1,116 experiment result files characterizing the exploitation gradient under integrated reward.
 
 Both artifacts are released as versioned datasets on HuggingFace Hub. This document describes how to regenerate either artifact from source and how to map each paper table and figure to its producing script.
@@ -26,7 +26,7 @@ All 143 tests should pass. If any fail, do not proceed, file an issue with the t
 
 ## 2. Dataset Access
 
-### 2.1 Training Dataset (25,708 files)
+### 2.1 Training Dataset (17,930 files)
 
 ```bash
 # HuggingFace CLI: full repo (training_runs/ + behavioral_audit/ + lr_ablation/ +
