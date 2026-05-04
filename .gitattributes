@@ -1,3 +1,9 @@
 
 # v1.0.1: enforce LF line endings on metadata text files for cross-platform stability
 *.cff text eol=lf
+
+# v1.0.5: extend LF discipline to markdown and JSON metadata to prevent
+# CRLF churn between Windows and Linux working copies
+*.md   text eol=lf
+*.json text eol=lf
+*.sh   text eol=lf

@@ -18,7 +18,7 @@ size_categories:
 # Coopetition-Gym v1, Training Results
 
 Training results from the Coopetition-Gym v1 benchmark campaign.
-25,708 JSON files, each recording the outcome of training one of 16
+17,930 JSON files, each recording the outcome of training one of 16
 reinforcement learning algorithms, 7 game-theoretic oracles, 2 heuristic
 baselines, or 101 constant-action policies on one of 20 mixed-motive
 multi-agent environments under one of three reward configurations (private,
@@ -138,7 +138,7 @@ Check dataset integrity after download:
 python -m experiments.validate training data/training/
 ```
 
-Expected output: **25,708 files, 62 expected NaN entries, 0 failed experiments**.
+Expected output: **17,930 files, 62 expected NaN entries, 0 failed experiments**.
 
 ## Limitations
 
