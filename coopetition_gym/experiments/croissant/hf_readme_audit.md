@@ -33,13 +33,13 @@ universally blocked (0 exploitative outcomes across 504 tests). Gradual
 ramp-down produces marginal exploitation on 6 of 20 environments
 (+0.004% to +0.41% of baseline return), predominantly TR-4 reciprocity.
 
-**Companion paper**: *Reward-Type Ablation Reveals Mechanism-Dependent
-Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*, manuscript in
-preparation.
+**Companion technical report**: *Coopetition-Gym v1: A Formally Grounded
+Platform for Mixed-Motive Multi-Agent Reinforcement Learning under Strategic
+Coopetition*. Pant and Yu, arXiv preprint (May 2026; canonical arXiv ID forthcoming).
 
 **Companion code**: https://github.com/vikpant/strategic-coopetition
 
-**Companion training dataset**: https://huggingface.co/datasets/vikpant/coopetition-gym-v1
+**Companion training dataset**: https://huggingface.co/datasets/vikpant/coopetition-gym-logs
 
 ---
 
@@ -47,22 +47,24 @@ preparation.
 
 ```bash
 pip install huggingface_hub
-huggingface-cli download vikpant/coopetition-gym-audit --repo-type dataset --local-dir data/audit
-tar -xzf data/audit/behavioral_audits.tar.gz -C data/audit/
+huggingface-cli download vikpant/coopetition-gym-logs \
+    --repo-type dataset --local-dir data/ \
+    --include "behavioral_audit/*"
 ```
 
-Expected structure after extraction:
+The behavioral-audit corpus is delivered as 2 JSONL shards (`behavioral_audit_0000.jsonl`, `behavioral_audit_0001.jsonl`) plus a `behavioral_audit_manifest.csv` index, all under `data/behavioral_audit/`. Each line of each shard is one audit-experiment record (one JSON object). Records can be read line-by-line without an extraction step:
 
-```
-data/audit/
-├── action_audit/              # 1,056 static response-surface files
-│   ├── ISAC_TrustDilemma-v0_99_audit.json
-│   ├── COMA_LoyaltyTeam-v0_100_audit.json
-│   └── ...
-└── temporal_audit/            # 60 temporal deviation files
-    ├── TrustDilemma-v0_99_temporal.json
-    ├── LoyaltyTeam-v0_100_temporal.json
-    └── ...
+```python
+import json
+from pathlib import Path
+
+for shard in sorted(Path("data/behavioral_audit").glob("*.jsonl")):
+    with open(shard) as fh:
+        for line in fh:
+            record = json.loads(line)
+            # static-audit records carry response_surface + exploitation_analysis
+            # temporal-audit records carry late_defection + gradual_defection +
+            # vulnerability_class
 ```
 
 ## Schema
@@ -165,13 +167,26 @@ is limited to the audit's strategy set.
 ## Citation
 
 ```bibtex
-@misc{pant2026rewardtype,
-    title={Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation},
+@misc{pant2026coopetitiongym,
+    title={Coopetition-Gym v1: A Formally Grounded Platform for Mixed-Motive
+           Multi-Agent Reinforcement Learning under Strategic Coopetition},
     author={Pant, Vik and Yu, Eric},
     year={2026},
-    note={Manuscript in preparation}
+    publisher={arXiv},
+    note={Companion technical report; arXiv ID forthcoming}
+}
+
+@software{pant2026coopetitiongym_software,
+    author={Pant, Vik and Yu, Eric},
+    title={Coopetition-Gym: reproducibility package for the Coopetition-Gym benchmark},
+    version={1.0.0},
+    year={2026},
+    publisher={Zenodo},
+    doi={10.5281/zenodo.20015197}
 }
 ```
+
+Software archival deposit: <https://doi.org/10.5281/zenodo.20015197> (concept DOI; resolves to latest version).
 
 ## License
 

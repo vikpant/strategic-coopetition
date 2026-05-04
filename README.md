@@ -6,6 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/python-3.9%E2%80%933.12-blue.svg)](https://www.python.org/)
 [![Discussions](https://img.shields.io/badge/community-Discussions-blueviolet.svg)](https://github.com/vikpant/strategic-coopetition/discussions)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20015197.svg)](https://doi.org/10.5281/zenodo.20015197)
 
 Computational techniques for modelling **strategic coopetition** (the
 simultaneous pursuit of cooperation and competition) in mixed-motive

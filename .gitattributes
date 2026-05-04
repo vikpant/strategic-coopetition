@@ -1,0 +1,3 @@
+
+# v1.0.1: enforce LF line endings on metadata text files for cross-platform stability
+*.cff text eol=lf

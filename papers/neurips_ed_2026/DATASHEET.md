@@ -5,10 +5,14 @@ Communications of the ACM (2021). This datasheet covers the two datasets
 released alongside the companion research paper *Reward-Type Ablation Reveals
 Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation*.
 
-| Dataset | Purpose | Size | HuggingFace repo |
+| Corpus | Purpose | Size | HuggingFace location |
 |---|---|---|---|
-| **coopetition-gym-v1** | Training results | 25,708 JSON files | `vikpant/coopetition-gym-v1` |
-| **coopetition-gym-audit** | Behavioral audit | 1,116 JSON files | `vikpant/coopetition-gym-audit` |
+| **training corpus** | Training results | 25,708 JSON files | `vikpant/coopetition-gym-logs` (subdirectory `training/`) |
+| **audit corpus** | Behavioral audit | 1,116 JSON files | `vikpant/coopetition-gym-logs` (subdirectory `audit/`) |
+
+Both corpora are released as a single unified HuggingFace dataset
+(`vikpant/coopetition-gym-logs`) under CC-BY-4.0, with the two corpora
+organized as separate subdirectories.
 
 ---
 
@@ -47,7 +51,7 @@ author. No external funding was involved.
 
 ### What do the instances represent?
 
-**Training dataset (`coopetition-gym-v1`)**: each instance is one training
+**Training corpus (`coopetition-gym-logs/training/`)**: each instance is one training
 experiment, the result of training one algorithm on one environment under
 one reward configuration with one random seed. Each instance is a single JSON
 file with the following top-level structure:
@@ -74,7 +78,7 @@ The nested `metrics` object contains:
 * `training_metrics`, gradient-level diagnostics (loss values by step)
 * `tr_metrics`, TR-tier-specific domain metrics
 
-**Behavioral audit dataset (`coopetition-gym-audit`)**: two subsets covering
+**Behavioral audit corpus (`coopetition-gym-logs/audit/`)**: two subsets covering
 the static response-surface audit (1,056 JSON files) and the temporal
 deviation audit (60 JSON files). See paper Appendix F for the full schema and
 the file `experiments/validate.py` (run
