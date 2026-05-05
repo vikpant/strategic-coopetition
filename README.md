@@ -137,6 +137,17 @@ technical report.
 }
 ```
 
+### Coopetition-Gym v1 (AI-TR-1) · [PDF on arXiv](https://arxiv.org/pdf/2605.02063)
+
+```bibtex
+@article{pant2026coopetitiongym,
+  title   = {Coopetition-Gym v1: A Formally Grounded Platform for Mixed-Motive Multi-Agent Reinforcement Learning under Strategic Coopetition},
+  author  = {Pant, Vik and Yu, Eric},
+  journal = {arXiv preprint arXiv:2605.02063},
+  year    = {2026}
+}
+```
+
 ## Validated Case Studies
 
 | Case study | Validation score | Technical report |
