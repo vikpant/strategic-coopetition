@@ -178,3 +178,5 @@ MIT, see [LICENSE](LICENSE).
 **Vik Pant, PhD** ([LinkedIn](https://www.linkedin.com/in/vikpant) ·
 [Google Scholar](https://scholar.google.com/citations?hl=en&user=eoKMjOMAAAAJ)) ·
 **Eric Yu, PhD** · Faculty of Information and Department of Computer Science, University of Toronto.
+
+<!-- cache marker 2026-05-11 -->
