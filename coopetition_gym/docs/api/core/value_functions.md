@@ -201,7 +201,8 @@ def logarithmic_value(
     Implements TR-1 Equation 6: f_i(a_i) = θ · ln(1 + a_i)
 
     This is the validated default for manufacturing joint ventures,
-    achieving 58/60 accuracy on the Samsung-Sony S-LCD case study.
+    scoring 58/60 on the Samsung-Sony S-LCD case study, against 46/60
+    for the power specification.
     """
 ```
 
@@ -459,7 +460,7 @@ def create_slcd_parameters() -> ValueFunctionParameters:
     """
     Create parameters validated against Samsung-Sony S-LCD case study.
 
-    These parameters achieved 58/60 validation score (96.7% accuracy).
+    These parameters score 58/60 on the rubric, against 46/60 for power.
 
     Returns: ValueFunctionParameters with:
         - specification: LOGARITHMIC

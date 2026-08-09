@@ -242,7 +242,8 @@ class SLCDEnv(CoopetitionEnv):
     """
     SLCD-v0: Samsung-Sony LCD Joint Venture (2004-2011).
 
-    Validated parameters achieving 58/60 accuracy against historical data.
+    Validated parameters scoring 58/60 on the logarithmic specification
+    and 46/60 on power.
     """
 ```
 
@@ -445,7 +446,7 @@ class AppleAppStoreEnv(BaseTR4Env):
 
     3 agents (Apple, Major Developers, Small Developers) with asymmetric
     dependencies. 66-step episodes map to 66 historical quarters.
-    Validation: 48/55 (87.3%).
+    Validation: 48/55.
     """
 ```
 

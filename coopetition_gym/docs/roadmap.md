@@ -27,13 +27,13 @@ Coopetition-Gym implements a coordinated research program examining strategic co
 
 ### Pillar 1: Interdependence & Complementarity (TR-1, [arXiv:2510.18802](https://arxiv.org/abs/2510.18802)) ✓
 
-**Status**: Fully Implemented | **Validation**: 58/60 (96.7%) against S-LCD case study
+**Status**: Fully Implemented | **Validation**: 58/60 logarithmic vs 46/60 power on the S-LCD case study
 
 **What's Implemented**:
 
 | Component | Implementation | Validation |
 |-----------|----------------|------------|
-| Interdependence Matrix | `core/interdependence.py` | 22,000+ experimental trials |
+| Interdependence Matrix | `core/interdependence.py` | Released TR-1 validation suite |
 | Value Creation Functions | `core/value_functions.py` | Logarithmic: θ=20.0 validated |
 | Complementarity (Synergy) | Geometric mean specification | γ=0.65 multi-criteria optimal |
 | Integrated Utility | `core/equilibrium.py` | Dependency-weighted payoffs |
@@ -54,15 +54,15 @@ U_i(a) = π_i(a) + Σ D_ij × π_j(a)
 
 **Empirical Validation**:
 - Samsung-Sony S-LCD Joint Venture (2004-2011)
-- Logarithmic specification achieves 58/60 accuracy
-- Power specification achieves 46/60 accuracy
+- Logarithmic specification scores 58/60
+- Power specification scores 46/60
 - Statistical significance: p < 0.001, Cohen's d = 9.87
 
 ---
 
 ### Pillar 2: Trust & Reputation Dynamics (TR-2, [arXiv:2510.24909](https://arxiv.org/abs/2510.24909)) ✓
 
-**Status**: Fully Implemented | **Validation**: 49/60 (81.7%) against Renault-Nissan case study
+**Status**: Fully Implemented | **Validation**: 49/60 against Renault-Nissan case study
 
 **What's Implemented**:
 
@@ -111,7 +111,7 @@ s_ij = tanh(κ × (a_j - baseline))
 
 ### Pillar 3: Collective Action & Loyalty (TR-3, [arXiv:2601.16237](https://arxiv.org/abs/2601.16237)) ✓
 
-**Status**: Fully Implemented | **Validation**: 52/60 (86.7%) against Apache HTTP Server case study
+**Status**: Fully Implemented | **Validation**: 45/60 against Apache HTTP Server case study
 
 **What's Implemented**:
 
@@ -139,7 +139,7 @@ U_i = π_i^{team} + L_i
 ```
 
 **Validated Results**:
-- Apache HTTP Server case study (1995-2023): 52/60 validation score
+- Apache HTTP Server case study (1995-2023): 45/60 validation score
 - 4.12× effort differentiation (high vs low loyalty contributors)
 - Phase-appropriate loyalty patterns across project lifecycle
 - Free-riding baseline matches theoretical equilibrium (99.7%)
@@ -151,14 +151,14 @@ U_i = π_i^{team} + L_i
 | TeamProduction-v0 | Baseline free-rider dynamics | Nash equilibrium reference |
 | LoyaltyTeam-v0 | Full TR-3 loyalty mechanisms | Above-Nash cooperation |
 | CoalitionFormation-v0 | Dynamic coalition with exclusion | Entry/exit dynamics |
-| ApacheProject-v0 | Validated 4-phase case study | 52/60 validation score |
+| ApacheProject-v0 | Validated 4-phase case study | 45/60 validation score |
 | PublicGoods-v0 | Classic public goods game | Contribution dynamics |
 
 ---
 
 ### Pillar 4: Sequential Interaction & Reciprocity (TR-4, [arXiv:2604.01240](https://arxiv.org/abs/2604.01240)) ✓
 
-**Status**: Fully Implemented | **Environments**: 5 | **Validation**: 48/55 (87.3%) against Apple App Store case study
+**Status**: Fully Implemented | **Environments**: 5 | **Validation**: 43/51 against Apple App Store case study
 
 **Implemented Components**:
 
@@ -239,7 +239,7 @@ U_i(a, T) = U_base + Σ λ_T × T_ij × (1 + ω×D_ij) × ρ_ij × R_ij
 | GiftExchange-v0 | Reciprocity (P4) | Asymmetric employer-worker reciprocity |
 | IndirectReciprocity-v0 | Reciprocity (P4) | Reputation-mediated cooperation |
 | GraduatedSanction-v0 | Reciprocity (P4) | Proportional sanctions with escalation |
-| AppleAppStore-v0 | Reciprocity (P4) | Validated case study (48/55) |
+| AppleAppStore-v0 | Reciprocity (P4) | Validated case study (43/51) |
 
 ---
 
@@ -250,8 +250,8 @@ U_i(a, T) = U_base + Σ λ_T × T_ij × (1 + ω×D_ij) × ρ_ij × R_ij
 | **2025 Q1-Q2** | Pillars 1 & 2 Implementation | Core mathematical framework, 10 base environments, S-LCD & Renault-Nissan validation | ✓ Complete |
 | **2025 Q3** | Benchmark Suite | 20 algorithm evaluation, 760 experiments (76,000 episodes), comprehensive documentation | ✓ Complete |
 | **2025 Q4** | Theory Documentation | theory/ documentation subdirectory, parameter reference guide, research insights | ✓ Complete |
-| **2026 Q1** | Pillar 3 Implementation | 5 TR-3 collective action environments, Apache case study (52/60), loyalty mechanisms | ✓ Complete |
-| **2026 Q1** | Pillar 4 Implementation | 5 TR-4 reciprocity environments, Apple App Store case study (48/55), reciprocity dynamics | ✓ Complete |
+| **2026 Q1** | Pillar 3 Implementation | 5 TR-3 collective action environments, Apache case study (45/60), loyalty mechanisms | ✓ Complete |
+| **2026 Q1** | Pillar 4 Implementation | 5 TR-4 reciprocity environments, Apple App Store case study (43/51), reciprocity dynamics | ✓ Complete |
 | **2026 Q3** | Integration & Validation | Cross-pillar environment combinations, extended benchmark suite, multi-level dynamics | Planned |
 
 ---

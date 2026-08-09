@@ -9,7 +9,7 @@
 
 ## Overview
 
-AppleAppStore-v0 is a **validated case study** based on the Apple iOS App Store ecosystem (2008-2024). This environment reproduces the **48/55 validation score (87.3%)** from TR-4 Section 8, modeling platform-developer reciprocity dynamics across 66 quarterly time steps in five historical phases.
+AppleAppStore-v0 is a **validated case study** based on the Apple iOS App Store ecosystem (2008-2024). This environment reproduces the **43/51 validation score** produced by the released TR-4 validation suite, modeling platform-developer reciprocity dynamics across 66 quarterly time steps in five historical phases.
 
 The environment tests whether agents can learn phase-appropriate reciprocity strategies that match historically observed cooperation and defection patterns.
 
@@ -17,7 +17,7 @@ The environment tests whether agents can learn phase-appropriate reciprocity str
 
 ## Validation Score
 
-**TR-4 Validation: 48/55 (87.3%)**
+**TR-4 Validation: 48/55**
 
 This environment's parameters are calibrated against real Apple App Store data (2008-2024), making it a gold standard for TR-4 research.
 
@@ -126,7 +126,7 @@ All standard TR-4 equations apply:
 | **TR Focus** | TR-1 value creation | TR-2 trust dynamics | TR-4 reciprocity |
 | **Agents** | 2 (Samsung, Sony) | 2 (Renault, Nissan) | 3 (Apple, MajorDevs, SmallDevs) |
 | **Key Dynamic** | Complementarity | Trust erosion and recovery | Conditional reciprocity |
-| **Validation** | 58/60 (96.7%) | 49/60 (81.7%) | 48/55 (87.3%) |
+| **Validation** | 58/60 | 49/60 | 48/55 |
 | **Time Scale** | 2004-2011 | 1999-2025 | 2008-2024 |
 | **Industry** | Manufacturing JV | Automotive alliance | Platform ecosystem |
 
@@ -240,7 +240,7 @@ Apple's reciprocity insensitivity ($\rho_{01} = 0.249$, $\rho_{02} = 0.157$) ver
 | Cooperation trajectory | 15 | Action levels match empirical trends |
 | Trust dynamics | 10 | Trust evolution matches partnership history |
 
-**Apple Score: 48/55 (87.3%)**
+**Apple Score: 48/55**
 
 ---
 

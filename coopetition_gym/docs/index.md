@@ -170,7 +170,7 @@ Environments with parameters validated against real business data.
 
 | Environment | Description | Validation |
 |-------------|-------------|------------|
-| [SLCD-v0](environments/slcd.md) | Samsung-Sony S-LCD Joint Venture | 58/60 accuracy |
+| [SLCD-v0](environments/slcd.md) | Samsung-Sony S-LCD Joint Venture | 58/60 logarithmic vs 46/60 power |
 | [RenaultNissan-v0](environments/renault_nissan.md) | Renault-Nissan Alliance phases | Multi-phase dynamics |
 
 ### Extended Environments
@@ -191,7 +191,7 @@ Team production and collective action scenarios with loyalty dynamics.
 | [TeamProduction-v0](environments/team_production.md) | Team production with free-rider dynamics | Nash equilibrium baseline |
 | [LoyaltyTeam-v0](environments/loyalty_team.md) | Team production with loyalty mechanisms | Sustaining above-Nash cooperation |
 | [CoalitionFormation-v0](environments/coalition_formation.md) | Dynamic coalition with entry/exit | Coalition stability under exclusion |
-| [ApacheProject-v0](environments/apache_project.md) | Apache HTTP Server case study (52/60) | Phase-dependent contributor dynamics |
+| [ApacheProject-v0](environments/apache_project.md) | Apache HTTP Server case study (45/60) | Phase-dependent contributor dynamics |
 | [PublicGoods-v0](environments/public_goods.md) | Classic public goods game | Contribution and punishment dynamics |
 
 ### Reciprocity Environments (TR-4)
@@ -204,7 +204,7 @@ Sequential interaction and reciprocity scenarios with bounded memory.
 | [GiftExchange-v0](environments/gift_exchange.md) | Asymmetric employer-worker exchange | Asymmetric reciprocity sensitivity |
 | [IndirectReciprocity-v0](environments/indirect_reciprocity.md) | 4-agent reputation-mediated cooperation | Indirect reciprocity via image scoring |
 | [GraduatedSanction-v0](environments/graduated_sanction.md) | 6-agent commons with graduated sanctions | Proportional punishment and escalation |
-| [AppleAppStore-v0](environments/apple_app_store.md) | Apple iOS App Store (validated 48/55) | Platform power and reciprocity dynamics |
+| [AppleAppStore-v0](environments/apple_app_store.md) | Apple iOS App Store (validated 43/51) | Platform power and reciprocity dynamics |
 
 ---
 
@@ -270,7 +270,7 @@ $$\Large V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot g(a_
 | **Logarithmic** (default) | $\theta \cdot \ln(1 + a_i)$, $\theta=20$ | Geometric mean | Manufacturing JVs (58/60 validation) |
 | **Power** | $a_i^{\beta}$, $\beta=0.75$ | Geometric mean | General scenarios (46/60 validation) |
 
-**Key Parameters** (validated across 22,000+ trials):
+**Key Parameters** (validated via the released TR-1 validation suite):
 - **$\theta = 20.0$**: Logarithmic scale producing realistic cooperation magnitudes
 - **$\beta = 0.75$**: Diminishing returns reflecting investment economics
 - **$\gamma = 0.65$**: Complementarity strength balancing individual and joint value
@@ -341,10 +341,10 @@ The mathematical framework has been validated against real business partnerships
 
 | Case Study | Validation Score | Key Dynamics Captured |
 |------------|------------------|----------------------|
-| **Samsung-Sony S-LCD** (2004-2011) | 58/60 (96.7%) | Interdependence, complementarity, cooperation levels |
-| **Renault-Nissan Alliance** (1999-2025) | 49/60 (81.7%) | Trust evolution, crisis, recovery across 5 phases |
-| **Apache HTTP Server** (1995-2023) | 52/60 (86.7%) | Loyalty dynamics, phase transitions, contributor effort |
-| **Apple iOS App Store** (2008-2024) | 48/55 (87.3%) | Reciprocity dynamics, platform power, phase transitions |
+| **Samsung-Sony S-LCD** (2004-2011) | 58/60 logarithmic, 46/60 power | Interdependence, complementarity, cooperation levels |
+| **Renault-Nissan Alliance** (1999-2025) | 49/60 | Trust evolution, crisis, recovery across 5 phases |
+| **Apache HTTP Server** (1995-2023) | 45/60 | Loyalty dynamics, phase transitions, contributor effort |
+| **Apple iOS App Store** (2008-2024) | 43/51 | Reciprocity dynamics, platform power, phase transitions |
 
 These validations ensure the environments produce realistic coopetitive dynamics rather than artificial constructs.
 

@@ -304,25 +304,25 @@ The translation process is inherently iterative, quantification translates quali
 **Estimated D Matrix**:
 ```
            Samsung  Sony
-Samsung  [  0.00   0.45 ]
-Sony     [  0.40   0.00 ]
+Samsung  [  0.00   0.64 ]
+Sony     [  0.86   0.00 ]
 ```
 
 **Interpretation**:
-- Moderate mutual dependency (0.40-0.45)
-- Near-symmetric relationship
-- Both had alternative options (Samsung: in-house capability; Sony: other suppliers)
-- Neither completely dependent
+- Strong asymmetric dependency: Sony's dependence on Samsung (0.86) far exceeds Samsung's dependence on Sony (0.64)
+- Sony relied on Samsung for manufacturing capacity (criticality 1.0) and Gen 7 expertise (criticality 0.9)
+- Samsung relied on Sony for capital, guaranteed offtake, and brand association, each with alternatives available
+- Values are derived in TR-1 Section 8.2 and implemented verbatim in the validation suite and `SLCD-v0`
 
 ### Validation Results
 
 | Metric | Model Prediction | Historical Data | Match |
 |--------|------------------|-----------------|-------|
-| Cooperation level | 41% increase | 15-50% range | ✓ |
+| Cooperation level | 42% increase | 15-50% range | ✓ |
 | Relationship duration | 7-8 years | 8 years | ✓ |
 | Eventual dissolution | Predicted | Occurred 2012 | ✓ |
 
-**Validation Score**: 58/60 criteria matched (96.7%)
+**Validation Score**: 58/60 rubric points (the rubric is 24 weighted conditions totalling 60 points, not 60 separate criteria); 46/60 on the power specification
 
 ---
 

@@ -152,10 +152,10 @@ technical report.
 
 | Case study | Validation score | Technical report |
 |---|---|---|
-| Samsung–Sony S-LCD Joint Venture (2004–2011) | 59/60 (98.3%) | TR-1 §8 |
-| Renault–Nissan Alliance (multi-phase) | 49/60 (81.7%) | TR-2 §9 |
-| Apache HTTP Server community evolution | 52/60 (86.7%) | TR-3 §7 |
-| Apple iOS App Store platform dynamics | 48/55 (87.3%) | TR-4 §8 |
+| Samsung–Sony S-LCD Joint Venture (2004–2011) | 58/60 logarithmic, 46/60 power | TR-1 §8 |
+| Renault–Nissan Alliance (multi-phase) | 49/60 | TR-2 §9 |
+| Apache HTTP Server community evolution | 45/60 | TR-3 §7 |
+| Apple iOS App Store platform dynamics | 43/51 | TR-4 §8 |
 
 ## Community
 

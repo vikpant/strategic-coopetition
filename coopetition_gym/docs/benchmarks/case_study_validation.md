@@ -10,12 +10,22 @@ Four of the twenty environments in Coopetition-Gym v1 are calibrated to historic
 
 | Environment | Case study | Mechanism class | Validation score | Source script |
 |-------------|-----------|-----------------|------------------|---------------|
-| `SLCD-v0` | Samsung-Sony LCD joint venture (2004-2011) | TR-1 (interdependence) | 58/60 (96.7%) | `TR_validation/TR1_foundations/TR1_validation_suite.py` |
-| `RenaultNissan-v0` | Renault-Nissan Alliance (1999-present) | TR-2 (trust dynamics) | 49/60 (81.7%) | `TR_validation/TR2_trust/TR2_validation_suite.py` |
-| `ApacheProject-v0` | Apache HTTP Server community (1995-2023) | TR-3 (collective action) | 52/60 (86.7%) | `TR_validation/TR3_loyalty/TR3_validation_suite.py` |
-| `AppleAppStore-v0` | Apple iOS App Store ecosystem (2008-2024) | TR-4 (reciprocity) | 48/55 (87.3%) | `TR_validation/TR4_reciprocity/TR4_validation_suite.py` |
+| `SLCD-v0` | Samsung-Sony LCD joint venture (2004-2011) | TR-1 (interdependence) | 58/60 log, 46/60 power | `TR_validation/TR1_foundations/TR1_validation_suite.py` |
+| `RenaultNissan-v0` | Renault-Nissan Alliance (1999-present) | TR-2 (trust dynamics) | 49/60 | `TR_validation/TR2_trust/TR2_validation_suite.py` |
+| `ApacheProject-v0` | Apache HTTP Server community (1995-2023) | TR-3 (collective action) | 45/60 | `TR_validation/TR3_loyalty/TR3_validation_suite.py` |
+| `AppleAppStore-v0` | Apple iOS App Store ecosystem (2008-2024) | TR-4 (reciprocity) | 43/51 | `TR_validation/TR4_reciprocity/TR4_validation_suite.py` |
 
-> **Note on SLCD-v0:** The validation suite shipped in this repository scores SLCD-v0 at 58/60 (96.7%) on the logarithmic specification. A revised scoring described in the CAiSE 2026 camera-ready version of the foundational paper produces 59/60 (98.3%) under a refined rubric. The 58/60 score is what running `TR1_validation_suite.py` from this repository produces today.
+> **Note on SLCD-v0:**
+
+> **What the 60-point figure is.** It is a **plausibility score**, not an accuracy rate. It
+> counts weighted rubric conditions — convergence, and cooperation and value increases falling
+> inside bands calibrated to the documented S-LCD record — and it is informative chiefly as a
+> comparison *between* functional specifications. Against a random-parameter null of 20,000
+> draws (D drawn uniformly from [0,1]², α from [0.30, 0.70]), the logarithmic mean is 54.2 and
+> the power mean is 45.8, and logarithmic outscores power in 96.8% of draws. Individual case
+> totals should therefore be read as confirming that a specification behaves plausibly under
+> that case's parameters, not as a measure of predictive accuracy for that case.
+ The validation suite shipped in this repository scores SLCD-v0 at 58/60 on the logarithmic specification and 46/60 on the power specification; these are the scores that running `TR1_validation_suite.py` from this repository produces today.
 
 ---
 
@@ -80,16 +90,16 @@ The exceedance is positive on every seed-environment pair. The behavioral audit 
 ```bash
 # From the repository root, with the package installed:
 cd TR_validation/TR1_foundations
-python TR1_validation_suite.py     # SLCD: 58/60 (96.7%)
+python TR1_validation_suite.py     # SLCD: 58/60 logarithmic, 46/60 power
 
 cd ../TR2_trust
-python TR2_validation_suite.py     # Renault-Nissan: 49/60 (81.7%)
+python TR2_validation_suite.py     # Renault-Nissan: 49/60
 
 cd ../TR3_loyalty
-python TR3_validation_suite.py     # Apache: 52/60 (86.7%)
+python TR3_validation_suite.py     # Apache: 45/60
 
 cd ../TR4_reciprocity
-python TR4_validation_suite.py     # Apple App Store: 48/55 (87.3%)
+python TR4_validation_suite.py     # Apple App Store: 43/51
 ```
 
 Each suite emits a JSON results file in its own directory (`tr1_results.json`, `tr2_results.json`, `tr3_results.json`, `validation_summary.json`) so that scores can be inspected programmatically.

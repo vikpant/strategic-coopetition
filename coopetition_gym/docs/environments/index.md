@@ -151,7 +151,7 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | DynamicPartnerSelection-v0 | Public reputation signals |
 | RecoveryRace-v0 | Trust ceiling constraint (Θ = 1 - R) |
 | SynergySearch-v0 | Hidden complementarity parameter γ |
-| SLCD-v0 | Empirically validated (58/60 accuracy) |
+| SLCD-v0 | Plausibility score 58/60 logarithmic, 46/60 power |
 | RenaultNissan-v0 | Four configurable historical phases |
 | CooperativeNegotiation-v0 | Endogenous agreement formation, breach penalties |
 | ReputationMarket-v0 | Four-tier reward multipliers (0.40× to 1.30×) |
@@ -174,20 +174,20 @@ Quick reference for environment selection based on game-theoretic and MARL prope
 | PartnerHoldUp-v0 | (45, 30) | (120, 80) | ~1.58 | Asymmetric Stackelberg |
 | PlatformEcosystem-v0 | (55, 35) | (120, 65) | ~1.50 | Collective action threshold |
 | SynergySearch-v0 | Conditional on $\gamma$ | Conditional | ~1.10 | Bayesian exploration needed |
-| SLCD-v0 | Validated | Validated | N/A | 58/60 historical accuracy |
+| SLCD-v0 | Validated | Validated | N/A | 58/60 plausibility score |
 | RecoveryRace-v0 | Trust-constrained | Recovery-dependent | N/A | Ceiling $\Theta = 1 - R$ |
 | CooperativeNegotiation-v0 | Pre-agreement | Post-agreement | ~1.40 | Breach penalty enforces |
 | ReputationMarket-v0 | Tier-dependent | Premium tier | ~1.35 | Reputation competition |
 | TeamProduction-v0 | $a^* \approx 6.8$ | $a^{opt} \approx 18.4$ | ~2.5 | Free-rider equilibrium |
 | LoyaltyTeam-v0 | Above Nash | Social optimum | ~1.2 | Loyalty sustains cooperation |
 | CoalitionFormation-v0 | Coalition-stable | Full coalition | ~1.4 | Exclusion threat maintains |
-| ApacheProject-v0 | Phase-specific | Validated | N/A | 52/60 historical accuracy |
+| ApacheProject-v0 | Phase-specific | Validated | N/A | 52/60 plausibility score |
 | PublicGoods-v0 | Zero contribution | Full contribution | ~2.0 | Classic public goods |
 | ReciprocalDilemma-v0 | ~35 (similar to TD) | 100 | ~1.55 | Reciprocity enables TFT |
 | GiftExchange-v0 | Low effort from worker | Fair exchange | ~1.6 | Asymmetric reciprocity |
 | IndirectReciprocity-v0 | Free-riding | Full cooperation | ~2.0 | Reputation sustains cooperation |
 | GraduatedSanction-v0 | Under-contribution | Full contribution | ~2.0 | Graduated sanctions deter |
-| AppleAppStore-v0 | Phase-specific | Validated | N/A | 48/55 historical accuracy |
+| AppleAppStore-v0 | Phase-specific | Validated | N/A | 48/55 plausibility score |
 
 **Key Insights:**
 - All environments exhibit **cooperation deficit** in myopic equilibrium

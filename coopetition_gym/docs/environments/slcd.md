@@ -15,7 +15,7 @@ SLCD-v0 implements the **Samsung-Sony S-LCD Joint Venture** as described in TR-1
 
 The environment models the 2004-2012 joint venture where Samsung and Sony collaborated on LCD panel manufacturing while competing in the consumer electronics market, a quintessential coopetitive relationship.
 
-**Validation Score:** 58/60 against historical data
+**Plausibility score:** 58/60 on the logarithmic specification, 46/60 on power
 
 ---
 
@@ -34,7 +34,7 @@ The environment models the 2004-2012 joint venture where Samsung and Sony collab
 | **Horizon** | Finite, T = 100 |
 | **Canonical Comparison** | Empirically calibrated coopetition; cf. Ritala & Hurmelinna-Laukkanen (2009) |
 
-**Validation Status**: Parameters derived from TR-1 §8.3, achieving 58/60 accuracy against historical S-LCD data (2004-2012).
+**Validation Status**: Parameters derived from TR-1 §8.3. The validation suite scores these parameters 58/60 on the logarithmic specification and 46/60 on power. The figure is a plausibility score over weighted rubric conditions, not an accuracy rate; see the note below.
 
 ---
 
@@ -303,10 +303,20 @@ The 60 validation data points span four categories:
 
 ### 58/60 Score
 
+> **What the 60-point figure is.** It is a **plausibility score**, not an accuracy rate. It
+> counts weighted rubric conditions — convergence, and cooperation and value increases falling
+> inside bands calibrated to the documented S-LCD record — and it is informative chiefly as a
+> comparison *between* functional specifications. Against a random-parameter null of 20,000
+> draws (D drawn uniformly from [0,1]², α from [0.30, 0.70]), the logarithmic mean is 54.2 and
+> the power mean is 45.8, and logarithmic outscores power in 96.8% of draws. Individual case
+> totals should therefore be read as confirming that a specification behaves plausibly under
+> that case's parameters, not as a measure of predictive accuracy for that case.
+
+
 **Accuracy Calculation:**
 ```
 Match = prediction within tolerance
-Score = 58/60 = 96.7% accuracy
+Score = 58/60 rubric points (logarithmic); 46/60 (power)
 ```
 
 **58 matches include:**
@@ -338,15 +348,15 @@ Parameter sensitivity around validated values (±20%):
 | γ | 0.65 | 0.52-0.78 | 53-58/60 |
 | ξ | 0.45 | 0.36-0.54 | 56-58/60 |
 
-The validated parameters achieve maximum accuracy across the sensitivity range.
+The validated parameters achieve the maximum rubric score across the sensitivity range.
 
 ### Confidence Intervals
 
-Bootstrap confidence intervals (1000 samples):
+Confidence intervals (rubric-score interval from the released suite's 500-trial Monte Carlo experiment):
 
 | Metric | Point Estimate | 95% CI |
 |--------|---------------|--------|
-| Overall accuracy | 96.7% | [93.3%, 98.3%] |
+| Overall rubric score | 58/60 | [54/60, 58/60] |
 | Investment match | 100% | [93.8%, 100%] |
 | Trust match | 90% | [80%, 95%] |
 | Market match | 100% | [93.8%, 100%] |

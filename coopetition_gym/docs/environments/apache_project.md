@@ -17,7 +17,7 @@ The environment tests whether agents can learn phase-appropriate contribution st
 
 ## Validation Score
 
-**TR-3 Validation: 52/60 (86.7%)**
+**TR-3 Validation: 52/60**
 
 This environment's parameters are calibrated against real Apache project data, making it a gold standard for TR-3 research.
 
@@ -214,7 +214,7 @@ ApacheProject-v0 is suitable for studying:
 | Team size effects | 10 | Scaling behavior validated |
 | Mechanism synergy | 10 | Combined effects accurate |
 
-**Apache Score: 52/60 (86.7%)**
+**Apache Score: 52/60**
 
 ### Key Validated Behaviors
 

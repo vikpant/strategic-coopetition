@@ -50,7 +50,7 @@ $$f_i(a_i) = \theta \cdot \ln(1 + a_i)$$
 
 $$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
 
-**Validation Performance**: 58/60 (96.7%) on Samsung-Sony S-LCD case study
+**Validation Performance**: 58/60 on the Samsung-Sony S-LCD case study, against 46/60 for power
 
 **When to Use**: Manufacturing joint ventures, technology partnerships, scenarios where initial capabilities are highly valuable but incremental improvements have declining impact.
 
@@ -58,7 +58,7 @@ $$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot \left(\prod
 
 | Parameter | Symbol | Validated Value | Range | Source |
 |-----------|--------|-----------------|-------|--------|
-| Exponent | β | **0.75** | [0.65, 0.85] | TR-1 §7.1, 22,000+ trials |
+| Exponent | β | **0.75** | [0.65, 0.85] | TR-1 §7.1, released validation suite |
 | Complementarity | γ | **0.65** | [0.50, 0.80] | TR-1 §7.2 |
 
 **Usage**:
@@ -67,7 +67,7 @@ $$f_i(a_i) = a_i^{\beta}$$
 
 $$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot \left(\prod_{i=1}^{N} a_i\right)^{1/N}$$
 
-**Validation Performance**: 46/60 (76.7%) on Samsung-Sony S-LCD case study
+**Validation Performance**: 46/60 on Samsung-Sony S-LCD case study
 
 **When to Use**: General scenarios, platform ecosystems, when cooperation magnitudes may be larger.
 
@@ -76,7 +76,7 @@ $$V(\mathbf{a} \mid \gamma) = \sum_{i=1}^{N} f_i(a_i) + \gamma \cdot \left(\prod
 | Criterion | Logarithmic (θ=20) | Power (β=0.75) | Winner |
 |-----------|-------------------|----------------|--------|
 | S-LCD Validation | 58/60 | 46/60 | Logarithmic |
-| Cooperation Prediction | 41% increase | 166% increase | Logarithmic (realistic) |
+| Cooperation Prediction | 42% increase | 170% increase | Logarithmic (realistic) |
 | Bounded Returns | Yes | No | Logarithmic |
 | Mathematical Tractability | Moderate | High | Power |
 
@@ -375,7 +375,7 @@ For parameter validation methodology:
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2510.18802},
   year={2025},
-  note={Section 7: Validation methodology; 22,000+ trials}
+  note={Section 7: Validation methodology; released validation suite}
 }
 
 @article{pant2025tr2,
@@ -391,7 +391,7 @@ For parameter validation methodology:
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2601.16237},
   year={2026},
-  note={Loyalty parameters: $\phi_B$=0.8, $\phi_C$=0.3; Apache validation 52/60}
+  note={Loyalty parameters: $\phi_B$=0.8, $\phi_C$=0.3; Apache validation 45/60}
 }
 
 @article{pant2026tr4,
@@ -399,7 +399,7 @@ For parameter validation methodology:
   author={Pant, Vik and Yu, Eric},
   journal={arXiv preprint arXiv:2604.01240},
   year={2026},
-  note={Reciprocity parameters: $\rho_0$, $\eta$, $\kappa$, $k$; Apple App Store validation 48/55}
+  note={Reciprocity parameters: $\rho_0$, $\eta$, $\kappa$, $k$; Apple App Store validation 43/51}
 }
 ```
 

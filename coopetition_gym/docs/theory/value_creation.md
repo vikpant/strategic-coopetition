@@ -12,7 +12,7 @@ This document provides a comprehensive treatment of value creation and complemen
 
 **For Practitioners**: Complementarity explains *why* cooperation creates value, joint action produces more than the sum of independent efforts. When Samsung and Sony combined manufacturing expertise with brand strength, they created value neither could achieve alone.
 
-**For Researchers**: We formalize complementarity through value creation functions V(a|γ) exhibiting superadditivity. Two specifications (logarithmic, power) are validated, with logarithmic achieving 58/60 accuracy on the S-LCD case study. The complementarity parameter γ controls synergy strength.
+**For Researchers**: We formalize complementarity through value creation functions V(a|γ) exhibiting superadditivity. Two specifications (logarithmic, power) are compared on the S-LCD case study, where logarithmic scores 58/60 against 46/60 for power. The complementarity parameter γ controls synergy strength.
 
 ---
 
@@ -255,15 +255,15 @@ Both specifications were validated against the Samsung-Sony S-LCD joint venture 
 
 | Criterion | Logarithmic (θ=20) | Power (β=0.75) | Winner |
 |-----------|-------------------|----------------|--------|
-| **Overall Validation** | 58/60 (96.7%) | 46/60 (76.7%) | Logarithmic |
+| **Overall rubric score** | 58/60 | 46/60 | Logarithmic |
 | **Historical Alignment** | 16/16 | 12/16 | Logarithmic |
-| **Cooperation Prediction** | 41% increase | 166% increase | Logarithmic |
+| **Cooperation Prediction** | 42% increase | 170% increase | Logarithmic |
 | **Bounded Predictions** | Yes | No | Logarithmic |
 | **Mathematical Tractability** | Moderate | High | Power |
 
 ### Why Logarithmic Wins Empirically
 
-The logarithmic specification produces cooperation increases (41%) within the documented S-LCD range (15-50%), while the power specification produces increases (166%) exceeding realistic bounds.
+The logarithmic specification produces cooperation increases (42%) within the documented S-LCD range (15-50%), while the power specification produces increases (170%) exceeding realistic bounds.
 
 **Key Insight**: The logarithmic function's bounded growth prevents runaway predictions that don't match real-world partnership dynamics.
 

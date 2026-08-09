@@ -431,7 +431,7 @@ renault_nissan_params = {
 
 ### Validation Results
 
-**Overall Score**: 49/60 (81.7%)
+**Overall Score**: 49/60
 
 | Phase | Predicted Pattern | Historical Match | Score |
 |-------|-------------------|------------------|-------|
