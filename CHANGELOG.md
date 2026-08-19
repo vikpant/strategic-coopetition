@@ -4,6 +4,62 @@ All notable changes to this project are documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] (2026-08-19)
+
+### Documentation and packaging-metadata alignment
+
+- Synchronized version identifiers: `coopetition_gym.__version__` and
+  `pyproject.toml` now both report 1.0.7 (previously 0.3.0 and 1.0.1).
+- Added the repository-root `REPRODUCE.md` pointer referenced by the
+  package README and the companion technical report.
+- Corrected the repository README's case-study summary bullet to the
+  released suite outputs (Samsung-Sony LCD 58/60 = 96.7% under the
+  logarithmic specification; 46/60 under the power alternative).
+- Dataset-card sources (`experiments/croissant/`): corrected the
+  training-corpus description to the deployed dataset's actual contents
+  (949 JSONL shards; 27,649 rows = 27,613 result records across 17,930
+  algorithm-environment-seed cells + 36 progress-log rows; seeds 99-112;
+  104 NaN-return records) and filled in the arXiv identifier
+  (arXiv:2605.02063).
+- Clarified the seed-scope comment on `TRAINING_SEEDS` in
+  `experiments/config.py` (baseline 99-105; canonical fold extends to
+  106-108; stability-characterization 109-112). No code-value changes.
+- Back-filled changelog entries for tagged releases 1.0.2-1.0.6 (below).
+
+## [1.0.6] (2026-05-04)
+
+### Packaging
+
+- Promoted `torch` and `stable-baselines3` from the optional `[rl]`
+  extra to core dependencies.
+
+## [1.0.5] (2026-05-04)
+
+### Metadata
+
+- Reconciled the advertised dataset record count across reviewer-facing
+  artifacts to the release count of the deployed dataset (17,930).
+- Extended LF line-ending discipline to `*.md`, `*.json`, `*.sh`.
+
+## [1.0.4] (2026-05-03)
+
+### Metadata
+
+- `CITATION.cff`: removed an unverified ORCID; converted the abstract to
+  a folded block scalar.
+
+## [1.0.3] (2026-05-03)
+
+### Metadata
+
+- `CITATION.cff`: aligned to Zenodo's documented supported subset.
+
+## [1.0.2] (2026-05-03)
+
+### Metadata
+
+- `CITATION.cff`: removed a self-referential Zenodo DOI.
+
 ## [1.0.1] (2026-04-19)
 
 ### Documentation clarifications

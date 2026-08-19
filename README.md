@@ -27,8 +27,8 @@ game theory, and reinforcement learning.
   (interdependence, trust, collective action, reciprocity).
 - **126-algorithm reference suite**: 16 training algorithms, 7
   game-theoretic oracles, 2 heuristics, and 101 constant-action policies.
-- **Four validated case studies** calibrated to real-world coopetitive
-  relationships: Samsung–Sony LCD (98.3%), Renault–Nissan (81.7%),
+- **Four calibrated case studies** grounded in real-world coopetitive
+  relationships: Samsung–Sony LCD (96.7%), Renault–Nissan (81.7%),
   Apache HTTP Server (86.7%), Apple iOS App Store (87.3%).
 - **Reward-type ablation methodology** for mixed-motive evaluation,
   varying reward mutuality across private, integrated, and cooperative

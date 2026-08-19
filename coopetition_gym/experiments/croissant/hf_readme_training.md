@@ -18,15 +18,20 @@ size_categories:
 # Coopetition-Gym v1, Training Results
 
 Training results from the Coopetition-Gym v1 benchmark campaign.
-17,930 JSON files, each recording the outcome of training one of 16
-reinforcement learning algorithms, 7 game-theoretic oracles, 2 heuristic
-baselines, or 101 constant-action policies on one of 20 mixed-motive
-multi-agent environments under one of three reward configurations (private,
-integrated, cooperative) with one of seven random seeds.
+949 JSONL shards holding 27,649 rows: 27,613 training-campaign result
+records (17,930 unique algorithm–environment–seed cells) plus 36
+progress-log rows retained for provenance. Each result record documents
+the outcome of training one of 16 reinforcement learning algorithms, 7
+game-theoretic oracles, 2 heuristic baselines, or 101 constant-action
+policies on one of 20 mixed-motive multi-agent environments under one of
+three reward configurations (private, integrated, cooperative), with
+seeds 99–112 (baseline 99–105; canonical-fold extension 106–108;
+stability-characterization 109–112, seed 112 quarantined from all
+published aggregates).
 
 **Companion technical report**: *Coopetition-Gym v1: A Formally Grounded
 Platform for Mixed-Motive Multi-Agent Reinforcement Learning under Strategic
-Coopetition*. Pant and Yu, arXiv preprint (May 2026; canonical arXiv ID forthcoming).
+Coopetition*. Pant and Yu, arXiv:2605.02063.
 
 **Companion code**: https://github.com/vikpant/strategic-coopetition
 
@@ -66,7 +71,7 @@ Each JSON file has the following top-level structure:
 |---|---|---|
 | `algorithm` | str | Algorithm name (e.g., `ISAC`, `COMA`) |
 | `environment` | str | Environment ID (e.g., `TrustDilemma-v0`) |
-| `training_seed` | int | Seed in {99, 100, 101, 102, 103, 104, 105} |
+| `training_seed` | int | Seed in {99, ..., 112} (baseline 99–105; extension 106–108; stability 109–112) |
 | `status` | str | `success` for released files |
 | `training_time_seconds` | float | Wall-clock training time |
 | `evaluation_time_seconds` | float | Wall-clock evaluation time |
@@ -85,7 +90,7 @@ schema with JSONPath extractions.
 
 ## Known Data Characteristics
 
-- **62 NaN-return files** from documented training instabilities are retained
+- **104 NaN-return records** from documented training instabilities are retained
   for transparency: 21 MASAC on TR-3 environments under baseline, 21 MADDPG
   /MATD3/M3DDPG on ApacheProject-v0 under cooperative reward, 20 MADDPG on
   AppleAppStore-v0 in the network sensitivity analysis.
@@ -138,7 +143,10 @@ Check dataset integrity after download:
 python -m experiments.validate training data/training/
 ```
 
-Expected output: **17,930 files, 62 expected NaN entries, 0 failed experiments**.
+The authoritative integrity reference is `training_runs/training_runs_manifest.csv`,
+which lists per-shard record counts and MD5 checksums; the shard rows sum
+to 27,649 (27,613 result records + 36 progress-log rows), with 104
+NaN-return records expected.
 
 ## Limitations
 
@@ -162,7 +170,7 @@ for the complete Gebru et al. datasheet.
     author={Pant, Vik and Yu, Eric},
     year={2026},
     publisher={arXiv},
-    note={Companion technical report; arXiv ID forthcoming}
+    note={Companion technical report; arXiv:2605.02063}
 }
 
 @software{pant2026coopetitiongym_software,

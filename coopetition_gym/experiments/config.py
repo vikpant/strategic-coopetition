@@ -70,7 +70,10 @@ DEFAULT_ANALYSIS_DIR = REPO_ROOT / "data" / "analysis"
 # =============================================================================
 
 #: Seven seeds used for the full training campaign.
-#: Every paper result uses these seeds. Changing them produces different data.
+#: Baseline seeds. Headline statistics in the companion report use the
+#: canonical evaluation fold (seeds 99-108: this baseline plus extension
+#: seeds 106-108); seeds 109-112 are stability-characterization runs that
+#: enter no headline aggregate. Changing these produces different data.
 TRAINING_SEEDS: Tuple[int, ...] = (99, 100, 101, 102, 103, 104, 105)
 
 #: Three seeds used for the behavioral audit.
