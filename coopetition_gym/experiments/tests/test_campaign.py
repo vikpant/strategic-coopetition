@@ -85,6 +85,28 @@ def make_orchestrator(monkeypatch, tmp_path):
     return make
 
 
+
+@pytest.mark.parametrize("cpus, expected", [(1, 1), (2, 1), (4, 1), (8, 1), (12, 4), (240, 232)])
+def test_cpu_only_worker_limit_keeps_a_worker_available(cpus, expected):
+    limits = campaign.compute_safe_worker_limits({"num_gpus": 0, "num_vcpus": cpus})
+    assert limits == {"gpu_workers": 0, "cpu_workers": expected,
+                      "max_per_gpu": 0, "total_workers": expected}
+
+
+@pytest.mark.parametrize("cpus", [1, 2, 4, 8, 12, 240])
+def test_cpu_only_worker_limit_honors_explicit_single_worker(cpus):
+    limits = campaign.compute_safe_worker_limits(
+        {"num_gpus": 0, "num_vcpus": cpus}, max_workers=1)
+    assert limits["cpu_workers"] == limits["total_workers"] == 1
+
+
+@pytest.mark.parametrize("max_workers, expected", [(None, 3), (1, 1)])
+def test_cpu_only_worker_override_still_respects_total_cap(max_workers, expected):
+    limits = campaign.compute_safe_worker_limits(
+        {"num_gpus": 0, "num_vcpus": 2}, max_workers=max_workers, max_cpu_workers=3)
+    assert limits["cpu_workers"] == limits["total_workers"] == expected
+
+
 def test_worker_measures_training_and_actual_environment(fake_runtime):
     result = run_fake()
     assert result.status == "success", result.error_message

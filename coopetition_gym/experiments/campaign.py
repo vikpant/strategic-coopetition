@@ -998,10 +998,10 @@ def compute_safe_worker_limits(
     usable_memory = hardware.get("usable_gpu_memory_gb", [])
 
     if num_gpus == 0:
-        # CPU-only mode - allocate most vCPUs for training
-        # PATCHED: Removed hardcoded cap of 64 - let max_cpu_workers override
+        # Keep a worker available on small hosts where the cloud-sized
+        # system reserve would otherwise consume every CPU.
         system_reserve = max(8, num_vcpus // 30)
-        computed_cpu = num_vcpus - system_reserve
+        computed_cpu = max(1, num_vcpus - system_reserve)
 
         # Apply explicit overrides (allow INCREASE beyond default)
         if max_cpu_workers is not None:
@@ -3528,8 +3528,13 @@ class UnifiedOrchestrator:
             self.logger.info("No experiments to run")
             return
 
+        requested_keys = {
+            f"{algo['name']}_{env['id']}_{seed}"
+            for algo, env, seed in self.cpu_experiments + self.gpu_experiments
+        }
         completed = 0
         failed = 0
+        pool_errors = []
         start_time = time.time()
 
         # Start monitoring threads
@@ -3573,6 +3578,7 @@ class UnifiedOrchestrator:
                         failed += failed_cpu
                         self.logger.info(f"CPU pool finished: {completed_cpu} completed, {failed_cpu} failed")
                     except Exception as e:
+                        pool_errors.append(("CPU", e))
                         self.logger.error(f"CPU experiment pool failed: {e}")
 
                 if gpu_future:
@@ -3582,6 +3588,7 @@ class UnifiedOrchestrator:
                         failed += failed_gpu
                         self.logger.info(f"GPU pool finished: {completed_gpu} completed, {failed_gpu} failed")
                     except Exception as e:
+                        pool_errors.append(("GPU", e))
                         self.logger.error(f"GPU experiment pool failed: {e}")
 
         finally:
@@ -3596,12 +3603,16 @@ class UnifiedOrchestrator:
                 self.system_monitor.stop()
                 self.logger.info("System resource monitor STOPPED")
 
-        # Final summary
+            # Persist valid partial results even when a pool or its launcher fails.
+            self._save_state()
+
+        # Result files, not worker counts alone, establish campaign completion.
+        missing_keys = requested_keys - self.completed_keys
+        unsuccessful = bool(pool_errors or failed or missing_keys or completed != total_experiments)
         elapsed = time.time() - start_time
-        self._save_state()
 
         self.logger.info("=" * 70)
-        self.logger.info("ORCHESTRATION COMPLETE")
+        self.logger.info("ORCHESTRATION FAILED" if unsuccessful else "ORCHESTRATION COMPLETE")
         self.logger.info(f"Completed: {completed}")
         self.logger.info(f"Failed: {failed}")
         self.logger.info(f"Total time: {elapsed/3600:.2f} hours")
@@ -3619,6 +3630,15 @@ class UnifiedOrchestrator:
                 self.logger.warning(f"OOM errors encountered: {monitor_status['oom_count']}")
 
         self.logger.info("=" * 70)
+
+        if unsuccessful:
+            details = "; ".join(f"{pool} pool: {error}" for pool, error in pool_errors)
+            message = (f"Campaign incomplete: {completed}/{total_experiments} completed, "
+                       f"{failed} failed, {len(missing_keys)} missing result(s)")
+            if details:
+                message += f"; {details}"
+            # CLI callers must receive a nonzero exit instead of apparent success.
+            raise RuntimeError(message) from (pool_errors[0][1] if pool_errors else None)
 
     def _run_cpu_experiments(self, spawn_ctx) -> Tuple[int, int]:
         """Run CPU-only experiments (MLP training algorithms + heuristics) with high parallelism.
