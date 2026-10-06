@@ -2,6 +2,8 @@
 
 **Multi-Agent Reinforcement Learning Environments for Strategic Coopetition**
 
+**Source candidate 1.0.8 is unreleased.** The optional SLCD extension candidate is 0.1.1. See the [installation guide](installation.md) for source installation and the distinction from published historical artifacts.
+
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PettingZoo](https://img.shields.io/badge/PettingZoo-Compatible-green.svg)](https://pettingzoo.farama.org/)
@@ -15,7 +17,7 @@
 
 | Framework | Version | Status | Notes |
 |-----------|---------|--------|-------|
-| **Python** | 3.9, 3.10, 3.11 | Tested | 3.9+ required |
+| **Python** | 3.9+ | Declared requirement | Candidate checks include Python 3.12 |
 | **Gymnasium** | 0.29+ | Compatible | Farama Foundation standard |
 | **PettingZoo** | 1.24+ | Compatible | Parallel and AEC APIs |
 | **NumPy** | 1.21+ | Required | Core dependency |
@@ -25,10 +27,10 @@
 
 | Framework | Integration | Notes |
 |-----------|-------------|-------|
-| **Stable-Baselines3** | Direct | Use Gymnasium API with VecEnv |
-| **RLlib** | Direct | Use PettingZoo API with MultiAgentEnv |
-| **TorchRL** | Compatible | Use Gymnasium API |
-| **CleanRL** | Compatible | Single-file implementations |
+| **Stable-Baselines3** | Scalar adapter required | Joint-action environments return vector rewards |
+| **RLlib** | Framework adapter required | Raw PettingZoo registration alone is insufficient |
+| **TorchRL** | Framework-specific | Validate multi-agent reward handling |
+| **CleanRL** | Implementation-specific | Validate multi-agent reward handling |
 
 ### Verification
 
@@ -65,14 +67,14 @@ print(f"Action space: {env.action_space}")
 - **20 Specialized Environments** spanning dyadic relationships to multi-agent ecosystems
 - **Validated Case Studies** based on real business partnerships (Samsung-Sony, Renault-Nissan, Apache, Apple App Store)
 - **Trust Dynamics** with asymmetric updating and reputation hysteresis
-- **Multiple APIs**: Gymnasium (single-agent), PettingZoo Parallel, and PettingZoo AEC
+- **Multiple APIs**: Gymnasium-style joint actions with vector rewards, PettingZoo Parallel, and PettingZoo AEC
 - **Configurable Parameters** for research flexibility
 
 ### Modeling Approach
 
 Coopetition-Gym v1.x implements the **uniaxial treatment** of coopetition, modeling strategic choice along the cooperation-defection continuum (Bengtsson & Kock, 2000). Agents choose cooperation levels in `[0, endowment]`, with competitive dynamics emerging through structural parameters (interdependence matrix, bargaining shares, trust evolution). This foundational approach enables computational tractability while capturing core coopetitive phenomena validated against real-world cases.
 
-Future versions will introduce **biaxial treatment** with independent cooperation and competition dimensions, following Brandenburger & Nalebuff (1996). See [Scope and Strategic Roadmap](scope_roadmap.md) for theoretical rationale and extension plans.
+The optional SLCD prototype explores a second appropriation dimension; it is distributed separately from the base environment registry. See [Scope and Strategic Roadmap](scope_roadmap.md) for theoretical rationale and extension plans.
 
 ---
 
@@ -82,14 +84,14 @@ Future versions will introduce **biaxial treatment** with independent cooperatio
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/strategic-coopetition.git
+git clone https://github.com/vikpant/strategic-coopetition.git
 cd strategic-coopetition/coopetition_gym
 
 # Install in development mode
-pip install -e .
+python -m pip install -e .
 
 # Install with all dependencies
-pip install -e ".[dev,viz,rl]"
+python -m pip install -e ".[dev,experiments]"
 ```
 
 ### Basic Usage
@@ -126,8 +128,9 @@ observations, rewards, terminations, truncations, infos = env.step(actions)
 # AEC API (sequential moves)
 env = coopetition_gym.make_aec("TrustDilemma-v0")
 env.reset()
-for agent in env.agent_iter(): obs, reward, term, trunc, info = env.last()
-    action = policy(obs) if not term else None
+for agent in env.agent_iter():
+    obs, reward, term, trunc, info = env.last()
+    action = None if term or trunc else env.action_space(agent).sample()
     env.step(action)
 ```
 
@@ -191,7 +194,7 @@ Team production and collective action scenarios with loyalty dynamics.
 | [TeamProduction-v0](environments/team_production.md) | Team production with free-rider dynamics | Nash equilibrium baseline |
 | [LoyaltyTeam-v0](environments/loyalty_team.md) | Team production with loyalty mechanisms | Sustaining above-Nash cooperation |
 | [CoalitionFormation-v0](environments/coalition_formation.md) | Dynamic coalition with entry/exit | Coalition stability under exclusion |
-| [ApacheProject-v0](environments/apache_project.md) | Apache HTTP Server case study (45/60) | Phase-dependent contributor dynamics |
+| [ApacheProject-v0](environments/apache_project.md) | Apache HTTP Server case study ([score provenance](benchmarks/score_provenance.md)) | Phase-dependent contributor dynamics |
 | [PublicGoods-v0](environments/public_goods.md) | Classic public goods game | Contribution and punishment dynamics |
 
 ### Reciprocity Environments (TR-4)
@@ -204,7 +207,7 @@ Sequential interaction and reciprocity scenarios with bounded memory.
 | [GiftExchange-v0](environments/gift_exchange.md) | Asymmetric employer-worker exchange | Asymmetric reciprocity sensitivity |
 | [IndirectReciprocity-v0](environments/indirect_reciprocity.md) | 4-agent reputation-mediated cooperation | Indirect reciprocity via image scoring |
 | [GraduatedSanction-v0](environments/graduated_sanction.md) | 6-agent commons with graduated sanctions | Proportional punishment and escalation |
-| [AppleAppStore-v0](environments/apple_app_store.md) | Apple iOS App Store (validated 43/51) | Platform power and reciprocity dynamics |
+| [AppleAppStore-v0](environments/apple_app_store.md) | Apple iOS App Store ([score provenance](benchmarks/score_provenance.md)) | Platform power and reciprocity dynamics |
 
 ---
 
@@ -343,10 +346,10 @@ The mathematical framework has been validated against real business partnerships
 |------------|------------------|----------------------|
 | **Samsung-Sony S-LCD** (2004-2011) | 58/60 logarithmic, 46/60 power | Interdependence, complementarity, cooperation levels |
 | **Renault-Nissan Alliance** (1999-2025) | 49/60 | Trust evolution, crisis, recovery across 5 phases |
-| **Apache HTTP Server** (1995-2023) | 45/60 | Loyalty dynamics, phase transitions, contributor effort |
-| **Apple iOS App Store** (2008-2024) | 43/51 | Reciprocity dynamics, platform power, phase transitions |
+| **Apache HTTP Server** (1995-2023) | [Recorded discrepancies](benchmarks/score_provenance.md) | Loyalty dynamics, phase transitions, contributor effort |
+| **Apple iOS App Store** (2008-2024) | [Recorded discrepancies](benchmarks/score_provenance.md) | Reciprocity dynamics, platform power, phase transitions |
 
-These validations ensure the environments produce realistic coopetitive dynamics rather than artificial constructs.
+These are recorded case-study claims with distinct source histories. Passing runtime tests does not independently establish historical validity; consult the score-provenance record before citing a score.
 
 > **Learn More**: See [Theoretical Foundations](theory/index.md) for complete mathematical derivations, [Parameter Reference](theory/parameters.md) for validated values, and [Benchmark Results](benchmarks/index.md) for algorithm performance analysis.
 
@@ -364,7 +367,7 @@ All environments provide observations containing:
 | Trust Matrix | `(N, N)` | Pairwise trust levels |
 | Reputation Matrix | `(N, N)` | Pairwise reputation damage |
 | Interdependence | `(N, N)` | Structural dependencies |
-| Step Count | `(1,)` | Normalized timestep |
+| Step Count | `(1,)` | Current timestep in the joint-action base observation |
 
 ### Action Space
 
@@ -470,7 +473,7 @@ If you use Coopetition-Gym in your research, please cite:
   author = {Pant, Vik and Yu, Eric},
   year = {2025},
   institution = {Faculty of Information and Department of Computer Science, University of Toronto},
-  url = {https://github.com/your-org/strategic-coopetition}
+  url = {https://github.com/vikpant/strategic-coopetition}
 }
 
 @article{pant2025tr1,
@@ -539,15 +542,8 @@ Coopetition-Gym is released under the [MIT License](../LICENSE).
 
 ---
 
-## Benchmark Highlights
+## Benchmark Evidence
 
-We have evaluated **20 MARL algorithms** across the 5 TR-1 environments and 5 TR-2 environments with **760 experiments** totaling **76,000 evaluation episodes**. Benchmarks for the 5 TR-3 collective action environments and 5 TR-4 reciprocity environments are forthcoming. Key findings:
+Benchmark summaries describe historical datasets and evaluation protocols. The unreleased runtime candidate changes configuration handling and reset behavior; its unit tests do not rerun those campaigns. Keep reward objective, controller semantics, horizon, seed coverage and artifact provenance explicit when comparing results.
 
-| Finding | Implication |
-|---------|-------------|
-| Simple heuristics (Constant_050) outperform all learning algorithms | Predictable cooperation builds trust |
-| Trust-Return correlation: r = 0.552 | Trust causally drives performance |
-| Population methods (Self-Play, FCP) fail catastrophically | Nash equilibria are Pareto-suboptimal |
-| CTDE methods cluster together | Centralized critic dominates actor architecture |
-
-See [Benchmark Results](benchmarks/index.md) for comprehensive analysis.
+See [Benchmark Results](benchmarks/index.md), [score provenance](benchmarks/score_provenance.md), and the [repository reproduction guide](https://github.com/vikpant/strategic-coopetition/blob/master/REPRODUCE.md). Correlations in recorded experiments do not by themselves establish causation.

@@ -23,7 +23,7 @@ License: MIT
 ================================================================================
 """
 
-__version__ = "1.0.7"
+__version__ = "1.0.8"
 __author__ = "Vik Pant, Eric Yu"
 
 from .core import (
@@ -63,6 +63,29 @@ from .envs import (
     # Factory functions
     make, make_parallel, make_aec, list_environments,
 )
+
+
+def _register_gymnasium_envs():
+    """Register the multi-agent environments once for Gymnasium factories.
+
+    Importing this package also supports Gymnasium's explicit module syntax,
+    e.g. ``gym.make("coopetition_gym:TrustDilemma-v0")``.
+    """
+    from gymnasium.envs.registration import register, registry
+    from .envs import _ENVIRONMENT_REGISTRY
+
+    for env_id, env_class in _ENVIRONMENT_REGISTRY.items():
+        if env_id not in registry:
+            register(
+                id=env_id,
+                entry_point=f"coopetition_gym.envs:{env_class.__name__}",
+                # These environments return one reward per agent. Preserve that
+                # public API; Gymnasium's passive checker assumes scalar reward.
+                disable_env_checker=True,
+            )
+
+
+_register_gymnasium_envs()
 
 
 def version():

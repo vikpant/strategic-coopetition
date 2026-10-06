@@ -2,6 +2,8 @@
 
 **Multi-Agent Reinforcement Learning for Strategic Coopetition**
 
+**Unreleased source candidate: 1.0.8.** The optional SLCD extension candidate is 0.1.1. These changes do not publish a distribution or create a release tag. The [installation guide](docs/installation.md) describes installing the candidate from this checkout.
+
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![Gymnasium](https://img.shields.io/badge/Gymnasium-compatible-green.svg)](https://gymnasium.farama.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -10,7 +12,7 @@ Coopetition-Gym provides Gymnasium-compatible environments for studying **coopet
 
 ## 🔬 Research Foundation
 
-This library implements computational frameworks from peer-reviewed game-theoretic research:
+This library implements computational frameworks described in the following research technical reports:
 
 | Paper | Topic | Key Contribution |
 |-------|-------|------------------|
@@ -22,23 +24,24 @@ This library implements computational frameworks from peer-reviewed game-theoret
 **Validated Case Studies:**
 - S-LCD (Samsung-Sony): **58/60** validation score, 96.7% (TR-1 §8)
 - Renault-Nissan Alliance: **49/60** validation score, 81.7% (TR-2 §9)
-- Apache HTTP Server: **52/60** validation score, 86.7% (TR-3 §7)
-- Apple iOS App Store: **48/55** validation score, 87.3% (TR-4 §8)
+- Apache HTTP Server: [recorded score discrepancies and provenance](docs/benchmarks/score_provenance.md) (TR-3).
+- Apple iOS App Store: [recorded score discrepancies and provenance](docs/benchmarks/score_provenance.md) (TR-4).
 
-**Companion research paper:** Pant, V. and Yu, E. (2026). *Reward-Type Ablation Reveals Mechanism-Dependent Algorithm Rankings in Mixed-Motive Multi-Agent Evaluation.* Manuscript in preparation. Releases a training dataset of 27,613 records (17,930 algorithm–environment–seed cells) and a 1,116-record behavioral audit dataset alongside this benchmark suite. See [REPRODUCE.md](../REPRODUCE.md) for reproduction instructions.
+**Research artifacts:** The repository includes training and behavioral-audit datasets. See [REPRODUCE.md](../REPRODUCE.md) for provenance and the distinction between records and experimental cells. Candidate runtime checks do not revalidate historical benchmark claims.
 
 ## 🚀 Quick Start
 
 ### Installation
 
 ```bash
-pip install coopetition-gym
-
-# Or from source
-git clone https://github.com/vikpant/coopetition-gym.git
-cd coopetition-gym
-pip install -e .
+# From the repository root after cloning:
+git clone https://github.com/vikpant/strategic-coopetition.git
+cd strategic-coopetition
+python -m pip install -e './coopetition_gym[dev,experiments]'
+cd coopetition_gym
 ```
+
+Use a suitable Python environment. PyTorch and Stable-Baselines3 are core dependencies; the `experiments` extra adds analysis packages. Published PyPI releases are separate from this unreleased source candidate.
 
 ### Basic Usage
 
@@ -60,6 +63,8 @@ print(f"Rewards: {rewards}")
 print(f"Current Trust: {info['mean_trust']:.3f}")
 ```
 
+The joint-action API returns a NumPy reward vector, one entry per agent. Explicit Gymnasium registration is also available as `gymnasium.make("coopetition_gym:TrustDilemma-v0")`; it preserves that vector. Ordinary scalar-reward learners require an explicit adapter, described below.
+
 ### List Available Environments
 
 ```python
@@ -71,7 +76,7 @@ print(coopetition_gym.list_environments())
 
 ## 🎯 Environments
 
-Coopetition-Gym includes **20 environments** across seven categories:
+Coopetition-Gym includes **20 environments** across seven categories. See [default agent counts, horizons and observation shapes](docs/api/quick_reference.md#available-environments). Apache defaults to 40 agents in its maturity phase, while Apple defaults to 3 agents and 66 steps.
 
 ### Category 1: Dyadic (Micro)
 Fundamental 2-agent mechanics for understanding core dynamics.
@@ -121,7 +126,7 @@ Team production with loyalty dynamics and coalition formation.
 | `TeamProduction-v0` | N-agent team production game | Free-rider dynamics at Nash equilibrium |
 | `LoyaltyTeam-v0` | Team production with loyalty mechanisms | Sustaining above-Nash cooperation |
 | `CoalitionFormation-v0` | Dynamic coalition with entry/exit | Coalition stability under exclusion threat |
-| `ApacheProject-v0` | Apache HTTP Server (validated 52/60) | Phase-dependent contributor dynamics |
+| `ApacheProject-v0` | Apache HTTP Server ([score provenance](docs/benchmarks/score_provenance.md)) | Phase-dependent contributor dynamics |
 | `PublicGoods-v0` | Classic public goods game | Contribution with optional punishment |
 
 ### Category 7: Reciprocity (TR-4)
@@ -133,7 +138,7 @@ Sequential interaction with memory-bounded reciprocity dynamics.
 | `GiftExchange-v0` | Asymmetric employer-worker exchange | Asymmetric reciprocity sensitivity |
 | `IndirectReciprocity-v0` | 4-agent reputation-mediated cooperation | Indirect reciprocity via image scoring |
 | `GraduatedSanction-v0` | 6-agent commons with graduated sanctions | Proportional punishment and escalation |
-| `AppleAppStore-v0` | Apple iOS App Store (validated 48/55) | Platform power asymmetry and reciprocity |
+| `AppleAppStore-v0` | Apple iOS App Store ([score provenance](docs/benchmarks/score_provenance.md)) | Platform power asymmetry and reciprocity |
 
 ## 📐 Mathematical Framework
 
@@ -217,36 +222,39 @@ Seven oracle policies provide non-learning reference points for algorithmic comp
 |---|---|---|
 | `Oracle_Equilibrium` | TR-1 interdependence equilibrium (Nash reference) | DynamicPartnerSelection, PartnerHoldUp, PlatformEcosystem, SynergySearch, RenaultNissan |
 | `Oracle_TrustAware` | TR-2 trust-aware equilibrium | CooperativeNegotiation, RecoveryRace, ReputationMarket, SLCD, TrustDilemma |
-| `Oracle_Nash` | TR-3 Nash equilibrium (lower bound) | ApacheProject, CoalitionFormation, LoyaltyTeam, PublicGoods, TeamProduction |
-| `Oracle_Loyalty` | TR-3 social optimum (upper bound) | All 5 TR-3 environments |
+| `Oracle_Nash` | TR-3 Nash equilibrium reference | ApacheProject, CoalitionFormation, LoyaltyTeam, PublicGoods, TeamProduction |
+| `Oracle_Loyalty` | TR-3 cooperative reference | All 5 TR-3 environments |
 | `Oracle_SocialOptimum` | TR-3 social optimum (equivalent to Oracle_Loyalty) | All 5 TR-3 environments |
-| `Oracle_ReciprocityEquilibrium` | TR-4 Nash-style equilibrium (lower bound) | ReciprocalDilemma, GiftExchange, IndirectReciprocity, GraduatedSanction, AppleAppStore |
-| `Oracle_BoundedReciprocity` | TR-4 cooperation upper bound | All 5 TR-4 environments |
+| `Oracle_ReciprocityEquilibrium` | TR-4 Nash-style equilibrium reference | ReciprocalDilemma, GiftExchange, IndirectReciprocity, GraduatedSanction, AppleAppStore |
+| `Oracle_BoundedReciprocity` | TR-4 cooperative reference | All 5 TR-4 environments |
 
-Trained reinforcement learning algorithms can be compared against these oracles to assess how closely they approach the Nash equilibrium (lower bound) or the social optimum (upper bound) for each mechanism class.
+These policies provide mechanism-specific reference points. Their names do not establish universal lower or upper bounds on learned-policy returns; comparisons must use matched objectives and evaluation settings.
 
 ## 🧪 Training with RL Algorithms
 
-### With Stable-Baselines3
+### Explicit scalar aggregation for Stable-Baselines3
+
+A joint-controller example requires a scalar-reward adapter. This adapter sums agent rewards; report that objective when interpreting results. Construction and prediction below do not train the model.
 
 ```python
-import coopetition_gym
+import coopetition_gym as cg
+from experiments.algorithms import MultiAgentToSingleAgentWrapper
 from stable_baselines3 import PPO
 
-# Create environment
-env = coopetition_gym.make("TrustDilemma-v0")
-
-# Train PPO agent
-model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=100_000)
-
-# Evaluate
-obs, _ = env.reset()
-for _ in range(100): action, _ = model.predict(obs, deterministic=True)
-    obs, reward, done, truncated, info = env.step(action)
-    if done or truncated: break
-print(f"Final trust: {info['mean_trust']:.3f}")
+base_env = cg.make("TrustDilemma-v0", reward_type="private", max_steps=20)
+env = MultiAgentToSingleAgentWrapper(base_env)
+model = PPO("MlpPolicy", env, device="cpu", n_steps=64, batch_size=32)
+# Training is a separate, intentional action: model.learn(total_timesteps=...)
+obs, info = env.reset(seed=42)
+for _ in range(20):
+    action, _ = model.predict(obs, deterministic=True)
+    obs, reward, terminated, truncated, info = env.step(action)
+    if terminated or truncated:
+        break
+env.close()
 ```
+
+The historical `IndependentPPO`, `IndependentSAC` and `IndependentA2C` implementations also use joint controllers with summed rewards. Their identifiers alone do not establish decentralized independent learning. See the [wrapper reference](docs/api/wrappers.md#scalar-reward-adapter).
 
 ### Custom Policy Example
 
@@ -273,7 +281,8 @@ def cooperative_policy(obs, trust_threshold=0.5):
 env = coopetition_gym.make("TrustDilemma-v0")
 obs, _ = env.reset(seed=42)
 
-for step in range(100): action = cooperative_policy(obs)
+for step in range(100):
+    action = cooperative_policy(obs)
     obs, rewards, done, truncated, info = env.step(action)
     if done or truncated: break
 
@@ -297,7 +306,8 @@ policies = {
 # Run experiments
 env = coopetition_gym.make("TrustDilemma-v0", max_steps=100)
 
-for name, policy in policies.items(): results = [run_episode(env, policy, seed=i) for i in range(10)]
+for name, policy in policies.items():
+    results = [run_episode(env, policy, seed=i) for i in range(10)]
     stats = aggregate_results(results)
     
     print(f"\n{name.upper()} Policy:")
@@ -392,13 +402,17 @@ coopetition_gym/
 
 ## 🧪 Running Tests
 
-```bash
-# Run all tests
-pytest tests/ -v
+From the `coopetition_gym/` package directory:
 
-# Run with coverage
-pytest tests/ --cov=coopetition_gym --cov-report=html
+```bash
+# Core, experiment, and extension checks without the IPPO training test
+python -B -m pytest -p no:cacheprovider -k 'not test_ippo_trains_on_2d'
+
+# Core coverage
+python -B -m pytest -p no:cacheprovider coopetition_gym/tests --cov=coopetition_gym
 ```
+
+Omitting the exclusion from the full suite includes a short extension training test. The optional [SLCD extension](extensions/slcd_2d/README.md) has seven learner adapters plus an oracle, with its own installed `slcd_2d` namespace.
 
 ## 📚 Citation
 
@@ -409,7 +423,7 @@ If you use this library in your research, please cite:
   author = {Pant, Vik and Yu, Eric},
   title = {Coopetition-Gym: Multi-Agent RL for Strategic Coopetition},
   year = {2025},
-  url = {https://github.com/vikpant/coopetition-gym}
+  url = {https://github.com/vikpant/strategic-coopetition}
 }
 
 @article{pant2025interdependence,
@@ -452,7 +466,7 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+Contributions are welcome! Please see our [Contributing Guide](docs/contributing.md) for details.
 
 ---
 

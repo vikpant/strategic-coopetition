@@ -1,20 +1,28 @@
 # Algorithm Comparison
 
+> **Historical-result status:** numeric tables below retain their previously
+> reported values. They have not been regenerated with the 1.0.8 repairs.
+> `I`/`IND` and `C`/`CTDE` are historical roster labels; IPPO, IA2C and ISAC
+> are joint controllers. See [implementation protocol](implementation_protocol.md)
+> before interpreting these tables as evidence about learning paradigms. Dataset
+> folds and groupings require the original manifest; a prose fold label is not
+> sufficient provenance.
+
 This page reports per-tier algorithm rankings for the 16 training algorithms, the 2 heuristic baselines, and the three reward configurations. All values are mean episodic return across cells with defined returns at the n=10+ fold (baseline seeds 99-105 plus extension seeds 106-111).
 
-> **Source:** `aggregates/tier_summary_v2.txt` and `aggregates/ctde_vs_ind_boundary_v2.txt` in the released analysis pipeline. Symbols in the Class column: **I** = independent learner, **C** = centralized training with decentralized execution, **H** = heuristic baseline.
+> **Source:** `aggregates/tier_summary_v2.txt` and `aggregates/ctde_vs_ind_boundary_v2.txt` in the released analysis pipeline. Symbols in the Class column: **I** = historical I roster, **C** = historical C roster, **H** = heuristic baseline.
 
 ---
 
 ## Algorithm portfolio
 
-### Independent learners (5)
+### Historical I roster (5)
 
 | Name | Description |
 |------|-------------|
-| ISAC | Independent Soft Actor-Critic |
-| IPPO | Independent Proximal Policy Optimization |
-| IA2C | Independent Advantage Actor-Critic |
+| ISAC | Joint SB3 Soft Actor-Critic controller (historical identifier) |
+| IPPO | Joint SB3 Proximal Policy Optimization controller (historical identifier) |
+| IA2C | Joint SB3 Advantage Actor-Critic controller (historical identifier) |
 | IndependentREINFORCE | Per-agent REINFORCE |
 | LOLA | Learning with Opponent-Learning Awareness |
 
@@ -58,9 +66,9 @@ This page reports per-tier algorithm rankings for the 16 training algorithms, th
 
 ---
 
-## Best CTDE versus best independent learner, by mechanism class
+## Historical C versus I roster summaries
 
-The clearest summary of cross-paradigm behavior is the per-tier comparison of the strongest representative of each paradigm. The **integrated** reward column reflects the calibrated `D_ij` configuration; the **private** column reflects `D_ij = 0`; the **cooperative** column reflects shared reward.
+This table compares the strongest reported member of each historical roster. It does not establish a controlled cross-paradigm result. The **integrated** reward column reflects the calibrated `D_ij` configuration; the **private** column denotes the historical private-reward treatment; the **cooperative** column reflects shared reward.
 
 | Tier | Reward | Best CTDE | CTDE return | Best IND | IND return | Gap (%) | Winner |
 |------|--------|-----------|-------------:|----------|-----------:|--------:|--------|
@@ -187,7 +195,7 @@ Two algorithms appear in the top five of all four mechanism classes under integr
 - **ISAC** — top five on TR-1, TR-2, TR-3, TR-4 (rank 4, 1, 1, 2 respectively)
 - **COMA** — top five on TR-1, TR-2, TR-3, TR-4 (rank 2, 2, 3, 1 respectively)
 
-No other algorithm achieves top-five status on every tier. The pattern suggests that ISAC and COMA are the most consistent representatives of their respective paradigm classes for benchmark comparison purposes.
+No other algorithm achieves top-five status on every tier. This describes consistency within these historical tables; it does not establish representative learning-paradigm performance.
 
 > **Source for top-five claim:** Computed from the four ranking tables above. Both ISAC (max rank 4 across tiers) and COMA (max rank 3 across tiers) satisfy "top five on every tier". No other algorithm has this property under integrated reward.
 
@@ -195,7 +203,7 @@ No other algorithm achieves top-five status on every tier. The pattern suggests 
 
 ## Game-theoretic oracle baselines
 
-Seven oracle baselines provide game-theoretic reference points. Each oracle plays a closed-form policy derived from analysis of the underlying game, not a learned policy. Oracles are used as references against which learned algorithms are compared.
+Seven oracle baselines provide game-theoretic reference points. The reference policies use a mix of analytic, numerical and rule-based procedures; they do not train. Oracles are used as references against which learned algorithms are compared.
 
 | Oracle | TR | Reference role |
 |--------|----|----|
@@ -220,6 +228,6 @@ Selected oracle results:
 The 101 constant-action policies (`Constant_00` through `Constant_100`, in 1% increments of cooperation level) span the full cooperation continuum. They serve two purposes:
 
 1. **Static cooperation surface.** For any environment under any reward configuration, the 101 constants generate the complete payoff curve as a function of uniform cooperation level.
-2. **Best-fixed-action upper bound.** The maximum return across the 101 constants is the best return achievable by any policy that plays the same action at every step. Learned policies that exceed this bound (such as ISAC on TR-3) are doing something the constants cannot: adaptive sequencing.
+2. **Best sampled uniform constant.** The maximum covers only the 101 tested uniform cooperation levels under the selected evaluation protocol. It is not an upper bound over all continuous, asymmetric or time-varying policies. Exceeding it alone does not establish an adaptive-sequencing mechanism.
 
-Constant-action policies are deterministic given a cooperation level and produce zero standard deviation across seeds.
+Constant-action selection is deterministic. Returns can still vary with seeded environment state; measure their variability rather than assuming it is zero.

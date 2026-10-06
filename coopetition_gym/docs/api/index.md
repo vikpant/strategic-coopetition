@@ -1,391 +1,105 @@
 # API Reference
 
-Complete API documentation for **Coopetition-Gym v0.3.0**.
+This reference describes **Coopetition-Gym 1.0.8, an unreleased source candidate**.
 
-*Generated: 2026-01-13*
+## Factory functions
 
----
+| Function | Input | Output |
+|---|---|---|
+| `make(env_id, **kwargs)` | Environment ID and constructor/configuration arguments | Joint-action Gymnasium-style environment |
+| `make_parallel(env_id, obs_config=None, render_mode=None, **kwargs)` | ID and optional observation configuration | PettingZoo Parallel environment |
+| `make_aec(env_id, obs_config=None, render_mode=None, **kwargs)` | ID and optional observation configuration | PettingZoo AEC environment |
+| `list_environments()` | None | 20 IDs in registry order |
+| `version()` | None | Source version string |
+| `info()` | None | Prints source version, environment count and APIs |
 
-## Quick Navigation
-
-| Module | Description |
-|--------|-------------|
-| [Factory Functions](#factory-functions) | Environment creation |
-| [Core: Value Functions](core/value_functions.md) | TR-1 value creation |
-| [Core: Interdependence](core/interdependence.md) | TR-1 structural coupling |
-| [Core: Trust Dynamics](core/trust_dynamics.md) | TR-2 trust evolution |
-| [Core: Equilibrium](core/equilibrium.md) | Payoff computation |
-| [Environments](environments.md) | Environment classes |
-| [Wrappers](wrappers.md) | PettingZoo adapters |
-| [Configuration](configuration.md) | Dataclass configs |
-
----
-
-## Package Overview
+Unknown IDs and invalid reward types raise `ValueError`; unknown configuration keywords raise `TypeError`. Configuration overrides are applied without mutating a supplied `EnvironmentConfig`.
 
 ```python
-import coopetition_gym
-
-# Version and metadata
-coopetition_gym.__version__  # '0.3.0'
-coopetition_gym.__author__   # 'Vik Pant, Eric Yu'
-
-# List available environments
-coopetition_gym.list_environments()
-# ['TrustDilemma-v0', 'PartnerHoldUp-v0', ...]
-```
-
----
-
-## Action Space Semantics
-
-All environments in Coopetition-Gym v1.x use the **uniaxial treatment** of coopetition:
-
-- **Action space**: `Box(low=0, high=endowment, shape=(n_agents,))` representing cooperation/investment levels
-- **Interpretation**: Actions specify how much each agent contributes to joint value creation
-- **Competition**: Modeled through structural parameters (interdependence, bargaining shares) rather than explicit competitive actions
-
-This design reflects one established paradigm in coopetition research. Version 2.x will introduce biaxial action spaces with independent cooperation and competition dimensions. See [Theoretical Foundations](../theory/index.md#modeling-philosophy-uniaxial-treatment) for rationale.
-
----
-
-## Factory Functions
-
-### make
-
-```python
-coopetition_gym.make(
-    env_id: str,
-    **kwargs
-) -> gymnasium.Env
-```
-
-Create a Gymnasium-compatible coopetition environment.
-
-**Parameters:**
-
-| Name | Type | Description |
-|------|------|-------------|
-| `env_id` | `str` | Environment identifier (see [`list_environments()`](#list_environments)) |
-| `**kwargs` | | Environment-specific configuration parameters |
-
-**Returns:**
-
-| Type | Description |
-|------|-------------|
-| `gymnasium.Env` | Gymnasium-compatible environment instance |
-
-**Raises:**
-
-| Exception | Condition |
-|-----------|-----------|
-| `ValueError` | Unknown environment ID |
-| `TypeError` | Invalid configuration parameter |
-
-**Example:**
-
-```python
-import coopetition_gym
+import coopetition_gym as cg
 import numpy as np
 
-# Basic usage
-env = coopetition_gym.make("TrustDilemma-v0")
+env = cg.make("PlatformEcosystem-v0", n_developers=4,
+              reward_type="private", max_steps=20)
 obs, info = env.reset(seed=42)
-
-# With custom parameters
-env = coopetition_gym.make(
-    "PlatformEcosystem-v0",
-    n_developers=8,
-    max_steps=200
-)
-
-# Step through environment
-actions = np.array([50.0, 50.0])
+actions = np.minimum(env.endowments, 50.0).astype(np.float32)
 obs, rewards, terminated, truncated, info = env.step(actions)
+assert rewards.shape == (env.n_agents,)
+env.close()
 ```
 
-**See Also:**
-
-- [`make_parallel()`](#make_parallel) - PettingZoo Parallel API
-- [`make_aec()`](#make_aec) - PettingZoo AEC API
-- [Environment Reference](../environments/index.md) - Full environment documentation
-
----
-
-### make_parallel
+## Gymnasium registration
 
 ```python
-coopetition_gym.make_parallel(
-    env_id: str,
-    obs_config: Optional[ObservationConfig] = None,
-    render_mode: Optional[str] = None,
-    **kwargs
-) -> CoopetitionParallelEnv
+import gymnasium as gym
+
+env = gym.make("coopetition_gym:TrustDilemma-v0")
+obs, info = env.reset(seed=42)
+obs, rewards, terminated, truncated, info = env.step([50.0, 50.0])
+env.close()
 ```
 
-Create a PettingZoo Parallel API environment for simultaneous agent moves.
+Importing `coopetition_gym` registers all base IDs. `_register_gymnasium_envs()` is also the distribution entry-point target and can be called repeatedly without replacing existing registrations.
 
-**Parameters:**
+The reward remains a NumPy vector with one entry per agent. Registration disables Gymnasium's scalar passive reward checker for this API; it does not convert rewards into a scalar or guarantee compatibility with arbitrary single-agent learners. See the [scalar-reward adapter](wrappers.md#scalar-reward-adapter).
 
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `env_id` | `str` | *required* | Environment identifier |
-| `obs_config` | `ObservationConfig` | `None` | Observation configuration (see [ObservationConfig](wrappers.md#observationconfig)) |
-| `render_mode` | `str` | `None` | Rendering mode (`None`, `"ansi"`, `"rgb_array"`) |
-| `**kwargs` | | | Environment-specific parameters |
-
-**Returns:**
-
-| Type | Description |
-|------|-------------|
-| `CoopetitionParallelEnv` | PettingZoo-compatible parallel environment |
-
-**Example:**
+## Parallel API
 
 ```python
-import coopetition_gym
-
-# Basic parallel environment
-env = coopetition_gym.make_parallel("TrustDilemma-v0")
-observations, infos = env.reset(seed=42)
-
-# Actions are dictionaries keyed by agent name
-actions = {{agent: 50.0 for agent in env.agents}}
-observations, rewards, terminations, truncations, infos = env.step(actions)
-
-# With realistic observation asymmetry (agents can't see others' trust toward them)
+import coopetition_gym as cg
 from coopetition_gym import ObservationConfig
 
-env = coopetition_gym.make_parallel(
-    "TrustDilemma-v0",
-    obs_config=ObservationConfig.realistic_asymmetry()
+env = cg.make_parallel(
+    "TrustDilemma-v0", max_steps=20,
+    obs_config=ObservationConfig.realistic_asymmetry(),
 )
+observations, infos = env.reset(seed=42)
+while env.agents:
+    actions = {agent: env.action_space(agent).sample() for agent in env.agents}
+    observations, rewards, terminations, truncations, infos = env.step(actions)
+env.close()
 ```
 
-**Notes:**
-
-- All agents act simultaneously each step
-- Observations and actions are dictionaries keyed by agent ID
-- Agent IDs follow pattern `"agent_0"`, `"agent_1"`, etc.
-
-**See Also:**
-
-- [`make_aec()`](#make_aec) - Sequential moves
-- [ObservationConfig](wrappers.md#observationconfig) - Observation configuration
-
----
-
-### make_aec
+## AEC API
 
 ```python
-coopetition_gym.make_aec(
-    env_id: str,
-    obs_config: Optional[ObservationConfig] = None,
-    render_mode: Optional[str] = None,
-    **kwargs
-) -> CoopetitionAECEnv
-```
+import coopetition_gym as cg
 
-Create a PettingZoo AEC (Agent Environment Cycle) environment for sequential moves.
-
-**Parameters:**
-
-| Name | Type | Default | Description |
-|------|------|---------|-------------|
-| `env_id` | `str` | *required* | Environment identifier |
-| `obs_config` | `ObservationConfig` | `None` | Observation configuration |
-| `render_mode` | `str` | `None` | Rendering mode |
-| `**kwargs` | | | Environment-specific parameters |
-
-**Returns:**
-
-| Type | Description |
-|------|-------------|
-| `CoopetitionAECEnv` | PettingZoo AEC environment |
-
-**Example:**
-
-```python
-import coopetition_gym
-
-env = coopetition_gym.make_aec("TrustDilemma-v0")
+env = cg.make_aec("TrustDilemma-v0", max_steps=20)
 env.reset(seed=42)
-
-# Iterate through agents sequentially
-for agent in env.agent_iter(): observation, reward, termination, truncation, info = env.last()
-
-    if termination or truncation: action = None
-    else: action = 50.0  # Your policy here
-
+for agent in env.agent_iter():
+    observation, reward, terminated, truncated, info = env.last()
+    action = None if terminated or truncated else env.action_space(agent).sample()
     env.step(action)
+env.close()
 ```
 
-**Notes:**
+## Configuration and environment reference
 
-- Agents take turns acting in sequence
-- Use `agent_iter()` for standard iteration pattern
-- Use `last()` to get current agent's observation
+- [Configuration](configuration.md): reward objectives and dataclass fields.
+- [Wrappers](wrappers.md): observations, reset behavior and scalar aggregation.
+- [Environment classes](environments.md): actual defaults and implemented methods.
+- [Quick reference](quick_reference.md): all 20 IDs, agent counts and horizons.
 
----
+Base environments accept one cooperation value per agent; rewards and dynamics include structural interdependence and the relevant trust, collective-action or reciprocity mechanisms. The optional `slcd_2d` package adds an appropriation dimension and has a separate environment registry.
 
-### list_environments
+## Core modules
+
+| Module | Reference |
+|---|---|
+| `coopetition_gym.core.value_functions` | [Value functions](core/value_functions.md) |
+| `coopetition_gym.core.interdependence` | [Interdependence](core/interdependence.md) |
+| `coopetition_gym.core.trust_dynamics` | [Trust dynamics](core/trust_dynamics.md) |
+| `coopetition_gym.core.equilibrium` | [Payoffs and equilibrium](core/equilibrium.md) |
+| `coopetition_gym.core.collective_action` | [Source](https://github.com/vikpant/strategic-coopetition/blob/master/coopetition_gym/coopetition_gym/core/collective_action.py) |
+| `coopetition_gym.core.reciprocity` | [Source](https://github.com/vikpant/strategic-coopetition/blob/master/coopetition_gym/coopetition_gym/core/reciprocity.py) |
 
 ```python
-coopetition_gym.list_environments() -> List[str]
+from coopetition_gym.core import create_slcd_payoff_params, solve_equilibrium
+
+params = create_slcd_payoff_params()
+result = solve_equilibrium(params, equilibrium_type="coopetitive")
+print(result.converged, result.actions, result.total_welfare)
 ```
 
-Return list of all available environment identifiers.
-
-**Returns:**
-
-| Type | Description |
-|------|-------------|
-| `List[str]` | Sorted list of environment IDs |
-
-**Example:**
-
-```python
-import coopetition_gym
-
-envs = coopetition_gym.list_environments()
-print(envs)
-# ['ApacheProject-v0', 'CoalitionFormation-v0', 'CooperativeNegotiation-v0',
-#  'DynamicPartnerSelection-v0', 'LoyaltyTeam-v0', 'PartnerHoldUp-v0',
-#  'PlatformEcosystem-v0', 'PublicGoods-v0', 'RecoveryRace-v0',
-#  'RenaultNissan-v0', 'ReputationMarket-v0', 'SLCD-v0',
-#  'SynergySearch-v0', 'TeamProduction-v0', 'TrustDilemma-v0']
-```
-
----
-
-### version
-
-```python
-coopetition_gym.version() -> str
-```
-
-Return the package version string.
-
-**Returns:**
-
-| Type | Description |
-|------|-------------|
-| `str` | Version in semver format (e.g., `"0.3.0"`) |
-
----
-
-### info
-
-```python
-coopetition_gym.info() -> None
-```
-
-Print package information including version, authors, and available environments.
-
-**Example:**
-
-```python
-import coopetition_gym
-coopetition_gym.info()
-# Coopetition-Gym v0.3.0
-# Authors:
-#   Vik Pant - Faculty of Information, University of Toronto
-#   Eric Yu  - Faculty of Information and Department of Computer Science, University of Toronto
-# ...
-```
-
----
-
-## Type Aliases
-
-Common type aliases used throughout the API:
-
-```python
-from numpy.typing import NDArray
-import numpy as np
-
-# Array types
-FloatArray = NDArray[np.floating]  # General floating-point array
-IntArray = NDArray[np.integer]     # Integer array
-
-# Common function signatures
-ActionType = Union[float, NDArray[np.floating]]
-ObservationType = NDArray[np.floating]
-RewardType = NDArray[np.floating]
-```
-
----
-
-## Module Index
-
-### Core Mathematical Modules
-
-| Module | Description | Technical Report |
-|--------|-------------|------------------|
-| [`core.value_functions`](core/value_functions.md) | Individual and synergistic value computation | TR-1 §5-6 |
-| [`core.interdependence`](core/interdependence.md) | Structural dependency matrices | TR-1 §3-4 |
-| [`core.trust_dynamics`](core/trust_dynamics.md) | Trust and reputation evolution | TR-2 §4-6 |
-| [`core.equilibrium`](core/equilibrium.md) | Payoff computation and equilibrium solving | TR-1 §7 |
-| [`core.collective_action`](core/collective_action.md) | Collective action and loyalty mechanics | TR-3 |
-| [`core.reciprocity`](core/reciprocity.md) | Reciprocity dynamics (skeleton) | TR-4 |
-
-### Environment Modules
-
-| Module | Description |
-|--------|-------------|
-| [`envs.base`](environments.md#base-classes) | Abstract environment classes |
-| [`envs.dyadic_envs`](environments.md#dyadic-environments) | 2-agent environments |
-| [`envs.ecosystem_envs`](environments.md#ecosystem-environments) | N-agent environments |
-| [`envs.benchmark_envs`](environments.md#benchmark-environments) | Research benchmarks |
-| [`envs.case_study_envs`](environments.md#case-study-environments) | Validated case studies |
-| [`envs.extended_envs`](environments.md#extended-environments) | Extended mechanics |
-| [`envs.collective_action_envs`](environments.md#collective-action-environments) | TR-3 collective action environments |
-
-### Wrapper Modules
-
-| Module | Description |
-|--------|-------------|
-| [`envs.wrappers.observation_config`](wrappers.md#observationconfig) | Observation configuration |
-| [`envs.wrappers.parallel_wrapper`](wrappers.md#coopetitionparallelenv) | PettingZoo Parallel adapter |
-| [`envs.wrappers.aec_wrapper`](wrappers.md#coopetitionaecenv) | PettingZoo AEC adapter |
-
----
-
-## Changelog
-
-### v0.3.0 (Current)
-
-- Added 5 TR-4 reciprocity environments
-- Added 5 TR-3 collective action environments
-- 20 environments now available
-- Implemented reciprocity mechanics from TR-4
-- Implemented loyalty mechanics from TR-3
-
-### v0.2.0
-
-- Added `ObservationConfig` for configurable information asymmetry
-- Added `make_parallel()` and `make_aec()` factory functions
-- Added PettingZoo wrapper classes
-- Enhanced type annotations throughout
-
-### v0.1.0
-
-- Initial release
-- 5 TR-1 environments + 5 TR-2 environments implemented
-- Core mathematical framework complete
-
----
-
-## See Also
-
-- [Getting Started](../tutorials/quickstart.md) - Tutorial introduction
-- [Environment Reference](../environments/index.md) - Detailed environment docs
-- [Theoretical Foundations](../theory/index.md) - Mathematical background
-
-
-## Technical Reports
-
-- TR-1: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/pdf/2510.18802) (arXiv:2510.18802)
-- TR-2: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/pdf/2510.24909) (arXiv:2510.24909)
-- TR-3: [Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty](https://arxiv.org/pdf/2601.16237) (arXiv:2601.16237)
-- TR-4: [Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity](https://arxiv.org/pdf/2604.01240) (arXiv:2604.01240)
+This solves the configured model. It is not an empirical validation score. See [score provenance](../benchmarks/score_provenance.md) and the [repository reproduction guide](https://github.com/vikpant/strategic-coopetition/blob/master/REPRODUCE.md) before interpreting historical benchmark results.

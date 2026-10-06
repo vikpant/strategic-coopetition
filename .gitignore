@@ -34,3 +34,6 @@ htmlcov/
 results/
 data/
 texput.log
+
+# Local diagnostic log; may contain account and cloud identifiers
+/error.log

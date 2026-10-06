@@ -4,6 +4,24 @@ All notable changes to this project are documented in this file. The format
 is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.8] — Unreleased
+
+- Honor explicit reward overrides on configured environments and validate reward
+  modes; reset subclass state through both PettingZoo wrappers and clear optional
+  SLCD appropriation state. New results require new provenance and must not be
+  pooled with historical runs on the basis of algorithm/seed alone.
+- Count each analysis input once. Read native JSON and JSONL results, reject
+  repeated experimental cells and incompatible treatments/configurations, report
+  exclusions, and validate finite metrics and measured training completion.
+- Make campaign/checkpoint reuse depend on versioned configuration and verified
+  result evidence. Evaluation failures no longer substitute random actions.
+- Ship the experiments commands in the base wheel, register Gymnasium IDs, and
+  package the optional SLCD extension as `slcd_2d` version 0.1.1. Add a real
+  no-training smoke route and wheel installation CI outside the source tree.
+- Correct scientific controller labels, record conflicting case-score sources,
+  align development citation/package versions and distinguish historical data
+  reproduction from new experiments. Historical tags/data remain unchanged.
+
 ## [1.0.7] (2026-08-19)
 
 ### Documentation and packaging-metadata alignment

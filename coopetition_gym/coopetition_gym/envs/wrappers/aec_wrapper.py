@@ -95,7 +95,7 @@ class CoopetitionAECEnv(AECEnv):
         self._pending_rewards: Dict[str, float] = {agent: 0.0 for agent in self.possible_agents}
         
         # Initialize base env to compute observation sizes
-        base_env._init_state(seed=0)
+        base_env.reset(seed=0, options={})
         
         # Build spaces (public attributes required by PettingZoo API)
         self.observation_spaces = {}
@@ -131,7 +131,7 @@ class CoopetitionAECEnv(AECEnv):
             seed: Random seed for reproducibility
             options: Optional configuration overrides
         """
-        self.base_env._init_state(seed=seed)
+        self.base_env.reset(seed=seed, options={} if options is None else options)
         
         self.agents = self.possible_agents.copy()
         self._agent_selector = agent_selector(self.agents)

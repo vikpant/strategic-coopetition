@@ -1,7 +1,7 @@
 # Reproducibility, `papers/caise_2026`
 
 The validation suite for the interdependence-and-complementarity
-formalism is at `TR_validation/TR1_interdependence/` at the repository
+formalism is at `TR_validation/TR1_foundations/` at the repository
 root. The README in that subdirectory details how to reproduce the
 case-study scoring reported in the manuscript.
 

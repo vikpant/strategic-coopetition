@@ -341,7 +341,7 @@ class DynamicPartnerSelectionEnv(CoopetitionEnv):
         result = super().reset(**kwargs)
         
         # Optionally reset global reputation
-        options = kwargs.get("options", {})
+        options = kwargs.get("options") or {}
         if options.get("reset_reputation", False):
             self._global_reputation = np.zeros(self.n_agents, dtype=np.float32)
         

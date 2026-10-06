@@ -1,9 +1,10 @@
 """Analysis pipeline for the Coopetition-Gym v1 benchmark dataset.
 
-This module consolidates the paper's analysis scripts into a single
-command-line tool with subcommands for each analysis artifact. It produces
-the CSV summaries, text tables, and publication figures used in the main
-body and appendices.
+This module summarizes explicit result records into CSVs, text tables, and
+figures. Stable algorithm IDs identify the historical implementation roster;
+they do not establish equivalence to independent-learning or CTDE paradigms.
+Current outputs are not a certification that historical paper tables have been
+reproduced. Source/configuration provenance must be established separately.
 
 Consolidates:
 
@@ -34,9 +35,9 @@ Subcommands::
     reward-ablation    Compare returns across private/integrated/cooperative
                        reward configurations.
 
-The input format is the standard training-result JSON schema with one file
-per (algorithm, environment, seed). The ``returns_summary.csv`` aggregates
-across the seven training seeds; the oracle comparison and tier summary
+Inputs are recursive JSON or JSONL native result records. Select a treatment
+and evaluation fold explicitly when the input contains several arms or folds.
+The ``returns_summary.csv`` records the actual eligible seeds; the oracle comparison and tier summary
 consume the aggregated returns directly.
 
 Gap% definition (used throughout):
@@ -56,19 +57,19 @@ Usage::
 
     # Full analysis (all subcommands in one pass)
     python -m experiments.analyze all \\
-        --input-dir data/training/baseline_integrated/ \\
+        --input-dir data/training/baseline_integrated/raw/ \\
         --output-dir data/analysis/
 
     # Individual subcommands
     python -m experiments.analyze oracle-comparison \\
-        --input-dir data/training/baseline_integrated/ \\
+        --input-dir data/training/baseline_integrated/raw/ \\
         --output data/analysis/oracle_comparison.txt
 
     # Reward-type ablation comparison (needs all three input directories)
     python -m experiments.analyze reward-ablation \\
-        --input-baseline    data/training/baseline_integrated/ \\
-        --input-private     data/training/ablation_private/ \\
-        --input-cooperative data/training/ablation_cooperative/ \\
+        --input-baseline    data/training/baseline_integrated/raw/ \\
+        --input-private     data/training/ablation_private/raw/ \\
+        --input-cooperative data/training/ablation_cooperative/raw/ \\
         --output-dir        data/analysis/reward_ablation/
 """
 
@@ -81,7 +82,9 @@ import warnings
 import numpy as np
 from collections import defaultdict
 
-warnings.filterwarnings("ignore")
+from .records import RecordError, comparison_context, ensure_comparable, load_records, is_successful_result
+from .config import ANALYSIS_ENVIRONMENTS_BY_TR
+
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 MERGED_TR123 = os.path.join(BASE, "merged", "tr1_2_3")
@@ -105,15 +108,11 @@ ORACLE_ALGOS = [
     "Oracle_ReciprocityEquilibrium", "Oracle_BoundedReciprocity",
 ]
 
-# TR-tier environment mapping (by environment paper origin)
-TR1_ENVS = ["TrustDilemma-v0", "PartnerHoldUp-v0", "PlatformEcosystem-v0",
-            "DynamicPartnerSelection-v0", "SynergySearch-v0"]
-TR2_ENVS = ["RecoveryRace-v0", "CooperativeNegotiation-v0",
-            "ReputationMarket-v0", "SLCD-v0", "RenaultNissan-v0"]
-TR3_ENVS = ["ApacheProject-v0", "CoalitionFormation-v0",
-            "LoyaltyTeam-v0", "PublicGoods-v0", "TeamProduction-v0"]
-TR4_ENVS = ["ReciprocalDilemma-v0", "GiftExchange-v0",
-            "IndirectReciprocity-v0", "GraduatedSanction-v0", "AppleAppStore-v0"]
+# Historical analysis grouping; distinct from campaign allocation/source origin.
+TR1_ENVS = list(ANALYSIS_ENVIRONMENTS_BY_TR["tr1"])
+TR2_ENVS = list(ANALYSIS_ENVIRONMENTS_BY_TR["tr2"])
+TR3_ENVS = list(ANALYSIS_ENVIRONMENTS_BY_TR["tr3"])
+TR4_ENVS = list(ANALYSIS_ENVIRONMENTS_BY_TR["tr4"])
 
 ENV_TO_TR = {}
 for e in TR1_ENVS: ENV_TO_TR[e] = "TR-1"
@@ -218,40 +217,31 @@ def parse_filename(fname):
     return algo, env, seed
 
 
-def load_directory(dirpath):
-    """Load all JSON result files from a directory. Returns list of dicts."""
+def load_directory(dirpath, *, reward_type=None, seeds=None, include_invalid=False):
+    """Load recursive native JSON/JSONL results with explicit provenance checks."""
     records = []
-    for fname in sorted(os.listdir(dirpath)):
-        if not fname.endswith(".json"):
-            continue
-        algo, env, seed = parse_filename(fname)
-        if algo is None:
-            continue
-        fpath = os.path.join(dirpath, fname)
-        try:
-            with open(fpath) as f:
-                data = json.load(f)
-        except Exception as e:
-            print(f"  WARNING: failed to load {fname}: {e}")
-            continue
-        m = data.get("metrics", {})
-        rec = {
-            "algo": algo,
-            "env": env,
-            "seed": int(seed),
-            "tr": ENV_TO_TR.get(env, "?"),
-            "status": data.get("status", "unknown"),
-            "mean_return": m.get("mean_return"),
-            "std_return": m.get("std_return"),
-            "mean_cooperation": m.get("mean_cooperation_rate"),
-            "training_timesteps_list": m.get("training_timesteps", []),
-            "training_returns": m.get("training_returns", []),
-            "training_metrics": m.get("training_metrics", {}),
-            "tr_metrics": m.get("tr_metrics", {}),
+    for data in load_records(dirpath, reward_type=reward_type, seeds=seeds,
+                             successful_only=not include_invalid):
+        metrics = data.get("metrics") if isinstance(data.get("metrics"), dict) else {}
+        records.append({
+            "algo": data["algorithm"], "env": data["environment"],
+            "seed": data["training_seed"], "tr": ENV_TO_TR.get(data["environment"], "?"),
+            "status": data.get("status"), "mean_return": metrics.get("mean_return"),
+            "std_return": metrics.get("std_return"),
+            "mean_cooperation": metrics.get("mean_cooperation_rate"),
+            "training_timesteps_list": metrics.get("training_timesteps", []),
+            "training_returns": metrics.get("training_returns", []),
+            "training_metrics": metrics.get("training_metrics", {}),
+            "tr_metrics": metrics.get("tr_metrics", {}),
             "training_time_s": data.get("training_time_seconds"),
-        }
-        records.append(rec)
+            "reward_type": data.get("reward_type"), "record": data,
+        })
     return records
+
+
+def _load_input(args, *, include_invalid=False):
+    return load_directory(args.input_dir, reward_type=getattr(args, "reward_type", None),
+                          seeds=getattr(args, "seeds", None), include_invalid=include_invalid)
 
 
 # ── Statistics helpers ────────────────────────────────────────────────────────
@@ -285,15 +275,28 @@ def seed_stats(values):
 # ── Section 1: Returns Summary ────────────────────────────────────────────────
 
 def compute_returns_summary(records):
-    """Compute mean ± std ± sem per (algo, env) across seeds."""
-    grouped = defaultdict(list)
-    for r in records:
-        grouped[(r["algo"], r["env"])].append(r["mean_return"])
-
+    """Aggregate successful finite independent seed records without pooling arms."""
+    eligible = [r for r in records if r.get("status") == "success"
+                and math.isfinite(safe_float(r.get("mean_return")))
+                and ("record" not in r or is_successful_result(r["record"]))]
+    if eligible and all("record" in r for r in eligible):
+        ensure_comparable([r["record"] for r in eligible])
+    grouped, cells = defaultdict(list), set()
+    for record in eligible:
+        cell = (record["algo"], record["env"], record["seed"])
+        if cell in cells:
+            raise RecordError(f"repeated seed cell in summary: {cell}")
+        cells.add(cell)
+        grouped[cell[:2]].append(record)
     results = {}
-    for (algo, env), vals in grouped.items():
+    for pair, entries in grouped.items():
+        vals = [safe_float(r["mean_return"]) for r in entries]
         mean, std, sem, n = seed_stats(vals)
-        results[(algo, env)] = {"mean": mean, "std": std, "sem": sem, "n": n, "vals": vals}
+        results[pair] = {"mean": mean, "std": std, "sem": sem, "n": n, "vals": vals,
+                         "seeds": sorted(r["seed"] for r in entries),
+                         "reward_type": entries[0].get("reward_type"),
+                         "treatment_sources": sorted({r.get("record", {}).get("_reward_type_assumption", "record") for r in entries}),
+                         "configuration": comparison_context(entries[0]["record"]) if "record" in entries[0] else {}}
     return results
 
 
@@ -304,14 +307,21 @@ def write_returns_csv(summary, out_path):
         rows.append({
             "algorithm": algo,
             "environment": env,
+            "comparison_basis": "historical-roster",
             "tr": ENV_TO_TR.get(env, "?"),
             "n_seeds": s["n"],
+            "seeds": json.dumps(s["seeds"]),
+            "reward_type": s["reward_type"],
+            "treatment_sources": json.dumps(s["treatment_sources"]),
+            "configuration": json.dumps(s["configuration"], sort_keys=True),
             "mean_return": round(s["mean"], 4) if not math.isnan(s["mean"]) else "NA",
             "std_return": round(s["std"], 4) if not math.isnan(s["std"]) else "NA",
             "sem_return": round(s["sem"], 4) if not math.isnan(s["sem"]) else "NA",
             "min_val": round(min(safe_float(v) for v in s["vals"]), 4),
             "max_val": round(max(safe_float(v) for v in s["vals"]), 4),
         })
+    if not rows:
+        raise RecordError("no eligible algorithm results to summarize")
     with open(out_path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=rows[0].keys())
         writer.writeheader()
@@ -340,7 +350,8 @@ def oracle_comparison_table(records):
     lines.append("ORACLE COMPARISON TABLES — Training Algorithms vs Oracle Benchmarks")
     lines.append("=" * 105)
     lines.append("")
-    lines.append("Values: Mean Return ± Std (n=7 seeds).")
+    lines.append("Comparison basis: historical implementation roster; labels do not certify algorithm paradigms.")
+    lines.append("Values: Mean Return ± Std (observed eligible seeds; see returns_summary.csv).")
     lines.append("Gap%: (Algorithm - Oracle_ref) / |Oracle_ref| × 100.")
     lines.append("  Positive = algorithm EXCEEDS the reference oracle.")
     lines.append("  Negative = algorithm is BELOW the reference oracle.")
@@ -468,165 +479,32 @@ def oracle_comparison_table(records):
 # ── Section 3: MASAC Instability ──────────────────────────────────────────────
 
 def masac_instability_report(records):
-    """Deep analysis of MASAC numerical instability in TR-3 environments."""
-    masac = [r for r in records if r["algo"] == "MASAC"]
-
-    lines = []
-    lines.append("=" * 80)
-    lines.append("MASAC NUMERICAL INSTABILITY — Detailed Analysis")
-    lines.append("=" * 80)
-    lines.append("")
-    lines.append("Background:")
-    lines.append("  MASAC uses twin centralized critics with entropy-regularized SAC update.")
-    lines.append("  Critic loss = MSE(Q, target_Q) where target_Q includes entropy bonus.")
-    lines.append("  In high-reward environments, Q-values can reach O(10^6)–O(10^7),")
-    lines.append("  causing critic_loss gradients to overflow to inf via squared error.")
-    lines.append("  The actor_loss depends on Q-values and also overflows once Q → inf.")
-    lines.append("  Training returns remain valid (computed via env.step, not backprop).")
-    lines.append("")
-
-    # Classify files by instability
-    stable = []
-    inf_files = []
-
-    for r in masac:
-        tm = r["training_metrics"]
-        cl = tm.get("critic_loss", [])
-        al = tm.get("actor_loss", [])
-
-        cl_vals = [v for _, v in cl] if cl else []
-        al_vals = [v for _, v in al] if al else []
-
-        has_inf_cl = any(not math.isfinite(v) for v in cl_vals)
-        has_inf_al = any(not math.isfinite(v) for v in al_vals)
-
-        # Find onset timestep
-        onset_step = None
-        for step, v in cl:
-            if not math.isfinite(v):
-                onset_step = step
-                break
-
-        entry = {
-            "env": r["env"],
-            "seed": r["seed"],
-            "tr": r["tr"],
-            "mean_return": r["mean_return"],
-            "has_inf_cl": has_inf_cl,
-            "has_inf_al": has_inf_al,
-            "onset_step": onset_step,
-            "cl_vals": cl_vals,
-            "al_vals": al_vals,
-            "n_inf_cl": sum(1 for v in cl_vals if not math.isfinite(v)),
-            "n_inf_al": sum(1 for v in al_vals if not math.isfinite(v)),
-            "total_pts": len(cl_vals),
-        }
-
-        if has_inf_cl or has_inf_al:
-            inf_files.append(entry)
-        else:
-            stable.append(entry)
-
-    lines.append(f"Files with inf/nan in critic_loss or actor_loss: {len(inf_files)}/105")
-    lines.append(f"Stable files (all finite): {len(stable)}/105")
-    lines.append("")
-
-    # Group inf by env
-    from collections import defaultdict
-    by_env = defaultdict(list)
-    for e in inf_files:
-        by_env[e["env"]].append(e)
-
-    lines.append("INSTABILITY BY ENVIRONMENT:")
-    lines.append(f"  {'Environment':<30} {'Count':>6} {'Seeds':<30} {'Onset Step':>12}")
-    lines.append("  " + "-"*30 + " " + "-"*6 + " " + "-"*30 + " " + "-"*12)
-    for env in sorted(by_env.keys()):
-        entries = by_env[env]
-        seeds = sorted(e["seed"] for e in entries)
-        onsets = [e["onset_step"] for e in entries if e["onset_step"] is not None]
-        onset_str = f"{min(onsets):,}–{max(onsets):,}" if onsets else "N/A"
-        lines.append(f"  {env:<30} {len(entries):>6} {str(seeds):<30} {onset_str:>12}")
-    lines.append("")
-
-    # TR distribution of instability
-    tr_counts = defaultdict(int)
-    for e in inf_files:
-        tr_counts[e["tr"]] += 1
-    for e in stable:
-        tr_counts["stable_" + e["tr"]] += 1
-
-    tr_total = defaultdict(int)
-    for e in masac:
-        tr_total[ENV_TO_TR.get(e["env"], "?")] += 1
-
-    lines.append("INSTABILITY BY TR TIER:")
-    for tier in ["TR-1", "TR-2", "TR-3", "TR-4"]:
-        inf_cnt = tr_counts.get(tier, 0)
-        total = tr_total.get(tier, 0)
-        lines.append(f"  {tier}: {inf_cnt}/{total} files with instability")
-    lines.append("")
-
-    # Return validity: are training_returns still finite?
-    lines.append("TRAINING RETURNS VALIDITY (inf files only):")
-    lines.append(f"  {'Experiment':<40} {'MeanReturn':>12} {'RetFinite':>10} {'NInfCL':>8}/{'>Total':>6}")
-    lines.append("  " + "-"*40 + " " + "-"*12 + " " + "-"*10 + " " + "-"*8 + " " + "-"*6)
-    for e in sorted(inf_files, key=lambda x: (x["env"], x["seed"])):
-        mr = safe_float(e["mean_return"])
-        mr_str = f"{mr:,.1f}" if not math.isnan(mr) else "NaN"
-        tr_finite = "yes" if not math.isnan(mr) else "NO"
-        exp = f"MASAC_{e['env'].replace('-v0','')}_{e['seed']}"[:39]
-        lines.append(f"  {exp:<40} {mr_str:>12} {tr_finite:>10} {e['n_inf_cl']:>8}/{e['total_pts']:>6}")
-    lines.append("")
-
-    # Reward scale hypothesis: do inf files have higher mean_returns?
-    if inf_files and stable:
-        inf_returns = [safe_float(e["mean_return"]) for e in inf_files]
-        stable_returns = [safe_float(e["mean_return"]) for e in stable]
-        inf_returns_finite = [v for v in inf_returns if not math.isnan(v)]
-        stable_returns_finite = [v for v in stable_returns if not math.isnan(v)]
-        mean_inf = sum(inf_returns_finite) / len(inf_returns_finite) if inf_returns_finite else float("nan")
-        mean_stable = sum(stable_returns_finite) / len(stable_returns_finite) if stable_returns_finite else float("nan")
-        lines.append("REWARD SCALE HYPOTHESIS:")
-        lines.append(f"  Mean return of UNSTABLE files: {mean_inf:>15,.1f}")
-        lines.append(f"  Mean return of STABLE files:   {mean_stable:>15,.1f}")
-        ratio = mean_inf / mean_stable if mean_stable > 0 else float("nan")
-        lines.append(f"  Ratio (unstable/stable):       {ratio:>15.2f}×")
-        lines.append("")
-        lines.append("  → High-reward environments produce large Q-values, causing critic_loss")
-        lines.append("    (MSE in Q-space) to overflow. This is a known SAC stability issue.")
-        lines.append("    Mitigation strategies for future work:")
-        lines.append("    1. Reward normalization / clipping in high-reward environments")
-        lines.append("    2. Gradient clipping (max_grad_norm=1.0 in critic optimizer)")
-        lines.append("    3. Huber loss instead of MSE for critic (robust to large targets)")
-        lines.append("    4. Value function normalization (running mean/std of returns)")
-    lines.append("")
-
-    # Training curve behavior: at what fraction of training does instability onset?
-    onset_fractions = []
-    for e in inf_files:
-        if e["onset_step"] is not None and e["onset_step"] > 0:
-            frac = e["onset_step"] / 1_000_000
-            onset_fractions.append(frac)
-    if onset_fractions:
-        lines.append("INSTABILITY ONSET TIMING:")
-        lines.append(f"  Min onset: {min(onset_fractions)*100:.1f}% through training")
-        lines.append(f"  Max onset: {max(onset_fractions)*100:.1f}% through training")
-        lines.append(f"  Mean onset: {sum(onset_fractions)/len(onset_fractions)*100:.1f}% through training")
-        lines.append("  → Instability tends to emerge after substantial training,")
-        lines.append("    suggesting it accumulates via gradient compounding, not initialization.")
-    lines.append("")
-
-    lines.append("PAPER NOTE (suggested text):")
-    lines.append("  'MASAC exhibited critic_loss overflow (inf) in 8 of 60 TR-3 experiment runs,")
-    lines.append("   concentrated in high-reward collective-action environments (ApacheProject,")
-    lines.append("   CoalitionFormation, PublicGoods, TeamProduction). In these environments,")
-    lines.append("   cumulative episode returns reach O(10^6)–O(10^7), causing SAC\\'s Q-value")
-    lines.append("   estimates to overflow when squared in the MSE critic loss. Training returns")
-    lines.append("   remain valid as they are computed via environment reward signals, not")
-    lines.append("   backpropagation. We report MASAC results for affected environments using")
-    lines.append("   training return means; critics should be stabilized with reward normalization")
-    lines.append("   or Huber loss in follow-up work.'")
-
+    """Report only observed MASAC diagnostics, without historical counts/causes."""
+    masac = [record for record in records if record["algo"] == "MASAC"]
+    lines = ["MASAC NUMERICAL DIAGNOSTICS", f"Input records: {len(masac)}",
+             "Counts describe supplied records; no historical corpus size is assumed."]
+    if not masac:
+        lines.append("No MASAC records supplied.")
+        return "\n".join(lines)
+    unstable, missing = 0, 0
+    for record in sorted(masac, key=lambda r: (r["env"], r["seed"])):
+        metrics = record.get("training_metrics") if isinstance(record.get("training_metrics"), dict) else {}
+        observations = []
+        for name in ("critic_loss", "actor_loss"):
+            for point in metrics.get(name, []):
+                if isinstance(point, (list, tuple)) and len(point) == 2:
+                    observations.append((name, point[0], point[1]))
+        nonfinite = [(name, step) for name, step, value in observations
+                     if not math.isfinite(safe_float(value))]
+        unstable += bool(nonfinite)
+        missing += not observations
+        final_finite = math.isfinite(safe_float(record.get("mean_return")))
+        lines.append(f"{record['env']} seed={record['seed']} status={record.get('status')} "
+                     f"final_return_finite={final_finite} nonfinite_loss_points={len(nonfinite)} "
+                     f"loss_points={len(observations)} first_nonfinite={nonfinite[0] if nonfinite else None}")
+    lines.append(f"Records with observed nonfinite loss: {unstable}/{len(masac)}")
+    lines.append(f"Records without actor/critic loss observations: {missing}/{len(masac)}")
+    lines.append("A finite evaluation return does not establish successful or numerically stable training.")
     return "\n".join(lines)
 
 
@@ -855,7 +733,7 @@ def make_plots(summary, records, plot_dir):
         ax.set_xticks(range(len(algos_in_tier)))
         ax.set_xticklabels(algos_in_tier, rotation=45, ha="right", fontsize=8)
         ax.set_ylabel("Mean Return (avg across environments)", fontsize=10)
-        ax.set_title(f"{tier} — Algorithm Performance (7 seeds, mean ± std across {len(envs)} envs)", fontsize=11)
+        ax.set_title(f"{tier} — Algorithm Performance (eligible seeds, mean ± std across {len(envs)} envs)", fontsize=11)
         ax.grid(axis="y", alpha=0.3)
 
         # Oracle reference lines
@@ -938,7 +816,7 @@ def make_plots(summary, records, plot_dir):
         if has_any:
             ax.set_xlabel("Episode", fontsize=10)
             ax.set_ylabel("Training Return (smoothed)", fontsize=10)
-            ax.set_title(f"{tier} — Learning Curves on {env} (mean ± std, 7 seeds)", fontsize=11)
+            ax.set_title(f"{tier} — Learning Curves on {env} (mean ± std, eligible seeds)", fontsize=11)
             ax.legend(fontsize=7, ncol=3, loc="lower right")
             ax.grid(alpha=0.3)
             plt.tight_layout()
@@ -949,8 +827,8 @@ def make_plots(summary, records, plot_dir):
 
 # ── Main ───────────────────────────────────────────────────────────────────────
 
-def _analyze_all_main():
-    """Original ``analyze_all.py`` entry point, preserved byte-identically.
+def _analyze_all_main(records=None):
+    """Run all analysis outputs with one independent record set.
 
     Runs every analysis (returns summary, tier summary, oracle comparison,
     MASAC instability, training metrics, learning curves, plots) in a single
@@ -964,19 +842,19 @@ def _analyze_all_main():
     print("LOADING MERGED DATASET")
     print("=" * 70)
 
-    print("  Loading TR-1/2/3 results...")
-    records_tr123 = load_directory(MERGED_TR123)
-    print(f"    {len(records_tr123)} records loaded")
-
-    print("  Loading TR-4 results...")
-    records_tr4 = load_directory(MERGED_TR4)
-    print(f"    {len(records_tr4)} records loaded")
-
-    all_records = records_tr123 + records_tr4
+    if records is None:
+        # Preserve the legacy entry point without reading directory aliases twice.
+        paths = dict.fromkeys(os.path.realpath(p) for p in (MERGED_TR123, MERGED_TR4))
+        all_records = [record for path in paths for record in load_directory(path, include_invalid=True)]
+    else:
+        all_records = records
     print(f"  Total: {len(all_records)} records")
 
     # Filter to training + oracle only (exclude Constant for most analyses)
-    relevant = [r for r in all_records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
+    diagnostics = [r for r in all_records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
+    relevant = [r for r in diagnostics if is_successful_result(r["record"])]
+    if len(relevant) != len(diagnostics):
+        print(f"  Excluded {len(diagnostics) - len(relevant)} invalid/failed records from numerical outputs.")
     print(f"  Training + Oracle records: {len(relevant)}")
     print()
 
@@ -1004,7 +882,7 @@ def _analyze_all_main():
 
     # ── MASAC Instability ─────────────────────────────────────────────────────
     print("[4/6] Analyzing MASAC instability...")
-    masac_txt = masac_instability_report(relevant)
+    masac_txt = masac_instability_report(diagnostics)
     masac_path = os.path.join(OUTPUT_DIR, "masac_instability.txt")
     with open(masac_path, "w") as f:
         f.write(masac_txt)
@@ -1057,20 +935,37 @@ def _analyze_all_main():
 # Reward-type ablation comparison
 # =============================================================================
 
-def _load_and_aggregate(input_dir: str) -> dict:
+def _load_and_aggregate(input_dir: str, reward_type: str, seeds=None) -> dict:
     """Load results from one reward-configuration directory and aggregate
     per-(algo, env) by taking mean across seeds.
 
-    Returns ``{(algo, env): mean_return}``.
+    Returns per-cell summaries including seed and configuration provenance.
     """
-    records = load_directory(input_dir)
-    records = [r for r in records if r["status"] == "success"]
-    grouped = defaultdict(list)
-    for r in records:
-        val = safe_float(r["mean_return"])
-        if not math.isnan(val):
-            grouped[(r["algo"], r["env"])].append(val)
-    return {key: float(np.mean(vs)) for key, vs in grouped.items() if vs}
+    records = load_directory(input_dir, reward_type=reward_type, seeds=seeds)
+    return compute_returns_summary(records)
+
+
+def _cross_arm_context(configuration):
+    """Remove only treatment identifiers; retain code, budget and policy design."""
+    context = {key: value for key, value in configuration.items()
+               if key not in {"reward_type", "actual_reward_type", "campaign_id", "config_hash"}}
+    if isinstance(context.get("environment_config"), dict):
+        context["environment_config"] = {
+            key: value for key, value in context["environment_config"].items()
+            if key != "reward_type"
+        }
+    return context
+
+
+def _cross_arm_status(arms):
+    if any(arm is None for arm in arms):
+        return "incomparable: missing arm"
+    if any(arm["seeds"] != arms[0]["seeds"] for arm in arms[1:]):
+        return "incomparable: different seed folds"
+    context = _cross_arm_context(arms[0]["configuration"])
+    if any(_cross_arm_context(arm["configuration"]) != context for arm in arms[1:]):
+        return "incomparable: different recorded scientific configurations"
+    return "matching recorded seeds and context"
 
 
 def compare_reward_configurations(
@@ -1078,16 +973,19 @@ def compare_reward_configurations(
     private_dir: str,
     cooperative_dir: str,
     output_dir: str,
+    seeds=None,
 ) -> None:
     """Compare per-(algo, env) mean return across the three reward configurations.
 
     Writes ``reward_ablation_summary.csv`` with one row per (algo, env) and
     columns for each of private, integrated (baseline), and cooperative
-    return, plus their differences.
+    return, observed seeds/configuration, and differences only when all arms
+    have identical seeds and matching recorded scientific context. Equality
+    of partial legacy metadata is not proof of a controlled historical design.
     """
-    baseline = _load_and_aggregate(baseline_dir)
-    private = _load_and_aggregate(private_dir)
-    cooperative = _load_and_aggregate(cooperative_dir)
+    baseline = _load_and_aggregate(baseline_dir, "integrated", seeds)
+    private = _load_and_aggregate(private_dir, "private", seeds)
+    cooperative = _load_and_aggregate(cooperative_dir, "cooperative", seeds)
 
     os.makedirs(output_dir, exist_ok=True)
     out_path = os.path.join(output_dir, "reward_ablation_summary.csv")
@@ -1096,18 +994,31 @@ def compare_reward_configurations(
     rows = []
     for key in all_keys:
         algo, env = key
-        b = baseline.get(key)
-        p = private.get(key)
-        c = cooperative.get(key)
+        b = baseline.get(key, {}).get("mean")
+        p = private.get(key, {}).get("mean")
+        c = cooperative.get(key, {}).get("mean")
+        comparison_status = _cross_arm_status([baseline.get(key), private.get(key), cooperative.get(key)])
+        aligned = comparison_status == "matching recorded seeds and context"
         rows.append({
             "algorithm": algo,
             "environment": env,
+            "comparison_basis": "historical-roster",
             "tr": ENV_TO_TR.get(env, "?"),
+            "comparison_status": comparison_status,
+            "seeds_private": json.dumps(private.get(key, {}).get("seeds", [])),
+            "seeds_integrated": json.dumps(baseline.get(key, {}).get("seeds", [])),
+            "seeds_cooperative": json.dumps(cooperative.get(key, {}).get("seeds", [])),
+            "configuration_private": json.dumps(private.get(key, {}).get("configuration", {}), sort_keys=True),
+            "configuration_integrated": json.dumps(baseline.get(key, {}).get("configuration", {}), sort_keys=True),
+            "configuration_cooperative": json.dumps(cooperative.get(key, {}).get("configuration", {}), sort_keys=True),
+            "treatment_sources_private": json.dumps(private.get(key, {}).get("treatment_sources", [])),
+            "treatment_sources_integrated": json.dumps(baseline.get(key, {}).get("treatment_sources", [])),
+            "treatment_sources_cooperative": json.dumps(cooperative.get(key, {}).get("treatment_sources", [])),
             "mean_return_private": f"{p:.4f}" if p is not None else "",
             "mean_return_integrated": f"{b:.4f}" if b is not None else "",
             "mean_return_cooperative": f"{c:.4f}" if c is not None else "",
-            "delta_integrated_minus_private": f"{(b - p):.4f}" if b is not None and p is not None else "",
-            "delta_cooperative_minus_integrated": f"{(c - b):.4f}" if c is not None and b is not None else "",
+            "delta_integrated_minus_private": f"{(b - p):.4f}" if aligned else "",
+            "delta_cooperative_minus_integrated": f"{(c - b):.4f}" if aligned else "",
         })
 
     with open(out_path, "w", newline="") as f:
@@ -1122,24 +1033,15 @@ def compare_reward_configurations(
 # =============================================================================
 
 def _cmd_all(args):
-    """Run every analysis in one pass (legacy behavior).
-
-    The original ``analyze_all.py`` loaded data from two subdirectories
-    (``merged/tr1_2_3`` and ``merged/tr4``). The consolidated CLI accepts a
-    single ``--input-dir`` and points both globals at it; if your data is
-    split across two directories, set the two module-level globals directly
-    before calling this function.
-    """
-    global OUTPUT_DIR, MERGED_TR123, MERGED_TR4
+    """Load the unified input once and run each analysis on those records."""
+    global OUTPUT_DIR
     OUTPUT_DIR = args.output_dir
-    MERGED_TR123 = args.input_dir
-    MERGED_TR4 = args.input_dir
-    _analyze_all_main()
+    _analyze_all_main(_load_input(args, include_invalid=True))
     return 0
 
 
 def _cmd_returns_summary(args):
-    records = load_directory(args.input_dir)
+    records = _load_input(args)
     records = [r for r in records if r["status"] == "success"]
     relevant = [r for r in records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
     summary = compute_returns_summary(relevant)
@@ -1150,7 +1052,7 @@ def _cmd_returns_summary(args):
 
 
 def _cmd_oracle_comparison(args):
-    records = load_directory(args.input_dir)
+    records = _load_input(args)
     records = [r for r in records if r["status"] == "success"]
     relevant = [r for r in records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
     txt = oracle_comparison_table(relevant)
@@ -1164,7 +1066,7 @@ def _cmd_oracle_comparison(args):
 
 
 def _cmd_tier_summary(args):
-    records = load_directory(args.input_dir)
+    records = _load_input(args)
     records = [r for r in records if r["status"] == "success"]
     relevant = [r for r in records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
     summary = compute_returns_summary(relevant)
@@ -1179,8 +1081,7 @@ def _cmd_tier_summary(args):
 
 
 def _cmd_masac(args):
-    records = load_directory(args.input_dir)
-    records = [r for r in records if r["status"] == "success"]
+    records = _load_input(args, include_invalid=True)
     relevant = [r for r in records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
     txt = masac_instability_report(relevant)
     os.makedirs(os.path.dirname(args.output) or ".", exist_ok=True)
@@ -1191,7 +1092,7 @@ def _cmd_masac(args):
 
 
 def _cmd_training_metrics(args):
-    records = load_directory(args.input_dir)
+    records = _load_input(args)
     records = [r for r in records if r["status"] == "success"]
     relevant = [r for r in records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
     rows = training_metrics_summary(relevant)
@@ -1208,7 +1109,7 @@ def _cmd_training_metrics(args):
 
 
 def _cmd_learning_curves(args):
-    records = load_directory(args.input_dir)
+    records = _load_input(args)
     records = [r for r in records if r["status"] == "success"]
     relevant = [r for r in records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
     os.makedirs(args.output_dir, exist_ok=True)
@@ -1218,7 +1119,7 @@ def _cmd_learning_curves(args):
 
 
 def _cmd_plots(args):
-    records = load_directory(args.input_dir)
+    records = _load_input(args)
     records = [r for r in records if r["status"] == "success"]
     relevant = [r for r in records if r["algo"] in TRAINING_ALGOS + ORACLE_ALGOS]
     summary = compute_returns_summary(relevant)
@@ -1233,6 +1134,7 @@ def _cmd_reward_ablation(args):
         private_dir=args.input_private,
         cooperative_dir=args.input_cooperative,
         output_dir=args.output_dir,
+        seeds=getattr(args, "seeds", None),
     )
     return 0
 
@@ -1319,12 +1221,33 @@ def _build_parser():
     sp.add_argument("--output-dir", required=True)
     sp.set_defaults(func=_cmd_reward_ablation)
 
+    for command, command_parser in sub.choices.items():
+        command_parser.add_argument("--seeds", type=_parse_seeds,
+                                    help="Explicit comma-separated evaluation fold; otherwise use all supplied seeds.")
+        if command != "reward-ablation":
+            command_parser.add_argument("--reward-type", choices=("private", "integrated", "cooperative"),
+                                        help="Select this treatment; explicitly supplies missing legacy treatment metadata.")
     return parser
 
 
+def _parse_seeds(value):
+    import argparse
+    try:
+        seeds = [int(part.strip()) for part in value.split(",")]
+        if not seeds or any(seed < 0 for seed in seeds) or len(set(seeds)) != len(seeds):
+            raise ValueError
+        return seeds
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError("seeds must be distinct nonnegative integers separated by commas") from exc
+
+
 def main(argv=None):
-    args = _build_parser().parse_args(argv)
-    return args.func(args)
+    parser = _build_parser()
+    args = parser.parse_args(argv)
+    try:
+        return args.func(args)
+    except RecordError as exc:
+        parser.error(str(exc))
 
 
 if __name__ == "__main__":

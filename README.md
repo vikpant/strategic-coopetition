@@ -27,9 +27,10 @@ game theory, and reinforcement learning.
   (interdependence, trust, collective action, reciprocity).
 - **126-algorithm reference suite**: 16 training algorithms, 7
   game-theoretic oracles, 2 heuristics, and 101 constant-action policies.
-- **Four calibrated case studies** grounded in real-world coopetitive
-  relationships: Samsung–Sony LCD (96.7%), Renault–Nissan (81.7%),
-  Apache HTTP Server (86.7%), Apple iOS App Store (87.3%).
+- **Four case-informed environments** grounded in Samsung–Sony LCD,
+  Renault–Nissan, Apache HTTP Server, and Apple iOS App Store.
+  [Score provenance and unresolved rubric conflicts](coopetition_gym/docs/benchmarks/score_provenance.md)
+  distinguish source-specific scores from prediction accuracy.
 - **Reward-type ablation methodology** for mixed-motive evaluation,
   varying reward mutuality across private, integrated, and cooperative
   configurations while holding mechanism rules fixed.
@@ -41,23 +42,29 @@ game theory, and reinforcement learning.
 </p>
 
 <p align="center">
-  <em>Algorithm reference suite organised by paradigm. The benchmark covers four learning families plus heuristic and game-theoretic oracle baselines.</em>
+  <em>Historical algorithm roster. IPPO, IA2C and ISAC use joint controllers; the original family labels do not establish independent execution. See the implementation protocol below.</em>
 </p>
+
+The current source is the **unreleased 1.0.8 candidate**.
+[Reproduction instructions](REPRODUCE.md) include a no-training smoke check.
+[Implementation protocol](coopetition_gym/docs/benchmarks/implementation_protocol.md)
+explains controller semantics, reward modes, and historical analysis groupings.
 
 ## Repository layout
 
 | Folder | Contents |
 |---|---|
 | [`coopetition_gym/`](coopetition_gym/) | The Coopetition-Gym Python package, runnable [examples](coopetition_gym/examples/), a [reproducibility experiments](coopetition_gym/experiments/) tier, and library [extensions](coopetition_gym/extensions/). |
-| [`TR_validation/`](TR_validation/) | Validation suites that reproduce the empirical results in the technical reports. |
+| [`TR_validation/`](TR_validation/) | Technical-report validation code and saved results with source-specific scoring rubrics. |
 | [`papers/`](papers/) | Per-paper artifact bundles. See [`papers/README.md`](papers/README.md). |
 
 ## Installation
 
 ```bash
 git clone https://github.com/vikpant/strategic-coopetition.git
-cd strategic-coopetition/coopetition_gym
-pip install -e .
+cd strategic-coopetition
+python -m pip install "./coopetition_gym[experiments]"
+python -m experiments.smoke --output data/smoke
 ```
 
 ## Quickstart
@@ -148,14 +155,13 @@ technical report.
 }
 ```
 
-## Validated Case Studies
+## Case-study score provenance
 
-| Case study | Validation score | Technical report |
-|---|---|---|
-| Samsung–Sony S-LCD Joint Venture (2004–2011) | 58/60 logarithmic, 46/60 power | TR-1 §8 |
-| Renault–Nissan Alliance (multi-phase) | 49/60 | TR-2 §9 |
-| Apache HTTP Server community evolution | 45/60 | TR-3 §7 |
-| Apple iOS App Store platform dynamics | 43/51 | TR-4 §8 |
+The public artifacts contain different rubric versions and conflicting score
+summaries. The [provenance register](coopetition_gym/docs/benchmarks/score_provenance.md)
+records each value with its source. No single Apache or Apple score is designated
+canonical until its rubric and generating artifact have been reconciled. These
+are case-specific correspondence scores, not comparable predictive accuracies.
 
 ## Community
 

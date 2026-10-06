@@ -32,7 +32,7 @@ import gymnasium as gym
 from gymnasium import spaces
 from gymnasium.core import ActType, ObsType
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from copy import deepcopy
 from abc import ABC
 
@@ -106,6 +106,12 @@ class EnvironmentConfig:
     
     def __post_init__(self):
         """Initialize defaults based on n_agents."""
+        if self.reward_type not in ("integrated", "private", "cooperative"):
+            raise ValueError(
+                "reward_type must be 'integrated', 'private', or 'cooperative', "
+                f"got {self.reward_type!r}"
+            )
+
         if self.endowments is None:
             self.endowments = np.full(self.n_agents, 100.0)
         
@@ -561,10 +567,14 @@ class CoopetitionEnv(gym.Env, AbstractCoopetitionEnv):
         
         Args:
             config: Environment configuration
-            **kwargs: Additional arguments passed to config if config is None
+            **kwargs: EnvironmentConfig fields overriding the supplied config
         """
         if config is None:
             config = EnvironmentConfig(**kwargs)
+        elif kwargs:
+            # Preserve caller-owned configs and validate overrides, including
+            # unknown field names, through the dataclass constructor.
+            config = replace(config, **kwargs)
         
         # Use full observability for backward compatibility
         AbstractCoopetitionEnv.__init__(self, config, ObservationConfig.full_observability())

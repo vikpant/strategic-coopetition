@@ -99,6 +99,12 @@ class SLCDAppropriationEnv(SLCDEnv):
 
         self._appropriation: np.ndarray = np.zeros(self.n_agents, dtype=np.float32)
 
+    def reset(
+        self, *, seed: Optional[int] = None, options: Optional[Dict] = None
+    ) -> Tuple[ObsType, Dict[str, Any]]:
+        self._appropriation = np.zeros(self.n_agents, dtype=np.float32)
+        return super().reset(seed=seed, options=options)
+
     # ------------------------------------------------------------------
     # Action parsing
     # ------------------------------------------------------------------

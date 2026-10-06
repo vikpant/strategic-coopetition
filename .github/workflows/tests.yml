@@ -32,8 +32,13 @@ jobs:
         working-directory: coopetition_gym
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install -e ".[dev,experiments]"
 
       - name: Run pytest
         working-directory: coopetition_gym
-        run: pytest coopetition_gym/tests/ -v --tb=short
+        run: python -m pytest coopetition_gym/tests/ experiments/tests/ -v --tb=short
+
+      - name: Test optional extension without training
+        if: matrix.python-version != '3.9'
+        working-directory: coopetition_gym
+        run: python -m pytest extensions/slcd_2d/tests/ -k "not test_ippo_trains_on_2d" -v --tb=short

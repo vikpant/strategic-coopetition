@@ -17,13 +17,14 @@ verify that the paper's findings are not artifacts of the baseline
 
 Algorithm matrix (from :data:`SENSITIVITY_ALGORITHMS`):
     ISAC, MADDPG, MAPPO, COMA, QMIX. Hyperparameters are copied exactly from
-    the main-campaign specs in :mod:`experiments.config`; only ``net_arch``
+    the main-campaign specs in :mod:`experiments.campaign`; only ``net_arch``
     is varied per experiment.
 
-Network capacities (from :data:`experiments.config.SENSITIVITY_NET_SIZES`):
+Available network capacities (from :data:`experiments.config.SENSITIVITY_NET_SIZES`):
     ``[64, 64]``, ``[128, 128]``, ``[256, 256]``, ``[512, 512]``,
     ``[1024, 1024]``. The ``[128, 128]`` baseline is typically skipped
-    because the main campaign already covers that point.
+    because the main campaign already covers that point. The default runs
+    only ``[64, 64]``; broader sweeps require explicit ``--net-sizes``.
 
 Design:
 
@@ -38,21 +39,22 @@ Design:
 
 Usage::
 
-    # Full sweep
-    python -m experiments.sensitivity --max-gpu-workers 40 \\
+    # Default architecture with one worker
+    python -m experiments.sensitivity --max-gpu-workers 1 \\
         --output data/training/network_sensitivity/
 
     # Subset for distributed execution
-    python -m experiments.sensitivity --algorithms MADDPG --max-gpu-workers 40 ...
-    python -m experiments.sensitivity --algorithms ISAC,MAPPO --max-gpu-workers 40 ...
+    python -m experiments.sensitivity --algorithms MADDPG --max-gpu-workers 1 ...
+    python -m experiments.sensitivity --algorithms ISAC,MAPPO --max-gpu-workers 1 ...
 
 Also accessible via the unified campaign CLI::
 
-    python -m experiments.campaign sensitivity --max-gpu-workers 40 \\
+    python -m experiments.campaign sensitivity --max-gpu-workers 1 \\
         --output data/training/network_sensitivity/
 """
 
 import sys
+from copy import deepcopy
 import json
 import time
 import math
@@ -68,128 +70,93 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass, field, asdict
 from typing import List, Dict, Any, Optional, Tuple, Set
 
-# Prepend the parent of the inner ``coopetition_gym`` package so the import
-# machinery resolves the installed editable package instead of the outer
-# namespace-package directory. This mirrors the fix applied in
-# ``experiments.audit`` and ``experiments.algorithms``.
-_THIS_DIR = Path(__file__).resolve().parent       # .../experiments
-_PROJECT_ROOT = _THIS_DIR.parent                   # repository root
-_GYM_PATH = str(_PROJECT_ROOT / "coopetition_gym")
-if _GYM_PATH not in sys.path:
-    sys.path.insert(0, _GYM_PATH)
-
 # =============================================================================
 # CONFIGURATION
 # =============================================================================
 
-# Network sizes to test (powers of two from 64 to 1024)
-# [128,128] is the baseline — exists in main campaign data, not re-run here
-DEFAULT_NET_SIZES = [[64, 64], [256, 256], [512, 512], [1024, 1024]]
-BASELINE_NET_SIZE = [128, 128]  # Reference only — not run
+from .config import ENVIRONMENT_BY_ID, TRAINING_SEEDS, SENSITIVITY_NET_SIZES
+from .campaign import (
+    TRAINING_ALGORITHMS, TIMESTEPS_BY_CATEGORY, CAMPAIGN_SCHEMA_VERSION,
+    BUDGET_VERSION, REWARD_VERSION, REWARD_TYPES, NumpyEncoder,
+    _identity_hash, _source_version, _source_fingerprint, _campaign_result_complete, _json_safe,
+)
 
-# =============================================================================
-# ALGORITHM CONFIGURATIONS — MUST MATCH orchestrator.py EXACTLY
-# =============================================================================
-# CRITICAL: These params are copied PROGRAMMATICALLY from orchestrator.py
-# TRAINING_ALGORITHMS definitions. The ONLY parameter that changes across
-# sensitivity experiments is net_arch. All other params MUST be identical
-# to Campaign 1 baseline to enable valid cross-campaign comparison.
-#
-# Source: orchestrator.py lines 413-515 (TRAINING_ALGORITHMS)
-# Verified: 2026-04-11 via programmatic extraction
-#
-# RULE: NEVER hand-type algorithm params. Always extract from orchestrator.py
-# and verify before launching. See feedback_sensitivity_params.md in memory.
-# =============================================================================
+# A small architecture and one worker are the defaults; larger sweeps require
+# an explicit --net-sizes selection after hardware sizing.
+DEFAULT_NET_SIZES = [[64, 64]]
+AVAILABLE_NET_SIZES = [list(size) for size in SENSITIVITY_NET_SIZES]
+BASELINE_NET_SIZE = [128, 128]
+
+# Preserve the campaign's algorithm parameters programmatically. Network width
+# is the only scientific algorithm setting changed by this module.
 SENSITIVITY_ALGORITHMS = {
-    "ISAC": {
-        "name": "ISAC", "class": "IndependentSAC",
-        "requires_training": True, "gpu_memory_gb": 3.0, "cpu_only": False,
-        "speed": "medium",
-        "params": {
-            # EXACT match: orchestrator.py ISAC params
-            "learning_rate": 3e-4, "buffer_size": 100000, "batch_size": 256,
-            "tau": 0.005, "gamma": 0.99,
-            "net_arch": [128, 128],  # Will be overridden per experiment
-        },
-    },
-    "MADDPG": {
-        "name": "MADDPG", "class": "MADDPG",
-        "requires_training": True, "gpu_memory_gb": 4.0, "cpu_only": False,
-        "speed": "slow",
-        "params": {
-            # EXACT match: orchestrator.py MADDPG params
-            "learning_rate_actor": 1e-4, "learning_rate_critic": 1e-3,
-            "buffer_size": 100000, "batch_size": 256,
-            "tau": 0.005, "gamma": 0.99,
-            "net_arch": [128, 128],  # Will be overridden per experiment
-        },
-    },
-    "MAPPO": {
-        "name": "MAPPO", "class": "MAPPO",
-        "requires_training": True, "gpu_memory_gb": 0.0, "cpu_only": True,
-        "speed": "medium",
-        "params": {
-            # EXACT match: orchestrator.py MAPPO params
-            # NOTE: MAPPO is cpu_only=True in orchestrator — runs on CPU, not GPU
-            "learning_rate": 3e-4, "n_steps": 2048, "batch_size": 64,
-            "n_epochs": 10, "gamma": 0.99, "gae_lambda": 0.95,
-            "clip_range": 0.2, "ent_coef": 0.01, "share_critic": True,
-            "net_arch": [128, 128],  # Will be overridden per experiment
-        },
-    },
-    "COMA": {
-        "name": "COMA", "class": "COMA",
-        "requires_training": True, "gpu_memory_gb": 1.5, "cpu_only": False,
-        "speed": "fast",
-        "params": {
-            # EXACT match: orchestrator.py COMA params
-            # NOTE: orchestrator only sets learning_rate and gamma for COMA
-            # All other params use algorithm class defaults in algorithms.py
-            "learning_rate": 5e-4, "gamma": 0.99,
-            "net_arch": [128, 128],  # Will be overridden per experiment
-        },
-    },
-    "QMIX": {
-        "name": "QMIX", "class": "QMIX",
-        "requires_training": True, "gpu_memory_gb": 2.5, "cpu_only": False,
-        "speed": "medium",
-        "params": {
-            # EXACT match: orchestrator.py QMIX params
-            "learning_rate": 5e-4, "buffer_size": 5000, "batch_size": 32,
-            "gamma": 0.99, "action_bins": 11,
-            "net_arch": [128, 128],  # Will be overridden per experiment
-        },
-    },
+    item["name"]: deepcopy(item) for item in TRAINING_ALGORITHMS
+    if item["name"] in {"ISAC", "MADDPG", "MAPPO", "COMA", "QMIX"}
 }
-
-# Environments: coverage across all 4 TR tiers and agent counts
-# Set A (original): TR-1 + TR-3, agent counts 2/3/7
-# Set B (extended): TR-2 + TR-4 + case study, agent counts 2/4/6
 SENSITIVITY_ENVIRONMENTS = [
-    # --- Set A: Original 3 (Italy + France instances) ---
-    {"id": "TrustDilemma-v0", "horizon": 100, "category": "dyadic",
-     "n_agents": 2, "tr": "tr1"},
-    {"id": "LoyaltyTeam-v0", "horizon": 100, "category": "collective_action",
-     "n_agents": 3, "tr": "tr3"},
-    {"id": "ApacheProject-v0", "horizon": 100, "category": "collective_action",
-     "n_agents": 7, "tr": "tr3"},
-    # --- Set B: Extended (California instance) ---
-    {"id": "RecoveryRace-v0", "horizon": 100, "category": "benchmark",
-     "n_agents": 2, "tr": "tr2"},
-    {"id": "GraduatedSanction-v0", "horizon": 100, "category": "reciprocity",
-     "n_agents": 6, "tr": "tr4"},
-    {"id": "SLCD-v0", "horizon": 100, "category": "dyadic",
-     "n_agents": 2, "tr": "tr2"},
-    # --- Set C: Symmetric coverage (2 per TR) ---
-    # EXACT match: orchestrator.py environment configs
-    {"id": "PartnerHoldUp-v0", "horizon": 100, "category": "dyadic",
-     "n_agents": 2, "tr": "tr1"},
-    {"id": "ReciprocalDilemma-v0", "horizon": 100, "category": "dyadic",
-     "n_agents": 2, "tr": "tr4"},
+    asdict(ENVIRONMENT_BY_ID[name]) for name in (
+        "TrustDilemma-v0", "LoyaltyTeam-v0", "ApacheProject-v0", "RecoveryRace-v0",
+        "GraduatedSanction-v0", "SLCD-v0", "PartnerHoldUp-v0", "ReciprocalDilemma-v0",
+    )
 ]
 
-REWARD_TYPES = ["integrated", "private"]
+
+def ensure_campaign_identity(output_dir, n_eval_episodes, timesteps_override=None):
+    """Prevent incompatible sensitivity configurations sharing an output tree."""
+    identity = {
+        "kind": "network-sensitivity", "schema_version": CAMPAIGN_SCHEMA_VERSION,
+        "source_version": _source_version(), "source_fingerprint": _source_fingerprint(),
+        "reward_version": REWARD_VERSION,
+        "budget_version": BUDGET_VERSION, "timesteps_by_category": TIMESTEPS_BY_CATEGORY,
+        "timesteps_override": timesteps_override, "n_eval_episodes": n_eval_episodes,
+        "algorithms": SENSITIVITY_ALGORITHMS, "environments": SENSITIVITY_ENVIRONMENTS,
+    }
+    campaign_id = _identity_hash(identity)
+    output_dir = Path(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    path = output_dir / "sensitivity.json"
+    if path.exists():
+        existing = json.loads(path.read_text())
+        if (existing.get("campaign_id") != campaign_id
+                or _identity_hash(existing.get("configuration")) != campaign_id):
+            raise ValueError("Output directory belongs to a different sensitivity configuration; use a new directory")
+        return campaign_id
+    if any(output_dir.glob("raw/*.json")) or any(output_dir.glob("*/raw/*.json")):
+        raise ValueError("Existing sensitivity results have no manifest; use a new output directory")
+    with path.open("x") as handle:
+        json.dump({"campaign_id": campaign_id, "configuration": identity}, handle,
+                  sort_keys=True, allow_nan=False, cls=NumpyEncoder)
+    return campaign_id
+
+
+def _sensitivity_result_complete(record, campaign_id, n_eval_episodes, timesteps_override=None):
+    if not campaign_id or n_eval_episodes is None:
+        return False
+    if not _campaign_result_complete(record, campaign_id) or record.get("requires_training") is not True:
+        return False
+    net_arch = record.get("net_arch")
+    if (not isinstance(net_arch, list) or not net_arch
+            or any(not isinstance(width, int) or isinstance(width, bool) or width <= 0 for width in net_arch)):
+        return False
+    if record.get("net_arch_tag") != net_arch_tag(net_arch):
+        return False
+    if record.get("evaluation_episodes_requested") != n_eval_episodes:
+        return False
+    spec = next((env for env in SENSITIVITY_ENVIRONMENTS if env["id"] == record["environment"]), None)
+    algorithm = SENSITIVITY_ALGORITHMS.get(record["algorithm"])
+    if spec is None or algorithm is None:
+        return False
+    expected_algo = deepcopy(algorithm)
+    expected_algo["params"]["net_arch"] = net_arch
+    expected_algo["gpu_memory_gb"] = estimate_vram_gb(net_arch, record["algorithm"], spec["n_agents"])
+    if record.get("algorithm_config") != expected_algo:
+        return False
+    expected_env = dict(spec, reward_type=record["reward_type"])
+    if record.get("environment_config") != expected_env:
+        return False
+    budget = (timesteps_override if timesteps_override is not None else
+              TIMESTEPS_BY_CATEGORY.get(spec.get("category", "dyadic"), 500000))
+    return record.get("training_steps_requested") == budget
 
 
 # =============================================================================
@@ -225,6 +192,21 @@ def build_experiment_matrix(
     completed_keys: Set[str],
 ) -> List[Dict[str, Any]]:
     """Build the sensitivity experiment matrix."""
+    if algorithms and set(algorithms) - set(SENSITIVITY_ALGORITHMS):
+        raise ValueError("Unknown sensitivity algorithm")
+    known_envs = {env["id"] for env in SENSITIVITY_ENVIRONMENTS}
+    if environments and set(environments) - known_envs:
+        raise ValueError("Unknown sensitivity environment")
+    if not seeds or any(not isinstance(seed, int) or isinstance(seed, bool) or seed < 0 for seed in seeds):
+        raise ValueError("seeds must be nonnegative integers")
+    if not reward_types or set(reward_types) - set(REWARD_TYPES):
+        raise ValueError("Unknown sensitivity reward type")
+    if not net_sizes or any(not size or any(not isinstance(width, int) or isinstance(width, bool) or width <= 0
+                                            for width in size) for size in net_sizes):
+        raise ValueError("Network widths must be positive integers")
+    if (len(set(seeds)) != len(seeds) or len(set(reward_types)) != len(reward_types)
+            or len({tuple(size) for size in net_sizes}) != len(net_sizes)):
+        raise ValueError("Sensitivity axes must be distinct to prevent duplicate concurrent cells")
     experiments = []
 
     algos = SENSITIVITY_ALGORITHMS
@@ -282,28 +264,21 @@ def build_experiment_matrix(
 # RESULT SCANNING
 # =============================================================================
 
-def scan_completed(raw_dir: Path) -> Set[str]:
-    """Scan for already-completed sensitivity experiments."""
+def scan_completed(raw_dir: Path, campaign_id=None, n_eval_episodes=None,
+                   timesteps_override=None) -> Set[str]:
+    """Resume only finite, measured results matching the requested configuration."""
     completed = set()
-    if not raw_dir.exists():
+    if not raw_dir.exists() or not campaign_id or n_eval_episodes is None:
         return completed
-
     for filepath in raw_dir.glob("*.json"):
         try:
-            with open(filepath) as f:
-                data = json.load(f)
-            if data.get("status") == "success":
-                algo = data["algorithm"]
-                env = data["environment"]
-                seed = data["training_seed"]
-                tag = data.get("net_arch_tag", "")
-                rt = data.get("reward_type", "integrated")
-                if tag:
-                    key = f"{algo}_{env}_{seed}_{tag}_{rt}"
+            data = json.loads(filepath.read_text())
+            if _sensitivity_result_complete(data, campaign_id, n_eval_episodes, timesteps_override):
+                key = f"{data['algorithm']}_{data['environment']}_{data['training_seed']}_{data['net_arch_tag']}_{data['reward_type']}"
+                if filepath.stem == key:
                     completed.add(key)
-        except (json.JSONDecodeError, KeyError, OSError):
+        except (ValueError, KeyError, OSError, TypeError):
             continue
-
     return completed
 
 
@@ -325,24 +300,11 @@ def run_sensitivity_experiment(
     log_file: Optional[str],
     progress_dir: Optional[Path],
     raw_dir: str,
+    campaign_id: str = "",
+    timesteps_override: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Run a single sensitivity experiment, wrapping run_single_experiment."""
-    # Make sure the repository root (which contains the ``experiments``
-    # package) is on ``sys.path`` so this worker subprocess can import it.
-    _experiments_dir = str(Path(__file__).resolve().parent)
-    _repo_root = str(Path(__file__).resolve().parent.parent)
-    if _repo_root not in sys.path:
-        sys.path.insert(0, _repo_root)
-    # And prepend the inner coopetition_gym parent to beat the namespace-package
-    # shadowing (see experiments.audit._import_coopetition_gym).
-    _gym_parent = str(Path(_repo_root) / "coopetition_gym")
-    if _gym_parent not in sys.path:
-        sys.path.insert(0, _gym_parent)
-
-    # Set reward type environment variable before any env creation.
-    os.environ['COOPETITION_REWARD_TYPE'] = reward_type
-
-    from experiments.campaign import run_single_experiment
+    from .campaign import run_single_experiment
 
     tag = net_arch_tag(net_arch)
     algo_name = algo_config["name"]
@@ -354,6 +316,9 @@ def run_sensitivity_experiment(
             algo_config=algo_config,
             env_config=env_config,
             training_seed=seed,
+            reward_type=reward_type,
+            campaign_id=campaign_id,
+            timesteps_override=timesteps_override,
             n_eval_episodes=n_eval_episodes,
             gpu_id=gpu_id,
             enable_gpu_isolation=enable_gpu_isolation,
@@ -367,7 +332,7 @@ def run_sensitivity_experiment(
         return {
             "key": f"{algo_name}_{env_id}_{seed}_{tag}_{reward_type}",
             "status": "failed",
-            "filename": f"{algo_name}_{env_id}_{seed}_{tag}.json",
+            "filename": f"{algo_name}_{env_id}_{seed}_{tag}_{reward_type}.json",
             "training_time": 0,
             "mean_return": None,
             "error": str(e)[:200],
@@ -377,7 +342,7 @@ def run_sensitivity_experiment(
         return {
             "key": f"{algo_name}_{env_id}_{seed}_{tag}_{reward_type}",
             "status": "failed",
-            "filename": f"{algo_name}_{env_id}_{seed}_{tag}.json",
+            "filename": f"{algo_name}_{env_id}_{seed}_{tag}_{reward_type}.json",
             "training_time": 0,
             "mean_return": None,
             "error": "run_single_experiment returned None",
@@ -387,37 +352,31 @@ def run_sensitivity_experiment(
     result_dict = result.to_dict()
     result_dict["net_arch"] = net_arch
     result_dict["net_arch_tag"] = tag
-    result_dict["reward_type"] = reward_type
+    valid = _sensitivity_result_complete(result_dict, campaign_id or result_dict.get("campaign_id"),
+                                         n_eval_episodes, timesteps_override)
+    if result_dict.get("reward_type") != reward_type:
+        valid = False
+    if result_dict.get("status") == "success" and not valid:
+        result_dict["status"] = "failed"
+        result_dict["error_message"] = "Sensitivity result failed configuration or completion validation"
 
     # Save with sensitivity-aware filename
-    filename = f"{algo_name}_{env_id}_{seed}_{tag}.json"
+    filename = f"{algo_name}_{env_id}_{seed}_{tag}_{reward_type}.json"
     raw_path = Path(raw_dir)
     raw_path.mkdir(parents=True, exist_ok=True)
     filepath = raw_path / filename
 
-    # Use custom JSON encoder for numpy types
-    class NumpyEncoder(json.JSONEncoder):
-        def default(self, obj):
-            import numpy as np
-            if isinstance(obj, (np.integer,)):
-                return int(obj)
-            if isinstance(obj, (np.floating,)):
-                if math.isnan(obj) or math.isinf(obj):
-                    return str(obj)
-                return float(obj)
-            if isinstance(obj, np.ndarray):
-                return obj.tolist()
-            return super().default(obj)
-
-    with open(filepath, 'w') as f:
-        json.dump(result_dict, f, separators=(',', ':'), cls=NumpyEncoder)
+    tmp = filepath.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(_json_safe(result_dict), separators=(",", ":"),
+                              cls=NumpyEncoder, allow_nan=False))
+    tmp.replace(filepath)
 
     return {
         "key": f"{algo_name}_{env_id}_{seed}_{tag}_{reward_type}",
-        "status": result.status,
+        "status": result_dict["status"],
         "filename": filename,
         "training_time": result.training_time_seconds,
-        "mean_return": result_dict.get("metrics", {}).get("mean_return"),
+        "mean_return": (result_dict.get("metrics") or {}).get("mean_return"),
     }
 
 
@@ -445,44 +404,44 @@ def detect_gpus() -> int:
 # MAIN ORCHESTRATION
 # =============================================================================
 
-def main():
+def main(argv=None):
     parser = argparse.ArgumentParser(
         description="Network Size Sensitivity Analysis — Phase 4-NET",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
     # Full sweep on 16× RTX 4090
-    python run_network_sensitivity.py --max-gpu-workers 80 --output results/sensitivity
+    python -m experiments.sensitivity --max-gpu-workers 80 --output results/sensitivity
 
     # MADDPG only (Instance 1)
-    python run_network_sensitivity.py --algorithms MADDPG --max-gpu-workers 40
+    python -m experiments.sensitivity --algorithms MADDPG --max-gpu-workers 1
 
     # ISAC + MAPPO (Instance 2)
-    python run_network_sensitivity.py --algorithms ISAC,MAPPO --max-gpu-workers 40
+    python -m experiments.sensitivity --algorithms ISAC,MAPPO --max-gpu-workers 1
 
     # Dry run
-    python run_network_sensitivity.py --dry-run
+    python -m experiments.sensitivity --dry-run
         """
     )
 
     parser.add_argument("--output", type=str, default="results_sensitivity",
                         help="Output directory")
     parser.add_argument("--algorithms", type=str, default=None,
-                        help="Comma-separated algorithms (default: ISAC,MADDPG,MAPPO)")
+                        help="Comma-separated algorithms (default: ISAC,MADDPG,MAPPO,COMA,QMIX)")
     parser.add_argument("--environments", type=str, default=None,
                         help="Comma-separated environments")
-    parser.add_argument("--seeds", type=str, default="99,100,101,102,103",
+    parser.add_argument("--seeds", type=str, default=",".join(map(str, TRAINING_SEEDS)),
                         help="Comma-separated seeds")
     parser.add_argument("--net-sizes", type=str, default=None,
-                        help="Space-separated net arch specs (e.g., '64,64 256,256 512,512 1024,1024')")
+                        help="Explicit space-separated architectures (default: 64,64); size larger sweeps for the actual hardware")
     parser.add_argument("--reward-types", type=str, default="integrated,private",
                         help="Comma-separated reward types")
     parser.add_argument("--eval-episodes", type=int, default=100,
                         help="Evaluation episodes")
-    parser.add_argument("--max-gpu-workers", type=int, default=40,
-                        help="Max concurrent GPU experiments")
+    parser.add_argument("--max-gpu-workers", type=int, default=1,
+                        help="Max concurrent experiments (default: 1); size overrides for the actual hardware")
     parser.add_argument("--resume", action="store_true",
-                        help="Skip already-completed experiments")
+                        help="Compatibility flag; valid matching results are always skipped")
     parser.add_argument("--dry-run", action="store_true",
                         help="Show experiment matrix without running")
     parser.add_argument("--enable-checkpoints", action="store_true",
@@ -492,7 +451,13 @@ Examples:
     parser.add_argument("--checkpoint-interval", type=int, default=100000,
                         help="Steps between checkpoints")
 
-    args = parser.parse_args()
+    parser.add_argument("--timesteps-override", type=int, default=None,
+                        help="Explicit reduced training budget per learner")
+    args = parser.parse_args(argv)
+    if args.eval_episodes < 1 or args.max_gpu_workers < 1 or args.checkpoint_interval < 1:
+        parser.error("evaluation episodes, workers, and checkpoint interval must be positive")
+    if args.timesteps_override is not None and args.timesteps_override < 1:
+        parser.error("--timesteps-override must be positive")
 
     # Parse arguments
     algorithms = args.algorithms.split(",") if args.algorithms else None
@@ -506,7 +471,10 @@ Examples:
     else:
         net_sizes = DEFAULT_NET_SIZES
 
+    # Validate the full selection before creating output or dispatching workers.
+    build_experiment_matrix(algorithms, environments, seeds, net_sizes, reward_types, set())
     output_dir = Path(args.output)
+    campaign_id = ensure_campaign_identity(output_dir, args.eval_episodes, args.timesteps_override)
     raw_dir = output_dir / "raw"
     logs_dir = output_dir / "logs"
     progress_dir = output_dir / "progress"
@@ -543,16 +511,14 @@ Examples:
     logger.info(f"  CPUs: {mp.cpu_count()}")
     logger.info(f"  Max GPU workers: {args.max_gpu_workers}")
 
-    # Scan completed experiments
+    # Revalidate on-disk evidence regardless of the compatibility --resume flag.
     completed_keys = set()
-    if args.resume:
-        # Scan per-reward-type subdirectories
-        for rt in reward_types:
-            rt_raw = output_dir / rt / "raw"
-            completed_keys.update(scan_completed(rt_raw))
-        # Also scan flat raw dir
-        completed_keys.update(scan_completed(raw_dir))
-        logger.info(f"  Resumed: {len(completed_keys)} completed experiments found")
+    for rt in reward_types:
+        completed_keys.update(scan_completed(output_dir / rt / "raw", campaign_id,
+                                             args.eval_episodes, args.timesteps_override))
+    completed_keys.update(scan_completed(raw_dir, campaign_id, args.eval_episodes,
+                                         args.timesteps_override))
+    logger.info(f"  Resumed: {len(completed_keys)} validated experiments found")
 
     # Build experiment matrix
     experiments = build_experiment_matrix(
@@ -604,7 +570,7 @@ Examples:
 
         for exp in experiments:
             # Round-robin GPU assignment
-            gpu_id = gpu_ids[gpu_cycle % len(gpu_ids)]
+            gpu_id = -1 if exp["algo_config"].get("cpu_only") else gpu_ids[gpu_cycle % len(gpu_ids)]
             gpu_cycle += 1
 
             # Determine output subdirectory by reward type
@@ -614,7 +580,7 @@ Examples:
             checkpoint_dir = None
             if args.enable_checkpoints:
                 cd = args.checkpoint_dir or str(output_dir / "checkpoints")
-                checkpoint_dir = Path(cd)
+                checkpoint_dir = Path(cd) / rt / net_arch_tag(exp["net_arch"])
                 checkpoint_dir.mkdir(parents=True, exist_ok=True)
 
             future = executor.submit(
@@ -632,6 +598,8 @@ Examples:
                 log_file=str(logs_dir / "workers.log"),
                 progress_dir=progress_dir,
                 raw_dir=exp_raw_dir,
+                campaign_id=campaign_id,
+                timesteps_override=args.timesteps_override,
             )
             futures[future] = exp["key"]
 

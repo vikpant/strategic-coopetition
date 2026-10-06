@@ -56,7 +56,9 @@ TR_validation/
 │   ├── TR3_validation_suite.py
 │   └── requirements.txt
 └── TR4_reciprocity/             # Reciprocity validation (arXiv:2604.01240)
-    └── LICENSE
+    ├── TR4_validation_suite.py
+    ├── README.md
+    └── TR4_validation_output/  # Saved results
 ```
 
 ## Quick Start
@@ -90,26 +92,14 @@ All validation suites require:
 - Seaborn >= 0.11
 - SciPy >= 1.7
 
-## Key Validation Results
+## Case-study evidence
 
-### TR-1: Interdependence & Complementarity
-- **22,000+ configurations** tested across 7-parameter space
-- **100%** complementarity effect validated
-- **Renault-Nissan case study:** 54/60 points (90%)
-
-### TR-2: Trust Dynamics
-- **78,125 configurations** tested (full $5^7$ factorial)
-- **Negativity bias:** 3:1 ratio robustly emerges
-- **SLCD case study:** 49/60 points (81.7%)
-
-### TR-3: Collective Action & Loyalty
-- **15,625 configurations** tested
-- **Free-riding baseline:** 99.7% accuracy
-- **Apache HTTP Server case study:** 52/60 points (86.7%)
-
-### TR-4: Sequential Interaction & Reciprocity
-- Validation suite under development
-- Will include Apple iOS ecosystem case study
+The case-to-report mapping is S-LCD → TR-1, Renault–Nissan → TR-2,
+Apache HTTP Server → TR-3, and Apple iOS App Store → TR-4. All four suites
+are present. Prose and saved artifacts contain conflicting Apache and Apple
+rubric values; see the [score provenance register](../coopetition_gym/docs/benchmarks/score_provenance.md).
+No new canonical scores are inferred here, and existing validation code/results
+are preserved. Record the source revision and rubric when reporting any score.
 
 ## Mathematical Framework Integration
 

@@ -14,18 +14,10 @@ import pytest
 import numpy as np
 
 
-ENV_IDS = [
-    "TrustDilemma-v0", 
-    "PartnerHoldUp-v0", 
-    "PlatformEcosystem-v0",
-    "DynamicPartnerSelection-v0", 
-    "RecoveryRace-v0", 
-    "SynergySearch-v0",
-    "SLCD-v0", 
-    "RenaultNissan-v0", 
-    "CooperativeNegotiation-v0", 
-    "ReputationMarket-v0",
-]
+from coopetition_gym.envs import list_environments
+
+
+ENV_IDS = list_environments()
 
 
 class TestAECBasicFunctionality:

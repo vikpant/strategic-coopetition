@@ -1,29 +1,9 @@
-"""Single source of truth for experiment defaults.
+"""Defaults for new experiments and compatibility metadata for historical runs.
 
-This module defines every default value used by the experiment orchestration,
-evaluation, behavioral audit, analysis, and validation modules. Every other
-file in the ``experiments/`` package imports from here and does not redefine
-these values.
-
-The defaults in this file are the exact values used to produce the 25,708-file
-training dataset and the 1,116-file behavioral audit dataset released with the
-companion research paper. Modifying a default does not change the released
-datasets.
-Reproducing a paper result requires the default shown here.
-
-Grouping:
-
-* **Version** — package version string
-* **Paths** — directory layout for results, checkpoints, logs
-* **Seeds** — the seven training seeds and the three audit seeds
-* **Reward types** — the three reward configurations for the ablation
-* **Environments** — the 20 environments grouped by technical report
-* **Algorithms** — 18 training + 7 oracle + 101 constant + 2 heuristic = 128
-* **Oracles** — oracle-to-environment reference mapping for Gap% computation
-* **Timesteps** — per-category training budgets
-* **Audit** — cooperation sweep and temporal deviation parameters
-* **Safety** — checkpoint, monitoring, and disk-pressure defaults
-* **Sensitivity** — default network capacities for the sensitivity analysis
+The historical campaign and analysis groupings differ and are named explicitly
+below. These settings do not establish the configuration of archived datasets;
+use each dataset's manifest and recorded provenance. Algorithm identifiers are
+stable lookup keys, not guarantees of independent or decentralized execution.
 """
 
 from __future__ import annotations
@@ -37,7 +17,7 @@ from typing import Dict, List, Optional, Tuple
 # Version
 # =============================================================================
 
-VERSION = "1.0.0"
+from coopetition_gym import __version__ as VERSION
 DATASET_VERSION = "v1"
 NEURIPS_SUBMISSION_YEAR = 2026
 
@@ -46,23 +26,23 @@ NEURIPS_SUBMISSION_YEAR = 2026
 # Paths
 # =============================================================================
 
-#: Repository root, computed relative to this file's location.
+#: Package source location; output defaults are relative to the working directory.
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 #: Default output directory for training result files.
-DEFAULT_RESULTS_DIR = REPO_ROOT / "data" / "training"
+DEFAULT_RESULTS_DIR = Path.cwd() / "data" / "training"
 
 #: Default output directory for behavioral audit JSON files.
-DEFAULT_AUDIT_DIR = REPO_ROOT / "data" / "audit"
+DEFAULT_AUDIT_DIR = Path.cwd() / "data" / "audit"
 
 #: Default location for policy checkpoints during training.
-DEFAULT_CHECKPOINT_DIR = REPO_ROOT / "data" / "checkpoints"
+DEFAULT_CHECKPOINT_DIR = Path.cwd() / "data" / "checkpoints"
 
 #: Default location for log files.
-DEFAULT_LOG_DIR = REPO_ROOT / "data" / "logs"
+DEFAULT_LOG_DIR = Path.cwd() / "data" / "logs"
 
 #: Default location for analysis outputs (plots, CSV summaries).
-DEFAULT_ANALYSIS_DIR = REPO_ROOT / "data" / "analysis"
+DEFAULT_ANALYSIS_DIR = Path.cwd() / "data" / "analysis"
 
 
 # =============================================================================
@@ -91,8 +71,8 @@ AUDIT_SEEDS: Tuple[int, ...] = (99, 100, 101)
 #: * ``private`` — :math:`U_i = \pi_i` — agent rewarded only for own payoff.
 #: * ``integrated`` — :math:`U_i = \pi_i + \sum_{j \ne i} D_{ij} \pi_j` —
 #:   agent rewarded for own payoff plus weighted share of partner payoffs.
-#: * ``cooperative`` — :math:`U_i = \sum_j \pi_j` — all agents receive the
-#:   sum of payoffs (fully shared reward).
+#: * ``cooperative`` — all agents receive the
+#:   mean integrated utility shared by all agents (see the base environment).
 REWARD_TYPES: Tuple[str, ...] = ("private", "integrated", "cooperative")
 
 
@@ -109,7 +89,7 @@ class EnvironmentSpec:
         horizon: Episode length in steps.
         category: Semantic category for timestep budget lookup.
         n_agents: Number of agents in the environment.
-        tr: Source technical report (``tr1``, ``tr2``, ``tr3``, ``tr4``).
+        tr: Historical campaign allocation (``tr1``, ``tr2``, ``tr3``, ``tr4``).
     """
 
     id: str
@@ -119,34 +99,34 @@ class EnvironmentSpec:
     tr: str
 
 
-#: TR-1 environments — Interdependence and Complementarity (arXiv:2510.18802).
+#: Historical campaign allocation tr1 (not the analysis grouping).
 TR1_ENVIRONMENTS: Tuple[EnvironmentSpec, ...] = (
     EnvironmentSpec("PartnerHoldUp-v0",           100, "dyadic",    2, "tr1"),
     EnvironmentSpec("PlatformEcosystem-v0",       100, "ecosystem", 5, "tr1"),
-    EnvironmentSpec("DynamicPartnerSelection-v0", 100, "ecosystem", 4, "tr1"),
+    EnvironmentSpec("DynamicPartnerSelection-v0",  50, "ecosystem", 6, "tr1"),
     EnvironmentSpec("SynergySearch-v0",           100, "benchmark", 2, "tr1"),
-    EnvironmentSpec("RenaultNissan-v0",            60, "validated", 2, "tr1"),
+    EnvironmentSpec("RenaultNissan-v0",           100, "validated", 2, "tr1"),
 )
 
-#: TR-2 environments — Trust Dynamics (arXiv:2510.24909).
+#: Historical campaign allocation tr2 (not the analysis grouping).
 TR2_ENVIRONMENTS: Tuple[EnvironmentSpec, ...] = (
     EnvironmentSpec("TrustDilemma-v0",          100, "dyadic",    2, "tr2"),
     EnvironmentSpec("RecoveryRace-v0",          150, "benchmark", 2, "tr2"),
-    EnvironmentSpec("SLCD-v0",                   40, "validated", 2, "tr2"),
+    EnvironmentSpec("SLCD-v0",                  100, "validated", 2, "tr2"),
     EnvironmentSpec("CooperativeNegotiation-v0",100, "extended",  2, "tr2"),
-    EnvironmentSpec("ReputationMarket-v0",      100, "extended",  2, "tr2"),
+    EnvironmentSpec("ReputationMarket-v0",      100, "extended",  5, "tr2"),
 )
 
-#: TR-3 environments — Collective Action and Loyalty (arXiv:2601.16237).
+#: Historical campaign allocation tr3.
 TR3_ENVIRONMENTS: Tuple[EnvironmentSpec, ...] = (
     EnvironmentSpec("TeamProduction-v0",     100, "collective_action", 4, "tr3"),
     EnvironmentSpec("LoyaltyTeam-v0",        100, "collective_action", 4, "tr3"),
     EnvironmentSpec("CoalitionFormation-v0", 150, "collective_action", 6, "tr3"),
-    EnvironmentSpec("ApacheProject-v0",       60, "collective_action", 5, "tr3"),
-    EnvironmentSpec("PublicGoods-v0",        100, "collective_action", 4, "tr3"),
+    EnvironmentSpec("ApacheProject-v0",       60, "collective_action", 40, "tr3"),
+    EnvironmentSpec("PublicGoods-v0",        100, "collective_action", 5, "tr3"),
 )
 
-#: TR-4 environments — Sequential Interaction and Reciprocity (arXiv:2604.01240).
+#: Historical campaign allocation tr4.
 TR4_ENVIRONMENTS: Tuple[EnvironmentSpec, ...] = (
     EnvironmentSpec("ReciprocalDilemma-v0",   100, "dyadic",      2, "tr4"),
     EnvironmentSpec("GiftExchange-v0",        100, "dyadic",      2, "tr4"),
@@ -160,12 +140,25 @@ ALL_ENVIRONMENTS: Tuple[EnvironmentSpec, ...] = (
     TR1_ENVIRONMENTS + TR2_ENVIRONMENTS + TR3_ENVIRONMENTS + TR4_ENVIRONMENTS
 )
 
-#: Environment lookup by technical report tier.
+#: Environment lookup by historical campaign allocation.
 ENVIRONMENTS_BY_TR: Dict[str, Tuple[EnvironmentSpec, ...]] = {
     "tr1": TR1_ENVIRONMENTS,
     "tr2": TR2_ENVIRONMENTS,
     "tr3": TR3_ENVIRONMENTS,
     "tr4": TR4_ENVIRONMENTS,
+}
+
+#: Original analyzer grouping, retained explicitly for historical comparability.
+#: It differs from campaign allocation above; neither is inferred from the other.
+ANALYSIS_ENVIRONMENTS_BY_TR = {
+    "tr1": ("TrustDilemma-v0", "PartnerHoldUp-v0", "PlatformEcosystem-v0",
+            "DynamicPartnerSelection-v0", "SynergySearch-v0"),
+    "tr2": ("RecoveryRace-v0", "CooperativeNegotiation-v0", "ReputationMarket-v0",
+            "SLCD-v0", "RenaultNissan-v0"),
+    "tr3": ("ApacheProject-v0", "CoalitionFormation-v0", "LoyaltyTeam-v0",
+            "PublicGoods-v0", "TeamProduction-v0"),
+    "tr4": ("ReciprocalDilemma-v0", "GiftExchange-v0", "IndirectReciprocity-v0",
+            "GraduatedSanction-v0", "AppleAppStore-v0"),
 }
 
 #: Environment lookup by ID.
@@ -180,8 +173,8 @@ ENVIRONMENT_BY_ID: Dict[str, EnvironmentSpec] = {
 
 #: Training timesteps per environment category.
 #:
-#: All categories normalized to approximately 250,000 steps per agent.
-#: Dyadic (2 agents) uses 500K total, ecosystem (4-5 agents) uses 1M, etc.
+#: Historical fixed environment-step budgets. These are not normalized to the
+#: current agent counts and do not represent per-agent interaction budgets.
 TIMESTEPS_BY_CATEGORY: Dict[str, int] = {
     "dyadic":            500_000,
     "ecosystem":       1_000_000,
@@ -226,9 +219,10 @@ class AlgorithmSpec:
     applicable_categories: Optional[Tuple[str, ...]] = None
 
 
-# -- Training algorithms (18) -------------------------------------------------
+# -- Training algorithms (16) -------------------------------------------------
 
-#: Independent learners (no centralized critic during training).
+#: Historical independent-learning roster. IPPO, IA2C and ISAC actually use
+#: one joint controller; see docs/benchmarks/implementation_protocol.md.
 #: FCP is classified here (not CTDE) because each agent independently trains
 #: against a population of opponent checkpoints without a shared central critic.
 INDEPENDENT_LEARNING_ALGORITHMS: Tuple[AlgorithmSpec, ...] = (

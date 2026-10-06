@@ -87,23 +87,22 @@
   "rai:dataUseCases": "Intended uses: (a) independent verification of algorithm rankings and reward-ablation findings reported in the companion paper; (b) post-hoc secondary analysis studying training-return distributions, failure modes, or alternative evaluation methodologies for mixed-motive multi-agent settings; (c) reference dataset for methodology papers that examine benchmark-variance characterization. Out-of-scope uses: the dataset is NOT intended to train RL agents directly (files contain metric summaries, not trajectory data); it is NOT a labeled dataset for supervised learning; and it should NOT be used as production training input for downstream automated decision systems in actual business settings without extensive additional validation.",
   "rai:dataLimitations": "The dataset contains only result summaries (metrics, seeds, training time, final trust and appropriation levels), not full trajectories. Reconstructing intermediate policy state or step-by-step observations requires re-running the training code from the companion GitHub repository. The 10-seed extension (seeds 99-108) was completed in April 2026; earlier releases of the same study used a 7-seed baseline (seeds 99-105), and that earlier baseline is not included here.",
   "rai:annotationsPerItem": "1 (each record is a single computed evaluation summary per run)",
-  "rai:annotationDemographics": "Not applicable; no human annotators were involved. Each record is a deterministic function of the algorithm, environment, and seed.",
+  "rai:annotationDemographics": "No human annotators were involved in generating the experiment logs. Reproduction requires the recorded implementation, configuration, dependencies and seeds; machine generation alone does not guarantee deterministic replay.",
   "rai:machineGenerated": true,
   "distribution": [
     {
       "@type": "cr:FileObject",
       "@id": "huggingface_repository",
       "name": "huggingface_repository",
-      "description": "HuggingFace dataset repository (git remote). The validator's record-generation test attempts a full git clone of this remote to enumerate the JSONL shards. Anonymous git clone is permitted by HuggingFace for this public dataset; if the validator container does not have outbound git access or hits its sandbox timeout during the ~1.6 GB clone, the test will report 'Could not automatically generate records' which the NeurIPS Croissant Validator documents as non-blocking for submission. The dataset itself is fully accessible at https://huggingface.co/datasets/vikpant/coopetition-gym-logs and its files can be fetched individually via the HF resolve API.",
+      "description": "Hugging Face dataset Git repository. This source metadata names a moving repository, not an immutable snapshot or checksum. Resolve and record a dataset commit, then verify the selected snapshot file manifest before analysis. Access and completeness must be checked for that snapshot.",
       "contentUrl": "https://huggingface.co/datasets/vikpant/coopetition-gym-logs.git",
-      "encodingFormat": "git+https",
-      "sha256": "main"
+      "encodingFormat": "git+https"
     },
     {
       "@type": "cr:FileSet",
       "@id": "training_runs_fileset",
       "name": "training_runs",
-      "description": "Training runs: 18 algorithms x 20 environments x 3 reward configurations x 10 seeds. One JSONL file per logical grouping with per-seed records.",
+      "description": "Training records across algorithm identifiers, environments, reward treatments and seeds. Coverage, reruns and progress rows vary by snapshot; use the selected manifest and recorded configuration rather than assuming a complete factorial design.",
       "includes": "training_runs/*.jsonl",
       "encodingFormat": "application/jsonlines",
       "containedIn": {
@@ -497,7 +496,7 @@
       "@type": "cr:RecordSet",
       "@id": "case_study_calibration_records",
       "name": "case_study_calibration_records",
-      "description": "Four validated case-study calibrations: Samsung-Sony SLCD (98.3% = 59/60), Renault-Nissan Alliance (81.7% = 49/60), Apache HTTP Server (86.7% = 52/60), and Apple iOS App Store (87.3% = 48/55). Each record contains the i*-derived D_ij interdependence values, the rubric score and accuracy percent, the historical-correspondence indicator, and (where applicable) simulation trajectories, behavioral targets, and counterfactual outcomes.",
+      "description": "Four case-study calibration records: Samsung-Sony SLCD, Renault-Nissan Alliance, Apache HTTP Server, and Apple iOS App Store. Public score summaries conflict; use the repository score_provenance register and the selected snapshot rubric, not these metadata descriptions, to establish a score. Each record contains the i*-derived D_ij interdependence values, the rubric score and accuracy percent, the historical-correspondence indicator, and (where applicable) simulation trajectories, behavioral targets, and counterfactual outcomes.",
       "field": [
         {
           "@type": "cr:Field",
@@ -544,7 +543,7 @@
         {
           "@type": "cr:Field",
           "@id": "case_study_calibration_records/rubric_accuracy_percent",
-          "description": "Rubric validation accuracy as a percent",
+          "description": "Source-specific rubric percentage (legacy field name; not prediction accuracy)",
           "dataType": "sc:Float",
           "source": {
             "fileSet": {

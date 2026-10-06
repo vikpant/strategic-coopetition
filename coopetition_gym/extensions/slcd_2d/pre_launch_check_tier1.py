@@ -8,7 +8,7 @@ Gates
 -----
 1. Python version >= 3.10
 2. Required packages importable (coopetition_gym, SB3, torch, scipy, gymnasium)
-3. `extensions.slcd_2d` importable
+3. The extension importable (installed `slcd_2d` or source `extensions.slcd_2d`)
 4. Pytest passes on the extension test suite
 5. v1 SLCD env usable (smoke make + step)
 6. SLCDAppropriationEnv reset + step returns (15,) obs and (2,) reward
@@ -27,9 +27,16 @@ import subprocess
 import sys
 import traceback
 from pathlib import Path
-from typing import Callable, List, Tuple
+from typing import Callable, List, Optional, Tuple
 
-REPO_ROOT = Path("/home/vik_p/projects/strategic-coopetition")
+_EXTENSION_DIR = Path(__file__).resolve().parent
+# A wheel has no source test checkout; --repo-root supplies one when needed.
+REPO_ROOT = (
+    _EXTENSION_DIR.parents[2]
+    if _EXTENSION_DIR.parent.name == "extensions"
+    and (_EXTENSION_DIR.parents[1] / "pyproject.toml").is_file()
+    else None
+)
 
 
 def _ok(name: str, detail: str = "") -> None:
@@ -63,26 +70,38 @@ def gate_packages() -> None:
 
 def gate_extension_importable() -> None:
     try:
-        import extensions.slcd_2d  # noqa: F401
-        from extensions.slcd_2d import SLCDAppropriationEnv  # noqa: F401
-        from extensions.slcd_2d.algorithms import list_algorithms  # noqa: F401
+        importlib.import_module(__package__)
+        from . import SLCDAppropriationEnv  # noqa: F401
+        from .algorithms import list_algorithms  # noqa: F401
     except Exception as e:
-        _fail("import extensions.slcd_2d", traceback.format_exc())
-    _ok("import extensions.slcd_2d")
+        _fail(f"import {__package__}", traceback.format_exc())
+    _ok(f"import {__package__}")
 
 
-def gate_pytest(repo_root: Path) -> None:
+def gate_pytest(repo_root: Optional[Path]) -> None:
+    if repo_root is None:
+        _fail("pytest", "A source checkout is required: pass --repo-root or --skip-pytest.")
+    repo_root = Path(repo_root).resolve()
+    candidates = [
+        repo_root / "coopetition_gym" / "extensions" / "slcd_2d" / "tests",
+        repo_root / "extensions" / "slcd_2d" / "tests",
+    ]
+    test_dir = next((path for path in candidates if path.is_dir()), None)
+    if test_dir is None:
+        _fail("pytest", f"SLCD source tests not found beneath {repo_root}")
     try:
         result = subprocess.run(
-            ["python", "-m", "pytest", "extensions/slcd_2d/tests/", "-q"],
-            cwd=str(repo_root),
+            [sys.executable, "-B", "-m", "pytest", "-p", "no:cacheprovider",
+             str(test_dir), "-q"],
+            cwd=str(test_dir.parents[2]),
             capture_output=True, text=True, timeout=120,
         )
     except Exception as e:
         _fail("pytest", str(e))
     if result.returncode != 0:
         _fail("pytest", result.stdout[-800:] + result.stderr[-800:])
-    _ok("pytest", result.stdout.splitlines()[-1].strip())
+    lines = result.stdout.strip().splitlines()
+    _ok("pytest", lines[-1] if lines else "passed")
 
 
 def gate_v1_env() -> None:
@@ -96,7 +115,7 @@ def gate_v1_env() -> None:
 
 def gate_2d_env() -> None:
     import numpy as np
-    from extensions.slcd_2d import SLCDAppropriationEnv
+    from . import SLCDAppropriationEnv
     env = SLCDAppropriationEnv(max_steps=40)
     obs, _ = env.reset(seed=0)
     _, r, _, _, info = env.step(np.array([50.0, 0.3, 50.0, 0.3], dtype=np.float32))
@@ -107,7 +126,7 @@ def gate_2d_env() -> None:
 
 
 def gate_reward_type_routing() -> None:
-    from extensions.slcd_2d import SLCDAppropriationEnv
+    from . import SLCDAppropriationEnv
     for rt in ("integrated", "private", "cooperative"):
         os.environ["COOPETITION_REWARD_TYPE"] = rt
         env = SLCDAppropriationEnv()
@@ -117,9 +136,8 @@ def gate_reward_type_routing() -> None:
 
 
 def gate_ippo_trains() -> None:
-    sys.path.insert(0, str(REPO_ROOT))
     from experiments.algorithms import IndependentPPO
-    from extensions.slcd_2d import SLCDAppropriationEnv
+    from . import SLCDAppropriationEnv
     env = SLCDAppropriationEnv(max_steps=40)
     algo = IndependentPPO(env, device="cpu", seed=0, n_steps=64, batch_size=32)
     algo.train(total_timesteps=128)
@@ -127,7 +145,7 @@ def gate_ippo_trains() -> None:
 
 
 def gate_oracle() -> None:
-    from extensions.slcd_2d import AppropriationOracle, SLCDAppropriationEnv
+    from . import AppropriationOracle, SLCDAppropriationEnv
     env = SLCDAppropriationEnv(max_steps=40)
     oracle = AppropriationOracle(env)
     assert oracle.equilibrium.converged, "Oracle did not converge"
@@ -155,7 +173,8 @@ def gate_cuda(required: bool) -> None:
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description="Tier 1 pre-flight check")
-    p.add_argument("--repo-root", type=Path, default=REPO_ROOT)
+    p.add_argument("--repo-root", type=Path, default=REPO_ROOT,
+                   help="Source checkout for pytest; inferred when run from source.")
     p.add_argument("--require-gpu", action="store_true")
     p.add_argument("--skip-pytest", action="store_true",
                    help="Skip gate 4 (runs the test suite). Useful for quick checks.")

@@ -41,13 +41,9 @@ disabled checkpoints caused lost GPU-hours and disk pressure filled
 instances repeatedly.
 
 Reward-type ablation mechanism:
-    The reward type is passed via the ``COOPETITION_REWARD_TYPE`` environment
-    variable. A ``.pth``-triggered patcher (``reward_type_patcher.py`` in
-    site-packages) reads this variable at Python startup in every process
-    (including ``multiprocessing.spawn`` children) and patches
-    ``coopetition_gym.make()`` to apply ``env.reward_type`` post-construction.
-    The patcher must be installed in the venv's site-packages; see
-    :doc:`../REPRODUCE` for setup instructions.
+    Reward type is an explicit configuration value passed to every training
+    and evaluation environment. Environments must report the requested type;
+    a mismatch fails the experiment. No site-packages patcher is required.
 
 Usage::
 
@@ -83,6 +79,8 @@ import signal
 import logging
 import argparse
 import traceback
+import hashlib
+import math
 import subprocess
 import multiprocessing as mp
 from pathlib import Path
@@ -149,6 +147,136 @@ def _setup_path():
 
 
 _setup_path()
+
+from experiments.config import TRAINING_SEEDS, REWARD_TYPES
+from experiments.records import is_successful_result
+
+CAMPAIGN_SCHEMA_VERSION = 2
+BUDGET_VERSION = "legacy-category-steps-v1"
+REWARD_VERSION = "explicit-constructor-v1"
+
+
+def _source_version():
+    import coopetition_gym
+    return coopetition_gym.__version__
+
+
+def _source_fingerprint():
+    """Hash installed runtime sources; Git/private workspace data is never read."""
+    import coopetition_gym
+    roots = {"library": Path(coopetition_gym.__file__).resolve().parent,
+             "experiments": Path(__file__).resolve().parent}
+    digest = hashlib.sha256()
+    for prefix, root in sorted(roots.items()):
+        for path in sorted(root.rglob("*.py")):
+            relative = path.relative_to(root)
+            if any(part in {"tests", "__pycache__"} for part in relative.parts):
+                continue
+            digest.update(f"{prefix}/{relative.as_posix()}\0".encode())
+            digest.update(path.read_bytes())
+            digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _validated_action(env, action):
+    action = np.asarray(action)
+    if action.shape != env.action_space.shape or not np.all(np.isfinite(action)):
+        raise ValueError("Policy returned a nonfinite action or an invalid action shape")
+    return action
+
+
+def _identity_hash(value):
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"),
+                                     allow_nan=False, cls=NumpyEncoder).encode()).hexdigest()
+
+
+def _finite_number(value):
+    return (isinstance(value, (int, float, np.number))
+            and not isinstance(value, (bool, np.bool_)) and math.isfinite(value))
+
+
+def _positive_integer(value):
+    return isinstance(value, (int, np.integer)) and not isinstance(value, (bool, np.bool_)) and value > 0
+
+
+def _result_configuration(record):
+    return {"algorithm": record.get("algorithm_config"),
+            "environment": record.get("environment_config"),
+            "reward_type": record.get("reward_type"), "reward_version": record.get("reward_version"),
+            "budget_version": record.get("budget_version"), "source_version": record.get("source_version"),
+            "source_fingerprint": record.get("source_fingerprint"),
+            "training_steps_requested": record.get("training_steps_requested"),
+            "evaluation_episodes_requested": record.get("evaluation_episodes_requested")}
+
+
+def _campaign_result_complete(record, campaign_id=None):
+    """Only validated, measured results are eligible to suppress future work."""
+    if not is_successful_result(record):
+        return False
+    try:
+        # NumPy arrays in diagnostic metrics must not hide NaN/Infinity from
+        # the shared native-JSON validator.
+        json.dumps(record, cls=NumpyEncoder, allow_nan=False)
+    except (ValueError, TypeError):
+        return False
+    if record.get("schema_version") != CAMPAIGN_SCHEMA_VERSION:
+        return False
+    if campaign_id is not None and record.get("campaign_id") != campaign_id:
+        return False
+    if (record.get("reward_type") not in REWARD_TYPES
+            or record.get("actual_reward_type") != record.get("reward_type")
+            or record.get("reward_version") != REWARD_VERSION
+            or record.get("budget_version") != BUDGET_VERSION
+            or record.get("source_version") != _source_version()
+            or record.get("source_fingerprint") != _source_fingerprint()
+            or not record.get("config_hash") or not record.get("campaign_id")):
+        return False
+    if not all(_positive_integer(record.get(key)) for key in
+               ("horizon", "n_agents", "evaluation_episodes_requested")):
+        return False
+    algorithm_config = record.get("algorithm_config", {})
+    environment_config = record.get("environment_config", {})
+    if (not isinstance(algorithm_config, dict) or not isinstance(environment_config, dict)
+            or algorithm_config.get("name") != record["algorithm"]
+            or environment_config.get("id") != record["environment"]
+            or environment_config.get("horizon") != record["horizon"]
+            or environment_config.get("n_agents") != record["n_agents"]
+            or environment_config.get("reward_type") != record["reward_type"]):
+        return False
+    try:
+        if _identity_hash(_result_configuration(record)) != record["config_hash"]:
+            return False
+    except (ValueError, TypeError):
+        return False
+    metrics = record["metrics"]
+    required = ("mean_return", "std_return", "mean_final_trust", "std_final_trust",
+                "mean_cooperation_rate", "std_cooperation_rate", "mean_episode_length")
+    if not all(_finite_number(metrics.get(key)) for key in required):
+        return False
+    if (metrics.get("mean_episode_length", 0) <= 0
+            or not _positive_integer(metrics.get("episodes_evaluated"))
+            or metrics["episodes_evaluated"] != record["evaluation_episodes_requested"]):
+        return False
+    requires_training = record.get("requires_training")
+    if not isinstance(requires_training, bool):
+        return False
+    completed = record.get("training_steps_completed")
+    requested = record.get("training_steps_requested")
+    if requires_training:
+        return (_positive_integer(requested) and _positive_integer(completed)
+                and completed >= requested)
+    return requested == 0 and completed == 0
+
+
+def _json_safe(value):
+    """Retain failed-run diagnostics without emitting nonstandard JSON NaNs."""
+    if isinstance(value, dict):
+        return {key: _json_safe(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple, np.ndarray)):
+        return [_json_safe(item) for item in value]
+    if isinstance(value, (float, np.floating)) and not math.isfinite(value):
+        return None
+    return value
 
 
 # ============================================================================
@@ -697,6 +825,23 @@ class ExperimentResult:
     timestamp: str = ""
     gpu_id: int = -1
     tr_mode: str = ""
+    schema_version: int = CAMPAIGN_SCHEMA_VERSION
+    reward_type: str = "integrated"
+    actual_reward_type: str = ""
+    reward_version: str = REWARD_VERSION
+    budget_version: str = BUDGET_VERSION
+    source_version: str = ""
+    source_fingerprint: str = ""
+    campaign_id: str = ""
+    config_hash: str = ""
+    horizon: int = 0
+    n_agents: int = 0
+    requires_training: bool = False
+    training_steps_requested: int = 0
+    training_steps_completed: int = 0
+    evaluation_episodes_requested: int = 0
+    algorithm_config: Dict[str, Any] = field(default_factory=dict)
+    environment_config: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -709,7 +854,9 @@ class OrchestratorConfig:
     output_dir: Path
     algorithms: Optional[List[str]] = None
     environments: Optional[List[str]] = None
-    seeds: List[int] = field(default_factory=lambda: [100, 101, 102, 103, 104])
+    seeds: List[int] = field(default_factory=lambda: list(TRAINING_SEEDS))
+    reward_type: str = "integrated"
+    timesteps_override: Optional[int] = None
     n_eval_episodes: int = 100
     resume: bool = False
     dry_run: bool = False
@@ -2053,12 +2200,17 @@ def get_algorithm_class(algo_config: Dict[str, Any]):
     return class_map[class_name]
 
 
-def create_environment(env_id: str, seed: int = None):
-    """Create a coopetition_gym environment."""
+def create_environment(env_id: str, seed: int = None, reward_type: str = "integrated"):
+    """Create an environment and fail closed if its actual treatment differs."""
     try:
         _setup_path()
         import coopetition_gym
-        env = coopetition_gym.make(env_id)
+        if reward_type not in REWARD_TYPES:
+            raise ValueError(f"Unknown reward_type: {reward_type}")
+        env = coopetition_gym.make(env_id, reward_type=reward_type)
+        if getattr(env.unwrapped, "reward_type", None) != reward_type:
+            env.close()
+            raise ValueError(f"Environment {env_id} did not apply reward_type={reward_type}")
         if seed is not None:
             env.reset(seed=seed)
         return env, None
@@ -2082,6 +2234,9 @@ def run_single_experiment(
     checkpoint_interval: int = 100000,
     log_file: Optional[str] = None,
     progress_dir: Optional[Path] = None,
+    reward_type: str = "integrated",
+    timesteps_override: Optional[int] = None,
+    campaign_id: str = "",
 ) -> ExperimentResult:
     """
     Run a single experiment with proper GPU assignment and resource management.
@@ -2145,11 +2300,23 @@ def run_single_experiment(
         timestamp=datetime.now().isoformat(),
         gpu_id=gpu_id,
         tr_mode=tr_mode,
+        reward_type=reward_type,
+        source_version=_source_version(),
+        source_fingerprint=_source_fingerprint(),
+        campaign_id=campaign_id,
+        requires_training=bool(algo_config.get("requires_training", True)),
+        evaluation_episodes_requested=n_eval_episodes,
     )
 
     experiment_start_time = time.time()
+    env = None
+    agent = None
 
     try:
+        if not _positive_integer(n_eval_episodes):
+            raise ValueError("n_eval_episodes must be a positive integer")
+        if timesteps_override is not None and not _positive_integer(timesteps_override):
+            raise ValueError("timesteps_override must be a positive integer")
         import torch
 
         # GPU Isolation: Set CUDA_VISIBLE_DEVICES before any CUDA operations
@@ -2182,13 +2349,19 @@ def run_single_experiment(
         exp_logger.info(f"{log_prefix} | STARTED | {device_str} | {n_agents} agents | {tr_mode}")
 
         # Create environment
-        env, error = create_environment(env_id, seed=training_seed)
+        env, error = create_environment(env_id, seed=training_seed, reward_type=reward_type)
         if error:
             result.error_message = error
             exp_logger.error(f"{log_prefix} | FAILED | Environment creation: {error[:100]}")
             return result
 
-        exp_logger.info(f"{log_prefix} | Environment created | horizon={env_config.get('horizon', 'N/A')}")
+        actual_env = env.unwrapped
+        result.actual_reward_type = actual_env.reward_type
+        result.horizon = int(actual_env.max_steps)
+        result.n_agents = int(actual_env.n_agents)
+        result.environment_config = dict(env_config, horizon=result.horizon,
+                                         n_agents=result.n_agents, reward_type=reward_type)
+        exp_logger.info(f"{log_prefix} | Environment created | horizon={result.horizon}")
 
         # Get algorithm class
         try:
@@ -2196,7 +2369,6 @@ def run_single_experiment(
         except Exception as e:
             result.error_message = f"Failed to load algorithm: {str(e)}"
             exp_logger.error(f"{log_prefix} | FAILED | Algorithm load: {str(e)[:100]}")
-            env.close()
             return result
 
         # Initialize algorithm with adaptive buffer sizes
@@ -2212,6 +2384,25 @@ def run_single_experiment(
                 f"[{algo_name}] Applied reduced buffer level {reduced_buffer_level}: {reduced_params}"
             )
 
+        result.algorithm_config = dict(algo_config, params=algo_params)
+        result.training_steps_requested = (
+            timesteps_override if timesteps_override is not None else
+            TIMESTEPS_BY_CATEGORY.get(env_category, 500000)
+        ) if requires_training else 0
+        result.config_hash = _identity_hash(_result_configuration(result.to_dict()))
+        if not result.campaign_id:
+            result.campaign_id = "standalone-" + result.config_hash
+
+        # Observe actual training transitions. A silent/no-op train() or a
+        # filename claiming completed steps is insufficient completion evidence.
+        training_steps = [0]
+        original_step = env.step
+        def counted_step(action):
+            transition = original_step(_validated_action(env, action))
+            training_steps[0] += 1
+            return transition
+        env.step = counted_step
+
         try:
             agent = AlgoClass(
                 env=env,
@@ -2223,54 +2414,67 @@ def run_single_experiment(
         except Exception as e:
             result.error_message = f"Failed to initialize algorithm: {str(e)}\n{traceback.format_exc()}"
             exp_logger.error(f"{log_prefix} | FAILED | Agent init: {str(e)[:100]}")
-            env.close()
             return result
 
         # Training phase with optional checkpointing
+        training_steps[0] = 0
         training_start = time.time()
         if requires_training:
-            # Allow a global override via environment variable. Set by the
-            # parent process before dispatch; read here in the worker where
-            # multiprocessing.spawn has reset Python state but inherited env.
-            override = os.environ.get("COOPETITION_TIMESTEPS_OVERRIDE")
-            if override is not None:
-                try:
-                    timesteps = int(override)
-                except ValueError:
-                    timesteps = TIMESTEPS_BY_CATEGORY.get(env_category, 500000)
-            else:
-                timesteps = TIMESTEPS_BY_CATEGORY.get(env_category, 500000)
+            timesteps = result.training_steps_requested
             exp_logger.info(f"{log_prefix} | Training started | {timesteps:,} timesteps")
 
-            # Check for existing checkpoint to resume from
             checkpoint_path = None
             resume_step = 0
             if checkpoint_dir:
-                checkpoint_dir = Path(checkpoint_dir)
+                # Treatment/config isolation also applies to an explicitly shared
+                # checkpoint directory, independently of the result directory.
+                checkpoint_dir = Path(checkpoint_dir) / result.campaign_id / result.config_hash
                 checkpoint_dir.mkdir(parents=True, exist_ok=True)
                 checkpoint_pattern = f"{algo_name}_{env_id}_{training_seed}_step_*.pt"
-                existing_checkpoints = sorted(
-                    checkpoint_dir.glob(checkpoint_pattern),
-                    key=lambda p: int(p.stem.split('_step_')[-1])
-                )
-                if existing_checkpoints:
-                    checkpoint_path = existing_checkpoints[-1]
-                    resume_step = int(checkpoint_path.stem.split('_step_')[-1])
-                    logging.getLogger(__name__).info(
-                        f"[{algo_name}] Found checkpoint at step {resume_step}: {checkpoint_path}"
-                    )
+                candidates = []
+                for path in checkpoint_dir.glob(checkpoint_pattern):
+                    try:
+                        metadata = json.loads(path.with_suffix(".json").read_text())
+                        steps = metadata.get("training_steps_completed")
+                        if (metadata.get("config_hash") == result.config_hash
+                                and metadata.get("campaign_id") == result.campaign_id
+                                and metadata.get("training_seed") == training_seed
+                                and _positive_integer(steps)
+                                and metadata.get("checkpoint_sha256") == hashlib.sha256(path.read_bytes()).hexdigest()):
+                            candidates.append((steps, path))
+                    except (OSError, ValueError, TypeError):
+                        continue
+                if candidates:
+                    resume_step, checkpoint_path = max(candidates)
+
+            def save_checkpoint(steps):
+                if checkpoint_dir and hasattr(agent, "save") and steps > 0:
+                    path = checkpoint_dir / f"{algo_name}_{env_id}_{training_seed}_step_{steps}.pt"
+                    agent.save(str(path))
+                    if not path.is_file():
+                        return  # A no-op save method provides no recovery evidence.
+                    metadata = {"campaign_id": result.campaign_id, "config_hash": result.config_hash,
+                                "training_seed": training_seed, "training_steps_completed": steps,
+                                "checkpoint_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+                    tmp = path.with_suffix(".json.tmp")
+                    tmp.write_text(json.dumps(metadata, allow_nan=False))
+                    tmp.replace(path.with_suffix(".json"))
+                    checkpoints = sorted(checkpoint_dir.glob(checkpoint_pattern),
+                                         key=lambda item: int(item.stem.rsplit("_step_", 1)[1]))
+                    keep = CHECKPOINT_CONFIG.get("max_checkpoints", 3)
+                    for old in checkpoints[:-keep]:
+                        old.unlink()
+                        old.with_suffix(".json").unlink(missing_ok=True)
 
             try:
-                # Load checkpoint if available
-                if checkpoint_path and hasattr(agent, 'load'):
+                if checkpoint_path and hasattr(agent, "load"):
                     try:
                         agent.load(str(checkpoint_path))
-                        logging.getLogger(__name__).info(f"[{algo_name}] Resumed from checkpoint")
+                        exp_logger.info(f"{log_prefix} | Resumed {resume_step} verified training steps")
                     except Exception as e:
-                        logging.getLogger(__name__).warning(
-                            f"[{algo_name}] Failed to load checkpoint: {e}, starting fresh"
-                        )
-                        resume_step = 0
+                        raise ValueError(f"Checkpoint could not be restored safely: {e}") from e
+                else:
+                    resume_step = 0
 
                 # Training with progress logging and optional checkpointing
                 remaining_steps = max(0, timesteps - resume_step)
@@ -2355,23 +2559,13 @@ def run_single_experiment(
                                 except Exception:
                                     pass  # Non-critical
 
-                        # Checkpointing (if enabled)
+                        # Persist only observed transition counts with provenance.
                         if checkpoint_dir and checkpoint_interval > 0:
                             if step > 0 and step % checkpoint_interval == 0:
-                                ckpt_file = checkpoint_dir / f"{algo_name}_{env_id}_{training_seed}_step_{step}.pt"
-                                if hasattr(agent, 'save'):
-                                    try:
-                                        agent.save(str(ckpt_file))
-                                    except Exception as e:
-                                        exp_logger.warning(f"{log_prefix} | Checkpoint save failed: {e}")
-                                    # Clean up old checkpoints (keep last N)
-                                    max_ckpts = CHECKPOINT_CONFIG.get("max_checkpoints", 3)
-                                    all_ckpts = sorted(
-                                        checkpoint_dir.glob(f"{algo_name}_{env_id}_{training_seed}_step_*.pt"),
-                                        key=lambda p: int(p.stem.split('_step_')[-1])
-                                    )
-                                    for old_ckpt in all_ckpts[:-max_ckpts]:
-                                        old_ckpt.unlink()
+                                try:
+                                    save_checkpoint(resume_step + training_steps[0])
+                                except Exception as e:
+                                    exp_logger.warning(f"{log_prefix} | Checkpoint save failed: {e}")
 
                     # Use callback-based training if available (for progress logging)
                     if hasattr(agent, 'train_with_callback'):
@@ -2384,10 +2578,12 @@ def run_single_experiment(
                         exp_logger.info(f"{log_prefix} | Training in progress (no callback support)...")
                         agent.train(total_timesteps=remaining_steps)
 
-                    # Save final checkpoint
-                    if checkpoint_dir and hasattr(agent, 'save'):
-                        final_ckpt = checkpoint_dir / f"{algo_name}_{env_id}_{training_seed}_step_{timesteps}.pt"
-                        agent.save(str(final_ckpt))
+                    result.training_steps_completed = resume_step + training_steps[0]
+                    if result.training_steps_completed < timesteps:
+                        raise ValueError(
+                            f"Training returned after {result.training_steps_completed} observed steps; "
+                            f"{timesteps} required")
+                    save_checkpoint(result.training_steps_completed)
 
                     # Clean up progress/pulse files (training complete)
                     if progress_dir:
@@ -2399,10 +2595,11 @@ def run_single_experiment(
                                 except Exception:
                                     pass
 
+                result.training_steps_completed = resume_step + training_steps[0]
             except Exception as e:
+                result.training_steps_completed = resume_step + training_steps[0]
                 result.error_message = f"Training failed: {str(e)}\n{traceback.format_exc()}"
                 exp_logger.error(f"{log_prefix} | FAILED | Training: {str(e)[:100]}")
-                env.close()
                 return result
 
         result.training_time_seconds = time.time() - training_start
@@ -2435,7 +2632,7 @@ def run_single_experiment(
         exp_logger.info(f"{log_prefix} | Evaluation started | {n_eval_episodes} episodes")
         eval_start = time.time()
         try:
-            metrics = evaluate_agent(agent, env_id, n_eval_episodes, training_seed)
+            metrics = evaluate_agent(agent, env_id, n_eval_episodes, training_seed, reward_type=reward_type)
             if training_curve:
                 metrics['training_returns'] = training_curve
             if training_timesteps:
@@ -2444,19 +2641,19 @@ def run_single_experiment(
                 metrics['training_metrics'] = training_metrics_data
             result.metrics = metrics
             result.status = "success"
+            if not _campaign_result_complete(result.to_dict()):
+                result.status = "failed"
+                raise ValueError("Result is missing valid training evidence or finite final evaluation metrics")
         except Exception as e:
+            result.status = "failed"
             result.error_message = f"Evaluation failed: {str(e)}\n{traceback.format_exc()}"
             exp_logger.error(f"{log_prefix} | FAILED | Evaluation: {str(e)[:100]}")
-            env.close()
             return result
 
         result.evaluation_time_seconds = time.time() - eval_start
         exp_logger.info(f"{log_prefix} | Evaluation complete | {result.evaluation_time_seconds:.1f}s")
 
-        # Cleanup
-        env.close()
-        if hasattr(agent, 'close'):
-            agent.close()
+        # Release cached GPU allocations after a completed run.
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
 
@@ -2471,10 +2668,19 @@ def run_single_experiment(
         return result
 
     except Exception as e:
+        result.status = "failed"
         result.error_message = f"Unexpected error: {str(e)}\n{traceback.format_exc()}"
         total_time = time.time() - experiment_start_time
         exp_logger.error(f"{log_prefix} | FAILED | Unexpected error after {total_time:.1f}s: {str(e)[:100]}")
         return result
+
+    finally:
+        for resource in (agent, env):
+            if resource is not None and hasattr(resource, "close"):
+                try:
+                    resource.close()
+                except Exception as exc:
+                    exp_logger.warning(f"{log_prefix} | Cleanup failed: {exc}")
 
 
 def _extract_tr_specific_metrics(info: Dict[str, Any], env_id: str) -> Dict[str, Any]:
@@ -2612,15 +2818,16 @@ def _extract_tr_specific_metrics(info: Dict[str, Any], env_id: str) -> Dict[str,
     return tr_metrics
 
 
-def evaluate_agent(agent, env_id: str, n_episodes: int, base_seed: int) -> Dict[str, Any]:
+def evaluate_agent(agent, env_id: str, n_episodes: int, base_seed: int,
+                   reward_type: str = "integrated") -> Dict[str, Any]:
     """
     Evaluate a trained agent with TR-specific metrics capture.
 
     Captures both universal metrics (return, trust, cooperation) and
     environment-specific metrics based on TR category.
     """
-    _setup_path()
-    import coopetition_gym
+    if not _positive_integer(n_episodes):
+        raise ValueError("n_episodes must be a positive integer")
 
     episode_returns = []
     episode_lengths = []
@@ -2633,49 +2840,60 @@ def evaluate_agent(agent, env_id: str, n_episodes: int, base_seed: int) -> Dict[
 
     for ep in range(n_episodes):
         seed = base_seed * 1000 + ep
-        env = coopetition_gym.make(env_id)
-        obs, info = env.reset(seed=seed)
+        env, error = create_environment(env_id, seed=seed, reward_type=reward_type)
+        if error:
+            raise ValueError(error)
+        try:
+            obs, info = env.reset(seed=seed)
 
-        episode_return = 0.0
-        steps = 0
-        action_sum = 0.0
-        terminated, truncated = False, False
+            episode_return = 0.0
+            steps = 0
+            action_sum = 0.0
+            terminated, truncated = False, False
 
-        while not (terminated or truncated):
-            action = agent.predict(obs, deterministic=True)
-            obs, reward, terminated, truncated, info = env.step(action)
-            episode_return += np.sum(reward) if isinstance(reward, np.ndarray) else reward
-            action_sum += np.mean(action) if isinstance(action, np.ndarray) else action
-            steps += 1
+            while not (terminated or truncated):
+                if not np.all(np.isfinite(obs)):
+                    raise ValueError("Environment returned a nonfinite observation")
+                action = _validated_action(env, agent.predict(obs, deterministic=True))
+                obs, reward, terminated, truncated, info = env.step(action)
+                if not np.all(np.isfinite(reward)):
+                    raise ValueError("Environment returned a nonfinite reward")
+                episode_return += float(np.sum(reward))
+                action_sum += np.mean(action) if isinstance(action, np.ndarray) else action
+                steps += 1
 
-        episode_returns.append(episode_return)
-        episode_lengths.append(steps)
-        final_trusts.append(info.get('mean_trust', 0.0))
-        cooperation_rates.append(action_sum / max(steps, 1))
+            episode_returns.append(episode_return)
+            episode_lengths.append(steps)
+            final_trust = info.get("mean_trust")
+            if not _finite_number(final_trust):
+                raise ValueError("Environment final mean_trust is missing or nonfinite")
+            final_trusts.append(final_trust)
+            cooperation_rates.append(action_sum / max(steps, 1))
 
-        # Extract TR-specific metrics from final info
-        tr_ep_metrics = _extract_tr_specific_metrics(info, env_id)
+            # Extract TR-specific metrics from final info
+            tr_ep_metrics = _extract_tr_specific_metrics(info, env_id)
 
-        # Build per-episode record
-        ep_data = {
-            "seed": seed,
-            "return": float(episode_return),
-            "final_trust": float(info.get('mean_trust', 0.0)),
-            "steps": steps,
-            "cooperation_rate": float(action_sum / max(steps, 1)),
-        }
-        # Add TR-specific metrics to per-episode data
-        ep_data.update(tr_ep_metrics)
-        per_episode_data.append(ep_data)
+            # Build per-episode record
+            ep_data = {
+                "seed": seed,
+                "return": float(episode_return),
+                "final_trust": float(final_trust),
+                "steps": steps,
+                "cooperation_rate": float(action_sum / max(steps, 1)),
+            }
+            # Add TR-specific metrics to per-episode data
+            ep_data.update(tr_ep_metrics)
+            per_episode_data.append(ep_data)
 
-        # Accumulate numeric TR metrics for aggregation
-        for key, value in tr_ep_metrics.items():
-            if isinstance(value, (int, float)) and not isinstance(value, bool):
-                if key not in tr_metrics_accum:
-                    tr_metrics_accum[key] = []
-                tr_metrics_accum[key].append(value)
+            # Accumulate numeric TR metrics for aggregation
+            for key, value in tr_ep_metrics.items():
+                if isinstance(value, (int, float)) and not isinstance(value, bool):
+                    if key not in tr_metrics_accum:
+                        tr_metrics_accum[key] = []
+                    tr_metrics_accum[key].append(value)
 
-        env.close()
+        finally:
+            env.close()
 
     # Build result with universal metrics
     result = {
@@ -2763,6 +2981,8 @@ class UnifiedOrchestrator:
         self.config = config
         self.output_dir = config.output_dir
         self.output_dir.mkdir(parents=True, exist_ok=True)
+        self._state_lock = Lock()
+        self._ensure_campaign_identity()
         self.raw_dir = self.output_dir / "raw"
         self.raw_dir.mkdir(parents=True, exist_ok=True)
         self.logs_dir = self.output_dir / "logs"
@@ -2896,12 +3116,9 @@ class UnifiedOrchestrator:
         # whether --resume was passed. Result files are the source of truth.
         self._scan_completed_results()
 
-        # Also load from state file if --resume and it has additional entries
-        if config.resume and self.state_file.exists():
-            with open(self.state_file) as f:
-                state = json.load(f)
-                state_keys = set(state.get("completed", []))
-                self.completed_keys.update(state_keys)
+        # state.json is an informational snapshot, never completion evidence.
+        # In particular stale, missing-file, failed, or corrupt entries cannot
+        # suppress an experiment even when --resume is requested.
 
         # Build experiment queues (separate for CPU and GPU)
         self.gpu_experiments, self.cpu_experiments = self._build_experiments()
@@ -2910,6 +3127,70 @@ class UnifiedOrchestrator:
         self.shutdown_requested = False
         signal.signal(signal.SIGINT, self._signal_handler)
         signal.signal(signal.SIGTERM, self._signal_handler)
+
+    def _ensure_campaign_identity(self):
+        """Reserve an output directory for one scientific configuration.
+
+        Seeds and selection filters are excluded so a campaign can be extended
+        without changing the meaning of an existing cell. Actual adaptive
+        algorithm parameters are additionally recorded in each result hash.
+        """
+        if self.config.reward_type not in REWARD_TYPES:
+            raise ValueError(f"Unknown reward_type: {self.config.reward_type}")
+        if not _positive_integer(self.config.n_eval_episodes):
+            raise ValueError("n_eval_episodes must be a positive integer")
+        if (self.config.timesteps_override is not None
+                and not _positive_integer(self.config.timesteps_override)):
+            raise ValueError("timesteps_override must be a positive integer")
+        if not self.config.seeds or any(not isinstance(seed, int) or isinstance(seed, bool) or seed < 0
+                                        for seed in self.config.seeds):
+            raise ValueError("seeds must be nonnegative integers")
+        if len(set(self.config.seeds)) != len(self.config.seeds):
+            raise ValueError("seeds must be distinct to prevent duplicate concurrent cells")
+        identity = {
+            "schema_version": CAMPAIGN_SCHEMA_VERSION,
+            "source_version": _source_version(), "source_fingerprint": _source_fingerprint(),
+            "reward_type": self.config.reward_type,
+            "reward_version": REWARD_VERSION, "budget_version": BUDGET_VERSION,
+            "timesteps_override": self.config.timesteps_override,
+            "timesteps_by_category": TIMESTEPS_BY_CATEGORY,
+            "n_eval_episodes": self.config.n_eval_episodes,
+            "environments": TR1_ENVIRONMENTS + TR2_ENVIRONMENTS + TR3_ENVIRONMENTS + TR4_ENVIRONMENTS,
+            "algorithms": ALL_ALGORITHMS,
+            "adaptive_buffers": self.config.enable_adaptive_buffers,
+            "reduced_buffer_params": REDUCED_BUFFER_PARAMS,
+        }
+        self.campaign_id = _identity_hash(identity)
+        manifest = {"campaign_id": self.campaign_id, "configuration": identity}
+        manifest_path = self.output_dir / "campaign.json"
+        if manifest_path.exists():
+            existing = json.loads(manifest_path.read_text())
+            if (existing.get("campaign_id") != self.campaign_id
+                    or _identity_hash(existing.get("configuration")) != self.campaign_id):
+                raise ValueError("Output directory belongs to a different campaign configuration; use a new directory")
+            return
+        if any((self.output_dir / "raw").glob("*.json")):
+            raise ValueError("Existing results have no campaign manifest; use a new output directory to preserve legacy artifacts")
+        # Exclusive creation prevents two different treatments claiming the same
+        # directory. A malformed/incomplete manifest fails closed on restart.
+        with manifest_path.open("x") as handle:
+            json.dump(manifest, handle, sort_keys=True, allow_nan=False, cls=NumpyEncoder)
+
+    def _result_matches_campaign(self, record):
+        if not _campaign_result_complete(record, self.campaign_id):
+            return False
+        if (record["reward_type"] != self.config.reward_type
+                or record["evaluation_episodes_requested"] != self.config.n_eval_episodes):
+            return False
+        category = record["environment_config"].get("category", "dyadic")
+        budget = (self.config.timesteps_override if self.config.timesteps_override is not None
+                  else TIMESTEPS_BY_CATEGORY.get(category, 500000)) if record["requires_training"] else 0
+        return record["training_steps_requested"] == budget
+
+    def _worker_options(self):
+        return {"reward_type": self.config.reward_type,
+                "timesteps_override": self.config.timesteps_override,
+                "campaign_id": self.campaign_id}
 
     def _handle_memory_backpressure(self, utilization: float):
         """Handle GPU memory backpressure by reducing workers and increasing buffer level."""
@@ -3096,49 +3377,50 @@ class UnifiedOrchestrator:
         return gpu_experiments, cpu_experiments
 
     def _scan_completed_results(self):
-        """Scan raw results directory for already-completed experiments.
-
-        This ensures experiments are never re-run after a restart, even if
-        --resume was not passed. The result files on disk are the source of
-        truth for what has already been completed.
-
-        Filename convention: {algorithm}_{environment}_{seed}.json
-        """
-        if not self.raw_dir.exists():
-            return
-
-        scanned = 0
+        """Rebuild completion state from valid on-disk records only."""
+        completed = set()
         for filepath in self.raw_dir.glob("*.json"):
             try:
-                with open(filepath) as f:
-                    data = json.load(f)
-                # Only count successful experiments as completed
-                if data.get("status") == "success":
+                data = json.loads(filepath.read_text())
+                if self._result_matches_campaign(data):
                     key = f"{data['algorithm']}_{data['environment']}_{data['training_seed']}"
-                    self.completed_keys.add(key)
-                    scanned += 1
-            except (json.JSONDecodeError, KeyError, OSError):
+                    if filepath.name == key + ".json":
+                        completed.add(key)
+            except (ValueError, KeyError, OSError, TypeError):
                 continue
-
-        if scanned > 0:
-            self.logger.info(f"Auto-detected {scanned} completed experiments from result files")
+        self.completed_keys = completed
+        if completed:
+            self.logger.info(f"Validated {len(completed)} completed experiments from result files")
 
     def _save_result(self, result: ExperimentResult):
-        """Save result to file."""
-        filename = f"{result.algorithm}_{result.environment}_{result.training_seed}.json"
-        filepath = self.raw_dir / filename
-        with open(filepath, 'w') as f:
-            json.dump(result.to_dict(), f, separators=(',', ':'), cls=NumpyEncoder)
+        """Atomically persist a result and retain only valid successful keys."""
+        key = f"{result.algorithm}_{result.environment}_{result.training_seed}"
+        complete = self._result_matches_campaign(result.to_dict())
+        if result.status == "success" and not complete:
+            result.status = "failed"
+            result.error_message = "Invalid success result: completion evidence or campaign identity failed validation"
+        filepath = self.raw_dir / (key + ".json")
+        with self._state_lock:
+            tmp = filepath.with_suffix(".json.tmp")
+            tmp.write_text(json.dumps(_json_safe(result.to_dict()), separators=(",", ":"),
+                                      cls=NumpyEncoder, allow_nan=False))
+            tmp.replace(filepath)
+            if complete:
+                self.completed_keys.add(key)
+            else:
+                self.completed_keys.discard(key)
+        return complete
 
     def _save_state(self):
-        """Save current state for resume."""
-        state = {
-            "completed": list(self.completed_keys),
-            "timestamp": datetime.now().isoformat(),
-            "modes": self.config.modes,
-        }
-        with open(self.state_file, 'w') as f:
-            json.dump(state, f, indent=2)
+        """Write a revalidated snapshot; state never overrides result evidence."""
+        with self._state_lock:
+            self._scan_completed_results()
+            state = {"completed": sorted(self.completed_keys),
+                     "timestamp": datetime.now().isoformat(), "modes": self.config.modes,
+                     "campaign_id": self.campaign_id}
+            tmp = self.state_file.with_suffix(".json.tmp")
+            tmp.write_text(json.dumps(state, indent=2, allow_nan=False))
+            tmp.replace(self.state_file)
 
     def _print_resource_summary(self):
         """Print resource allocation summary."""
@@ -3370,6 +3652,7 @@ class UnifiedOrchestrator:
                         True, 0, None, 100000,
                         str(self.logger.log_file),
                         self.progress_dir,
+                        **self._worker_options(),
                     )
                     futures[future] = (algo, env, seed)
                 except StopIteration:
@@ -3384,10 +3667,9 @@ class UnifiedOrchestrator:
 
                     try:
                         result = future.result()
-                        self._save_result(result)
-                        self.completed_keys.add(key)
+                        successful = self._save_result(result)
 
-                        if result.status == "success":
+                        if successful:
                             completed += 1
                             mean_ret = result.metrics.get('mean_return', 0) if result.metrics else 0
                             self.logger.info(f"[CPU {completed + failed}/{len(self.cpu_experiments)}] "
@@ -3409,6 +3691,7 @@ class UnifiedOrchestrator:
                             True, 0, None, 100000,
                             str(self.logger.log_file),
                             self.progress_dir,
+                            **self._worker_options(),
                         )
                         futures[future] = (next_algo, next_env, next_seed)
                     except StopIteration:
@@ -3498,6 +3781,7 @@ class UnifiedOrchestrator:
                         self.config.checkpoint_interval,
                         str(self.logger.log_file),
                         self.progress_dir,
+                        **self._worker_options(),
                     )
                     futures[future] = (algo, env, seed, gpu_id, mem_required)
                 except StopIteration:
@@ -3535,10 +3819,9 @@ class UnifiedOrchestrator:
 
                     try:
                         result = future.result()
-                        self._save_result(result)
-                        self.completed_keys.add(key)
+                        successful = self._save_result(result)
 
-                        if result.status == "success":
+                        if successful:
                             completed += 1
                             mean_ret = result.metrics.get('mean_return', 0) if result.metrics else 0
                             self.logger.info(f"[GPU{gpu_id} {completed + failed}/{len(self.gpu_experiments)}] "
@@ -3603,6 +3886,7 @@ class UnifiedOrchestrator:
                                 self.config.checkpoint_interval,
                                 str(self.logger.log_file),
                                 self.progress_dir,
+                                **self._worker_options(),
                             )
                             futures[future] = (next_algo, next_env, next_seed, next_gpu, next_mem)
 
@@ -3672,14 +3956,8 @@ class UnifiedOrchestrator:
 # CLI
 # ============================================================================
 
-def _orchestrator_main():
-    """Core orchestrator entry point preserved from the original campaign.
-
-    Called by :func:`main` after the subcommand layer has set the
-    ``COOPETITION_REWARD_TYPE`` environment variable and injected safety
-    defaults into ``sys.argv``. This function retains the full CLI of the
-    original ``orchestrator.py`` for users who need direct access.
-    """
+def _orchestrator_main(argv=None, reward_type="integrated"):
+    """Parse an explicitly configured campaign and dispatch its workers."""
     parser = argparse.ArgumentParser(
         description="Unified Coopetition-Gym MARL Baseline Orchestrator V2",
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -3740,7 +4018,7 @@ Lambda Cloud 8x A100 Safe Configuration:
                         help="Comma-separated list of algorithms to run")
     parser.add_argument("--environments", type=str, default=None,
                         help="Comma-separated list of environments to run")
-    parser.add_argument("--seeds", type=str, default="100,101,102,103,104",
+    parser.add_argument("--seeds", type=str, default=",".join(map(str, TRAINING_SEEDS)),
                         help="Comma-separated list of training seeds")
     parser.add_argument("--eval-episodes", type=int, default=100,
                         help="Number of evaluation episodes")
@@ -3833,8 +4111,7 @@ Lambda Cloud 8x A100 Safe Configuration:
     advanced_group.add_argument("--timesteps-override", type=int, default=None,
                         metavar="N",
                         help="Override TIMESTEPS_BY_CATEGORY for every training algorithm "
-                             "to N. Propagated to worker subprocesses via the "
-                             "COOPETITION_TIMESTEPS_OVERRIDE environment variable. "
+                             "to N. Passed explicitly to worker subprocesses. "
                              "Primarily useful for smoke tests and reduced-budget "
                              "reproductions; not recommended for paper-scale runs.")
     advanced_group.add_argument("--checkpoint-interval", type=int, default=100000,
@@ -3844,7 +4121,7 @@ Lambda Cloud 8x A100 Safe Configuration:
                         metavar="DIR",
                         help="Directory for checkpoints (default: <output>/checkpoints)")
 
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
 
     # Validate worker limits
     if args.max_workers is not None and args.max_workers < 1:
@@ -3856,15 +4133,10 @@ Lambda Cloud 8x A100 Safe Configuration:
     if args.memory_threshold >= args.critical_threshold:
         parser.error("--memory-threshold must be less than --critical-threshold")
 
-    # Propagate --timesteps-override through the environment so multiprocessing
-    # workers (which re-import this module fresh via spawn) see it. The worker
-    # consults ``COOPETITION_TIMESTEPS_OVERRIDE`` inside ``run_single_experiment``
-    # just before training to override the category-default budget.
-    if args.timesteps_override is not None:
-        if args.timesteps_override < 1:
-            parser.error("--timesteps-override must be a positive integer")
-        os.environ["COOPETITION_TIMESTEPS_OVERRIDE"] = str(args.timesteps_override)
-        print(f"[campaign] COOPETITION_TIMESTEPS_OVERRIDE = {args.timesteps_override}")
+    if args.timesteps_override is not None and args.timesteps_override < 1:
+        parser.error("--timesteps-override must be a positive integer")
+    if args.eval_episodes < 1:
+        parser.error("--eval-episodes must be a positive integer")
 
     # Parse mode argument
     modes = [m.strip().lower() for m in args.mode.split(",")]
@@ -3894,6 +4166,8 @@ Lambda Cloud 8x A100 Safe Configuration:
         environments=environments,
         seeds=seeds,
         n_eval_episodes=args.eval_episodes,
+        reward_type=reward_type,
+        timesteps_override=args.timesteps_override,
         resume=args.resume,
         dry_run=args.dry_run,
         shuffle_seed=args.shuffle_seed,
@@ -3944,55 +4218,9 @@ Lambda Cloud 8x A100 Safe Configuration:
 # Subcommand layer — the public campaign CLI
 # =============================================================================
 
-def _verify_reward_patcher(expected_reward_type: str) -> None:
-    """Verify that the reward-type patcher is installed in site-packages.
-
-    The patcher (``reward_type_patcher.py`` + ``reward_type_patch.pth``)
-    reads ``COOPETITION_REWARD_TYPE`` at Python startup and applies the
-    reward type to every environment constructed via ``coopetition_gym.make``.
-    It must be installed for non-``integrated`` campaigns to produce correct
-    reward mutuality.
-
-    Prints a warning and exits with code 1 if the patcher is missing and the
-    expected reward type is not ``integrated``.
-    """
-    try:
-        from coopetition_gym.envs import make as _test_make
-        env = _test_make("TrustDilemma-v0")
-        actual = getattr(env, "reward_type", "unknown")
-        env.close()
-        if actual == expected_reward_type:
-            print(f"[campaign] reward patcher verified: env.reward_type = {actual}")
-            return
-        print(
-            f"[campaign] WARNING: reward patcher may not be installed.\n"
-            f"    Expected: {expected_reward_type}\n"
-            f"    Actual:   {actual}\n"
-            f"    Install ``reward_type_patcher.py`` + ``reward_type_patch.pth``\n"
-            f"    into the venv's site-packages directory. See REPRODUCE.md."
-        )
-        if expected_reward_type != "integrated":
-            print(f"[campaign] ABORTING — non-integrated campaign would produce wrong data.")
-            sys.exit(1)
-    except Exception as exc:
-        print(f"[campaign] WARNING: could not verify reward patcher: {exc}")
-
-
 def _run_reward_campaign(reward_type: str, forwarded_argv: list) -> None:
-    """Run a reward-configured campaign: baseline, private, or cooperative.
-
-    Sets ``COOPETITION_REWARD_TYPE`` before any further environment creation,
-    verifies the patcher, then delegates to :func:`_orchestrator_main` with
-    the forwarded argument vector.
-    """
-    os.environ["COOPETITION_REWARD_TYPE"] = reward_type
-    print(f"[campaign] COOPETITION_REWARD_TYPE = {reward_type}")
-
-    _verify_reward_patcher(reward_type)
-
-    # Replace sys.argv so the downstream argparse sees the forwarded arguments.
-    sys.argv = [sys.argv[0]] + forwarded_argv
-    _orchestrator_main()
+    """Pass the selected treatment explicitly through config to every worker."""
+    _orchestrator_main(forwarded_argv, reward_type=reward_type)
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -4027,7 +4255,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if subcommand not in subcommands:
         # No subcommand recognized: fall back to the original orchestrator CLI
         # for backward compatibility with direct users of orchestrator.py.
-        return _orchestrator_main() or 0
+        return _orchestrator_main(argv) or 0
 
     forwarded = argv[1:]
 

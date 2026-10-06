@@ -17,9 +17,9 @@
 # Environment variables:
 #   HF_USER                  HuggingFace username (default "vikpant")
 #   HF_REPO                  Repo name (default "coopetition-gym-logs")
-#   HF_PRIVATE               "1" to create the repo private (default "0", public)
+#   HF_PRIVATE               "1" for private (default); "0" explicitly requests public
 #   SOURCE_ROOT              Local root for the four subdirectories
-#                            (default ".claude/release_payload/")
+#                            (required; no implicit private-workspace source)
 #
 # Usage:
 #   export SOURCE_ROOT=/path/to/release_payload
@@ -38,10 +38,12 @@ set -euo pipefail
 
 HF_USER="${HF_USER:-vikpant}"
 HF_REPO="${HF_REPO:-coopetition-gym-logs}"
-HF_PRIVATE="${HF_PRIVATE:-0}"
-SOURCE_ROOT="${SOURCE_ROOT:-.claude/release_payload}"
+HF_PRIVATE="${HF_PRIVATE:-1}"
+: "${SOURCE_ROOT:?Set SOURCE_ROOT to the reviewed dataset payload directory}"
+case "$HF_PRIVATE" in 0|1) ;; *) echo "HF_PRIVATE must be 0 or 1" >&2; exit 1 ;; esac
 
-REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null || cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd -- "$SCRIPT_DIR/../../.." && pwd)"
 CROISSANT_FILE="$REPO_ROOT/papers/neurips_ed_2026/croissant.json"
 README_FILE="$REPO_ROOT/coopetition_gym/experiments/croissant/hf_readme_training.md"
 
@@ -62,16 +64,21 @@ hf auth whoami >/dev/null 2>&1 || {
 [ -f "$README_FILE" ]    || { echo "missing README: $README_FILE"; exit 1; }
 [ -d "$SOURCE_ROOT" ]    || { echo "missing SOURCE_ROOT: $SOURCE_ROOT"; exit 1; }
 
-echo "=== Step 1: ensure dataset repo exists ==="
-PRIVATE_FLAG=""
-if [ "$HF_PRIVATE" = "1" ]; then
-    PRIVATE_FLAG="--private"
-    echo "  creating PRIVATE repo (HF_PRIVATE=1)"
-else
-    echo "  creating PUBLIC repo (HF_PRIVATE=0)"
-fi
-hf repo create "$HF_USER/$HF_REPO" --type dataset $PRIVATE_FLAG --yes 2>&1 | tail -3 \
-    || echo "  (repo may already exist, continuing)"
+echo "=== Step 1: create or verify destination visibility ==="
+python3 - "$HF_USER/$HF_REPO" "$HF_PRIVATE" <<'PYCODE'
+import sys
+from huggingface_hub import HfApi
+repo_id, private_flag = sys.argv[1:]
+requested_private = private_flag == "1"
+api = HfApi()
+api.create_repo(repo_id=repo_id, repo_type="dataset", private=requested_private, exist_ok=True)
+info = api.dataset_info(repo_id)
+# create_repo(private=...) does not change an existing repository's visibility.
+# Fail before the first file upload if visibility is unknown or mismatched.
+if not isinstance(info.private, bool) or info.private != requested_private:
+    raise SystemExit("Destination visibility does not match HF_PRIVATE; no files uploaded")
+print(f"Verified destination: {repo_id}; private={info.private}")
+PYCODE
 
 echo "=== Step 2: upload README.md and croissant.json ==="
 hf upload "$HF_USER/$HF_REPO" "$README_FILE"    README.md       --repo-type dataset
@@ -99,15 +106,3 @@ PY
 
 echo "=== Complete ==="
 echo "Dataset URL: https://huggingface.co/datasets/$HF_USER/$HF_REPO"
-if [ "$HF_PRIVATE" = "1" ]; then
-    cat <<'MSG'
-
-Dataset uploaded as PRIVATE. To make it public when ready:
-
-  curl -X PUT \
-    -H "Authorization: Bearer $(cat ~/.cache/huggingface/token)" \
-    -H "Content-Type: application/json" \
-    -d '{"private": false}' \
-    "https://huggingface.co/api/datasets/$HF_USER/$HF_REPO/settings"
-MSG
-fi

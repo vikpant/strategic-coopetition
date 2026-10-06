@@ -1,338 +1,93 @@
 # Installation Guide
 
-This guide covers installing Coopetition-Gym for research and development use.
+This guide describes **Coopetition-Gym 1.0.8, an unreleased source candidate**, and the optional **SLCD extension 0.1.1, also unreleased**. Installing the published PyPI package does not establish that these candidate fixes are present.
 
----
+## Install from this repository
 
-## Prerequisites
-
-### System Requirements
-
-| Requirement | Minimum | Recommended |
-|-------------|---------|-------------|
-| **Python** | 3.9 | 3.10 or 3.11 |
-| **RAM** | 4 GB | 8 GB+ |
-| **Disk Space** | 500 MB | 2 GB (with RL frameworks) |
-
-### Required Dependencies
-
-Coopetition-Gym requires:
-
-| Package | Version | Purpose |
-|---------|---------|---------|
-| **NumPy** | 1.21+ | Array operations |
-| **SciPy** | 1.7+ | Mathematical functions |
-| **Gymnasium** | 0.29+ | Single-agent API |
-| **PettingZoo** | 1.24+ | Multi-agent APIs |
-
----
-
-## Quick Install
-
-### From PyPI (Recommended)
+Use Python 3.9+ for the base package, or Python 3.10+ when using the SLCD extension. From the repository root:
 
 ```bash
-pip install coopetition-gym
+git clone https://github.com/vikpant/strategic-coopetition.git
+cd strategic-coopetition
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -e './coopetition_gym[dev,experiments]'
 ```
 
-### From Source
+On Windows, activate with `.venv\Scripts\activate`. If an appropriate environment already exists, use it instead of creating another one. The install command belongs at the repository root; the Python examples and test commands below run from the package directory:
 
 ```bash
-# Clone the repository
-git clone https://github.com/your-org/strategic-coopetition.git
-cd strategic-coopetition/coopetition_gym
-
-# Install in development mode
-pip install -e .
+cd coopetition_gym
 ```
 
----
+## Dependencies
 
-## Development Install
+The base package declares Gymnasium >=0.29, PettingZoo >=1.24, NumPy >=1.21, SciPy >=1.7, PyTorch >=2.0, and Stable-Baselines3 >=2.0. PyTorch and Stable-Baselines3 are core dependencies.
 
-For contributors and researchers who need the full development environment:
+| Extra | Contents |
+|---|---|
+| `dev` | pytest, pytest-cov, Black, isort, mypy, flake8 |
+| `viz` | matplotlib, seaborn |
+| `experiments` | matplotlib, seaborn, pandas, diptest |
+| `rl` | Compatibility alias for the already-required PyTorch and Stable-Baselines3 dependencies |
+| `all` | All extras above |
 
-```bash
-# Clone the repository
-git clone https://github.com/your-org/strategic-coopetition.git
-cd strategic-coopetition/coopetition_gym
+The candidate wheel includes the `experiments` Python package. Source tests and research datasets are separate from installed runtime packages.
 
-# Create virtual environment (recommended)
-python -m venv venv
-source venv/bin/activate  # Linux/macOS
-# or: venv\Scripts\activate  # Windows
-
-# Install with all development dependencies
-pip install -e ".[dev,viz,rl]"
-```
-
-### Dependency Groups
-
-| Group | Contents | Use Case |
-|-------|----------|----------|
-| `dev` | pytest, black, mypy, sphinx | Development and testing |
-| `viz` | matplotlib, seaborn, plotly | Visualization and analysis |
-| `rl` | stable-baselines3, torch | RL training |
-
-Install specific groups:
-
-```bash
-# Just development tools
-pip install -e ".[dev]"
-
-# Development and visualization
-pip install -e ".[dev,viz]"
-
-# Everything
-pip install -e ".[dev,viz,rl]"
-```
-
----
-
-## Optional Dependencies
-
-### MARL Framework Integration
-
-Coopetition-Gym integrates with major MARL frameworks. Install them separately:
-
-#### Stable-Baselines3 (PyTorch)
-
-```bash
-pip install stable-baselines3[extra]
-```
+## Verify the base package
 
 ```python
-from stable_baselines3 import PPO
-from stable_baselines3.common.vec_env import DummyVecEnv
-import coopetition_gym
+import coopetition_gym as cg
+import gymnasium as gym
+import numpy as np
 
-env = DummyVecEnv([lambda: coopetition_gym.make("TrustDilemma-v0")])
-model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=10000)
+print(cg.__version__, len(cg.list_environments()))  # 1.0.8, 20 for this candidate
+with gym.make("coopetition_gym:TrustDilemma-v0", reward_type="private") as env:
+    obs, info = env.reset(seed=42)
+    obs, rewards, terminated, truncated, info = env.step(
+        np.array([60.0, 55.0], dtype=np.float32)
+    )
+    assert obs.shape == (15,)
+    assert rewards.shape == (2,)
 ```
 
-#### RLlib (Ray)
+The Gymnasium factory preserves **one reward per agent**. A scalar-reward learner therefore needs an explicit adapter. `experiments.algorithms.MultiAgentToSingleAgentWrapper` sums the rewards for a joint controller; this changes the learning objective and must be reported. See the [wrapper reference](api/wrappers.md#scalar-reward-adapter).
+
+## Optional SLCD extension
+
+From the repository root, after installing the base candidate:
 
 ```bash
-pip install "ray[rllib]"
+python -m pip install -e './coopetition_gym/extensions/slcd_2d[dev]'
 ```
+
+The installed import is `slcd_2d`:
 
 ```python
-from ray import tune
-from ray.rllib.algorithms.ppo import PPOConfig
-import coopetition_gym
+from slcd_2d import SLCDAppropriationEnv
 
-# Register environment with RLlib
-from ray.tune.registry import register_env
-register_env("trust_dilemma", lambda config: coopetition_gym.make_parallel("TrustDilemma-v0"))
-```
-
-#### TorchRL
-
-```bash
-pip install torchrl
-```
-
-#### CleanRL
-
-```bash
-pip install cleanrl
-```
-
-### Visualization
-
-```bash
-# Matplotlib (basic plotting)
-pip install matplotlib
-
-# Seaborn (statistical visualization)
-pip install seaborn
-
-# Plotly (interactive plots)
-pip install plotly
-```
-
----
-
-## GPU Setup
-
-GPU acceleration is optional but recommended for training RL agents.
-
-### PyTorch with CUDA
-
-```bash
-# Check your CUDA version
-nvidia-smi
-
-# Install PyTorch with appropriate CUDA version
-# For CUDA 11.8:
-pip install torch --index-url https://download.pytorch.org/whl/cu118
-
-# For CUDA 12.1:
-pip install torch --index-url https://download.pytorch.org/whl/cu121
-```
-
-### TensorFlow with GPU
-
-```bash
-pip install tensorflow[and-cuda]
-```
-
-### Verifying GPU Access
-
-```python
-# PyTorch
-import torch
-print(f"CUDA available: {torch.cuda.is_available()}")
-if torch.cuda.is_available(): print(f"GPU: {torch.cuda.get_device_name(0)}")
-
-# TensorFlow
-import tensorflow as tf
-gpus = tf.config.list_physical_devices('GPU')
-print(f"GPUs available: {len(gpus)}")
-```
-
-### Memory Considerations
-
-For GPUs with limited VRAM (4-8 GB):
-
-```python
-# PyTorch: Use smaller batch sizes
-model = PPO("MlpPolicy", env, batch_size=64, policy_kwargs=dict(net_arch=[128, 128]))
-
-# TensorFlow: Enable memory growth
-gpus = tf.config.list_physical_devices('GPU')
-for gpu in gpus: tf.config.experimental.set_memory_growth(gpu, True)
-```
-
----
-
-## Verification
-
-After installation, verify everything works:
-
-```python
-import coopetition_gym
-import gymnasium
-import pettingzoo
-
-# Check versions
-print(f"Coopetition-Gym environments: {len(coopetition_gym.list_environments())}")
-print(f"Gymnasium version: {gymnasium.__version__}")
-print(f"PettingZoo version: {pettingzoo.__version__}")
-
-# Test Gymnasium API
-env = coopetition_gym.make("TrustDilemma-v0")
+env = SLCDAppropriationEnv(reward_type="private")
 obs, info = env.reset(seed=42)
-print(f"Observation shape: {obs.shape}")
-print(f"Action space: {env.action_space}")
-
-# Test PettingZoo Parallel API
-env_parallel = coopetition_gym.make_parallel("TrustDilemma-v0")
-observations, infos = env_parallel.reset(seed=42)
-print(f"Agents: {env_parallel.agents}")
-
-# Test PettingZoo AEC API
-env_aec = coopetition_gym.make_aec("TrustDilemma-v0")
-env_aec.reset(seed=42)
-print(f"AEC agents: {env_aec.agents}")
-
-print("\nAll tests passed!")
+obs, rewards, terminated, truncated, info = env.step([50.0, 0.2, 50.0, 0.2])
+env.close()
 ```
 
-### Expected Output
+Source-checkout imports such as `extensions.slcd_2d` also work from the package directory. The extension provides seven learner adapters and one oracle; see its [source README](https://github.com/vikpant/strategic-coopetition/blob/master/coopetition_gym/extensions/slcd_2d/README.md).
 
-```
-Coopetition-Gym environments: 15
-Gymnasium version: 0.29.x
-PettingZoo version: 1.24.x
-Observation shape: (17,)
-Action space: Box(0.0, 100.0, (2,), float32)
-Agents: ['agent_0', 'agent_1']
-AEC agents: ['agent_0', 'agent_1']
+## Tests without training
 
-All tests passed!
+From `strategic-coopetition/coopetition_gym`:
+
+```bash
+python -B -m pytest -p no:cacheprovider -k 'not test_ippo_trains_on_2d'
 ```
 
----
+Pytest discovers the core, experiment, and extension tests. The excluded extension test performs a short IPPO training run. Running the command without the exclusion includes that training test. No fresh benchmark campaign is required for these checks.
 
 ## Troubleshooting
 
-### Common Issues
+Check `python -m pip show coopetition-gym` and `python -c "import coopetition_gym; print(coopetition_gym.__file__)"` in the same interpreter. The repository contains an outer `coopetition_gym/` directory and an inner Python package; running examples from the package directory avoids confusing the outer namespace with installed code. Source `__version__` and installed distribution metadata can differ in an old editable environment.
 
-#### ImportError: No module named 'coopetition_gym'
+CPU execution is sufficient for environment smoke checks. GPU requirements depend on the selected algorithm and workload; no GPU capacity is implied by a successful import.
 
-**Cause**: Package not installed or wrong Python environment.
-
-**Solution**:
-```bash
-# Check which Python is active
-which python
-
-# Ensure you're in the correct virtual environment
-source venv/bin/activate
-
-# Reinstall
-pip install -e .
-```
-
-#### Version Conflicts with Gymnasium/PettingZoo
-
-**Cause**: Incompatible versions of Gymnasium or PettingZoo.
-
-**Solution**:
-```bash
-# Install compatible versions
-pip install "gymnasium>=0.29,<1.0"
-pip install "pettingzoo>=1.24,<2.0"
-```
-
-#### CUDA Out of Memory
-
-**Cause**: GPU memory exhausted during training.
-
-**Solution**:
-- Reduce batch size
-- Use smaller networks
-- Enable gradient checkpointing
-
-```python
-# Smaller batch size
-model = PPO("MlpPolicy", env, batch_size=32)
-
-# Smaller network
-model = PPO("MlpPolicy", env, policy_kwargs=dict(net_arch=[64, 64]))
-```
-
-#### Slow Performance Without GPU
-
-**Cause**: RL training running on CPU.
-
-**Solution**:
-- Verify GPU installation (see GPU Setup above)
-- For CPU-only machines, use vectorized environments:
-
-```python
-from stable_baselines3.common.vec_env import SubprocVecEnv
-
-# Parallel CPU environments
-env = SubprocVecEnv([lambda: coopetition_gym.make("TrustDilemma-v0") for _ in range(4)])
-```
-
-### Getting Help
-
-If you encounter issues not covered here: 1. Check the [GitHub Issues](https://github.com/your-org/strategic-coopetition/issues)
-2. Search existing issues for similar problems
-3. Open a new issue with:
-   - Python version (`python --version`)
-   - Package versions (`pip list | grep -E "coopetition|gymnasium|pettingzoo"`)
-   - Full error traceback
-   - Minimal code to reproduce
-
----
-
-## Next Steps
-
-- [Quick Start Tutorial](tutorials/quickstart.md) - Get started with your first environment
-- [Environment Reference](environments/index.md) - Explore all 20 environments
-- [API Documentation](api/index.md) - Complete API reference
+Report reproducible problems at the [repository issue tracker](https://github.com/vikpant/strategic-coopetition/issues). Continue with the [quickstart](tutorials/quickstart.md), [API reference](api/index.md), or [environment catalog](api/quick_reference.md#available-environments).

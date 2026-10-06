@@ -11,8 +11,10 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 
-from extensions.slcd_2d.pre_launch_check_tier1 import (
+from .pre_launch_check_tier1 import (
+    REPO_ROOT,
     gate_2d_env,
     gate_cuda,
     gate_extension_importable,
@@ -36,9 +38,8 @@ def _fail(name: str, detail: str) -> None:
 
 
 def gate_tier15_algorithms() -> None:
-    sys.path.insert(0, "/home/vik_p/projects/strategic-coopetition")
-    from extensions.slcd_2d import SLCDAppropriationEnv
-    from extensions.slcd_2d.algorithms import build_algorithm, list_algorithms
+    from . import SLCDAppropriationEnv
+    from .algorithms import build_algorithm, list_algorithms
 
     required = {"MADDPG", "MATD3", "MASAC", "MAPPO"}
     missing = required - set(list_algorithms())
@@ -58,7 +59,7 @@ def gate_tier15_algorithms() -> None:
 
 def gate_calibrate_module() -> None:
     import numpy as np
-    from extensions.slcd_2d.calibrate import (
+    from .calibrate import (
         DEFAULT_TARGETS, _parabolic_vertex, default_objective,
     )
     xs = np.array([0.0, 1.0, 2.0, 3.0, 4.0])
@@ -77,6 +78,8 @@ def gate_calibrate_module() -> None:
 
 def main(argv=None) -> int:
     p = argparse.ArgumentParser(description="Tier 1.5 pre-flight")
+    p.add_argument("--repo-root", type=Path, default=REPO_ROOT,
+                   help="Source checkout for pytest; inferred when run from source.")
     p.add_argument("--require-gpu", action="store_true")
     p.add_argument("--skip-pytest", action="store_true")
     args = p.parse_args(argv)
@@ -86,9 +89,8 @@ def main(argv=None) -> int:
     print("--- gate 2/packages ---"); gate_packages()
     print("--- gate 3/extension_import ---"); gate_extension_importable()
     if not args.skip_pytest:
-        from pathlib import Path
         print("--- gate 4/pytest ---")
-        gate_pytest(Path("/home/vik_p/projects/strategic-coopetition"))
+        gate_pytest(args.repo_root)
     print("--- gate 5/v1_env ---"); gate_v1_env()
     print("--- gate 6/2d_env ---"); gate_2d_env()
     print("--- gate 7/reward_routing ---"); gate_reward_type_routing()

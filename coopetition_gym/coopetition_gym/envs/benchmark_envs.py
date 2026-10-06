@@ -327,9 +327,8 @@ class SynergySearchEnv(CoopetitionEnv):
     
     def reset(self, **kwargs) -> Tuple[NDArray, Dict]:
         """Reset with new random gamma."""
-        # Sample new gamma
-        if self._np_random is None:
-            self._np_random = np.random.default_rng()
+        # Apply the requested seed before drawing this episode's gamma.
+        super().reset(**kwargs)
         
         self._true_gamma = self._np_random.uniform(
             self.gamma_range[0], 
@@ -348,7 +347,7 @@ class SynergySearchEnv(CoopetitionEnv):
         self._reward_history = []
         self._action_history = []
         
-        return super().reset(**kwargs)
+        return self._get_legacy_observation(), self._get_legacy_info()
     
     def step(self, action: NDArray) -> Tuple[NDArray, NDArray, bool, bool, Dict]:
         """Step with synergy tracking."""

@@ -1,204 +1,68 @@
 # Quick Reference
 
-Coopetition-Gym v0.3.0 quick reference card.
+**Coopetition-Gym 1.0.8 is an unreleased source candidate.** These are constructor defaults in the candidate code, not historical campaign overrides or validation scores.
 
----
+## Available environments
 
-## Environment Creation
+| ID | Default agents | Default max steps | Joint observation shape |
+|---|---:|---:|---|
+| `TrustDilemma-v0` | 2 | 100 | `(15,)` |
+| `PartnerHoldUp-v0` | 2 | 100 | `(15,)` |
+| `PlatformEcosystem-v0` | 5 | 100 | `(81,)` |
+| `DynamicPartnerSelection-v0` | 6 | 50 | `(121,)` |
+| `RecoveryRace-v0` | 2 | 150 | `(15,)` |
+| `SynergySearch-v0` | 2 | 100 | `(15,)` |
+| `SLCD-v0` | 2 | 100 | `(15,)` |
+| `RenaultNissan-v0` | 2 | 100 | `(15,)` |
+| `CooperativeNegotiation-v0` | 2 | 100 | `(18,)` |
+| `ReputationMarket-v0` | 5 | 100 | `(86,)` |
+| `TeamProduction-v0` | 4 | 100 | `(53,)` |
+| `LoyaltyTeam-v0` | 4 | 100 | `(53,)` |
+| `CoalitionFormation-v0` | 6 | 150 | `(115,)` |
+| `ApacheProject-v0` | 40 | 60 | `(4841,)` |
+| `PublicGoods-v0` | 5 | 100 | `(81,)` |
+| `ReciprocalDilemma-v0` | 2 | 100 | `(15,)` |
+| `GiftExchange-v0` | 2 | 100 | `(15,)` |
+| `IndirectReciprocity-v0` | 4 | 150 | `(53,)` |
+| `GraduatedSanction-v0` | 6 | 200 | `(115,)` |
+| `AppleAppStore-v0` | 3 | 66 | `(31,)` |
 
-```python
-import coopetition_gym
+ApacheProject defaults to the `maturity` phase; other phases can change the agent count. DynamicPartnerSelection and ReputationMarket permit `n_agents`, PlatformEcosystem permits `n_developers`, and the general `max_steps` override changes the episode limit. Termination can occur before that limit. PettingZoo observation dimensions also depend on observation configuration and AEC's revealed-action fields.
 
-# Gymnasium API (default)
-env = coopetition_gym.make("TrustDilemma-v0")
+For Apache and Apple case-study score discrepancies, see [score provenance](../benchmarks/score_provenance.md). No constructor default above selects a canonical validation score.
 
-# PettingZoo Parallel API (simultaneous moves)
-env = coopetition_gym.make_parallel("TrustDilemma-v0")
-
-# PettingZoo AEC API (sequential moves)
-env = coopetition_gym.make_aec("TrustDilemma-v0")
-
-# List all environments
-coopetition_gym.list_environments()
-```
-
----
-
-## Available Environments
-
-| ID | Type | Agents | Challenge |
-|----|------|--------|-----------|
-| `TrustDilemma-v0` | Dyadic | 2 | Long-horizon trust |
-| `PartnerHoldUp-v0` | Dyadic | 2 | Power asymmetry |
-| `PlatformEcosystem-v0` | Ecosystem | N+1 | Ecosystem health |
-| `DynamicPartnerSelection-v0` | Ecosystem | N | Reputation signals |
-| `RecoveryRace-v0` | Benchmark | 2 | Trust recovery |
-| `SynergySearch-v0` | Benchmark | 2 | Hidden parameter |
-| `SLCD-v0` | Case Study | 2 | Validated (58/60) |
-| `RenaultNissan-v0` | Case Study | 2 | Multi-phase |
-| `CooperativeNegotiation-v0` | Extended | 2 | Commitments |
-| `ReputationMarket-v0` | Extended | N | Tiered rewards |
-| `TeamProduction-v0` | Collective Action | N | Free-rider dynamics |
-| `LoyaltyTeam-v0` | Collective Action | N | Above-Nash cooperation |
-| `CoalitionFormation-v0` | Collective Action | N | Coalition stability |
-| `ApacheProject-v0` | Collective Action | 4 | Validated (52/60) |
-| `PublicGoods-v0` | Collective Action | N | Contribution dynamics |
-| `ReciprocalDilemma-v0` | Reciprocity | 2 | Conditional cooperation |
-| `GiftExchange-v0` | Reciprocity | 2 | Asymmetric reciprocity |
-| `IndirectReciprocity-v0` | Reciprocity | 4 | Reputation-mediated |
-| `GraduatedSanction-v0` | Reciprocity | 6 | Graduated sanctions |
-| `AppleAppStore-v0` | Reciprocity | 3 | Validated (48/55) |
-
----
-
-## Standard Loop (Gymnasium)
+## Factories and objectives
 
 ```python
-import numpy as np
+import coopetition_gym as cg
 
-env = coopetition_gym.make("TrustDilemma-v0")
+env = cg.make("SLCD-v0", reward_type="private", max_steps=40)
 obs, info = env.reset(seed=42)
-
-for _ in range(100): actions = np.array([50.0, 50.0])
-    obs, rewards, terminated, truncated, info = env.step(actions)
-    if terminated or truncated: break
-
+obs, rewards, terminated, truncated, info = env.step([50.0, 50.0])
 env.close()
 ```
 
----
+| Factory | Actions | Rewards |
+|---|---|---|
+| `make` | Joint NumPy array | One-element-per-agent NumPy vector |
+| `make_parallel` | Agent-keyed dictionary | Agent-keyed dictionary of scalars |
+| `make_aec` | Current agent's action, or `None` when finished | `last()` supplies the selected agent's accumulated reward |
 
-## Standard Loop (PettingZoo Parallel)
+`gymnasium.make("coopetition_gym:SLCD-v0")` is also supported and retains vector rewards. Reward modes are `private`, `integrated` and `cooperative`; invalid values and unknown constructor keywords are rejected. Cooperative base reward is mean integrated utility, with mechanism-specific modifiers applied afterward.
+
+## Info dictionaries
+
+The joint-action base API includes `step`, `mean_trust`, `mean_reputation_damage`, `total_value`, `mean_cooperation` and `cooperation_rate`; steps also report `actions`. Subclasses may add diagnostics. Agent-specific PettingZoo info includes `step`, `own_action`, `own_trust_mean` and `cooperation_rate`; do not assume every legacy diagnostic is present there.
+
+## Observation configuration
 
 ```python
-env = coopetition_gym.make_parallel("TrustDilemma-v0")
+from coopetition_gym import make_parallel, ObservationConfig
+
+env = make_parallel("TrustDilemma-v0",
+                    obs_config=ObservationConfig.realistic_asymmetry())
 observations, infos = env.reset(seed=42)
-
-for _ in range(100): actions = {agent: 50.0 for agent in env.agents}
-    observations, rewards, terms, truncs, infos = env.step(actions)
-    if all(terms.values()) or all(truncs.values()): break
-
 env.close()
 ```
 
----
-
-## Standard Loop (PettingZoo AEC)
-
-```python
-env = coopetition_gym.make_aec("TrustDilemma-v0")
-env.reset(seed=42)
-
-for agent in env.agent_iter(): obs, reward, term, trunc, info = env.last()
-    action = None if term or trunc else 50.0
-    env.step(action)
-
-env.close()
-```
-
----
-
-## Key Parameters
-
-### Trust Dynamics
-
-| Symbol | Default | Range | Meaning |
-|--------|---------|-------|---------|
-| λ⁺ | 0.10 | (0, 1) | Trust building rate |
-| λ⁻ | 0.30 | (0, 1) | Trust erosion rate |
-| $\mu_R$ | 0.60 | (0, 1) | Reputation damage |
-| $\delta_R$ | 0.03 | (0, 0.1) | Reputation decay |
-| ξ | 0.50 | (0, 1) | Dependency amplification |
-
-### Reciprocity Dynamics (TR-4)
-
-| Symbol | Default | Range | Meaning |
-|--------|---------|-------|---------|
-| ρ₀ | 1.0 | > 0 | Base reciprocity strength |
-| η | 1.0 | > 0 | Dependency elasticity |
-| κ | 1.0 | (0, 2) | Response sensitivity |
-| k | 5 | [1, 20] | Memory window length |
-| λ_R | 1.0 | > 0 | Reciprocity weight |
-| ω | 0.6 | [0, 2] | Dependency amplification |
-
-### Value Function
-
-| Symbol | Default | Range | Meaning |
-|--------|---------|-------|---------|
-| θ | 20.0 | > 0 | Logarithmic scale |
-| γ | 0.65 | [0, 1] | Complementarity |
-| β | 0.75 | (0, 1) | Power exponent |
-
----
-
-## Info Dictionary Keys
-
-| Key | Type | Environments |
-|-----|------|--------------|
-| `step` | int | All |
-| `mean_trust` | float | All |
-| `mean_reputation_damage` | float | All |
-| `total_value` | float | All |
-| `cooperation_rate` | float | All |
-| `trust_matrix` | NDArray | All |
-| `true_gamma` | float | SynergySearch |
-| `weak_trust_in_strong` | float | PartnerHoldUp |
-| `phase` | str | RenaultNissan |
-| `cooperation_signals` | dict | TR-4 envs |
-| `reciprocity_effects` | dict | TR-4 envs |
-| `memory_averages` | dict | TR-4 envs |
-| `tr4_memory_window` | int | TR-4 envs |
-
----
-
-## Imports
-
-```python
-# Main API
-from coopetition_gym import make, make_parallel, make_aec, list_environments
-
-# Configuration
-from coopetition_gym import ObservationConfig
-
-# Core modules (advanced)
-from coopetition_gym.core.value_functions import (
-    ValueFunctionParameters,
-    logarithmic_value,
-    synergy_function,
-    total_value,
-)
-
-from coopetition_gym.core.trust_dynamics import (
-    TrustParameters,
-    TrustState,
-    TrustDynamicsModel,
-)
-
-from coopetition_gym.core.interdependence import (
-    InterdependenceMatrix,
-    create_slcd_interdependence,
-)
-
-from coopetition_gym.core.equilibrium import (
-    PayoffParameters,
-    compute_rewards,
-    solve_equilibrium,
-)
-```
-
----
-
-## Links
-
-- [Full API Reference](index.md)
-- [Environment Documentation](../environments/index.md)
-- [Theoretical Foundations](../theory/index.md)
-- [Tutorials](../tutorials/index.md)
-
-
-## Technical Reports
-
-- TR-1: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/pdf/2510.18802) (arXiv:2510.18802)
-- TR-2: [Computational Foundations for Strategic Coopetition: Formalizing Trust and Reputation Dynamics](https://arxiv.org/pdf/2510.24909) (arXiv:2510.24909)
-- TR-3: [Computational Foundations for Strategic Coopetition: Formalizing Collective Action and Loyalty](https://arxiv.org/pdf/2601.16237) (arXiv:2601.16237)
-- TR-4: [Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity](https://arxiv.org/pdf/2604.01240) (arXiv:2604.01240)
+See [API examples](index.md), [environment classes](environments.md), [wrapper behavior](wrappers.md), [configuration](configuration.md), and the [quickstart](../tutorials/quickstart.md).

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coopetition-gym"
-version = "1.0.7"
+version = "1.0.8"
 description = "Multi-agent RL environments for strategic coopetition with trust dynamics, collective action, and PettingZoo support"
 readme = "README.md"
 license = {text = "MIT"}
@@ -69,6 +69,12 @@ viz = [
     "matplotlib>=3.5.0",
     "seaborn>=0.12.0",
 ]
+experiments = [
+    "matplotlib>=3.5.0",
+    "seaborn>=0.12.0",
+    "pandas>=1.3.0",
+    "diptest>=0.8.0",
+]
 rl = [
     # Retained as a no-op shim for backwards compatibility with documentation
     # that may reference [rl]; core dependencies already include torch and SB3.
@@ -76,27 +82,26 @@ rl = [
     "torch>=2.0.0",
 ]
 all = [
-    "coopetition-gym[dev,viz,rl]",
+    "coopetition-gym[dev,viz,rl,experiments]",
 ]
 
 [project.urls]
-Homepage = "https://github.com/vikpant/coopetition-gym"
-Documentation = "https://coopetition-gym.readthedocs.io"
-Repository = "https://github.com/vikpant/coopetition-gym.git"
-Issues = "https://github.com/vikpant/coopetition-gym/issues"
+Homepage = "https://github.com/vikpant/strategic-coopetition"
+Documentation = "https://vikpant.github.io/strategic-coopetition/"
+Repository = "https://github.com/vikpant/strategic-coopetition.git"
+Issues = "https://github.com/vikpant/strategic-coopetition/issues"
 
 [project.entry-points."gymnasium.envs"]
 __root__ = "coopetition_gym:_register_gymnasium_envs"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["coopetition_gym*"]
-
-[tool.setuptools.package-data]
-coopetition_gym = ["py.typed"]
+include = ["coopetition_gym*", "experiments*"]
+exclude = ["coopetition_gym.tests*", "experiments.tests*"]
+namespaces = false
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["coopetition_gym/tests", "experiments/tests", "extensions/slcd_2d/tests"]
 python_files = ["test_*.py"]
 python_functions = ["test_*"]
 addopts = "-v --tb=short"

@@ -46,35 +46,12 @@ from typing import Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
-from coopetition_gym.experiments import config
+from . import config
 
 
 def _import_coopetition_gym():
-    """Import ``coopetition_gym`` from the installed package.
-
-    The repository layout has a top-level folder ``coopetition_gym/`` with
-    the actual package at ``coopetition_gym/coopetition_gym/``. When running
-    from the repository root (or a multiprocessing worker launched from
-    there), Python resolves ``coopetition_gym`` to the outer folder as a
-    namespace package, shadowing the installed editable package. This helper
-    inserts the inner package parent at the front of ``sys.path`` and drops
-    any stale namespace-package import.
-    """
+    """Import the installed package without altering global import state."""
     import importlib
-    import os as _os
-    import sys as _sys
-
-    repo_root = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
-    inner_package_parent = _os.path.join(repo_root, "coopetition_gym")
-
-    # Drop any stale namespace-package import so the next import re-resolves.
-    _sys.modules.pop("coopetition_gym", None)
-
-    # Prepend the parent of the inner package so the import machinery finds
-    # ``coopetition_gym/coopetition_gym/__init__.py``.
-    if inner_package_parent not in _sys.path:
-        _sys.path.insert(0, inner_package_parent)
-
     return importlib.import_module("coopetition_gym")
 
 

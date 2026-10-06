@@ -2,7 +2,7 @@
 
 Dataclass configurations for environments and components.
 
-*Module version: 0.2.0*
+**Source candidate: 1.0.8 (unreleased).**
 
 ---
 
@@ -47,9 +47,25 @@ class EnvironmentConfig:
 | `trust_enabled` | `bool` | True | Enable trust dynamics |
 | `baselines` | `NDArray` | None | Cooperation baselines |
 | `reward_type` | `str` | "integrated" | 'private', 'integrated', or 'cooperative' |
-| `normalize_rewards` | `bool` | False | Normalize rewards to [0, 1] |
+| `normalize_rewards` | `bool` | False | Divide base reward by the largest endowment before scaling; no strict range guarantee |
 | `reward_scale` | `float` | 1.0 | Reward scaling factor |
 | `render_mode` | `str` | None | Rendering mode |
+
+## Constructor overrides
+
+```python
+from coopetition_gym import make, CoopetitionEnv, EnvironmentConfig
+
+env = make("SLCD-v0", reward_type="private", reward_scale=0.5)
+env.close()
+
+config = EnvironmentConfig()
+env = CoopetitionEnv(config=config, reward_type="cooperative")
+assert config.reward_type == "integrated"  # The caller's config is preserved.
+env.close()
+```
+
+All 20 factories honor common configuration overrides in this candidate. An invalid `reward_type` raises `ValueError`; unknown field names raise `TypeError`. The valid objectives are `private`, `integrated` and `cooperative`. Cooperative base reward is the mean integrated utility shared among agents, before environment-specific modifiers. Normalization and reward scaling also precede those modifiers.
 
 ---
 

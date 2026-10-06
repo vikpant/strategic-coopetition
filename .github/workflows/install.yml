@@ -32,51 +32,21 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install package from source
-        working-directory: coopetition_gym
+      - name: Build and install wheels
         run: |
-          python -m pip install --upgrade pip
-          pip install -e .
+          python -m pip install --upgrade pip wheel
+          python -m pip wheel --no-deps --wheel-dir dist ./coopetition_gym ./coopetition_gym/extensions/slcd_2d
+          python - <<'PYCODE'
+          from pathlib import Path
+          import subprocess, sys
+          wheels = sorted(Path("dist").glob("*.whl"))
+          assert len(wheels) == 2
+          args = [str(p) + ("[experiments]" if p.name.startswith("coopetition_gym-") else "") for p in wheels]
+          subprocess.run([sys.executable, "-m", "pip", "install", *args], check=True)
+          PYCODE
 
-      # All verification steps run from ``coopetition_gym/`` so that cwd-based
-      # import resolution finds the inner ``coopetition_gym/coopetition_gym/``
-      # package (which has ``__init__.py``) rather than the outer folder (which
-      # has no top-level ``__init__.py`` and would otherwise be resolved as a
-      # namespace package with no public API).
-
-      - name: Verify imports and environment registration
-        working-directory: coopetition_gym
-        run: |
-          python -c "import coopetition_gym; print('coopetition_gym version:', coopetition_gym.__version__ if hasattr(coopetition_gym, '__version__') else 'installed')"
-          python -c "import coopetition_gym; envs = coopetition_gym.list_environments(); print(f'Registered {len(envs)} environments'); assert len(envs) >= 20, f'Expected >=20 environments, found {len(envs)}'"
-
-      - name: Verify Gymnasium API
-        working-directory: coopetition_gym
-        run: |
-          python - <<'PY'
-          import coopetition_gym
-          env = coopetition_gym.make("TrustDilemma-v0")
-          obs, info = env.reset(seed=42)
-          for _ in range(5):
-              obs, reward, terminated, truncated, info = env.step([50.0, 50.0])
-              if terminated or truncated:
-                  break
-          env.close()
-          print("Gymnasium API: OK")
-          PY
-
-      - name: Verify PettingZoo Parallel API
-        working-directory: coopetition_gym
-        run: |
-          python - <<'PY'
-          import coopetition_gym
-          env = coopetition_gym.make_parallel("TrustDilemma-v0")
-          obs, info = env.reset(seed=42)
-          for _ in range(5):
-              actions = {agent: 50.0 for agent in env.agents}
-              obs, rewards, terminations, truncations, infos = env.step(actions)
-              if not env.agents:
-                  break
-          env.close()
-          print("PettingZoo Parallel API: OK")
-          PY
+      - name: Verify installed APIs and reproduction commands outside checkout
+        working-directory: ${{ runner.temp }}
+        env:
+          MPLBACKEND: Agg
+        run: python "$GITHUB_WORKSPACE/.github/scripts/verify_installation.py" "$GITHUB_WORKSPACE"

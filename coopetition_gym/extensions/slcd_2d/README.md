@@ -1,104 +1,75 @@
-# 2D SLCD Sanity Check
+# 2D SLCD Extension
 
-Post-v1 extension adding a second per-agent action dimension to the Samsung-Sony S-LCD environment.
+**Unreleased candidate:** extension `0.1.1`, requiring base `coopetition-gym>=1.0.8`. These source changes do not publish either distribution. **Environment ID:** `SLCDAppropriation-v1ext0`. This remains a prototype with a separate registry from the 20 base environments.
 
-**Env id:** `SLCDAppropriation-v1ext0`
-**Status:** prototype, sanity check only (not in `coopetition_gym` v1)
-
-## Why a second dimension?
-
-TR-1 through TR-4 formalize *how agents coordinate* (interdependence, trust, loyalty, reciprocity). None formalize the **value-creation vs. value-capture tension** at the heart of coopetition (Brandenburger–Nalebuff, Ritala–Hurmelinna-Laukkanen). In the Samsung-Sony S-LCD joint venture, the two firms jointly invested in fab capacity (cooperation) while each pushed branded TVs that competed on the panels' downstream margin (appropriation). The dissolution in 2011 is what happens when appropriation pressure outruns cooperative returns, a dynamic v1 cannot currently express.
+Each agent chooses cooperation `c_i` and appropriation effort `p_i`. The prototype explores a value-creation/value-capture tension using the Samsung-Sony setting; its numerical behavior does not establish a historical causal explanation for dissolution.
 
 ## Formalism
 
-Per-agent action is `(c_i, p_i)` where
+The flattened action is `[c_0, p_0, c_1, p_1]`, with `c_i` bounded by the agent's endowment and `p_i` in `[0, 1]`.
 
-- `c_i ∈ [0, e_i]`, cooperation (TR-1 primitive, unchanged)
-- `p_i ∈ [0, 1]`, appropriation effort (new)
-
-Extended private payoff:
-
-```
-π_i^2D(c, p) = (e_i - c_i - κ·p_i)         # endowment net of both costs
-             + θ·ln(1 + c_i)                # TR-1 individual value
-             + α_i · S(c) · (1 - β·p̄)       # diluted synergy
-             + η · p_i · S(c)               # private capture of joint output
-             - ξ · p_i²                     # convex cost
+```text
+π_i(c, p) = (e_i - c_i - κ p_i)
+          + θ ln(1 + c_i)
+          + α_i S(c) (1 - β mean(p))
+          + η p_i S(c) - ξ p_i²
+S(c) = γ (∏ c_i)^(1/N)
+U_i(c, p) = π_i(c, p) + Σ_{j≠i} T_ij D_ij π_j(c, p)
 ```
 
-where `S(c) = γ · (∏ c_i)^(1/N)` is the v1 synergistic surplus, `p̄ = (1/N)·Σ p_j`, and `(κ, β, η, ξ)` are the calibration parameters in [`calibration.json`](calibration.json).
+`T_ij` is effective trust after reputation limits. Defaults are recorded in [calibration.json](calibration.json): `κ=0.5`, `β=0.6`, `η=0.4`, `ξ=15`. They are a coarse prototype calibration.
 
-Integrated utility follows v1:
+For the tested integrated-reward trajectories, setting every `p_i=0` matches the base SLCD rewards within absolute tolerance `1e-3`; see [backward-compatibility tests](tests/test_backward_compat.py). This is a numerical compatibility check, not a rerun of a historical case-study validation rubric. Floating-point, solver and platform differences can affect results.
 
-```
-U_i^2D(c, p) = π_i^2D(c, p) + Σ_{j≠i} T_ij · D_ij · π_j^2D(c, p)
-```
+## Install
 
-where `T_ij` is effective trust (capped by reputation damage) exactly as in v1.
-
-## Backward compatibility
-
-When every `p_i ≡ 0`, the 2D formulation reduces to v1 integrated utility bit-exact (tolerance 1e-3, dominated by float32/float64 casting). This is enforced by [`tests/test_backward_compat.py`](tests/test_backward_compat.py).
-
-## Default equilibrium
-
-With calibration `(κ=0.5, β=0.6, η=0.4, ξ=15)` on the v1 SLCD parameters:
-
-| Quantity | Samsung (agent 0) | Sony (agent 1) |
-| --- | --- | --- |
-| `c*` | 26.77 | 27.55 |
-| `p*` | 0.071 | 0.056 |
-| `U*` | 243.80 | 275.96 |
-
-Converged in 7 iterations via scipy-based iterated best response.
-
-Since `c* ≈ 27 < baseline 30`, trust erodes over an episode and the oracle trajectory ends at `mean_trust = 0` by step 40, the "dissolution" mode appearing endogenously.
-
-## Installation
+From the **repository root**, install both source candidates into the chosen Python 3.10+ environment:
 
 ```bash
-# Base package (v1) must be installed first
-pip install -e .
-# Then the extension (opt-in)
-pip install -e ./extensions/slcd_2d/   # OR just import from the repo
+python -m pip install -e './coopetition_gym[dev,experiments]'
+python -m pip install -e './coopetition_gym/extensions/slcd_2d[dev]'
 ```
 
-## Running
+The installed package name is `slcd_2d`. Source imports using `extensions.slcd_2d` remain available from the `coopetition_gym/` package directory.
 
-Oracle smoke campaign:
+```python
+from slcd_2d import SLCDAppropriationEnv
+
+env = SLCDAppropriationEnv(reward_type="private", max_steps=40)
+obs, info = env.reset(seed=42)
+obs, rewards, terminated, truncated, info = env.step([50.0, 0.3, 50.0, 0.3])
+assert obs.shape == (15,)
+assert rewards.shape == (2,)
+env.close()
+```
+
+Reward modes are `integrated`, `private` and `cooperative`; an explicit argument overrides `COOPETITION_REWARD_TYPE`. Reset clears appropriation metrics.
+
+## Algorithms and commands
+
+The extension registry in [algorithms.py](algorithms.py) contains **seven learner adapters**: `IPPO`, `ISAC`, `IA2C`, `MAPPO`, `MADDPG`, `MATD3`, `MASAC`; plus `Oracle_Appropriation`. These reuse the packaged `experiments.algorithms` implementations. The first three historical IDs use joint controllers with summed rewards; they should not be described as decentralized independent learners solely from their names.
+
+The basic `campaign` module runs the oracle only. `campaign_tier1` and `campaign_tier15` provide the broader orchestration; `calibrate` supplies endpoint and waypoint objectives. Availability of these modules is separate from validation of a completed training campaign.
+
+An oracle-only smoke run, after installation, can be written to a local results directory:
 
 ```bash
-python -m extensions.slcd_2d.campaign \
-    --seeds 106,107,108 --steps 40 \
-    --output .claude/experiments/slcd_2d/smoke/
+python -m slcd_2d.campaign --seeds 106,107,108 --steps 40 \
+    --output ./results/slcd_2d/smoke
 ```
 
-Tests:
+From the repository root, run extension tests without the short IPPO training test:
 
 ```bash
-pytest extensions/slcd_2d/tests/ -v
+cd coopetition_gym
+python -B -m pytest -p no:cacheprovider extensions/slcd_2d/tests \
+    -k 'not test_ippo_trains_on_2d'
 ```
 
-## File map
+## Preflight checks
 
-| File | Purpose |
-| --- | --- |
-| `env.py` | `SLCDAppropriationEnv`, subclass of `SLCDEnv` with 2D action space |
-| `utility.py` | Pure 2D utility math (`compute_2d_integrated_utilities`) |
-| `oracle.py` | `AppropriationOracle`, solves interior `(c*, p*)` Nash |
-| `calibration.json` | Default `(κ, β, η, ξ)` values |
-| `campaign.py` | Stand-alone smoke/sanity runner |
-| `tests/` | Backward-compat, shape, Nash-interior tests |
-| `REPRODUCE.md` | Exact commands for reviewers |
+Installed module entry points are `python -m slcd_2d.pre_launch_check_tier1` and `python -m slcd_2d.pre_launch_check_tier15`. Both accept `--repo-root /path/to/strategic-coopetition` for source tests, or `--skip-pytest` when no checkout is available. Source module entry points use `extensions.slcd_2d` instead.
 
-## What this extension deliberately does *not* do
+Preflights include a short IPPO training gate; `--skip-pytest` does **not** skip that gate. They are preparation for an intentionally requested campaign, not an import-only check.
 
-- Does not modify `coopetition_gym/` (read-only)
-- Does not register into `coopetition_gym.envs._ENVIRONMENT_REGISTRY`
-- Does not extend `experiments/campaign.py`, has its own `campaign.py`
-- Does not ship training-algorithm support; only the oracle is implemented
-
-## Technical Reports
-
-- TR-1: [Computational Foundations for Strategic Coopetition: Formalizing Interdependence and Complementarity](https://arxiv.org/pdf/2510.18802) (arXiv:2510.18802)
-- TR-4: [Computational Foundations for Strategic Coopetition: Formalizing Sequential Interaction and Reciprocity](https://arxiv.org/pdf/2604.01240) (arXiv:2604.01240)
+See [REPRODUCE.md](REPRODUCE.md) for bounded checks, output provenance, and limitations. The extension is not registered as a base Gymnasium environment and is not part of the frozen historical experiment artifacts.

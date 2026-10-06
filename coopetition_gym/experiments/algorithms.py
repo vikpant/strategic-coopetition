@@ -1,10 +1,9 @@
 """Algorithm implementations used in the Coopetition-Gym v1 benchmark.
 
-This module contains the exact algorithm implementations used to produce
-the released training dataset (25,708 files). It consolidates the original
-``algorithms.py`` and ``algorithms_extended.py`` from the campaign source
-tree into a single module. Implementations are preserved byte-identical
-to the originals; no behavioral changes were made during consolidation.
+Historical algorithm identifiers are retained for dataset compatibility.
+IPPO, ISAC and IA2C use a single joint-observation/joint-action SB3 controller
+with summed rewards; their names do not establish independent-agent learning.
+See docs/benchmarks/implementation_protocol.md for interpretation limits.
 
 Classes defined here fall into four groups:
 
@@ -16,8 +15,8 @@ Classes defined here fall into four groups:
   :class:`NashEquilibriumOracle`, :class:`SocialOptimumOracle`,
   :class:`TrustAwareEquilibriumOracle`, :class:`LoyaltyAugmentedOracle`,
   :class:`ReciprocityEquilibriumOracle`, :class:`BoundedReciprocityOracle`.
-  These compute actions analytically from environment parameters; they do
-  not train.
+  These use analytic, numerical, or rule-based reference policies derived
+  from environment parameters; they do not train.
 
 * **Training algorithms** (16): :class:`IndependentPPO`,
   :class:`IndependentSAC`, :class:`IndependentA2C`,
@@ -63,26 +62,8 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 def _import_coopetition_gym():
-    """Import ``coopetition_gym`` from the installed package.
-
-    The repository layout has a top-level folder ``coopetition_gym/`` with
-    the actual package at ``coopetition_gym/coopetition_gym/``. When running
-    from the repository root (or a multiprocessing worker launched from
-    there), Python resolves ``coopetition_gym`` to the outer folder as a
-    namespace package, shadowing the installed editable package. This helper
-    inserts the inner package parent at the front of ``sys.path`` and drops
-    any stale namespace-package import.
-
-    Safe to call from the main process or worker subprocesses.
-    """
+    """Import the installed package without altering global import state."""
     import importlib
-
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    inner_package_parent = os.path.join(repo_root, "coopetition_gym")
-
-    sys.modules.pop("coopetition_gym", None)
-    if inner_package_parent not in sys.path:
-        sys.path.insert(0, inner_package_parent)
     return importlib.import_module("coopetition_gym")
 
 
@@ -1450,7 +1431,7 @@ class SB3ProgressCallback:
 # ============================================================================
 
 class IndependentPPO(BaseAlgorithm):
-    """Independent PPO - each agent runs PPO independently."""
+    """Historical IndependentPPO ID: one SB3 PPO joint controller, summed reward."""
 
     def __init__(self, env, device: str = "cpu", seed: int = 0, **kwargs):
         super().__init__(env, device, seed, **kwargs)
@@ -1526,7 +1507,7 @@ class IndependentPPO(BaseAlgorithm):
 
 
 class IndependentSAC(BaseAlgorithm):
-    """Independent SAC - each agent runs SAC independently."""
+    """Historical IndependentSAC ID: one SB3 SAC joint controller, summed reward."""
 
     def __init__(self, env, device: str = "cpu", seed: int = 0, **kwargs):
         super().__init__(env, device, seed, **kwargs)
@@ -1589,7 +1570,7 @@ class IndependentSAC(BaseAlgorithm):
 
 
 class IndependentA2C(BaseAlgorithm):
-    """Independent A2C - each agent runs A2C independently."""
+    """Historical IndependentA2C ID: one SB3 A2C joint controller, summed reward."""
 
     def __init__(self, env, device: str = "cpu", seed: int = 0, **kwargs):
         super().__init__(env, device, seed, **kwargs)

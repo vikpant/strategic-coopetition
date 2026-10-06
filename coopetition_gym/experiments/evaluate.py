@@ -17,7 +17,7 @@ subcommands:
 The aggregation assumes the standard training-result schema
 (see :func:`experiments.validate.print_schema`):
 
-* Each file contains ``algorithm``, ``environment``, ``seed``, and a
+* Each file contains ``algorithm``, ``environment``, ``training_seed``, and a
   ``metrics`` subdict with ``mean_return``, ``mean_final_trust``,
   ``mean_cooperation_rate``.
 
@@ -26,12 +26,12 @@ Usage::
     # Evaluate a trained policy
     python -m experiments.evaluate agent \\
         --algorithm ISAC --environment TrustDilemma-v0 \\
-        --seeds 99,100,101 --episodes 100 \\
+        --load /path/to/checkpoint --seed-start 99 --episodes 100 \\
         --output data/evaluation/isac_td.json
 
     # Aggregate training results into a CSV summary
     python -m experiments.evaluate aggregate \\
-        --input-dir data/training/baseline_integrated/ \\
+        --input-dir data/training/baseline_integrated/raw/ \\
         --output-dir data/analysis/baseline_summary/
 """
 
@@ -52,7 +52,7 @@ from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 
 import numpy as np
 
-from coopetition_gym.experiments import config
+from . import config
 
 
 logger = logging.getLogger(__name__)
@@ -63,18 +63,7 @@ logger = logging.getLogger(__name__)
 # =============================================================================
 
 def _import_coopetition_gym():
-    """Import ``coopetition_gym`` bypassing the outer-folder namespace shadow.
-
-    See :func:`experiments.algorithms._import_coopetition_gym` for rationale.
-    """
-    import os
-
-    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    inner_package_parent = os.path.join(repo_root, "coopetition_gym")
-
-    sys.modules.pop("coopetition_gym", None)
-    if inner_package_parent not in sys.path:
-        sys.path.insert(0, inner_package_parent)
+    """Import the installed library without changing interpreter state."""
     return importlib.import_module("coopetition_gym")
 
 
@@ -126,6 +115,7 @@ class EvaluationResult:
 
     evaluation_time_seconds: float
     timestamp: str
+    reward_type: str = "integrated"
 
     def to_dict(self) -> Dict[str, Any]:
         result = asdict(self)
@@ -147,12 +137,15 @@ class AggregatedResult:
     # Means across seeds
     mean_return: float
     std_return_across_seeds: float
-    mean_final_trust: float
-    mean_cooperation_rate: float
-    mean_training_time_seconds: float
+    mean_final_trust: Optional[float]
+    mean_cooperation_rate: Optional[float]
+    mean_training_time_seconds: Optional[float]
 
     # Means of per-seed stds (indicative of within-seed variability)
-    mean_within_seed_std_return: float
+    mean_within_seed_std_return: Optional[float]
+    reward_type: str
+    configuration: Dict[str, Any]
+    reward_type_assumed: bool
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -162,76 +155,54 @@ class AggregatedResult:
 # Episode-level evaluation
 # =============================================================================
 
+class _HeuristicPolicy:
+    """Internal callback adapter; prediction receives the live episode environment."""
+
+    def __init__(self, fn):
+        self.fn = fn
+
+
 def _run_single_episode(
     agent,
     env_id: str,
     seed: int,
     deterministic: bool = True,
     record_trajectory: bool = False,
+    reward_type: str = "integrated",
 ) -> EpisodeResult:
-    """Run one evaluation episode against a freshly constructed environment."""
-    coopetition_gym = _import_coopetition_gym()
-    env = coopetition_gym.make(env_id)
-    obs, info = env.reset(seed=seed)
-
-    episode_return = 0.0
-    steps = 0
-    terminated = False
-    truncated = False
-
-    per_step_rewards = [] if record_trajectory else None
-    per_step_trust = [] if record_trajectory else None
-    actions_sum = 0.0
-    action_count = 0
-
-    while not (terminated or truncated):
-        try:
-            action = agent.predict(obs, deterministic=deterministic)
-        except Exception as exc:
-            logger.warning(f"Agent prediction failed at step {steps}: {exc}")
-            action = env.action_space.sample()
-
-        if not isinstance(action, np.ndarray):
-            action = np.array(action)
-
-        obs, reward, terminated, truncated, info = env.step(action)
-
-        step_reward = float(np.sum(reward)) if isinstance(reward, np.ndarray) else float(reward)
-        episode_return += step_reward
-        steps += 1
-
-        if hasattr(env.action_space, "high"):
-            denom = float(np.mean(env.action_space.high)) or 1.0
-        else:
-            denom = 100.0
-        actions_sum += float(np.mean(action)) / denom
-        action_count += 1
-
-        if record_trajectory:
-            per_step_rewards.append(step_reward)
-            per_step_trust.append(info.get("mean_trust", 0.0))
-
-    env.close()
-
-    final_trust = info.get("mean_trust", 0.0)
-    cooperation_rate = actions_sum / max(action_count, 1)
-    # "terminated_early" is true if the episode terminated before reaching the
-    # nominal horizon. We approximate with steps < environment horizon; since
-    # we don't have the horizon here, fall back to a common default.
-    ep_spec = config.ENVIRONMENT_BY_ID.get(env_id)
-    horizon = ep_spec.horizon if ep_spec else 100
-    terminated_early = bool(terminated and steps < horizon)
-
-    return EpisodeResult(
-        seed=seed,
-        episode_return=episode_return,
-        final_trust=final_trust,
-        cooperation_rate=cooperation_rate,
-        episode_length=steps,
-        terminated_early=terminated_early,
-        per_step_rewards=per_step_rewards,
-        per_step_trust=per_step_trust,
-    )
+    """Evaluate the requested policy and objective; invalid episodes raise."""
+    env = _import_coopetition_gym().make(env_id, reward_type=reward_type)
+    try:
+        if env.reward_type != reward_type:
+            raise ValueError("Environment reward mode does not match evaluation")
+        obs, info = env.reset(seed=seed)
+        env.action_space.seed(seed)
+        rewards, cooperation, trusts = [], [], []
+        terminated = truncated = False
+        while not (terminated or truncated):
+            action = np.asarray(agent.fn(obs, env) if isinstance(agent, _HeuristicPolicy)
+                                else agent.predict(obs, deterministic=deterministic))
+            if action.shape != env.action_space.shape or not np.all(np.isfinite(action)):
+                raise ValueError("Policy returned an invalid action shape or nonfinite value")
+            obs, reward, terminated, truncated, info = env.step(action)
+            step_reward = float(np.sum(reward))
+            if not np.isfinite(step_reward):
+                raise ValueError("Environment returned a nonfinite reward")
+            rewards.append(step_reward)
+            cooperation.append(float(np.mean(action / env.action_space.high)))
+            trusts.append(float(info["mean_trust"]))
+        if not rewards or not np.all(np.isfinite(rewards + cooperation + trusts)):
+            raise ValueError("Evaluation produced invalid diagnostics")
+        return EpisodeResult(
+            seed=seed, episode_return=float(sum(rewards)),
+            final_trust=trusts[-1], cooperation_rate=float(np.mean(cooperation)),
+            episode_length=len(rewards),
+            terminated_early=bool(terminated and len(rewards) < env.max_steps),
+            per_step_rewards=rewards if record_trajectory else None,
+            per_step_trust=trusts if record_trajectory else None,
+        )
+    finally:
+        env.close()
 
 
 def evaluate_agent(
@@ -243,13 +214,13 @@ def evaluate_agent(
     record_trajectories: bool = False,
     verbose: bool = False,
     algorithm_name: Optional[str] = None,
+    reward_type: str = "integrated",
 ) -> EvaluationResult:
     """Evaluate a trained agent on an environment.
 
     Runs ``n_episodes`` episodes with consecutive seeds starting at
-    ``seed_start``. Failures in a single episode are logged and recorded as
-    zero-return, early-terminated episodes so a transient failure does not
-    abort the whole evaluation.
+    ``seed_start``. Prediction, environment and numerical failures abort the
+    evaluation instead of substituting another policy or a zero return.
 
     Args:
         agent: Object with a ``predict(obs, deterministic)`` method.
@@ -267,22 +238,20 @@ def evaluate_agent(
         An :class:`EvaluationResult` containing per-episode entries and
         aggregate statistics.
     """
+    if n_episodes < 1:
+        raise ValueError("n_episodes must be positive")
+    if reward_type not in config.REWARD_TYPES:
+        raise ValueError("Unknown reward_type")
     start_time = time.time()
     episodes: List[EpisodeResult] = []
 
     for i in range(n_episodes):
         seed = seed_start + i
-        try:
-            episodes.append(_run_single_episode(
-                agent=agent, env_id=env_id, seed=seed,
-                deterministic=deterministic, record_trajectory=record_trajectories,
-            ))
-        except Exception as exc:
-            logger.error(f"Episode {i} (seed={seed}) failed: {exc}")
-            episodes.append(EpisodeResult(
-                seed=seed, episode_return=0.0, final_trust=0.0,
-                cooperation_rate=0.0, episode_length=0, terminated_early=True,
-            ))
+        episodes.append(_run_single_episode(
+            agent=agent, env_id=env_id, seed=seed,
+            deterministic=deterministic, record_trajectory=record_trajectories,
+            reward_type=reward_type,
+        ))
         if verbose and (i + 1) % 10 == 0:
             logger.info(f"Evaluated {i + 1}/{n_episodes} episodes")
 
@@ -309,6 +278,7 @@ def evaluate_agent(
         episodes=episodes,
         evaluation_time_seconds=eval_time,
         timestamp=datetime.now().isoformat(),
+        reward_type=reward_type,
     )
 
 
@@ -318,34 +288,17 @@ def evaluate_heuristic(
     n_episodes: int = 100,
     seed_start: int = 0,
     policy_name: str = "Heuristic",
+    reward_type: str = "integrated",
 ) -> EvaluationResult:
-    """Evaluate a heuristic policy function.
-
-    Wraps ``policy_fn`` in an object with a ``predict`` method so it can be
-    passed to :func:`evaluate_agent`. The wrapper constructs a fresh env
-    for environment-aware policies at each episode.
-    """
-
-    class _HeuristicWrapper:
-        def __init__(self, fn, env_id_):
-            self.fn = fn
-            self.env_id = env_id_
-
-        def predict(self, obs, deterministic: bool = True):
-            coopetition_gym = _import_coopetition_gym()
-            env = coopetition_gym.make(self.env_id)
-            try:
-                return self.fn(obs, env)
-            finally:
-                env.close()
-
+    """Evaluate ``policy_fn(obs, env)`` against the live, reset episode state."""
     return evaluate_agent(
-        agent=_HeuristicWrapper(policy_fn, env_id),
+        agent=_HeuristicPolicy(policy_fn),
         env_id=env_id,
         n_episodes=n_episodes,
         seed_start=seed_start,
         deterministic=True,
         algorithm_name=policy_name,
+        reward_type=reward_type,
     )
 
 
@@ -353,46 +306,21 @@ def write_evaluation_result(result: EvaluationResult, output_path: Path) -> None
     """Write an :class:`EvaluationResult` to ``output_path`` as JSON."""
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w") as f:
-        json.dump(result.to_dict(), f, indent=2)
+        json.dump(result.to_dict(), f, indent=2, allow_nan=False)
 
 
 # =============================================================================
 # Training-result aggregation
 # =============================================================================
 
-def load_training_results(input_dir: Path, status_filter: str = "success") -> List[Dict[str, Any]]:
-    """Load training result JSON files from ``input_dir`` (non-recursive).
-
-    Args:
-        input_dir: Directory containing ``*.json`` files produced by the
-            campaign orchestrator.
-        status_filter: Only include results whose ``status`` matches. Pass
-            ``None`` to include all.
-
-    Returns:
-        List of parsed dicts, with an extra ``_source_file`` entry recording
-        the filename.
-    """
-    results: List[Dict[str, Any]] = []
-    for path in sorted(input_dir.glob("*.json")):
-        try:
-            with open(path) as f:
-                data = json.load(f)
-        except json.JSONDecodeError as exc:
-            logger.error(f"Failed to parse {path.name}: {exc}")
-            continue
-        except OSError as exc:
-            logger.error(f"Error reading {path.name}: {exc}")
-            continue
-
-        if status_filter is not None and data.get("status") != status_filter:
-            continue
-
-        data["_source_file"] = path.name
-        results.append(data)
-
-    logger.info(f"Loaded {len(results)} results from {input_dir}")
-    return results
+def load_training_results(input_dir: Path, status_filter: str = "success", *,
+                          reward_type=None, seeds=None) -> List[Dict[str, Any]]:
+    """Read native JSON/JSONL with explicit treatment and comparison checks."""
+    from .records import load_records
+    records = load_records(input_dir, reward_type=reward_type, seeds=seeds,
+                           successful_only=status_filter == "success",
+                           comparable=status_filter == "success")
+    return [r for r in records if status_filter is None or r.get("status") == status_filter]
 
 
 def aggregate_by_algorithm_environment(
@@ -404,73 +332,66 @@ def aggregate_by_algorithm_environment(
     Only ``status == 'success'`` entries are considered; the caller should
     filter upstream with :func:`load_training_results`.
     """
-    grouped: Dict[str, Dict[str, List[Dict[str, Any]]]] = defaultdict(lambda: defaultdict(list))
-    for r in results:
-        env = r.get("environment")
-        algo = r.get("algorithm")
-        metrics = r.get("metrics") or {}
-        if env is None or algo is None or not metrics:
-            continue
-        grouped[env][algo].append({
-            "seed": r.get("training_seed", r.get("seed", 0)),
-            "metrics": metrics,
-            "training_time": r.get("training_time_seconds", 0.0),
-        })
+    from .records import comparison_context, ensure_comparable, is_finite_number, is_successful_result
+    results = [r for r in results if is_successful_result(r)]
+    ensure_comparable(results)
+    grouped = defaultdict(lambda: defaultdict(list))
+    for record in results:
+        grouped[record["environment"]][record["algorithm"]].append(record)
 
-    aggregated: Dict[str, Dict[str, AggregatedResult]] = {}
+    def optional_mean(values):
+        # A missing diagnostic is unknown, never an observed zero. Do not mix a
+        # partial diagnostic fold into the full-return fold without its count.
+        return float(np.mean(values)) if all(is_finite_number(v) for v in values) else None
+
+    aggregated = {}
     for env_id, algo_results in grouped.items():
         aggregated[env_id] = {}
-        for algo_name, seed_rows in algo_results.items():
-            if not seed_rows:
-                continue
-            mean_returns = [row["metrics"].get("mean_return", 0.0) for row in seed_rows]
-            std_returns = [row["metrics"].get("std_return", 0.0) for row in seed_rows]
-            trusts = [row["metrics"].get("mean_final_trust", 0.0) for row in seed_rows]
-            coop = [row["metrics"].get("mean_cooperation_rate", 0.0) for row in seed_rows]
-            times = [row["training_time"] for row in seed_rows]
+        for algo_name, rows in algo_results.items():
+            returns = [row["metrics"]["mean_return"] for row in rows]
             aggregated[env_id][algo_name] = AggregatedResult(
-                algorithm=algo_name,
-                environment=env_id,
-                n_seeds=len(seed_rows),
-                seeds=sorted(int(row["seed"]) for row in seed_rows),
-                mean_return=float(np.mean(mean_returns)),
-                std_return_across_seeds=float(np.std(mean_returns)),
-                mean_final_trust=float(np.mean(trusts)),
-                mean_cooperation_rate=float(np.mean(coop)),
-                mean_training_time_seconds=float(np.mean(times)),
-                mean_within_seed_std_return=float(np.mean(std_returns)),
+                algorithm=algo_name, environment=env_id, n_seeds=len(rows),
+                seeds=sorted(row["training_seed"] for row in rows),
+                mean_return=float(np.mean(returns)),
+                std_return_across_seeds=float(np.std(returns, ddof=1)) if len(rows) > 1 else 0.0,
+                mean_final_trust=optional_mean([r["metrics"].get("mean_final_trust") for r in rows]),
+                mean_cooperation_rate=optional_mean([r["metrics"].get("mean_cooperation_rate") for r in rows]),
+                mean_training_time_seconds=optional_mean([r.get("training_time_seconds") for r in rows]),
+                mean_within_seed_std_return=optional_mean([r["metrics"].get("std_return") for r in rows]),
+                reward_type=rows[0]["reward_type"], configuration=comparison_context(rows[0]),
+                reward_type_assumed=any("_reward_type_assumption" in r for r in rows),
             )
     return aggregated
 
 
-def write_summary_csv(
-    aggregated: Dict[str, Dict[str, AggregatedResult]],
-    output_path: Path,
-) -> None:
-    """Write a flat CSV summarizing every (environment, algorithm) pair."""
-    rows = []
-    for env_id in sorted(aggregated.keys()):
-        for algo_name in sorted(aggregated[env_id].keys()):
-            agg = aggregated[env_id][algo_name]
-            rows.append({
-                "environment": env_id,
-                "algorithm": algo_name,
-                "n_seeds": agg.n_seeds,
-                "mean_return": f"{agg.mean_return:.4f}",
-                "std_return_across_seeds": f"{agg.std_return_across_seeds:.4f}",
-                "mean_final_trust": f"{agg.mean_final_trust:.4f}",
-                "mean_cooperation_rate": f"{agg.mean_cooperation_rate:.4f}",
-                "mean_training_time_seconds": f"{agg.mean_training_time_seconds:.2f}",
-                "mean_within_seed_std_return": f"{agg.mean_within_seed_std_return:.4f}",
-            })
+def write_summary_csv(aggregated, output_path: Path) -> None:
+    """Write seed/treatment provenance and blank cells for missing diagnostics."""
+    def display(value, digits=4):
+        return "" if value is None else f"{value:.{digits}f}"
 
+    rows = []
+    for env_id in sorted(aggregated):
+        for algo_name, agg in sorted(aggregated[env_id].items()):
+            rows.append({
+                "environment": env_id, "algorithm": algo_name,
+                "comparison_basis": "historical-roster",
+                "n_seeds": agg.n_seeds, "seeds": json.dumps(agg.seeds),
+                "reward_type": agg.reward_type,
+                "reward_type_assumed": agg.reward_type_assumed,
+                "configuration": json.dumps(agg.configuration, sort_keys=True, allow_nan=False),
+                "mean_return": display(agg.mean_return),
+                "std_return_across_seeds": display(agg.std_return_across_seeds),
+                "mean_final_trust": display(agg.mean_final_trust),
+                "mean_cooperation_rate": display(agg.mean_cooperation_rate),
+                "mean_training_time_seconds": display(agg.mean_training_time_seconds, 2),
+                "mean_within_seed_std_return": display(agg.mean_within_seed_std_return),
+            })
     if not rows:
         logger.warning("No rows to write — aggregation produced no entries.")
         return
-
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(output_path, "w", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+    with open(output_path, "w", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
     logger.info(f"Summary CSV written to {output_path}")
@@ -486,13 +407,16 @@ def write_overall_statistics(
     training time, and the unique algorithm and environment sets present in
     the corpus. Useful for verifying that a downloaded dataset is complete.
     """
+    from .records import is_successful_result
     all_status = [r.get("status") for r in results]
     n_total = len(results)
-    n_success = sum(1 for s in all_status if s == "success")
+    n_success = sum(is_successful_result(r) for r in results)
     n_failed = sum(1 for s in all_status if s == "failed")
 
     total_train_seconds = sum(
-        r.get("training_time_seconds", 0.0) for r in results if r.get("status") == "success"
+        float(r.get("training_time_seconds", 0.0)) for r in results
+        if is_successful_result(r) and isinstance(r.get("training_time_seconds", 0.0), (int, float))
+        and np.isfinite(r.get("training_time_seconds", 0.0))
     )
 
     unique_algos = sorted({r.get("algorithm") for r in results if r.get("algorithm")})
@@ -503,6 +427,7 @@ def write_overall_statistics(
         "n_total": n_total,
         "n_success": n_success,
         "n_failed": n_failed,
+        "n_invalid_or_other": n_total - n_success - n_failed,
         "success_rate": n_success / n_total if n_total else 0.0,
         "total_training_hours": total_train_seconds / 3600.0,
         "unique_algorithms": unique_algos,
@@ -511,7 +436,7 @@ def write_overall_statistics(
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with open(output_path, "w") as f:
-        json.dump(summary, f, indent=2)
+        json.dump(summary, f, indent=2, allow_nan=False)
 
     logger.info(f"Overall summary written to {output_path}")
     logger.info(f"  success rate: {summary['success_rate']:.1%}")
@@ -533,30 +458,39 @@ def _cmd_agent(args: argparse.Namespace) -> int:
     from experiments import algorithms
 
     coopetition_gym = _import_coopetition_gym()
-    env = coopetition_gym.make(args.environment)
+    env = coopetition_gym.make(args.environment, reward_type=args.reward_type)
 
     spec = config.ALGORITHM_BY_NAME.get(args.algorithm)
     if spec is None:
         logger.error(f"Unknown algorithm: {args.algorithm}")
+        env.close()
         return 2
 
-    agent = algorithms.make_algorithm(spec, env, device=args.device, seed=args.seed_start)
-    if args.load and spec.requires_training:
-        agent.load(args.load)
+    if spec.requires_training and not args.load:
+        env.close()
+        raise ValueError("A trained algorithm requires --load CHECKPOINT")
+    try:
+        agent = algorithms.make_algorithm(spec, env, device=args.device, seed=args.seed_start)
+        if args.load and spec.requires_training:
+            agent.load(args.load)
 
-    result = evaluate_agent(
-        agent=agent,
-        env_id=args.environment,
-        n_episodes=args.episodes,
-        seed_start=args.seed_start,
-        deterministic=args.deterministic,
-        record_trajectories=args.record_trajectories,
-        verbose=args.verbose,
-        algorithm_name=args.algorithm,
-    )
+        result = evaluate_agent(
+            agent=agent,
+            env_id=args.environment,
+            n_episodes=args.episodes,
+            seed_start=args.seed_start,
+            deterministic=args.deterministic,
+            record_trajectories=args.record_trajectories,
+            verbose=args.verbose,
+            algorithm_name=args.algorithm,
+            reward_type=args.reward_type,
+        )
 
-    write_evaluation_result(result, args.output)
-    env.close()
+        write_evaluation_result(result, args.output)
+        env.close()
+    finally:
+        env.close()
+
     logger.info(f"Mean return: {result.mean_return:.2f} (std {result.std_return:.2f})")
     return 0
 
@@ -567,7 +501,9 @@ def _cmd_aggregate(args: argparse.Namespace) -> int:
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    results = load_training_results(input_dir, status_filter="success")
+    results = load_training_results(input_dir, status_filter="success",
+                                    reward_type=args.reward_type,
+                                    seeds=args.seeds)
     if not results:
         logger.error(f"No successful results found in {input_dir}")
         return 1
@@ -576,7 +512,8 @@ def _cmd_aggregate(args: argparse.Namespace) -> int:
     write_summary_csv(aggregated, output_dir / "summary.csv")
 
     # Also write the corpus-level overall summary (considers all statuses).
-    all_results = load_training_results(input_dir, status_filter=None)
+    all_results = load_training_results(input_dir, status_filter=None,
+                                        reward_type=args.reward_type, seeds=args.seeds)
     write_overall_statistics(all_results, output_dir / "summary.json")
     return 0
 
@@ -593,6 +530,7 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="Algorithm name from experiments.config.ALGORITHM_BY_NAME.")
     ap.add_argument("--environment", required=True,
                     help="Environment ID from experiments.config.ENVIRONMENT_BY_ID.")
+    ap.add_argument("--reward-type", choices=config.REWARD_TYPES, default="integrated")
     ap.add_argument("--output", type=Path, required=True,
                     help="Output JSON path for the EvaluationResult.")
     ap.add_argument("--episodes", type=int, default=100,
@@ -616,6 +554,8 @@ def _build_parser() -> argparse.ArgumentParser:
                     help="Directory of training result JSON files.")
     gp.add_argument("--output-dir", required=True,
                     help="Output directory for summary.csv and summary.json.")
+    gp.add_argument("--reward-type", choices=config.REWARD_TYPES)
+    gp.add_argument("--seeds", type=lambda value: [int(x) for x in value.split(",")])
     gp.set_defaults(func=_cmd_aggregate)
 
     return parser

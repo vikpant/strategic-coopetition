@@ -73,7 +73,7 @@ class CoopetitionParallelEnv(ParallelEnv):
         self.action_spaces = {}
 
         # Initialize base env to compute observation sizes
-        base_env._init_state(seed=0)
+        base_env.reset(seed=0, options={})
 
         for i, agent in enumerate(self.possible_agents):
             # Observation space matches agent-specific observation
@@ -108,7 +108,7 @@ class CoopetitionParallelEnv(ParallelEnv):
             observations: Dict mapping agent_id to observation array
             infos: Dict mapping agent_id to info dict
         """
-        self.base_env._init_state(seed=seed)
+        self.base_env.reset(seed=seed, options={} if options is None else options)
         self.agents = self.possible_agents.copy()
         
         observations = {

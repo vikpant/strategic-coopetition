@@ -66,12 +66,12 @@ Enter your HuggingFace access token when prompted. Generate one at <https://hugg
 
 ```bash
 export SOURCE_ROOT=/path/to/release_payload
-bash experiments/croissant/upload.sh
+bash coopetition_gym/experiments/croissant/upload.sh
 ```
 
 The script idempotently:
 1. Verifies HuggingFace login state.
-2. Creates the `vikpant/coopetition-gym-logs` dataset repo if absent (public by default; set `HF_PRIVATE=1` for private).
+2. Creates a missing destination as private by default and verifies its actual visibility before uploading. `HF_PRIVATE=0` explicitly selects a public destination; visibility mismatches abort. `SOURCE_ROOT` must name the reviewed payload explicitly.
 3. Uploads the canonical README.md and croissant.json.
 4. Uploads each of the four subdirectory contents from `$SOURCE_ROOT`.
 5. Prints a verification summary via `huggingface_hub.HfApi.dataset_info`.
@@ -115,3 +115,16 @@ Or with `cffconvert`-style direct validation:
 ```bash
 mlcroissant validate --jsonld papers/neurips_ed_2026/croissant.json
 ```
+
+## Snapshot integrity and score provenance
+
+A moving branch name is not a SHA256 checksum. The source Croissant description
+no longer presents `main` as one. For a reproducible download record the resolved
+dataset commit and verify the snapshot's file checksum/count manifest. The source
+manifest does not claim an immutable dataset snapshot or assign a canonical case
+score; see [score provenance](../../docs/benchmarks/score_provenance.md).
+
+The uploader checks repository visibility with `dataset_info` because
+`create_repo(private=..., exist_ok=True)` does not change an existing repository's
+visibility ([Hugging Face API](https://huggingface.co/docs/huggingface_hub/package_reference/hf_api#create_repo)).
+Running analysis does not require running the uploader.

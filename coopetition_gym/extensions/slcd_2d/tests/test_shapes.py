@@ -57,3 +57,21 @@ def test_appropriation_changes_reward():
     assert not np.allclose(r_no_appr, r_with_appr), (
         "Reward should change when p > 0"
     )
+
+
+def test_reset_clears_appropriation_and_repeats_episode():
+    env = SLCDAppropriationEnv()
+    try:
+        initial_obs, initial_info = env.reset(seed=42)
+        action = np.array([50.0, 0.7, 50.0, 0.7], dtype=np.float32)
+        first = env.step(action)
+        assert first[4]["appropriation_mean"] > 0.0
+        reset_obs, reset_info = env.reset(seed=42)
+        assert initial_info["appropriation_mean"] == 0.0
+        assert reset_info["appropriation_mean"] == 0.0
+        np.testing.assert_array_equal(reset_obs, initial_obs)
+        second = env.step(action)
+        np.testing.assert_array_equal(second[0], first[0])
+        np.testing.assert_array_equal(second[1], first[1])
+    finally:
+        env.close()
